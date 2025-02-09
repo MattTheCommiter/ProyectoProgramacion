@@ -16,7 +16,7 @@
 #include "game.h"
 
 /*declaration of private functions*/
-Status game_add_space(Game *game, Space *space);
+
 Status game_load_spaces(Game *game, char *filename);
 
 
