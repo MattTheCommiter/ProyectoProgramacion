@@ -15,6 +15,13 @@
 #include "game.h"
 #include "types.h"
 
+/**
+ * @brief Updates the game's last_cmd to the newest command, calling the action functions (which are private) depending on the command
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param cmd the newest command
+ * @return Status : if the function was completed succesfully
+ */
 Status game_actions_update(Game *game, Command *cmd);
 
 #endif

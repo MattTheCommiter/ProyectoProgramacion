@@ -75,8 +75,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
-  if ((id_act = game_get_player_location(game)) != NO_ID) {
-    space_act = game_get_space(game, id_act);
+  if ((id_act = game_get_player_location(game)) != NO_ID) { /*Si el player tiene alguna localización, obtenemos el id de esa localización*/
+    space_act = game_get_space(game, id_act); /*Obtenemos el espacio en el que está el jugador, que nos da información sobre norte y sur en vez de ser un simple id*/
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
 
