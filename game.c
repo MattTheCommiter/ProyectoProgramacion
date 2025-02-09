@@ -157,3 +157,21 @@ Id game_get_space_id_at(Game *game, int position) {
 
   return space_get_id(game->spaces[position]);
 }
+
+/**
+ * @brief adds a new space to the whole game, given a pointer to that space and the memory direction of game.
+ * 
+ * @param game 
+ * @param space 
+ * @return Status 
+ */
+Status game_add_space(Game *game, Space *space) {
+  if ((space == NULL) || (game->n_spaces >= MAX_SPACES)) {
+    return ERROR;
+  }
+
+  game->spaces[game->n_spaces] = space;
+  game->n_spaces++;
+
+  return OK;
+}

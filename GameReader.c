@@ -19,23 +19,7 @@
 Status game_add_space(Game *game, Space *space);
 Status game_load_spaces(Game *game, char *filename);
 
-/**
- * @brief adds a new space to the whole game, given a pointer to that space and the memory direction of game.
- * 
- * @param game 
- * @param space 
- * @return Status 
- */
-Status game_add_space(Game *game, Space *space) {
-  if ((space == NULL) || (game->n_spaces >= MAX_SPACES)) {
-    return ERROR;
-  }
 
-  game->spaces[game->n_spaces] = space;
-  game->n_spaces++;
-
-  return OK;
-}
 /**
  * @brief creates a new space from the text of a file, the text must be in a specific format, separated by '|'
  * gets all the information needed to create a new space.

@@ -25,6 +25,7 @@ typedef struct _Game {
   Command *last_cmd;
   Bool finished;
 } Game;
+Status game_add_space(Game *game, Space *space);
 
 Status game_create(Game *game);
 
