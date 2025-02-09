@@ -18,10 +18,31 @@
    Private functions
 */
 
+/**
+ * @brief creates the array of spaces in game from a text file with all the spaces' information
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param filename the name of the text file
+ * @return Status: if the function was completed succesfully 
+ */
 Status game_load_spaces(Game *game, char *filename);
 
+/**
+ * @brief adds a new space to the array of spaces in the game structure
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param space a pointer to the space that is going to be added
+ * @return Status: if the function was completed succesfully 
+ */
 Status game_add_space(Game *game, Space *space);
 
+/**
+ * @brief returns the id of the space located in the position number "position" (it is an integer) of the array of spaces inside the "game" structure
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param position the position of the space of which we want to get the id
+ * @return Id the id of the space
+ */
 Id game_get_space_id_at(Game *game, int position);
 
 /**
@@ -222,5 +243,3 @@ Id game_get_space_id_at(Game *game, int position) {
 
   return space_get_id(game->spaces[position]);
 }
-
-//hola

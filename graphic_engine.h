@@ -20,7 +20,7 @@ Graphic_engine *graphic_engine_create();
 /**
  * @brief destroys all the areas of the screen stored in the pointer to the graphic engine
  * 
- * @param ge the graphic engine that is being run
+ * @param ge pointer to the game's textual graphic engine
  */
 void graphic_engine_destroy(Graphic_engine *ge);
 

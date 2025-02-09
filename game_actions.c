@@ -18,12 +18,32 @@
    Private functions
 */
 
+/**
+ * @brief doesn't carry out any actions
+ * 
+ * @param game 
+ */
 void game_actions_unknown(Game *game);
 
+/**
+ * @brief doesn't carry out any actions
+ * 
+ * @param game 
+ */
 void game_actions_exit(Game *game);
 
+/**
+ * @brief moves the character to the space in the south, changing the id's accordingly
+ * 
+ * @param game a pointer to the structure with the game's main information
+ */
 void game_actions_next(Game *game);
 
+/**
+ * @brief moves the character to the space in the north, changing the id's accordingly
+ * 
+ * @param game a pointer to the structure with the game's main information
+ */
 void game_actions_back(Game *game);
 
 /**
