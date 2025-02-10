@@ -17,17 +17,17 @@
 
 /*declaration of private functions*/
 /**
- * @brief creates the array of spaces in game from a text file with all the spaces' information
- * 
+ * @brief creates a new space from the text of a file, the text must be in a specific format, separated by '|'
+ * gets all the information needed to create a new space.
  * @param game a pointer to the structure with the game's main information
  * @param filename the name of the text file
  * @return Status: if the function was completed succesfully 
  */
-Status game_load_spaces(Game *game, char *filename);
+Status gameReader_load_spaces(Game *game, char *filename);
 
 
 
-Status game_load_spaces(Game *game, char *filename) {
+Status gameReader_load_spaces(Game *game, char *filename) {
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
