@@ -53,7 +53,7 @@ Status game_create_from_file(Game *game, char *filename) {
     return ERROR;
   }
 
-  if (game_load_spaces(game, filename) == ERROR) {
+  if (gameReader_load_spaces(game, filename) == ERROR) {
     return ERROR;
   }
 
@@ -95,7 +95,7 @@ Space *game_get_space(Game *game, Id id) {
 Id game_get_player_location(Game *game) { return game->player_location; }
 
 Status game_set_player_location(Game *game, Id id) {
-  if (id == NO_ID) {
+  if (id == NO_ID ) {
     return ERROR;
   }
 
