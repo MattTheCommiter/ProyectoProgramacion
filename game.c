@@ -180,10 +180,3 @@ Status game_add_space(Game *game, Space *space) {
   return OK;
 }
 
-Id game_get_space_id_at(Game *game, int position) {
-  if (position < 0 || position >= game->n_spaces) {
-    return NO_ID;
-  }
-
-  return space_get_id(game->spaces[position]);
-}
