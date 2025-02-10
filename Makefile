@@ -29,7 +29,6 @@ GameReader.o: GameReader.c
 Object.o: Object.c
 	gcc $(CFLAGS) $^
 
-
 .PHONY: clean
 clean:
 	rm -f *.o juego_hormiga
