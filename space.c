@@ -25,7 +25,7 @@ struct _Space {
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  Id object_Id;              /*!< Whether the space has an object or not */
+  Id object_Id;              /*!< The id of the object present in the space */
 };
 
 /** space_create allocates memory for a new space
@@ -166,7 +166,7 @@ Id space_get_object(Space* space) {
 
 Status space_print(Space* space) {
   Id idaux = NO_ID;
-
+  Id objectId = space_get_object(space);
   /* Error Control */
   if (!space) {
     return ERROR;
@@ -202,8 +202,8 @@ Status space_print(Space* space) {
   }
 
   /* 3. Print if there is an object in the space or not */
-  if (space_get_object(space)) {
-    fprintf(stdout, "---> Object in the space.\n");
+  if (objectId) {
+    fprintf(stdout, "---> Object id: %ld\n", (int)objectId);
   } else {
     fprintf(stdout, "---> No object in the space.\n");
   }
