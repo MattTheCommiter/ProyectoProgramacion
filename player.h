@@ -95,20 +95,20 @@
  Status player_print(Player* player);
 
  /**
-  * @brief returns the space where the player is currently in
+  * @brief returns the id of the space where the player is currently in
   * 
   * @param player a pointer to the player
-  * @return a pointer to the space where the player is in
+  * @return the id of the player's location
   */
- Space *player_get_space(Player *player);
+ Id player_get_location(Player* player);
 
 /**
- * @brief sets the player's space to a new space
+ * @brief sets the id of the player's location to a new id
  * 
  * @param player pointer to the player
- * @param space pointer to the new space
+ * @param spaceId Id of the new player location
  * @return Status: whether the function was completed succesfully
  */
- Status player_set_space(Player *player, Space *space);
+ Status player_set_location(Player* player, Id spaceId);
  #endif
  

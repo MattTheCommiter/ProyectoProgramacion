@@ -22,8 +22,8 @@
  struct _Player {
    Id id;                    /*!< Id number of the player, it must be unique */
    char name[WORD_SIZE + 1]; /*!< Name of the player */
-   Id location;                 /*!<Id of the space where the player is located*/
-   Id object;              /*!< Whether the player has an object or not */
+   Id location;              /*!<Id of the space where the player is located*/
+   Id object;                /*!< Whether the player has an object or not */
  };
  
  /** player_create allocates memory for a new player
@@ -124,12 +124,11 @@
    /* 1. Print the id and the name of the player */
    fprintf(stdout, "--> Player (Id: %ld; Name: %s)\n", player->id, player->name);
    if(player->object == NO_ID){
-    fprintf(stdout, "The player does not have an object");
+    fprintf(stdout, "--> The player does not have an object");
    }else{
-    fprintf(stdout, "-->Id of the player's object: %ld", player->object);
+    fprintf(stdout, "--> Id of the player's object: %ld", player->object);
    }
-   fprintf(stdout, "-->Id of the player's location: %ld", player->location);
-   /* 2. For each direction, print its link */
+   fprintf(stdout, "--> Id of the player's location: %ld", player->location);
 
    return OK;
  }
