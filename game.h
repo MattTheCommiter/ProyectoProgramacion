@@ -25,6 +25,14 @@ typedef struct _Game {
   Command *last_cmd;
   Bool finished;
 } Game;
+
+/**
+ * @brief adds a new space to the array of spaces in the game structure
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param space a pointer to the space that is going to be added
+ * @return Status: if the function was completed succesfully 
+ */
 Status game_add_space(Game *game, Space *space);
 
 /**

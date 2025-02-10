@@ -88,7 +88,7 @@ Status command_get_user_input(Command* command) {
     }
 
     cmd = UNKNOWN;
-    while (cmd == UNKNOWN && i < N_CMD) { /*Verificamos si el código escrito por el usuario se corresponde con los comandos en mayúsculas o minñusculas, guardados en cmd_to_str */
+    while (cmd == UNKNOWN && i < N_CMD) { /*Verificamos si el código escrito por el usuario se corresponde con los comandos en mayúsculas o minusculas, guardados en cmd_to_str */
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) {
         cmd = i + NO_CMD;
       } else {
