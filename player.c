@@ -31,7 +31,6 @@
   */
  Player* player_create(Id id) {
    Player* newPlayer = NULL;
-   Id spaceId;
  
    /* Error control */
    if (id == NO_ID) return NULL;

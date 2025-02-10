@@ -114,7 +114,7 @@ Status game_set_object_location(Game *game, Id id) {
   }
 
   game->object_location = id;
-  space_set_object(game_get_space(game, id), TRUE);
+  space_set_objectId(game_get_space(game, id), TRUE);
   return OK;
 }
 

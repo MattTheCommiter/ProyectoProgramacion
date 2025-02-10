@@ -2,7 +2,7 @@ CFLAGS = -Wall -ansi -pedantic -c
 
 all : juego_hormiga
 
-juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o GameReader.o Object.o
+juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o GameReader.o Object.o player.o
 	gcc -o $@ $^ -L./ -lscreen
 
 game_loop.o : game_loop.c
@@ -28,7 +28,11 @@ GameReader.o: GameReader.c
 
 Object.o: Object.c
 	gcc $(CFLAGS) $^
+player.o: player.c
+	gcc $(CFLAGS) $^
 
 .PHONY: clean
 clean:
 	rm -f *.o juego_hormiga
+run:
+	./juego_hormiga anthill.dat

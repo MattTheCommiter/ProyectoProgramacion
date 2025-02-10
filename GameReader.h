@@ -13,7 +13,7 @@
 #include "types.h"
 #include "game.h"
 
-Status game_load_spaces(Game *game, char *filename);
+Status gameReader_load_spaces(Game *game, char *filename);
 
 
 #endif
