@@ -14,7 +14,7 @@
  
  #include "types.h"
  #include "space.h"
- #include "game.h"
+
 
  
  typedef struct _Player Player;

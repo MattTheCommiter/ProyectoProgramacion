@@ -14,12 +14,14 @@
 #include "command.h"
 #include "space.h"
 #include "types.h"
+#include "player.h"
+#include "Object.h"
 
 #define MAX_SPACES 100
 
 typedef struct _Game {
-  Id player_location;
-  Id object_location;
+  Object *object;
+  Player *player;
   Space *spaces[MAX_SPACES];
   int n_spaces;
   Command *last_cmd;
