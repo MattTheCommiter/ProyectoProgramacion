@@ -46,6 +46,8 @@ void game_actions_next(Game *game);
  */
 void game_actions_back(Game *game);
 
+
+
 /**
  * @brief takes the object in the space
  * 
