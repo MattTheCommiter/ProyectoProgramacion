@@ -93,7 +93,7 @@
  
  Id player_get_object(Player* player) {
    if (!player) {
-     return FALSE;
+     return NO_ID;
    }
    return player->object;
  }
@@ -108,7 +108,7 @@
   
   Id player_get_location(Player* player) {
     if (!player) {
-      return FALSE;
+      return NO_ID;
     }
     return player->location;
   }
