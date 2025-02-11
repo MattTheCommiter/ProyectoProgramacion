@@ -49,6 +49,22 @@ void game_actions_back(Game *game);
 
 
 /**
+ * @brief takes the object in the space
+ * 
+ * @param game a pointer to the structure with the game's main information
+ */
+void game_actions_take(Game *game);
+
+/**
+ * @brief drops the object in the space
+ * 
+ * @param game a pointer to the structure with the game's main information
+ */
+void game_actions_drop(Game *game);
+
+
+
+/**
    Game actions implementation
 */
 
@@ -80,7 +96,7 @@ Status game_actions_update(Game *game, Command *command)
     break;
   case TAKE:
     game_actions_take(game);
-    
+
     break;
   case DROP:
     game_actions_drop(game);
