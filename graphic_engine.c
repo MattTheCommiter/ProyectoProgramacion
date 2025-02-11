@@ -135,6 +135,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game) {
     sprintf(str, "  Object location:%d", (int)obj_loc);
     screen_area_puts(ge->descript, str);
   }
+  if ((obj_loc = game_get_object_location(game)) == NO_ID) {
+    sprintf(str, "  Object in the inventory");
+    screen_area_puts(ge->descript, str);
+  }
 
   /* Paint in the banner area */
   screen_area_puts(ge->banner, "    The anthill game ");
