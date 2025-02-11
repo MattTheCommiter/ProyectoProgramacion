@@ -101,7 +101,8 @@ Status game_set_player_location(Game *game, Id id) {
   if (id == NO_ID ) {
     return ERROR;
   }
-  player_set_location(game->player,id);
+  if (!player_set_location(game->player,id)) return  ERROR;
+  
 
   return OK;
 }
@@ -123,14 +124,14 @@ Status game_set_object_location(Game *game, Id id) {
   if (id == NO_ID) {
     return ERROR;
   }
-
-  space_set_objectId(game_get_space(game, id), object_get_id(game->object));
+  if(!(space_set_objectId(game_get_space(game, id), object_get_id(game->object)))) return ERROR;
   return OK;
 }
 
 Command* game_get_last_command(Game *game) { return game->last_cmd; }
 
 Status game_set_last_command(Game *game, Command *command) {
+  if(!game || !command) return ERROR;
   game->last_cmd = command;
 
   return OK;
@@ -139,6 +140,7 @@ Status game_set_last_command(Game *game, Command *command) {
 Bool game_get_finished(Game *game) { return game->finished; }
 
 Status game_set_finished(Game *game, Bool finished) {
+  if(!game) return ERROR;
   game->finished = finished;
 
   return OK;
