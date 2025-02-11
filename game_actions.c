@@ -168,9 +168,7 @@ void game_actions_take(Game *game)
   if (game_get_player_location(game) == game_get_object_location(game))
   {
     player_set_object(game->player, object_get_id(game->object)); /*Cambiamos el id del objeto del jugador*/
-    /*space_set_objectId(game_get_space(game, game_get_player_location(game)), NO_ID); Cambiamos el object Id del espacio que tenía el objeto a NO_ID*/
-    /*object_destroy(game->object);*/
-    object_set_id(game->object,NO_ID);
+    space_set_objectId(game_get_space(game, game_get_player_location(game)), NO_ID); /*Cambiamos el object Id del espacio que tenía el objeto a NO_ID*/
     
   }
 }

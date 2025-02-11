@@ -31,6 +31,6 @@ player.o: player.c player.h types.h space.h
 
 .PHONY: clean
 clean:
-	rm -f *.o juego_hormiga
+	rm -f *.o *.gch juego_hormiga
 run:
 	./juego_hormiga anthill.dat
