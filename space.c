@@ -159,14 +159,14 @@ Status space_set_objectId(Space* space, Id object_Id) {
 
 Id space_get_objectId(Space* space) {
   if (!space) {
-    return FALSE;
+    return NO_ID;
   }
   return space->object_Id;
 }
 
 Status space_print(Space* space) {
   Id idaux = NO_ID;
-  Id objectId = space_get_object(space);
+  Id objectId = space_get_objectId(space);
   /* Error Control */
   if (!space) {
     return ERROR;
@@ -203,7 +203,7 @@ Status space_print(Space* space) {
 
   /* 3. Print if there is an object in the space or not */
    if (objectId) {
-    fprintf(stdout, "---> Object id: %ld\n", (int)objectId);
+    fprintf(stdout, "---> Object id: %d\n", (int)objectId);
   } else {
     fprintf(stdout, "---> No object in the space.\n");
   }

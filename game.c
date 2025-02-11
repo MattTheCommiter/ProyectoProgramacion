@@ -109,8 +109,8 @@ Status game_set_player_location(Game *game, Id id) {
 Id game_get_object_location(Game *game) { 
   int i = 0;
   Id id = object_get_id(game->object);
-  Id idEsp = NO_ID;
-  while(id != idEsp){
+  Id idEsp = space_get_objectId(game->spaces[0]);
+  while(id != idEsp && idEsp != NO_ID){
     i++;
     idEsp = space_get_objectId(game->spaces[i]);
   }
