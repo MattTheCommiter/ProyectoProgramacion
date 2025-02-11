@@ -15,7 +15,7 @@
 #define NO_ID -1
 
 typedef long Id;
-
+typedef enum {ANT, SEED} Member;
 typedef enum { FALSE, TRUE } Bool;
 
 typedef enum { ERROR, OK } Status;
