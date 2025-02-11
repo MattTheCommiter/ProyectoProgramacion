@@ -143,7 +143,7 @@ Id space_get_west(Space* space);
  * @author Profesores PPROG
  *
  * @param space a pointer to the space
- * @param value a boolean, specifying if in the space there is an object (TRUE) or not (FALSE)
+ * @param value an Id, specifying the Id of the new object.
  * @return OK, if everything goes well or ERROR if there was some mistake
  */
 Status space_set_objectId(Space* space, Id object_Id);

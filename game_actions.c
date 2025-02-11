@@ -168,8 +168,10 @@ void game_actions_take(Game *game)
   if (game_get_player_location(game) == game_get_object_location(game))
   {
     player_set_object(game->player, object_get_id(game->object)); /*Cambiamos el id del objeto del jugador*/
-    game_set_object_location(game, NO_ID); /*Establecemos que el objeto no tiene ninguna location, es decir, tiene Id = NO_ID*/
-    space_set_objectId(game_get_space(game, game_get_player_location(game)), NO_ID); /*Cambiamos el object Id del espacio que tenía el objeto a NO_ID*/
+    /*space_set_objectId(game_get_space(game, game_get_player_location(game)), NO_ID); Cambiamos el object Id del espacio que tenía el objeto a NO_ID*/
+    /*object_destroy(game->object);*/
+    object_set_id(game->object,NO_ID);
+    
   }
 }
 
@@ -182,7 +184,7 @@ void game_actions_drop(Game *game)
 
   if (player_get_object(game->player) != NO_ID)
   {
-    game_set_object_location(game, player_get_location(game->player)); /*Cambiamos la location del objeto a la del jugador*/
+    
     space_set_objectId(game_get_space(game, game_get_player_location(game)), object_get_id(game->object)); /*Cambiamos el object Id del espacio a la del objeto*/
     player_set_object(game->player, NO_ID); /*Cambiamos el id del objeto del jugador a NO_ID*/
   }

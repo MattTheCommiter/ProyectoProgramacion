@@ -40,8 +40,8 @@ Status game_create(Game *game) {
   }
 
   game->n_spaces = 0;
-  game->player = player_create(NO_ID);
-  game->object = object_create(NO_ID);
+  game->player = player_create(ANT);
+  game->object = object_create(SEED);
   game->last_cmd = command_create();
   game->finished = FALSE;
 
@@ -70,7 +70,8 @@ Status game_destroy(Game *game) {
   for (i = 0; i < game->n_spaces; i++) {
     space_destroy(game->spaces[i]);
   }
-
+  if(game->object) object_destroy(game->object);
+  player_destroy(game->player);
   command_destroy(game->last_cmd);
 
   return OK;
@@ -111,11 +112,12 @@ Id game_get_object_location(Game *game) {
   int i = 0;
   Id id = object_get_id(game->object);
   Id idEsp = space_get_objectId(game->spaces[0]);
-  while(id != idEsp && idEsp != NO_ID){
+  while(id != idEsp && i < game->n_spaces){
     i++;
     idEsp = space_get_objectId(game->spaces[i]);
   }
-  return idEsp; 
+  if(id == idEsp) return space_get_id(game->spaces[i]);
+  return NO_ID;
 }
 
 Status game_set_object_location(Game *game, Id id) {
@@ -124,7 +126,8 @@ Status game_set_object_location(Game *game, Id id) {
   if (id == NO_ID) {
     return ERROR;
   }
-  if(!(space_set_objectId(game_get_space(game, id), object_get_id(game->object)))) return ERROR;
+  space_set_objectId(game_get_space(game,id), object_get_id(game->object));
+  /*if(!(space_set_objectId(game_get_space(game, id), object_get_id(game->object)))) return ERROR;*/
   return OK;
 }
 
