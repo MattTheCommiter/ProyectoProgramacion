@@ -34,3 +34,5 @@ clean:
 	rm -f *.o *.gch juego_hormiga
 run:
 	./juego_hormiga anthill.dat
+runV:
+	valgrind --leak-check=full ./juego_hormiga anthill.dat

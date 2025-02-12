@@ -145,5 +145,18 @@ Status game_set_finished(Game *game, Bool finished);
  * @param game a pointer to the structure with the game's main information
  */
 void game_print(Game *game);
+/**
+ * @brief Gets the player of the game(pointer)
+ * @param game a pointer to the strucuture.
+ * @return a pointer to the player.
+ */
+Player* game_get_player(Game *game);
+/**
+ * @brief gets the object of the game(pointer)
+ * 
+ * @param game a pointer
+ * @return Player* 
+ */
+Object* game_get_object(Game *game);
 
 #endif
