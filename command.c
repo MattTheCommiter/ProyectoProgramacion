@@ -24,18 +24,21 @@ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "E
  *
  * This struct stores all the information related to a command.
  */
-struct _Command {
+struct _Command
+{
   CommandCode code; /*!< Name of the command */
 };
 
 /** space_create allocates memory for a new space
  *  and initializes its members
  */
-Command* command_create() {
-  Command* newCommand = NULL;
+Command *command_create()
+{
+  Command *newCommand = NULL;
 
-  newCommand = (Command*)malloc(sizeof(Command));
-  if (newCommand == NULL) {
+  newCommand = (Command *)malloc(sizeof(Command));
+  if (newCommand == NULL)
+  {
     return NULL;
   }
 
@@ -45,8 +48,10 @@ Command* command_create() {
   return newCommand;
 }
 
-Status command_destroy(Command* command) {
-  if (!command) {
+Status command_destroy(Command *command)
+{
+  if (!command)
+  {
     return ERROR;
   }
 
@@ -55,43 +60,55 @@ Status command_destroy(Command* command) {
   return OK;
 }
 
-Status command_set_code(Command* command, CommandCode code) {
-  if (!command) {
+Status command_set_code(Command *command, CommandCode code)
+{
+  if (!command)
+  {
     return ERROR;
   }
 
-  command->code=code;
+  command->code = code;
 
   return OK;
 }
 
-CommandCode command_get_code(Command* command) {
-  if (!command) {
+CommandCode command_get_code(Command *command)
+{
+  if (!command)
+  {
     return NO_CMD;
   }
   return command->code;
 }
 
-Status command_get_user_input(Command* command) {
+Status command_get_user_input(Command *command)
+{
   char input[CMD_LENGHT] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1;
   CommandCode cmd;
 
-  if (!command) {
+  if (!command)
+  {
     return ERROR;
   }
 
-  if (fgets(input, CMD_LENGHT, stdin)) {
+  if (fgets(input, CMD_LENGHT, stdin))
+  {
     token = strtok(input, " \n");
-    if (!token) {
+    if (!token)
+    {
       return command_set_code(command, UNKNOWN);
     }
 
     cmd = UNKNOWN;
-    while (cmd == UNKNOWN && i < N_CMD) { /*Verificamos si el código escrito por el usuario se corresponde con los comandos en mayúsculas o minusculas, guardados en cmd_to_str */
-      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) {
+    while (cmd == UNKNOWN && i < N_CMD)
+    { /*Verificamos si el código escrito por el usuario se corresponde con los comandos en mayúsculas o minusculas, guardados en cmd_to_str */
+      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL]))
+      {
         cmd = i + NO_CMD;
-      } else {
+      }
+      else
+      {
         i++;
       }
     }
@@ -99,5 +116,4 @@ Status command_get_user_input(Command* command) {
   }
   else
     return command_set_code(command, EXIT);
-  
 }

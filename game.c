@@ -18,10 +18,9 @@
    Private functions
 */
 
-
 /**
  * @brief returns the id of the space located in the position number "position" (it is an integer) of the array of spaces inside the "game" structure
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param position the position of the space of which we want to get the id
  * @return Id the id of the space
@@ -32,10 +31,12 @@ Id game_get_space_id_at(Game *game, int position);
    Game interface implementation
 */
 
-Status game_create(Game *game) {
+Status game_create(Game *game)
+{
   int i;
 
-  for (i = 0; i < MAX_SPACES; i++) {
+  for (i = 0; i < MAX_SPACES; i++)
+  {
     game->spaces[i] = NULL;
   }
 
@@ -48,12 +49,15 @@ Status game_create(Game *game) {
   return OK;
 }
 
-Status game_create_from_file(Game *game, char *filename) {
-  if (game_create(game) == ERROR) {
+Status game_create_from_file(Game *game, char *filename)
+{
+  if (game_create(game) == ERROR)
+  {
     return ERROR;
   }
 
-  if (gameReader_load_spaces(game, filename) == ERROR) {
+  if (gameReader_load_spaces(game, filename) == ERROR)
+  {
     return ERROR;
   }
 
@@ -64,28 +68,35 @@ Status game_create_from_file(Game *game, char *filename) {
   return OK;
 }
 
-Status game_destroy(Game *game) {
+Status game_destroy(Game *game)
+{
   int i = 0;
 
-  for (i = 0; i < game->n_spaces; i++) {
+  for (i = 0; i < game->n_spaces; i++)
+  {
     space_destroy(game->spaces[i]);
   }
-  if(game->object) object_destroy(game->object);
+  if (game->object)
+    object_destroy(game->object);
   player_destroy(game->player);
   command_destroy(game->last_cmd);
 
   return OK;
 }
 
-Space *game_get_space(Game *game, Id id) {
+Space *game_get_space(Game *game, Id id)
+{
   int i = 0;
 
-  if (id == NO_ID) {
+  if (id == NO_ID)
+  {
     return NULL;
   }
 
-  for (i = 0; i < game->n_spaces; i++) {
-    if (id == space_get_id(game->spaces[i])) {
+  for (i = 0; i < game->n_spaces; i++)
+  {
+    if (id == space_get_id(game->spaces[i]))
+    {
       return game->spaces[i];
     }
   }
@@ -93,47 +104,55 @@ Space *game_get_space(Game *game, Id id) {
   return NULL;
 }
 
-Id game_get_player_location(Game *game) { 
+Id game_get_player_location(Game *game)
+{
   return player_get_location(game->player);
-  
-  }
+}
 
-Status game_set_player_location(Game *game, Id id) {
-  if (id == NO_ID ) {
+Status game_set_player_location(Game *game, Id id)
+{
+  if (id == NO_ID)
+  {
     return ERROR;
   }
-  if (!player_set_location(game->player,id)) return  ERROR;
-  
+  if (!player_set_location(game->player, id))
+    return ERROR;
 
   return OK;
 }
 
-Id game_get_object_location(Game *game) { 
+Id game_get_object_location(Game *game)
+{
   int i = 0;
   Id id = object_get_id(game->object);
   Id idEsp = space_get_objectId(game->spaces[0]);
-  while(id != idEsp && i < game->n_spaces){
+  while (id != idEsp && i < game->n_spaces)
+  {
     i++;
     idEsp = space_get_objectId(game->spaces[i]);
   }
-  if(id == idEsp) return space_get_id(game->spaces[i]);
+  if (id == idEsp)
+    return space_get_id(game->spaces[i]);
   return NO_ID;
 }
 
-Status game_set_object_location(Game *game, Id id) {
+Status game_set_object_location(Game *game, Id id)
+{
 
-
-  if (id == NO_ID) {
+  if (id == NO_ID)
+  {
     return ERROR;
   }
   if(!(space_set_objectId(game_get_space(game, id), object_get_id(game->object)))) return ERROR;
   return OK;
 }
 
-Command* game_get_last_command(Game *game) { return game->last_cmd; }
+Command *game_get_last_command(Game *game) { return game->last_cmd; }
 
-Status game_set_last_command(Game *game, Command *command) {
-  if(!game || !command) return ERROR;
+Status game_set_last_command(Game *game, Command *command)
+{
+  if (!game || !command)
+    return ERROR;
   game->last_cmd = command;
 
   return OK;
@@ -141,20 +160,24 @@ Status game_set_last_command(Game *game, Command *command) {
 
 Bool game_get_finished(Game *game) { return game->finished; }
 
-Status game_set_finished(Game *game, Bool finished) {
-  if(!game) return ERROR;
+Status game_set_finished(Game *game, Bool finished)
+{
+  if (!game)
+    return ERROR;
   game->finished = finished;
 
   return OK;
 }
 
-void game_print(Game *game) {
+void game_print(Game *game)
+{
   int i = 0;
 
   printf("\n\n-------------\n\n");
 
   printf("=> Spaces: \n");
-  for (i = 0; i < game->n_spaces; i++) {
+  for (i = 0; i < game->n_spaces; i++)
+  {
     space_print(game->spaces[i]);
   }
 
@@ -175,10 +198,10 @@ Object* game_get_object(Game *game){
    Implementation of private functions
 */
 
-
-
-Id game_get_space_id_at(Game *game, int position) {
-  if (position < 0 || position >= game->n_spaces) {
+Id game_get_space_id_at(Game *game, int position)
+{
+  if (position < 0 || position >= game->n_spaces)
+  {
     return NO_ID;
   }
 
@@ -187,13 +210,15 @@ Id game_get_space_id_at(Game *game, int position) {
 
 /**
  * @brief adds a new space to the whole game, given a pointer to that space and the memory direction of game.
- * 
- * @param game 
- * @param space 
- * @return Status 
+ *
+ * @param game
+ * @param space
+ * @return Status
  */
-Status game_add_space(Game *game, Space *space) {
-  if ((space == NULL) || (game->n_spaces >= MAX_SPACES)) {
+Status game_add_space(Game *game, Space *space)
+{
+  if ((space == NULL) || (game->n_spaces >= MAX_SPACES))
+  {
     return ERROR;
   }
 
@@ -202,4 +227,3 @@ Status game_add_space(Game *game, Space *space) {
 
   return OK;
 }
-
