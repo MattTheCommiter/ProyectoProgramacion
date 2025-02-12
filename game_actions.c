@@ -46,23 +46,19 @@ void game_actions_next(Game *game);
  */
 void game_actions_back(Game *game);
 
-
-
 /**
  * @brief takes the object in the space
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_take(Game *game);
 
 /**
  * @brief drops the object in the space
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_drop(Game *game);
-
-
 
 /**
    Game actions implementation
@@ -167,9 +163,8 @@ void game_actions_take(Game *game)
 
   if (game_get_player_location(game) == game_get_object_location(game))
   {
-    player_set_object(game->player, object_get_id(game->object)); /*Cambiamos el id del objeto del jugador*/
+    player_set_object(game->player, object_get_id(game->object));                    /*Cambiamos el id del objeto del jugador*/
     space_set_objectId(game_get_space(game, game_get_player_location(game)), NO_ID); /*Cambiamos el object Id del espacio que tenía el objeto a NO_ID*/
-    
   }
 }
 
@@ -182,8 +177,8 @@ void game_actions_drop(Game *game)
 
   if (player_get_object(game->player) != NO_ID)
   {
-    
+
     space_set_objectId(game_get_space(game, game_get_player_location(game)), object_get_id(game->object)); /*Cambiamos el object Id del espacio a la del objeto*/
-    player_set_object(game->player, NO_ID); /*Cambiamos el id del objeto del jugador a NO_ID*/
+    player_set_object(game->player, NO_ID);                                                                /*Cambiamos el id del objeto del jugador a NO_ID*/
   }
 }
