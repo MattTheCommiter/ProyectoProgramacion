@@ -68,7 +68,7 @@ Status game_create_from_file(Game *game, char *filename);
  * @brief frees all the dynamically allocated memory in the game structure
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Alvaro Inigo
  * 
  * @param game a pointer to the structure with the game's main information
  * @return Status: if the function was completed succesfully
@@ -91,7 +91,7 @@ Space *game_get_space(Game *game, Id id);
  * @brief returns the id of the player's location
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Alvaro Inigo
  * 
  * @param game a pointer to the structure with the game's main information
  * @return the id of the player's location
@@ -102,7 +102,7 @@ Id game_get_player_location(Game *game);
  * @brief changes the id of the player's location to the one passed as an argument
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Alvaro Inigo
  * 
  * @param game a pointer to the structure with the game's main information
  * @param id the id of the new location
@@ -114,7 +114,7 @@ Status game_set_player_location(Game *game, Id id);
  * @brief returns the id of the object's location
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Alvaro Inigo
  * 
  * @param game a pointer to the structure with the game's main information
  * @return the id of the object's location
@@ -125,7 +125,7 @@ Id game_get_object_location(Game *game);
  * @brief changes the id of the object's location to the one passed as an argument
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Alvaro Inigo
  * 
  * @param game a pointer to the structure with the game's main information
  * @param id the id of the new location

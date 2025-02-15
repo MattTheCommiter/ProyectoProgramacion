@@ -3,8 +3,8 @@
  *
  * @file types.h
  * @author Profesores PPROG
- * @version 0
- * @date 27-01-2025
+ * @version 0.1
+ * @date 12-02-2025
  * @copyright GNU Public License
  */
 
@@ -15,6 +15,7 @@
 #define NO_ID -1
 
 typedef long Id;
+/*The Id's neccesary to initialise the player and object*/
 typedef enum
 {
     ANT,

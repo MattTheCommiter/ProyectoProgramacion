@@ -37,7 +37,7 @@ void graphic_engine_destroy(Graphic_engine *ge);
 /**
  * @brief paints the graphic interface of the game
  *
- * @date 27-01-2025
+ * @date 12-02-2025
  * @author Profesores
  * 
  * @param ge pointer to the game's textual graphic engine
