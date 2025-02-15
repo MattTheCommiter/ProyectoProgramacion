@@ -139,7 +139,7 @@ Status space_set_west(Space *space, Id id);
 Id space_get_west(Space *space);
 
 /**
- * @brief It sets whether the space has an object or not
+ * @brief It sets the Id of the object in the space
  * @author Profesores PPROG
  *
  * @param space a pointer to the space

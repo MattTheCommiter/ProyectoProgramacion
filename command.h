@@ -44,8 +44,8 @@ typedef struct _Command Command;
 /**
  * @brief dynamically allocates memory for the command and sets its code to NO_CMD
  * 
- * @date 09-02-2025
- * @author Matteo Artuñedo
+ * @date 27-01-2025
+ * @author Profesores
  * 
  * @return Command*: pointer to the dynamically allocated Command structure
  */
@@ -54,8 +54,8 @@ Command *command_create();
 /**
  * @brief frees the memory reserved for the command pointer
  *
- * @date 09-02-2025
- * @author Matteo Artuñedo
+ * @date 27-01-2025
+ * @author Profesores
  * 
  * @param command pointer to the Command structure that is to be freed
  * @return Status: whether the function was completed succesfully
@@ -65,8 +65,8 @@ Status command_destroy(Command *command);
 /**
  * @brief sets the code of a command structure to a desired code
  *
- * @date 09-02-2025
- * @author Matteo Artuñedo
+ * @date 27-01-2025
+ * @author Profesores
  * 
  * @param command pointer to the Command structure that will be changed
  * @param code the new code for the structure
@@ -77,8 +77,8 @@ Status command_set_code(Command *command, CommandCode code);
 /**
  * @brief returns the code of the command structure
  *
- * @date 09-02-2025
- * @author Matteo Artuñedo
+ * @date 27-01-2025
+ * @author Profesores
  * 
  * @param command pointer to the Command structure
  * @return CommandCode: the structure's command
@@ -88,8 +88,8 @@ CommandCode command_get_code(Command *command);
 /**
  * @brief reads the user's input and changes the command to the one entered
  *
- * @date 09-02-2025
- * @author Matteo Artuñedo
+ * @date 27-01-2025
+ * @author Profesores
  * 
  * @param command pointer to the command structure
  * @return Status: calls to the command_set_code function to change the code to the one entered by the user
