@@ -56,7 +56,6 @@ Status command_destroy(Command *command)
   }
 
   free(command);
-  command = NULL;
   return OK;
 }
 
@@ -91,19 +90,19 @@ Status command_get_user_input(Command *command)
   {
     return ERROR;
   }
-
+  /*read the command entered by the user*/
   if (fgets(input, CMD_LENGHT, stdin))
   {
     token = strtok(input, " \n");
     if (!token)
     {
-      return command_set_code(command, UNKNOWN);
+      return command_set_code(command, UNKNOWN); 
     }
 
     cmd = UNKNOWN;
     while (cmd == UNKNOWN && i < N_CMD)
-    { /*Verificamos si el código escrito por el usuario se corresponde con los comandos en mayúsculas o minusculas, guardados en cmd_to_str */
-      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL]))
+    { /* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
+      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) /*If either of the comparisons are true, the loop ends and the index 'i' is used to save the chosen command through the command_set_code function*/
       {
         cmd = i + NO_CMD;
       }
