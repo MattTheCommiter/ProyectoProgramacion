@@ -62,7 +62,7 @@ void game_actions_back(Game *game);
  * @brief takes the object in the space
  *
  * @date 10-02-2025
- * @author Matteo Artuñedo
+ * @author Matteo Artunedo
  * 
  * @param game a pointer to the structure with the game's main information
  */
@@ -72,7 +72,7 @@ void game_actions_take(Game *game);
  * @brief drops the object in the space
  *
  * @date 10-02-2025
- * @author Matteo
+ * @author Matteo Artunedo
  * 
  * @param game a pointer to the structure with the game's main information
  */

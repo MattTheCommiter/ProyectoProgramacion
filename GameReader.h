@@ -17,6 +17,10 @@
 /**
  * @brief creates a new space from the text of a file, the text must be in a specific format, separated by '|'
  * gets all the information needed to create a new space.
+ * 
+ * @date 10-02-2025
+ * @author Álvaro Inigo
+ * 
  * @param game a pointer to the structure with the game's main information
  * @param filename the name of the text file
  * @return Status: if the function was completed succesfully

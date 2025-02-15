@@ -19,19 +19,12 @@
 
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"t", "Take"}, {"d", "Drop"}};
 
-/**
- * @brief Command
- *
- * This struct stores all the information related to a command.
- */
 struct _Command
 {
   CommandCode code; /*!< Name of the command */
 };
 
-/** space_create allocates memory for a new space
- *  and initializes its members
- */
+
 Command *command_create()
 {
   Command *newCommand = NULL;

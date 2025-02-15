@@ -18,7 +18,8 @@
 #include "space.h"
 #include "types.h"
 
-#define WIDTH_MAP 48
+/*Constant values used for the creation of the game's graphic interface*/
+#define WIDTH_MAP 48 
 #define WIDTH_DES 29
 #define WIDTH_BAN 23
 #define HEIGHT_MAP 13
@@ -26,9 +27,15 @@
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
 
+/**
+ * @brief structure where the pointers to all the areas of the textual graphic interface are stored
+ * 
+ * @date 27-01-2025
+ * @author Profesores
+ */
 struct _Graphic_engine
 {
-  Area *map, *descript, *banner, *help, *feedback;
+  Area *map, *descript, *banner, *help, *feedback; /*All of the different parts of the textual graphic interface*/
 };
 
 Graphic_engine *graphic_engine_create()
@@ -46,7 +53,7 @@ Graphic_engine *graphic_engine_create()
   {
     return NULL;
   }
-
+  /*Initializes all of the components of the game's graphic interface*/
   ge->map = screen_area_init(1, 1, WIDTH_MAP, HEIGHT_MAP);
   ge->descript = screen_area_init(WIDTH_MAP + 2, 1, WIDTH_DES, HEIGHT_MAP);
   ge->banner = screen_area_init((int)((WIDTH_MAP + WIDTH_DES + 1 - WIDTH_BAN) / 2), HEIGHT_MAP + 2, WIDTH_BAN, HEIGHT_BAN);

@@ -39,7 +39,7 @@ Status gameReader_load_spaces(Game *game, char *filename)
    * @brief reads the file and load each data individually.
    *
    */
-  while (fgets(line, WORD_SIZE, file))
+  while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
     if (strncmp("#s:", line, 3) == 0)
     {
@@ -62,9 +62,9 @@ Status gameReader_load_spaces(Game *game, char *filename)
        * @brief It finally creates the space with the read data.
        *
        */
-      space = space_create(id);
+      space = space_create(id); /*creates a new space with the id written in the file*/
       if (space != NULL)
-      {
+      { /*Sets the information related to the space and adds it to the game*/
         space_set_name(space, name);
         space_set_north(space, north);
         space_set_east(space, east);

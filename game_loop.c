@@ -19,9 +19,12 @@
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
  *
- * @param game
- * @param gengine
- * @param file_name
+ * @author Profesores PPROG
+ * @date 27-01-2025
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param gengine a pointer to the game's graphic engine
+ * @param file_name a string with the name of the file where the information needed to create the game is stored
  * @return int: 1 if an error occurs and 0 if no errors occur.
  */
 int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name);
@@ -29,6 +32,9 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name);
 /**
  * @brief runs the game, receiving the user's inputs and painting the graphic interface
  *
+ * @author Profesores PPROG
+ * @date 27-01-2025
+ * 
  * @param game a pointer to the structure with the game's main information
  * @param gengine a pointer to the game's graphic engine
  */
@@ -36,6 +42,9 @@ void game_loop_run(Game game, Graphic_engine *gengine);
 
 /**
  * @brief destroys the game and the graphic engine
+ * 
+ * @author Profesores PPROG
+ * @date 27-01-2025
  *
  * @param game a pointer to the structure with the game's main information
  * @param gengine a pointer to the game's graphic engine
@@ -47,8 +56,11 @@ void game_loop_cleanup(Game game, Graphic_engine *gengine);
 /**
  * @brief initializes the game loop (calling the game_loop_init function) and runs the game loop
  *
+ * @author Profesores PPROG
+ * @date 27-01-2025
+ * 
  * @param argc number of arguments in char *argv[]
- * @param argv array where the text filename is stored
+ * @param argv array where the name of the text file is stored
  * @return int: 1 if an error occurs and 0 if no errors occur
  */
 int main(int argc, char *argv[])

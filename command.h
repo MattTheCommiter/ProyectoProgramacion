@@ -39,6 +39,11 @@ typedef enum
     DROP
 } CommandCode;
 
+/**
+ * @brief Command
+ *
+ * This struct stores all the information related to a command.
+ */
 typedef struct _Command Command;
 
 /**
