@@ -63,6 +63,14 @@ Status player_destroy(Player *player)
   return OK;
 }
 
+Status player_set_id(Player *player, Id playerId){
+  if (!player || !playerId)
+  {
+    return ERROR;
+  }
+  player->id = playerId;
+  return OK;
+}
 Id player_get_id(Player *player)
 {
   if (!player)
