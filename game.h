@@ -21,12 +21,12 @@
 
 typedef struct _Game
 {
-  Object *object; /*Pointer to the object that is present in the game*/
-  Player *player; /*Pointer to the player that is present in the game*/
-  Space *spaces[MAX_SPACES]; /*Array of Spaces*/
-  int n_spaces; /*Number of spaces in the game*/
-  Command *last_cmd; /*Pointer to the last command introduced by the user*/
-  Bool finished; /*Boolean that establishes whether the game has ended or not*/
+  Object *object;             /*!<Pointer to the object that is present in the game*/
+  Player *player;             /*!<Pointer to the player that is present in the game*/
+  Space *spaces[MAX_SPACES];  /*!<Array of Spaces*/
+  int n_spaces;               /*!<Number of spaces in the game*/
+  Command *last_cmd;          /*!<Pointer to the last command introduced by the user*/
+  Bool finished;              /*!<Boolean that establishes whether the game has ended or not*/
 } Game;
 
 /**
@@ -202,7 +202,7 @@ Player* game_get_player(Game *game);
  * @brief gets the object of the game(pointer)
  * 
  * @date 12-02-2025
- * @author Alvaro Ínigo
+ * @author Alvaro Inigo
  * 
  * @param game a pointer
  * @return a pointer to the object 

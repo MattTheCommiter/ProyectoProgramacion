@@ -26,9 +26,7 @@ struct _Player
   Id object;                /*!< Whether the player has an object or not */
 };
 
-/** player_create allocates memory for a new player
- *  and initializes its members
- */
+
 Player *player_create(Id id)
 {
   Player *newPlayer = NULL;
@@ -71,6 +69,7 @@ Status player_set_id(Player *player, Id playerId){
   player->id = playerId;
   return OK;
 }
+
 Id player_get_id(Player *player)
 {
   if (!player)

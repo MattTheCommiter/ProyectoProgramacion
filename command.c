@@ -15,14 +15,14 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGHT 30 /*maximum length of commands written by user*/
+#define CMD_LENGTH 30 /*maximum length of commands written by user*/
 
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"t", "Take"}, {"d", "Drop"}};
 
 /**
  * @brief Command
  *
- * This struct stores all the information related to a command.
+ * This struct stores the code related to a command.
  */
 struct _Command
 {
@@ -80,7 +80,7 @@ CommandCode command_get_code(Command *command)
 
 Status command_get_user_input(Command *command)
 {
-  char input[CMD_LENGHT] = "", *token = NULL;
+  char input[CMD_LENGTH] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1;
   CommandCode cmd;
 
@@ -89,7 +89,7 @@ Status command_get_user_input(Command *command)
     return ERROR;
   }
   /*read the command entered by the user*/
-  if (fgets(input, CMD_LENGHT, stdin))
+  if (fgets(input, CMD_LENGTH, stdin))
   {
     token = strtok(input, " \n");
     if (!token)

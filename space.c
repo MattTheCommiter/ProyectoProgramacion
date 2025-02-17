@@ -15,7 +15,7 @@
 
 /**
  * @brief Space
- *
+ * 
  * This struct stores all the information of a space.
  */
 struct _Space
@@ -29,9 +29,6 @@ struct _Space
   Id object_Id;             /*!< The id of the object present in the space */
 };
 
-/** space_create allocates memory for a new space
- *  and initializes its members
- */
 Space *space_create(Id id)
 {
   Space *newSpace = NULL;
