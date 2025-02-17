@@ -23,7 +23,7 @@
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game
  */
 void game_actions_unknown(Game *game);
@@ -33,7 +33,7 @@ void game_actions_unknown(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game
  */
 void game_actions_exit(Game *game);
@@ -43,7 +43,7 @@ void game_actions_exit(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_next(Game *game);
@@ -53,7 +53,7 @@ void game_actions_next(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_back(Game *game);
@@ -63,7 +63,7 @@ void game_actions_back(Game *game);
  *
  * @date 10-02-2025
  * @author Matteo Artunedo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_take(Game *game);
@@ -73,7 +73,7 @@ void game_actions_take(Game *game);
  *
  * @date 10-02-2025
  * @author Matteo Artunedo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_drop(Game *game);
@@ -199,6 +199,6 @@ void game_actions_drop(Game *game)
     /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
     space_set_objectId(game_get_space(game, game_get_player_location(game)), object_get_id(game_get_object(game)));
     /*We change the Id of the player's object to NO_ID*/
-    player_set_object(game_get_player(game), NO_ID); 
+    player_set_object(game_get_player(game), NO_ID);
   }
 }

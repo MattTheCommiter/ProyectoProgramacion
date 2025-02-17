@@ -29,7 +29,6 @@ struct _Command
   CommandCode code; /*!< Name of the command */
 };
 
-
 Command *command_create()
 {
   Command *newCommand = NULL;
@@ -94,12 +93,12 @@ Status command_get_user_input(Command *command)
     token = strtok(input, " \n");
     if (!token)
     {
-      return command_set_code(command, UNKNOWN); 
+      return command_set_code(command, UNKNOWN);
     }
 
     cmd = UNKNOWN;
     while (cmd == UNKNOWN && i < N_CMD)
-    { /* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
+    {                                                                                         /* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) /*If either of the comparisons are true, the loop ends and the index 'i' is used to save the chosen command through the command_set_code function*/
       {
         cmd = i + NO_CMD;

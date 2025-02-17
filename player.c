@@ -15,7 +15,8 @@
 
 /**
  * @brief Player
- *
+ * @author Matteo Artunedo
+ * @date 12-02-2025
  * This struct stores all the information of a player.
  */
 struct _Player
@@ -25,7 +26,6 @@ struct _Player
   Id location;              /*!<Id of the space where the player is located*/
   Id object;                /*!< Whether the player has an object or not */
 };
-
 
 Player *player_create(Id id)
 {
@@ -61,7 +61,8 @@ Status player_destroy(Player *player)
   return OK;
 }
 
-Status player_set_id(Player *player, Id playerId){
+Status player_set_id(Player *player, Id playerId)
+{
   if (!player || !playerId)
   {
     return ERROR;

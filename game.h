@@ -21,12 +21,12 @@
 
 typedef struct _Game
 {
-  Object *object;             /*!<Pointer to the object that is present in the game*/
-  Player *player;             /*!<Pointer to the player that is present in the game*/
-  Space *spaces[MAX_SPACES];  /*!<Array of Spaces*/
-  int n_spaces;               /*!<Number of spaces in the game*/
-  Command *last_cmd;          /*!<Pointer to the last command introduced by the user*/
-  Bool finished;              /*!<Boolean that establishes whether the game has ended or not*/
+  Object *object;            /*!<Pointer to the object that is present in the game*/
+  Player *player;            /*!<Pointer to the player that is present in the game*/
+  Space *spaces[MAX_SPACES]; /*!<Array of Spaces*/
+  int n_spaces;              /*!<Number of spaces in the game*/
+  Command *last_cmd;         /*!<Pointer to the last command introduced by the user*/
+  Bool finished;             /*!<Boolean that establishes whether the game has ended or not*/
 } Game;
 
 /**
@@ -34,7 +34,7 @@ typedef struct _Game
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param space a pointer to the space that is going to be added
  * @return Status: if the function was completed succesfully
@@ -46,7 +46,7 @@ Status game_add_space(Game *game, Space *space);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @return Status: if the function was completed succesfully
  */
@@ -57,7 +57,7 @@ Status game_create(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game pointer to the structure with the game's main information
  * @param filename
  * @return Status: if the function was completed succesfully
@@ -69,7 +69,7 @@ Status game_create_from_file(Game *game, char *filename);
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @return Status: if the function was completed succesfully
  */
@@ -80,7 +80,7 @@ Status game_destroy(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param id the id of the desired space
  * @return a pointer to the desired space
@@ -92,7 +92,7 @@ Space *game_get_space(Game *game, Id id);
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @return the id of the player's location
  */
@@ -103,7 +103,7 @@ Id game_get_player_location(Game *game);
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param id the id of the new location
  * @return Status: if the function was completed succesfully
@@ -115,7 +115,7 @@ Status game_set_player_location(Game *game, Id id);
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @return the id of the object's location
  */
@@ -126,7 +126,7 @@ Id game_get_object_location(Game *game);
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param id the id of the new location
  * @return Status
@@ -138,7 +138,7 @@ Status game_set_object_location(Game *game, Id id);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @return a pointer to the last command
  */
@@ -149,7 +149,7 @@ Command *game_get_last_command(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param command the new last_cmd
  * @return Status: if the function was completed succesfully
@@ -161,7 +161,7 @@ Status game_set_last_command(Game *game, Command *command);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @return Bool (TRUE or FALSE) that describes if the game is finished or not
  */
@@ -172,7 +172,7 @@ Bool game_get_finished(Game *game);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param finished the new boolean value that describes whether the game has finished or not
  * @return Status if the function has been completed succesfully
@@ -184,29 +184,29 @@ Status game_set_finished(Game *game, Bool finished);
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  */
 void game_print(Game *game);
 /**
  * @brief Gets the player of the game(pointer)
- * 
+ *
  * @date 12-02-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer to the strucuture.
  * @return a pointer to the player.
  */
-Player* game_get_player(Game *game);
+Player *game_get_player(Game *game);
 /**
  * @brief gets the object of the game(pointer)
- * 
+ *
  * @date 12-02-2025
  * @author Alvaro Inigo
- * 
+ *
  * @param game a pointer
- * @return a pointer to the object 
+ * @return a pointer to the object
  */
-Object* game_get_object(Game *game);
+Object *game_get_object(Game *game);
 
 #endif

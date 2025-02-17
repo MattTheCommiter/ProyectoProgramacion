@@ -15,7 +15,7 @@
 
 /**
  * @brief Space
- * 
+ *
  * This struct stores all the information of a space.
  */
 struct _Space

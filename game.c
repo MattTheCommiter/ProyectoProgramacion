@@ -143,7 +143,8 @@ Status game_set_object_location(Game *game, Id id)
   {
     return ERROR;
   }
-  if(!(space_set_objectId(game_get_space(game, id), object_get_id(game->object)))) return ERROR;
+  if (!(space_set_objectId(game_get_space(game, id), object_get_id(game->object))))
+    return ERROR;
   return OK;
 }
 
@@ -185,13 +186,17 @@ void game_print(Game *game)
   printf("=> Player location: %d\n", (int)game_get_player_location(game));
 }
 
-Player* game_get_player(Game *game){
-  if (!game) return NULL;
+Player *game_get_player(Game *game)
+{
+  if (!game)
+    return NULL;
   return game->player;
 }
 
-Object* game_get_object(Game *game){
-  if (!game) return NULL;
+Object *game_get_object(Game *game)
+{
+  if (!game)
+    return NULL;
   return game->object;
 }
 /**

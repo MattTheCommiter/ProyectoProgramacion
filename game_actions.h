@@ -20,7 +20,7 @@
  *
  * @date 27-01-2025
  * @author Profesores
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param cmd the newest command
  * @return Status : whether function was completed succesfully

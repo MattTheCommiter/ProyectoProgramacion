@@ -21,7 +21,7 @@
  *
  * @author Profesores PPROG
  * @date 27-01-2025
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param gengine a pointer to the game's graphic engine
  * @param file_name a string with the name of the file where the information needed to create the game is stored
@@ -34,7 +34,7 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name);
  *
  * @author Profesores PPROG
  * @date 27-01-2025
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param gengine a pointer to the game's graphic engine
  */
@@ -42,7 +42,7 @@ void game_loop_run(Game game, Graphic_engine *gengine);
 
 /**
  * @brief destroys the game and the graphic engine
- * 
+ *
  * @author Profesores PPROG
  * @date 27-01-2025
  *
@@ -58,7 +58,7 @@ void game_loop_cleanup(Game game, Graphic_engine *gengine);
  *
  * @author Profesores PPROG
  * @date 27-01-2025
- * 
+ *
  * @param argc number of arguments in char *argv[]
  * @param argv array where the name of the text file is stored
  * @return int: 1 if an error occurs and 0 if no errors occur
@@ -87,11 +87,11 @@ int main(int argc, char *argv[])
  * @brief initializes the game, calling the game_create_from_file function with the text file that has been passed as an argument
  * @author Profesores PPROG
  * @date 27-01-2025
- * 
+ *
  * @param game a pointer to the structure with the game's main information
  * @param genginge a pointer to pointer of the structure where the game's graphic engine will run
  * @param file_name string with the name of the file where the game's information is located
- * 
+ *
  * @return 1 if errors occur, and 0 if everything runs correctly
  */
 int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name)
@@ -114,10 +114,10 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name)
 
 /**
  * @brief this function runs the game and calls the necessary functions for this purpose
- * 
+ *
  * @author Profesores PPROG
  * @date 27-01-2025
- * 
+ *
  * @param game structure with the game's main information
  * @param gengine pointer to the structure with the game's graphic interface information
  */
@@ -140,13 +140,12 @@ void game_loop_run(Game game, Graphic_engine *gengine)
   }
 }
 
-
 /**
  * @brief destroys the game and cleans the textual graphic interface
- * 
+ *
  * @author Profesores PPROG
  * @date 27-01-2025
- * 
+ *
  * @param game structure with the game's main information
  * @param pointer to the structure whith the game's graphic interface information
  */
