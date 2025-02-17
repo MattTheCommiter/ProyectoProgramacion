@@ -1,6 +1,6 @@
 /**
  * @file It implements the reading and loading of spaces
- * @author Alvaro
+ * @author Alvaro Inigo
  * @version 0.1
  * @date 2025-02-08
  *

@@ -2,9 +2,9 @@
  * @brief It implements the game structure
  *
  * @file game.c
- * @author Profesores PPROG
- * @version 0
- * @date 27-01-2025
+ * @author Alvaro Inigo
+ * @version 0.1
+ * @date 12-02-2025
  * @copyright GNU Public License
  */
 
