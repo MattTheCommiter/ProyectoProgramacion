@@ -3,8 +3,8 @@
  *
  * @file game.c
  * @author Matteo Artuñedo
- * @version 0
- * @date 27-01-2025
+ * @version 0.1
+ * @date 10-02-2025
  * @copyright GNU Public License
  */
 

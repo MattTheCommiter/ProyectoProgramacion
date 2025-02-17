@@ -15,10 +15,15 @@
 
 #include "Object.h"
 
+/**
+ * @brief Structure where the information about the game`s object is stored
+ * @author Alvaro Inigo
+ * @date 08-02-2025
+ */
 struct _Object
 {
-    long id;
-    char name[WORD_SIZE + 1];
+    long id;                    /*!< Id number of the object, it must be unique*/
+    char name[WORD_SIZE + 1];   /*!< Name of the object*/
 };
 
 Object *object_create(Id id)
