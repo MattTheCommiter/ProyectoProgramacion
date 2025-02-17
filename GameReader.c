@@ -58,11 +58,10 @@ Status gameReader_load_spaces(Game *game, char *filename)
 #ifdef DEBUG
       printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
 #endif
-      /**
-       * @brief It finally creates the space with the read data.
-       *
+      /*
+       * It creates the space with the data that has been read
        */
-      space = space_create(id); /*creates a new space with the id written in the file*/
+      space = space_create(id); /*calls to space_create providing the id written in the file*/
       if (space != NULL)
       { /*Sets the information related to the space and adds it to the game*/
         space_set_name(space, name);
