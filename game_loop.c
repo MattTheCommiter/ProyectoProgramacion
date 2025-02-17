@@ -83,6 +83,17 @@ int main(int argc, char *argv[])
   return 0;
 }
 
+/**
+ * @brief initializes the game, calling the game_create_from_file function with the text file that has been passed as an argument
+ * @author Profesores PPROG
+ * @date 27-01-2025
+ * 
+ * @param game a pointer to the structure with the game's main information
+ * @param genginge a pointer to pointer of the structure where the game's graphic engine will run
+ * @param file_name string with the name of the file where the game's information is located
+ * 
+ * @return 1 if errors occur, and 0 if everything runs correctly
+ */
 int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name)
 {
   if (game_create_from_file(game, file_name) == ERROR)
@@ -101,6 +112,15 @@ int game_loop_init(Game *game, Graphic_engine **gengine, char *file_name)
   return 0;
 }
 
+/**
+ * @brief this function runs the game and calls the necessary functions for this purpose
+ * 
+ * @author Profesores PPROG
+ * @date 27-01-2025
+ * 
+ * @param game structure with the game's main information
+ * @param gengine pointer to the structure with the game's graphic interface information
+ */
 void game_loop_run(Game game, Graphic_engine *gengine)
 {
   Command *last_cmd;
@@ -120,6 +140,16 @@ void game_loop_run(Game game, Graphic_engine *gengine)
   }
 }
 
+
+/**
+ * @brief destroys the game and cleans the textual graphic interface
+ * 
+ * @author Profesores PPROG
+ * @date 27-01-2025
+ * 
+ * @param game structure with the game's main information
+ * @param pointer to the structure whith the game's graphic interface information
+ */
 void game_loop_cleanup(Game game, Graphic_engine *gengine)
 {
   game_destroy(&game);

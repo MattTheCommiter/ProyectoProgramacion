@@ -2,9 +2,9 @@
  * @brief It implements the command interpreter
  *
  * @file command.c
- * @author Profesores PPROG
+ * @author Matteo Artunedo
  * @version 0
- * @date 27-01-2025
+ * @date 11-02-2025
  * @copyright GNU Public License
  */
 
@@ -15,10 +15,15 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGHT 30
+#define CMD_LENGHT 30 /*maximum length of commands written by user*/
 
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"t", "Take"}, {"d", "Drop"}};
 
+/**
+ * @brief Command
+ *
+ * This struct stores all the information related to a command.
+ */
 struct _Command
 {
   CommandCode code; /*!< Name of the command */
