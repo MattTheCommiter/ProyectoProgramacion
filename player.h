@@ -70,7 +70,7 @@ const char *player_get_name(Player *player);
  * @param value the id of the new object
  * @return OK, if everything goes well or ERROR if an error occurred
  */
-Status player_set_object(Player *player, Id value);
+Status player_set_object(Player *player, Id objectId);
 
 /**
  * @brief It returns the id of the player's object

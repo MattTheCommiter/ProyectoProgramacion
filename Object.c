@@ -22,8 +22,8 @@
  */
 struct _Object
 {
-    long id;                    /*!< Id number of the object, it must be unique*/
-    char name[WORD_SIZE + 1];   /*!< Name of the object*/
+    long id;                  /*!< Id number of the object, it must be unique*/
+    char name[WORD_SIZE + 1]; /*!< Name of the object*/
 };
 
 Object *object_create(Id id)

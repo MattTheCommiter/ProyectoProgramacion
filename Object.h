@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef object_h
-#define object_h
+#ifndef OBJECT_H
+#define OBJECT_H
 #include "types.h"
 typedef struct _Object Object;
 

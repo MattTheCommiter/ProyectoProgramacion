@@ -19,7 +19,7 @@
 #include "types.h"
 
 /*Constant values used for the creation of the game's graphic interface*/
-#define WIDTH_MAP 48 
+#define WIDTH_MAP 48
 #define WIDTH_DES 29
 #define WIDTH_BAN 23
 #define HEIGHT_MAP 13
@@ -29,13 +29,13 @@
 
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
- * 
+ *
  * @date 27-01-2025
  * @author Profesores
  */
 struct _Graphic_engine
 {
-  Area *map, *descript, *banner, *help, *feedback; /*All of the different parts of the textual graphic interface*/
+  Area *map, *descript, *banner, *help, *feedback; /*!<All of the different parts of the textual graphic interface*/
 };
 
 Graphic_engine *graphic_engine_create()
@@ -90,8 +90,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID)
-  {                                           
-    space_act = game_get_space(game, id_act); 
+  {
+    space_act = game_get_space(game, id_act);
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
 
@@ -99,7 +99,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
       obj = '*';
     else
       obj = ' ';
-
+    /*The following lines are dedicated to printing the map that appears on the screen, including the ant and the object (if present)*/
     if (id_back != NO_ID)
     {
       sprintf(str, "  |         %2d|", (int)id_back);
@@ -178,8 +178,4 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
   /* Dump to the terminal */
   screen_paint();
   printf("prompt:> ");
-  /**
-   * @brief
-   *
-   */
 }
