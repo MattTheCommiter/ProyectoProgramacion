@@ -25,6 +25,6 @@
  * @param filename the name of the text file
  * @return Status: if the function was completed succesfully
  */
-Status gameReader_load_spaces(Game *game, char *filename);
+Status gameReader_load_spaces(Game **game, char *filename);
 
 #endif

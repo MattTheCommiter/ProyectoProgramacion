@@ -26,7 +26,7 @@
  * 
  * @param game
  */
-void game_actions_unknown(Game *game);
+void game_actions_unknown(Game **game);
 
 /**
  * @brief doesn't carry out any actions
@@ -36,7 +36,7 @@ void game_actions_unknown(Game *game);
  * 
  * @param game
  */
-void game_actions_exit(Game *game);
+void game_actions_exit(Game **game);
 
 /**
  * @brief moves the character to the space in the south, changing the id's accordingly
@@ -44,9 +44,9 @@ void game_actions_exit(Game *game);
  * @date 27-01-2025
  * @author Profesores
  * 
- * @param game a pointer to the structure with the game's main information
+ * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_next(Game *game);
+void game_actions_next(Game **game);
 
 /**
  * @brief moves the character to the space in the north, changing the id's accordingly
@@ -54,9 +54,9 @@ void game_actions_next(Game *game);
  * @date 27-01-2025
  * @author Profesores
  * 
- * @param game a pointer to the structure with the game's main information
+ * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_back(Game *game);
+void game_actions_back(Game **game);
 
 /**
  * @brief takes the object in the space
@@ -64,9 +64,9 @@ void game_actions_back(Game *game);
  * @date 10-02-2025
  * @author Matteo Artunedo
  * 
- * @param game a pointer to the structure with the game's main information
+ * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_take(Game *game);
+void game_actions_take(Game **game);
 
 /**
  * @brief drops the object in the space
@@ -74,15 +74,15 @@ void game_actions_take(Game *game);
  * @date 10-02-2025
  * @author Matteo Artunedo
  * 
- * @param game a pointer to the structure with the game's main information
+ * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_drop(Game *game);
+void game_actions_drop(Game **game);
 
 /**
    Game actions implementation
 */
 
-Status game_actions_update(Game *game, Command *command)
+Status game_actions_update(Game **game, Command *command)
 {
   CommandCode cmd;
 
@@ -127,11 +127,11 @@ Status game_actions_update(Game *game, Command *command)
    Calls implementation for each action
 */
 
-void game_actions_unknown(Game *game) {}
+void game_actions_unknown(Game **game) {}
 
-void game_actions_exit(Game *game) {}
+void game_actions_exit(Game **game) {}
 
-void game_actions_next(Game *game)
+void game_actions_next(Game **game)
 {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
@@ -151,7 +151,7 @@ void game_actions_next(Game *game)
   return;
 }
 
-void game_actions_back(Game *game)
+void game_actions_back(Game **game)
 {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
@@ -172,7 +172,7 @@ void game_actions_back(Game *game)
   return;
 }
 
-void game_actions_take(Game *game)
+void game_actions_take(Game **game)
 {
   if (!game)
   {
@@ -186,7 +186,7 @@ void game_actions_take(Game *game)
   }
 }
 
-void game_actions_drop(Game *game)
+void game_actions_drop(Game **game)
 {
   if (!game)
   {
