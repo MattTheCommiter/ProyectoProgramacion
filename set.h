@@ -34,7 +34,7 @@ Set *set_create();
  * @param s pointer to the set that is going to be destroyed
  * @return Status: whether the function was completed succesfully
  */
-Status *set_destroy(Set *s);
+Status set_destroy(Set *s);
 /**
  * @brief adds a new element to a given set
  *
@@ -43,7 +43,7 @@ Status *set_destroy(Set *s);
  *
  * @param s a pointer to the set where the element will be added
  * @param elementId the id of the new element
- * @return returns TRUE if the element is added and FALSE if the element is already in the set or if the given pointer to the set is NULL
+ * @return returns TRUE if the element is added or if the element is already in the set and FALSE if the given pointer to the set is NULL
  */
 Status set_add(Set *s, Id elementId);
 /**
