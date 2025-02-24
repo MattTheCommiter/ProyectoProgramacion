@@ -36,8 +36,8 @@
  /**
   * @brief Dynamically allocates memory for the game and initializes all the structures components
   *
-  * @date 27-01-2025
-  * @author Profesores
+  * @date 21-02-2025
+  * @author Alvaro Inigo
   *
   * @param game a double pointer to the structure with the game's main information
   * @return Status: if the function was completed succesfully
@@ -47,8 +47,8 @@
  /**
   * @brief creates the game calling game_create and reads a text file to get information about the spaces
   *
-  * @date 27-01-2025
-  * @author Profesores
+  * @date 21-02-2025
+  * @author Alvaro Inigo
   *
   * @param game a double pointer to the structure with the game's main information
   * @param filename
@@ -70,8 +70,8 @@
  /**
   * @brief returns a pointer to the space that has the id passed as an argument
   *
-  * @date 27-01-2025
-  * @author Profesores
+  * @date 15-02-2025
+  * @author Alvaro Inigo
   *
   * @param game a pointer to the structure with the game's main information
   * @param id the id of the desired space
