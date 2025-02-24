@@ -48,8 +48,8 @@ void screen_paint();
  *
  * screen_area_init allocates memory for a new area
  *  and initializes its members.
- * @param x the x-coordinate of the up-left corner of the area
- * @param y the x-coordinate of the up-left corner of the area
+ * @param x the x-coordinate of the upper-left corner of the area
+ * @param y the y-coordinate of the upper-left corner of the area
  * @param width the width of the area
  * @param height the height of the area
  * @return a new area, initialized
@@ -67,11 +67,11 @@ Area *screen_area_init(int x, int y, int width, int height);
 void screen_area_destroy(Area *area);
 
 /**
- * @brief It cleares an area, eraising all its content
+ * @brief It cleares an area, erasing all of its contents
  * @author Profesores PPROG
  *
- * This function should be called for earaising all the information in an area,
- *  before introducing a new state of it.
+ * This function should be called for erasing all the information in an area,
+ *  before introducing a new state.
  * @param area the area to be cleared
  */
 void screen_area_clear(Area *area);

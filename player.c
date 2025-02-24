@@ -15,7 +15,8 @@
 
 /**
  * @brief Player
- *
+ * @author Matteo Artunedo
+ * @date 12-02-2025
  * This struct stores all the information of a player.
  */
 struct _Player
@@ -26,9 +27,6 @@ struct _Player
   Id object;                /*!< Whether the player has an object or not */
 };
 
-/** player_create allocates memory for a new player
- *  and initializes its members
- */
 Player *player_create(Id id)
 {
   Player *newPlayer = NULL;
@@ -60,6 +58,16 @@ Status player_destroy(Player *player)
   }
 
   free(player);
+  return OK;
+}
+
+Status player_set_id(Player *player, Id playerId)
+{
+  if (!player || !playerId)
+  {
+    return ERROR;
+  }
+  player->id = playerId;
   return OK;
 }
 

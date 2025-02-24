@@ -29,7 +29,7 @@ Space *space_create(Id id);
  * @author Profesores PPROG
  *
  * @param space a pointer to the space that must be destroyed
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_destroy(Space *space);
 
@@ -48,7 +48,7 @@ Id space_get_id(Space *space);
  *
  * @param space a pointer to the space
  * @param name a string with the name to store
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_name(Space *space, char *name);
 
@@ -67,7 +67,7 @@ const char *space_get_name(Space *space);
  *
  * @param space a pointer to the space
  * @param id the id number of the space located at the north
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 
 Status space_set_north(Space *space, Id id);
@@ -87,7 +87,7 @@ Id space_get_north(Space *space);
  *
  * @param space a pointer to the space
  * @param id the id number of the space located at the south
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_south(Space *space, Id id);
 
@@ -106,7 +106,7 @@ Id space_get_south(Space *space);
  *
  * @param space a pointer to the space
  * @param id the id number of the space located at the east
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_east(Space *space, Id id);
 
@@ -125,7 +125,7 @@ Id space_get_east(Space *space);
  *
  * @param space a pointer to the space
  * @param id the id number of the space located at the west
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_west(Space *space, Id id);
 
@@ -139,12 +139,12 @@ Status space_set_west(Space *space, Id id);
 Id space_get_west(Space *space);
 
 /**
- * @brief It sets whether the space has an object or not
+ * @brief It sets the Id of the object in the space
  * @author Profesores PPROG
  *
  * @param space a pointer to the space
  * @param value an Id, specifying the Id of the new object.
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_objectId(Space *space, Id object_Id);
 
@@ -163,7 +163,7 @@ Id space_get_objectId(Space *space);
  *
  * This fucntion shows the id and name of the space, the spaces that surrounds it and wheter it has an object or not.
  * @param space a pointer to the space
- * @return OK, if everything goes well or ERROR if there was some mistake
+ * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_print(Space *space);
 

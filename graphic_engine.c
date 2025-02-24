@@ -3,8 +3,8 @@
  *
  * @file graphic_engine.c
  * @author Profesores PPROG
- * @version 0
- * @date 27-01-2025
+ * @version 0.1
+ * @date 12-02-2025
  * @copyright GNU Public License
  */
 
@@ -18,6 +18,7 @@
 #include "space.h"
 #include "types.h"
 
+/*Constant values used for the creation of the game's graphic interface*/
 #define WIDTH_MAP 48
 #define WIDTH_DES 29
 #define WIDTH_BAN 23
@@ -26,9 +27,15 @@
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
 
+/**
+ * @brief structure where the pointers to all the areas of the textual graphic interface are stored
+ *
+ * @date 27-01-2025
+ * @author Profesores
+ */
 struct _Graphic_engine
 {
-  Area *map, *descript, *banner, *help, *feedback;
+  Area *map, *descript, *banner, *help, *feedback; /*!<All of the different parts of the textual graphic interface*/
 };
 
 Graphic_engine *graphic_engine_create()
@@ -46,7 +53,7 @@ Graphic_engine *graphic_engine_create()
   {
     return NULL;
   }
-
+  /*Initializes all of the components of the game's graphic interface*/
   ge->map = screen_area_init(1, 1, WIDTH_MAP, HEIGHT_MAP);
   ge->descript = screen_area_init(WIDTH_MAP + 2, 1, WIDTH_DES, HEIGHT_MAP);
   ge->banner = screen_area_init((int)((WIDTH_MAP + WIDTH_DES + 1 - WIDTH_BAN) / 2), HEIGHT_MAP + 2, WIDTH_BAN, HEIGHT_BAN);
@@ -71,7 +78,7 @@ void graphic_engine_destroy(Graphic_engine *ge)
   free(ge);
 }
 
-void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
+void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
 {
   Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, obj_loc = NO_ID;
   Space *space_act = NULL;
@@ -83,8 +90,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID)
-  {                                           /*Si el player tiene alguna localización, obtenemos el id de esa localización*/
-    space_act = game_get_space(game, id_act); /*Obtenemos el espacio en el que está el jugador, que nos da información sobre norte y sur en vez de ser un simple id*/
+  {
+    space_act = game_get_space(game, id_act);
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
 
@@ -92,7 +99,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       obj = '*';
     else
       obj = ' ';
-
+    /*The following lines are dedicated to printing the map that appears on the screen, including the ant and the object (if present)*/
     if (id_back != NO_ID)
     {
       sprintf(str, "  |         %2d|", (int)id_back);
@@ -171,8 +178,4 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /* Dump to the terminal */
   screen_paint();
   printf("prompt:> ");
-  /**
-   * @brief
-   *
-   */
 }

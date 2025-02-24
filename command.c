@@ -2,9 +2,9 @@
  * @brief It implements the command interpreter
  *
  * @file command.c
- * @author Matteo Artuñedo
+ * @author Matteo Artunedo
  * @version 0
- * @date 27-01-2025
+ * @date 11-02-2025
  * @copyright GNU Public License
  */
 
@@ -15,23 +15,20 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGHT 30
+#define CMD_LENGTH 30 /*maximum length of commands written by user*/
 
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"t", "Take"}, {"d", "Drop"}};
 
 /**
  * @brief Command
  *
- * This struct stores all the information related to a command.
+ * This struct stores the code related to a command.
  */
 struct _Command
 {
   CommandCode code; /*!< Name of the command */
 };
 
-/** space_create allocates memory for a new space
- *  and initializes its members
- */
 Command *command_create()
 {
   Command *newCommand = NULL;
@@ -56,7 +53,6 @@ Status command_destroy(Command *command)
   }
 
   free(command);
-  command = NULL;
   return OK;
 }
 
@@ -83,7 +79,7 @@ CommandCode command_get_code(Command *command)
 
 Status command_get_user_input(Command *command)
 {
-  char input[CMD_LENGHT] = "", *token = NULL;
+  char input[CMD_LENGTH] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1;
   CommandCode cmd;
 
@@ -91,8 +87,8 @@ Status command_get_user_input(Command *command)
   {
     return ERROR;
   }
-
-  if (fgets(input, CMD_LENGHT, stdin))
+  /*read the command entered by the user*/
+  if (fgets(input, CMD_LENGTH, stdin))
   {
     token = strtok(input, " \n");
     if (!token)
@@ -102,8 +98,8 @@ Status command_get_user_input(Command *command)
 
     cmd = UNKNOWN;
     while (cmd == UNKNOWN && i < N_CMD)
-    { /*Verificamos si el código escrito por el usuario se corresponde con los comandos en mayúsculas o minusculas, guardados en cmd_to_str */
-      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL]))
+    {                                                                                         /* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
+      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL])) /*If either of the comparisons are true, the loop ends and the index 'i' is used to save the chosen command through the command_set_code function*/
       {
         cmd = i + NO_CMD;
       }
