@@ -34,9 +34,34 @@ Status *set_destroy(Set *s){
     return OK;
 }
 
-Status set_add(Set *s, Id elementId);
+Status set_add(Set *s, Id elementId){
+    if(!s) return ERROR;
+    /*Si el elemento ya está en el set, devolvemos OK*/
+    for(int i=0;i<s->n_ids;i++){
+        if(elementId == s->ids[i]){
+            return OK;
+        }
+    }
+    /*Añadimos el elemento al set y aumentamos el número de elementos de este*/
+    s->ids[s->n_ids] = elementId;
+    s->n_ids++;
+    return OK;
+}
 
-Status set_del(Set *s, Id elementId);
+Status set_del(Set *s, Id elementId){
+    if(!s) return ERROR;
+
+    for(int i=0;i<s->n_ids;i++){
+        if(s->ids[i] == elementId){
+            i++;
+            for(i;i<s->n_ids;i++){
+                s->ids[i-1] = s->ids[i];
+            }
+            return OK;
+        }
+    }
+    return OK;
+}
 
 void set_print(Set *s){
     if(!s) return;
