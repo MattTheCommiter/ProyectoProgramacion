@@ -75,13 +75,17 @@ Status set_del(Set *s, Id elementId){
     }
 }
 
-void set_print(Set *s){
-    if(!s) return;
+Status set_print(Set *s){
+    if(!s) return ERROR;
     
     int i;
 
     printf("\nThe id's of the elements of the set are: ");
     for(i=0;i<s->n_ids;i++){
-        printf("%ld", s->ids[i]);
+        if(!(printf("%ld", s->ids[i]))){
+            return ERROR;
+        }
     }
+
+    return OK;
 }
