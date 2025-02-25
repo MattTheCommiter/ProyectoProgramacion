@@ -36,12 +36,14 @@ Status set_destroy(Set *s){
 
 Status set_add(Set *s, Id elementId){
     if(!s) return ERROR;
+
+    int i;
     /*Nos aseguramos de que no se haya alcanzado el tamaño máximo*/
     if(s->n_ids == (MAX_ELEMENTS_IN_SET)){
         return ERROR;
     }
     /*Si el elemento ya está en el set, devolvemos OK*/
-    for(int i=0;i<s->n_ids;i++){
+    for(i=0;i<s->n_ids;i++){
         if(elementId == s->ids[i]){
             return OK;
         }
@@ -75,8 +77,11 @@ Status set_del(Set *s, Id elementId){
 
 void set_print(Set *s){
     if(!s) return;
+    
+    int i;
+
     printf("\nThe id's of the elements of the set are: ");
-    for(int i=0;i<s->n_ids;i++){
+    for(i=0;i<s->n_ids;i++){
         printf("%ld", s->ids[i]);
     }
 }

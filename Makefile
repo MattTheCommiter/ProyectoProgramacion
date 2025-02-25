@@ -8,6 +8,9 @@ juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o spa
 game.o: game.c game.h command.h types.h space.h player.h object.h GameReader.h
 	gcc $(CFLAGS) $^
 
+game_loop.o: game_loop.c command.h types.h game.h space.h player.h object.h game_actions.h graphic_engine.h
+	gcc $(CFLAGS) $^
+	
 graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h types.h space.h player.h object.h libscreen.h
 	gcc $(CFLAGS) $^
 
