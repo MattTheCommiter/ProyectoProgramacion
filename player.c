@@ -25,6 +25,7 @@ struct _Player
   char name[WORD_SIZE + 1]; /*!< Name of the player */
   Id location;              /*!<Id of the space where the player is located*/
   Id object;                /*!< Whether the player has an object or not */
+  int health;               /*!< Hp points of the player*/
 };
 
 Player *player_create(Id id)
@@ -163,4 +164,17 @@ Status player_print(Player *player)
   fprintf(stdout, "--> Id of the player's location: %ld", player->location);
 
   return OK;
+}
+
+
+
+Status player_set_health(Player *p, int hp){
+  if(!p) return ERROR;
+  p->health = hp;
+  return OK;
+}
+
+int player_get_health(Player *p){
+  if(!p) return NO_HP;
+  return p->health;
 }

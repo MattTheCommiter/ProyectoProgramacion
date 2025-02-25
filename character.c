@@ -15,7 +15,6 @@
 #include "character.h"
 #define GdescTam 10
 #define MAXHEALTH 100
-#define NO_HP 0
 /**
  * @brief definition for the struct Character
  * @author Alvaro Inigo
@@ -51,7 +50,7 @@ Character *character_create(Id id){
 }
 
 Status character_destroy(Character *c){
-    if(c) return ERROR;
+    if(!c) return ERROR;
 
     free(c);
     return OK;
