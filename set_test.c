@@ -74,7 +74,6 @@
    Set *s;
    s = set_create();
    PRINT_TEST_RESULT(result=(set_destroy(s) == OK));
-   set_destroy(s);
  }
 
  void test2_set_destroy() {
@@ -82,7 +81,8 @@
   Set *s;
   s = set_create();
   set_destroy(s);
-  PRINT_TEST_RESULT(result=(set_destroy==ERROR));
+  s=NULL;
+  PRINT_TEST_RESULT(result=(set_destroy(s)==ERROR));
 }
  
  void test1_set_add(){
@@ -118,5 +118,23 @@
   set_add(s,5);
   PRINT_TEST_RESULT(result = (set_del(s, 5)==OK));
   set_destroy(s);
+ }
+
+ void test1_set_print(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s,5);
+  PRINT_TEST_RESULT(result = (set_print(s)==OK));
+  set_destroy(s);
+ }
+
+ void test2_set_print(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s,5);
+  set_destroy(s);
+  PRINT_TEST_RESULT(result = (set_print(s)==ERROR));
  }
  

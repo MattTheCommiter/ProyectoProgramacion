@@ -15,7 +15,7 @@
  #include "space.h"
  #include "types.h"
  #include "player.h"
- #include "Object.h"
+ #include "object.h"
  
  #define MAX_SPACES 100 /*The maximum ammount of spaces that can exist in the game*/
  

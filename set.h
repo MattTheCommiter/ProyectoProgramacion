@@ -57,6 +57,7 @@ Status set_add(Set *s, Id elementId);
  * @return TRUE if the element is succesfully deleted or wasn't in the set in the first place, or FALSE if the element could not be deleted
  */
 Status set_del(Set *s, Id elementId);
+
 /**
  * @brief prints the elements of the set
  *
@@ -64,8 +65,9 @@ Status set_del(Set *s, Id elementId);
  * @author Matteo Artunedo
  *
  * @param s a pointer to the set that will be printed
+ * @return TRUE if the string is succesfully printed or FALSE if the element could not be printed
  */
-void set_print(Set *s);
+Status set_print(Set *s);
 
 
 #endif
