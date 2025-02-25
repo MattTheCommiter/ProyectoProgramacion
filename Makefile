@@ -1,6 +1,6 @@
 CFLAGS = -Wall -ansi -pedantic -c
 
-all : juego_hormiga set_test
+all : juego_hormiga
 
 juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o GameReader.o object.o player.o character.o
 	gcc -o $@ $^ -L./ -lscreen
@@ -39,3 +39,14 @@ run:
 	./juego_hormiga anthill.dat
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat
+
+run_test_set: set_test_exec
+
+set_test_exec: set_test.o set.o
+	gcc -o $@ $^ 
+
+set_test.o: set_test.c set.h types.h set_test.h test.h
+	gcc $(CFLAGS) $^
+	
+set.o: set.c set.h types.h
+	gcc $(CFLAGS) $^
