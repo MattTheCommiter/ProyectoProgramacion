@@ -1,3 +1,14 @@
+/**
+ * @file character.c
+ * @author Alvaro Inigo
+ * @brief definition of all the functions for the character module.
+ * @version 0.1
+ * @date 2025-02-25
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,7 +16,11 @@
 #define GdescTam 10
 #define MAXHEALTH 100
 #define NO_HP 0
-
+/**
+ * @brief definition for the struct Character
+ * @author Alvaro Inigo
+ * 
+ */
 struct _Character{
     Id id;
     char name[WORD_SIZE];
