@@ -39,3 +39,14 @@ run:
 	./juego_hormiga anthill.dat
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat
+
+run_test_set: set_test_exec
+
+set_test_exec: set_test.o set.o
+	gcc -o $@ $^ 
+
+set_test.o: set_test.c set.h types.h set_test.h test.h
+	gcc $(CFLAGS) $^
+	
+set.o: set.c set.h types.h
+	gcc $(CFLAGS) $^

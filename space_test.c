@@ -84,7 +84,7 @@ void test1_space_create() {
   int result;
   Space *s;
   s = space_create(5);
-  result=s!=NULL ;
+  result=(s!=NULL) ;
   PRINT_TEST_RESULT(result);
   space_destroy(s);
 }
