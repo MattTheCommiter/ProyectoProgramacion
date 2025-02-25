@@ -57,6 +57,7 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "game_actions.h": "c"
+    "game_actions.h": "c",
+    "functional": "c"
   }
 }

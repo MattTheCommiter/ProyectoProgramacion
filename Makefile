@@ -1,6 +1,6 @@
 CFLAGS = -Wall -ansi -pedantic -c
 
-all : juego_hormiga
+all : juego_hormiga set_test
 
 juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o GameReader.o Object.o player.o
 	gcc -o $@ $^ -L./ -lscreen

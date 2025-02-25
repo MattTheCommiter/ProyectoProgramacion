@@ -36,6 +36,10 @@ Status set_destroy(Set *s){
 
 Status set_add(Set *s, Id elementId){
     if(!s) return ERROR;
+    /*Nos aseguramos de que no se haya alcanzado el tamaño máximo*/
+    if(s->n_ids == (MAX_ELEMENTS_IN_SET)){
+        return ERROR;
+    }
     /*Si el elemento ya está en el set, devolvemos OK*/
     for(int i=0;i<s->n_ids;i++){
         if(elementId == s->ids[i]){
@@ -57,12 +61,16 @@ Status set_del(Set *s, Id elementId){
             found=1;
         }
     }
-    for(j=i;j<s->n_ids;j++){
-        s->ids[j-1] = s->ids[j];
+    if(found){
+        for(j=i;j<s->n_ids;j++){
+            s->ids[j-1] = s->ids[j];
+        }
+        s->ids[--j] = '\0';
+        s->n_ids--;
+        return OK;
+    }else{
+        return ERROR;
     }
-    s->ids[--j] = '\0';
-    s->n_ids--;
-    return OK;
 }
 
 void set_print(Set *s){
