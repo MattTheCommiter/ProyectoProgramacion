@@ -251,7 +251,7 @@ void test02_character_get_message() {
     PRINT_TEST_RESULT(character_get_message(c)== NULL);
 }
 
-void test01_character_print() {
+void test02_character_print() {
     Character *c = NULL;
     PRINT_TEST_RESULT(character_print(c) == ERROR);
 }

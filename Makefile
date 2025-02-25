@@ -38,13 +38,13 @@ caracter.o: character.c character.h types.h
 .PHONY: clean run runV 
 
 clean:
-	rm -f *.o *.gch juego_hormiga set_test_exec
+	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec
 run:
 	./juego_hormiga anthill.dat
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat
 
-run_test_set: set_test_exec
+test_set: set_test_exec
 
 set_test_exec: set_test.o set.o
 	gcc -o $@ $^ 
@@ -54,3 +54,19 @@ set_test.o: set_test.c set.h types.h set_test.h test.h
 	
 set.o: set.c set.h types.h
 	gcc $(CFLAGS) $^
+
+test_character: character_test_exec
+
+character_test_exec: character_test.o character.o
+	gcc -o $@ $^ 
+
+character_test.o: character_test.c character.h types.h character_test.h test.h
+	gcc $(CFLAGS) $^
+	
+character.o: character.c character.h types.h
+	gcc $(CFLAGS) $^
+
+character_test_run:
+	./character_test_exec
+space_test_run:
+	./space_test_exec

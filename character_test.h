@@ -1,5 +1,5 @@
-#ifndef CHARACTER_TEST.H
-#define CHARACTER_TEST.H
+#ifndef CHARACTER_TEST_H
+#define CHARACTER_TEST_H
 
 
 void test01_character_create();
