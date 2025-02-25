@@ -37,7 +37,7 @@ caracter.o: character.c character.h types.h
 
 .PHONY: clean
 clean:
-	rm -f *.o *.gch juego_hormiga
+	rm -f *.o *.gch juego_hormiga set_test_exec
 run:
 	./juego_hormiga anthill.dat
 runV:

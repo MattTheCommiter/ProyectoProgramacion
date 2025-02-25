@@ -29,7 +29,7 @@ Set *set_create(){
 }
 
 Status set_destroy(Set *s){
-    if(!s) return ERROR;
+    if(s == NULL) return ERROR;
     free(s);
     return OK;
 }
