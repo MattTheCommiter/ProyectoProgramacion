@@ -35,7 +35,8 @@ player.o: player.c player.h types.h space.h
 caracter.o: character.c character.h types.h 
 	gcc $(CFLAGS) $^
 
-.PHONY: clean
+.PHONY: clean run runV 
+
 clean:
 	rm -f *.o *.gch juego_hormiga set_test_exec
 run:
