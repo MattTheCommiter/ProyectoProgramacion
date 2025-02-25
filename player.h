@@ -93,7 +93,6 @@ Status player_print(Player *player);
 
 /**
  * @brief returns the id of the space where the player is currently in
- *
  * @param player a pointer to the player
  * @return the id of the player's location
  */
@@ -101,10 +100,26 @@ Id player_get_location(Player *player);
 
 /**
  * @brief sets the id of the player's location to a new id
- *
  * @param player pointer to the player
  * @param spaceId Id of the new player location
  * @return Status: whether the function was completed succesfully
  */
 Status player_set_location(Player *player, Id spaceId);
+
+/**
+ * @brief sets the health of the player
+ * @author Alvaro Inigo
+ * @param p a pointer to player
+ * @param hp the new health
+ * @return Status 
+ */
+Status player_set_health(Player *p, int hp);
+
+/**
+ * @brief Gets the hp of the player
+ * @author Alvaro Inigo
+ * @param p a pointer to the player
+ * @return int the health
+ */
+int player_get_health(Player *p);
 #endif
