@@ -183,7 +183,7 @@ void game_actions_take(Game **game)
   { /*We change the id of the object that the player is carrying*/
     player_set_object(game_get_player(game), object_get_id(game_get_object(game)));
     /*We change the objectId of the space where the object was located to NO_ID*/
-    space_set_objectId(game_get_space(game, game_get_player_location(game)), NO_ID);
+    space_delete_object(game_get_space(game, game_get_player_location(game)), object_get_id(game_get_object(game)));
   }
 }
 
@@ -197,7 +197,7 @@ void game_actions_drop(Game **game)
   if (player_get_object(game_get_player(game)) != NO_ID)
   {
     /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
-    space_set_objectId(game_get_space(game, game_get_player_location(game)), object_get_id(game_get_object(game)));
+    space_add_objectId(game_get_space(game, game_get_player_location(game)), object_get_id(game_get_object(game)));
     /*We change the Id of the player's object to NO_ID*/
     player_set_object(game_get_player(game), NO_ID);
   }
