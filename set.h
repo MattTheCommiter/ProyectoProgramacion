@@ -65,9 +65,9 @@ Status set_del(Set *s, Id elementId);
  * @author Matteo Artunedo
  *
  * @param s a pointer to the set that will be printed
- * @return TRUE if the string is succesfully printed or FALSE if the element could not be printed
+ * @return number of elements printed or -1 if an error occurrs
  */
-Status set_print(Set *s);
+int set_print(Set *s);
 
 /**
  * @brief Returns whether an element is found in a set or not
@@ -111,8 +111,33 @@ int set_get_num_elements(Set *s);
  *
  * @param s a pointer to the set 
  * @param pos position of the Id we want
- * @return Id of the element in position pos or -1 if the position is not valid
+ * @return Id of the element in position pos and -1 if the position is not valid or an error occurred
  */
 Id set_get_Id_in_pos(Set *s, int pos);
+
+test1_set_print();
+test2_set_print();
+test3_set_print();
+test1_set_belongs();
+test2_set_belongs();
+test3_set_belongs();
+test1_set_is_empty();
+test2_set_is_empty();
+test3_set_is_empty();
+test1_set_get_num_elements();
+test2_set_get_num_elements();
+test3_set_get_num_elements();
+test1_set_get_Id_in_pos();
+test2_set_get_Id_in_pos();
+test3_set_get_Id_in_pos();
+test4_set_get_Id_in_pos();
+test5_set_get_Id_in_pos();
+test6_set_get_Id_in_pos();
+
+
+
+
+
+
 
 #endif

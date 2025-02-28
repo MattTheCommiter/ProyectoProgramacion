@@ -53,6 +53,31 @@
    if (all || test == 7) test2_set_del();
    if (all || test == 8) test1_set_print();
    if (all || test == 9) test2_set_print();
+   if (all || test == 10)test3_set_print();
+   if (all || test == 11) test1_set_belongs();
+   if (all || test == 12) test2_set_belongs();
+   if (all || test == 13) test3_set_belongs();
+   if (all || test == 14) test1_set_is_empty();
+   if (all || test == 15) test2_set_is_empty();
+   if (all || test == 16) test3_set_is_empty();
+   if (all || test == 17) test1_set_get_num_elements();
+   if (all || test == 18) test2_set_get_num_elements();
+   if (all || test == 19) test3_set_get_num_elements();
+   if (all || test == 20) test1_set_get_Id_in_pos();
+   if (all || test == 21) test2_set_get_Id_in_pos();
+   if (all || test == 22) test3_set_get_Id_in_pos();
+   if (all || test == 23) test4_set_get_Id_in_pos();
+   if (all || test == 24) test5_set_get_Id_in_pos();
+   if (all || test == 25) test6_set_get_Id_in_pos();
+
+
+
+
+
+
+
+
+
 
 
  
@@ -120,4 +145,151 @@
   set_destroy(s);
  }
  
- 
+void test1_set_print(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT (result=(set_print(s)) == -1);
+}
+
+void test2_set_print(){
+  int result;
+  Set *s=NULL;
+  s = set_create();
+  set_add(s, 3);
+  PRINT_TEST_RESULT (result=(set_print(s) != 2));
+  set_destroy(s);
+}
+
+void test3_set_print(){
+  int result;
+  Set *s=NULL;
+  s = set_create();
+  set_add(s, 3);
+  set_add(s, 5);
+  PRINT_TEST_RESULT (result=(set_print(s) == 2));
+  set_destroy(s);
+}
+
+void test1_set_belongs(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT (result=(set_belongs(s, 3) == FALSE));
+}
+
+void test2_set_belongs(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  PRINT_TEST_RESULT(result = (set_beongs(s, 3)==FALSE));
+  set_destroy(s); 
+}
+
+void test3_set_belongs(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  PRINT_TEST_RESULT(result = (set_beongs(s, 5)==TRUE));
+  set_destroy(s); 
+}
+
+void test1_set_is_empty(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT (result=(set_is_empty(s) == FALSE));
+}
+
+void test2_set_is_empty(){
+  int result;
+  Set *s;
+  s=set_create();
+  PRINT_TEST_RESULT(result = (set_is_empty(s)==TRUE));
+  set_destroy(s); 
+}
+
+void test3_set_is_empty(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  PRINT_TEST_RESULT(result = (set_is_empty(s)==FALSE));
+  set_destroy(s); 
+}
+
+void test1_set_get_num_elements(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT (result=(set_get_num_elements(s) == -1));
+}
+
+void test2_set_get_num_elements(){
+  int result;
+  Set *s;
+  s=set_create();
+  PRINT_TEST_RESULT(result = (set_get_num_elements(s)==0));
+  set_destroy(s); 
+}
+
+void test3_set_get_num_elements(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  set_add(s, 3);
+  PRINT_TEST_RESULT(result = (set_get_num_elements(s)==2));
+  set_destroy(s); 
+}
+
+void test1_set_get_Id_in_pos(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT (result=(set_get_Id_in_pos(s, 1) == -1));
+}
+
+void test2_set_get_Id_in_pos(){
+  int result;
+  Set *s;
+  s=set_create();
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1)==-1));
+  set_destroy(s); 
+}
+
+void test3_set_get_Id_in_pos(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 0)==5));
+  set_destroy(s); 
+}
+
+void test4_set_get_Id_in_pos(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  set_add(s, 3);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1)==3));
+  set_destroy(s); 
+}
+
+void test5_set_get_Id_in_pos(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  set_add(s, 3);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, -1)==-1));
+  set_destroy(s); 
+}
+
+void test6_set_get_Id_in_pos(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  set_add(s, 3);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 2)==-1));
+  set_destroy(s); 
+}

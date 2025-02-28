@@ -75,7 +75,7 @@ Status set_del(Set *s, Id elementId){
     }
 }
 
-Status set_print(Set *s){
+int set_print(Set *s){
     if(!s) return ERROR;
     
     int i;
@@ -122,7 +122,7 @@ int set_get_num_elements(Set *s){
 }
 
 Id set_get_Id_in_pos(Set *s, int pos){
-    if(!s || pos<0 || pos>(s->n_ids - 1)){
+    if(!s || pos<0 || pos>(s->n_ids - 1 || !s->n_ids)){
         return -1;
     }
 
