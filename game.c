@@ -49,7 +49,7 @@ Status game_create(Game **game)
   int i;
   if (!game)
     return ERROR;
-  *game = (Game *)malloc(sizeof(Game));
+  *game = (Game *)calloc(1, sizeof(Game));
   if (!(*game))
     return ERROR;
   for (i = 0; i < MAX_SPACES; i++)
@@ -61,6 +61,7 @@ Status game_create(Game **game)
   (*game)->n_characters = 0;
   (*game)->n_objects = 0;
   (*game)->player = player_create(ANT);
+  (*game)->n_objects = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
 
@@ -150,29 +151,26 @@ Status game_set_player_location(Game **game, Id id)
   return OK;
 }
 
-Id game_get_object_location(Game **game)
+Id game_get_object_location(Game **game, Id objectId)
 {
-  int i = 0;
-  Id id = object_get_id((*game)->objects[0]);
-  Id idEsp = space_get_objectId((*game)->spaces[0]);
-  while (id != idEsp && i < (*game)->n_spaces)
-  {
-    i++;
-    idEsp = space_get_objectId((*game)->spaces[i]);
+  int i;
+  
+  for(i=0;i<(*game)->n_spaces;i++){
+    if(space_object_belongs((*game)->spaces[i], objectId)){
+      return space_get_id((*game)->spaces[i]);
+    }
   }
-  if (id == idEsp)
-    return space_get_id((*game)->spaces[i]);
   return NO_ID;
 }
 
-Status game_set_object_location(Game **game, Id id)
+Status game_set_object_location(Game **game, Id id, Id objectId)
 {
 
   if (id == NO_ID)
   {
     return ERROR;
   }
-  if (!(space_add_objectId(game_get_space(game, id), object_get_id((*game)->objects[0]))))
+  if (!(space_add_objectId(game_get_space(game, id), objectId)))
     return ERROR;
   return OK;
 }
@@ -211,7 +209,9 @@ void game_print(Game **game)
     space_print((*game)->spaces[i]);
   }
 
-  printf("=> Object location: %d\n", (int)game_get_object_location(game));
+  for(i=0;i<(*game)->n_objects;i++){
+    printf("=> Object '%s' location: %ld",object_get_name(game_get_object_in_pos(game, i)), game_get_object_location(game, object_get_id((*game)->objects[i])));
+  }
   printf("=> Player location: %d\n", (int)game_get_player_location(game));
 }
 
@@ -222,17 +222,12 @@ Player *game_get_player(Game **game)
   return (*game)->player;
 }
 
-Object *game_get_object(Game **game, Id id)
+Object *game_get_object_in_pos(Game **game, int pos)
 {
   int i;
-  if ((game == NULL) || id == NO_ID)
+  if ((game == NULL) || pos > (*game)->n_objects)
     return NULL;
-  for(i = 0; i < (*game)->n_objects; i++){
-    if(id == game_get_object_id_at(game,i)){
-      return (*game)->objects[i];
-    }
-  }
-  return NULL;
+  return (*game)->objects[pos];
 }
 /**
    Implementation of private functions
