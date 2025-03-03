@@ -52,13 +52,13 @@ Status set_add(Set *s, Id elementId){
 }
 
 Status set_del(Set *s, Id elementId){
+    int pos = set_get_pos_from_Id(s, elementId);
     if(!s || elementId == NO_ID) return ERROR;
 
     if(!set_belongs(s, elementId)){
         return ERROR;
     }
 
-    int pos = set_get_pos_from_Id(s, elementId);
     s->n_ids--;
     s->ids[pos] = s->ids[s->n_ids];
     s->ids[s->n_ids] = NO_ID;
@@ -66,10 +66,9 @@ Status set_del(Set *s, Id elementId){
 }
 
 int set_print(Set *s){
+    int i;
     if(!s) return -1;
     
-    int i;
-
     printf("\nThe id's of the elements of the set are: ");
     for(i=0;i<s->n_ids;i++){
         if(!(printf("%ld ", s->ids[i]))){
@@ -82,11 +81,11 @@ int set_print(Set *s){
 }
 
 Bool set_belongs(Set *s, Id elementId){
+    int i;
+    Bool found=FALSE;
     if(!s  || elementId == NO_ID) return ERROR;
 
-    Bool found=FALSE;
-
-    for(int i=0;i<s->n_ids && !found;i++){
+    for(i=0;i<s->n_ids && !found;i++){
         if(s->ids[i] == elementId){
             found=TRUE;
         }
@@ -121,12 +120,14 @@ Id set_get_Id_in_pos(Set *s, int pos){
 }
 
 int set_get_pos_from_Id(Set *s, Id elementId){
+    int i;
     if(!s  || elementId == NO_ID || !set_belongs(s, elementId)){
         return -1;
     }
-    for(int i=0;i<s->n_ids;i++){
+    for(i=0;i<s->n_ids;i++){
         if(s->ids[i] == elementId){
             return i;
         }
     }
+    return -1;
 }

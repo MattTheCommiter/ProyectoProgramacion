@@ -2,7 +2,7 @@ CFLAGS = -Wall -ansi -pedantic -c
 
 all : juego_hormiga
 
-juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o GameReader.o object.o player.o character.o
+juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o GameReader.o object.o player.o character.o set.o
 	gcc -o $@ $^ -L./ -lscreen
 
 game.o: game.c game.h command.h types.h space.h player.h object.h GameReader.h
@@ -34,7 +34,9 @@ player.o: player.c player.h types.h space.h
 	
 caracter.o: character.c character.h types.h 
 	gcc $(CFLAGS) $^
-
+set.o: set.c set.h types.h
+	gcc $(CFLAGS) $^
+	
 .PHONY: clean run runV test_set set_test_run character_test character_test_run space_test space_test_run
 
 clean:

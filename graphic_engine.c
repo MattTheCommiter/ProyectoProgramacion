@@ -95,7 +95,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
     id_back = space_get_north(space_act);
     id_next = space_get_south(space_act);
 
-    if (game_get_object_location(game) == id_back)
+    if (game_get_object_location(game,1) == id_back)
       obj = '*';
     else
       obj = ' ';
@@ -112,7 +112,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
       screen_area_puts(ge->map, str);
     }
 
-    if (game_get_object_location(game) == id_act)
+    if (game_get_object_location(game,1) == id_act)
       obj = '*';
     else
       obj = ' ';
@@ -129,7 +129,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
       screen_area_puts(ge->map, str);
     }
 
-    if (game_get_object_location(game) == id_next)
+    if (game_get_object_location(game,1) == id_next)
       obj = '*';
     else
       obj = ' ';
@@ -149,12 +149,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
 
   /* Paint in the description area */
   screen_area_clear(ge->descript);
-  if ((obj_loc = game_get_object_location(game)) != NO_ID)
+  if ((obj_loc = game_get_object_location(game,1)) != NO_ID)
   {
     sprintf(str, "  Object location:%d", (int)obj_loc);
     screen_area_puts(ge->descript, str);
   }
-  if ((obj_loc = game_get_object_location(game)) == NO_ID)
+  if ((obj_loc = game_get_object_location(game,1)) == NO_ID)
   {
     sprintf(str, "  Object in the inventory");
     screen_area_puts(ge->descript, str);

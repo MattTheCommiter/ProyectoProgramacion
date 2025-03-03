@@ -224,7 +224,6 @@ Player *game_get_player(Game **game)
 
 Object *game_get_object_in_pos(Game **game, int pos)
 {
-  int i;
   if ((game == NULL) || pos > (*game)->n_objects)
     return NULL;
   return (*game)->objects[pos];
