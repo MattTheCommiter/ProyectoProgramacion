@@ -252,6 +252,54 @@
   * @param id the id of the desired object
   * @return a pointer to the object
   */
+ Object *game_get_object(Game **game,Id id);
+/**
+ * @brief adds an object to the game
+ * @date 03/03/25
+ * @author Alvaro Inigo
+ * @param game a double pointer to the game
+ * @param object a pointer to the object we want to add
+ * @return Status if the function has been completed succesfully
+ */
+ Status game_add_object(Game **game, Object *object);
+/**
+ * @brief adds an object to the game
+ * @date 03/03/25
+ * @author Alvaro Inigo
+ * @param game a double pointer to the game
+ * @param position the position in the array of objects of the object we want to get the Id
+ * @return Id the id of the object
+ */
+ Id game_get_object_id_at(Game **game, int position);
+ /**
+ * @brief adds a character to the game
+ * @date 03/03/25
+ * @author Alvaro Inigo
+ * @param game a double pointer to the game
+ * @param character a pointer to the character we want to add
+ * @return Status if the function has been completed succesfully
+ */
+ Status game_add_character(Game **game, Character *character);
+ /**
+ * @brief adds an object to the game
+ * @date 03/03/25
+ * @author Alvaro Inigo
+ * @param game a double pointer to the game
+ * @param position the position in the array of objects of the object we want to get the Id
+ * @return Id the id of the character
+ */
+ Id game_get_character_id_at(Game **game, int position);
+
+/**
+  * @brief gets the object of the game(pointer)
+  *
+  * @date 12-02-2025
+  * @author Alvaro Inigo
+  *
+  * @param game a double pointer
+  * @param id the id of the desired object
+  * @return a pointer to the object
+  */
  Character *game_get_character(Game **game, Id id);
 /**
  * @brief Gets an object's Id from its name
@@ -262,6 +310,7 @@
  * @return Id the id of the object with the name
  */
  Id game_get_objectId_from_name(Game **game, char *name);
+ 
  /** 
   * @param pos the position of the object in the set
   * @return a pointer to the object
