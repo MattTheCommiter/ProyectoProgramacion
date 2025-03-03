@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "character.h"
-#define GdescTam 10
+#define GdescTam 7
 #define MAXHEALTH 100
 /**
  * @brief definition for the struct Character

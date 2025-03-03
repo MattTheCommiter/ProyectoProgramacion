@@ -26,7 +26,8 @@ struct _Space
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  Set *objects;             /*!< The id of the object present in the space */
+  Set *objects;             /*!< The set of objects present at the space */
+  Id character;     /*!< The Id of the character present at the space */
 };
 
 Space *space_create(Id id)
@@ -51,6 +52,7 @@ Space *space_create(Id id)
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
   newSpace->objects = set_create();
+  newSpace->character = NO_ID;
 
   return newSpace;
 }

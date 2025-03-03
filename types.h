@@ -22,8 +22,8 @@ typedef long Id;
  */
 typedef enum
 {
-    ANT,    /*!<Corresponde al ID asignado al crear la hormiga*/
-    SEED    /*!<Corresponde al ID asignado al crear el objeto*/
+    ANT,    /*!<Corresponds to the ID assigned to the ant*/
+    SEED    /*!<Corresponds to the Id assigned to the object*/
 } Member;
 
 /**

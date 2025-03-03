@@ -83,3 +83,65 @@
  
    return status;
  }
+
+ Status gameReader_load_objects(Game **game, char *filename)
+ {
+   FILE *file = NULL;
+   char line[WORD_SIZE] = "";
+   char name[WORD_SIZE] = "";
+   char *toks = NULL;
+   Id id = NO_ID, spaceId = NO_ID;
+   Object *object = NULL;
+   Status status = OK;
+ 
+   if (!filename)
+   {
+     return ERROR;
+   }
+ 
+   file = fopen(filename, "r");
+   if (file == NULL)
+   {
+     return ERROR;
+   }
+   /**
+    * @brief reads the file and load each data individually.
+    *
+    */
+   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
+   {
+     if (strncmp("#o:", line, 3) == 0)
+     {
+       toks = strtok(line + 3, "|");
+       id = atol(toks);
+       toks = strtok(NULL, "|");
+       strcpy(name, toks);
+       toks = strtok(NULL, "|");
+       spaceId = atol(toks);
+       
+       
+ #ifdef DEBUG
+       printf("Leido: %ld|%s|%ld\n", id, name, spaceId);
+ #endif
+       /*
+        * It creates the space with the data that has been read
+        */
+       object = object_create(id); /*calls to object_create providing the id written in the file*/
+       if (object != NULL)
+       { /*Sets the information related to the object and adds it to the game*/
+         object_set_name(object, name);
+         space_add_objectId(game_get_space(game,spaceId),id);
+         game_add_object(game, object);
+       }
+     }
+   }
+ 
+   if (ferror(file))
+   {
+     status = ERROR;
+   }
+ 
+   fclose(file);
+ 
+   return status;
+ }

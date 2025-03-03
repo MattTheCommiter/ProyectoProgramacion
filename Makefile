@@ -35,7 +35,7 @@ player.o: player.c player.h types.h space.h
 caracter.o: character.c character.h types.h 
 	gcc $(CFLAGS) $^
 
-.PHONY: clean run runV 
+.PHONY: clean run runV test_set set_test_run character_test character_test_run space_test space_test_run
 
 clean:
 	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec
@@ -55,7 +55,7 @@ set_test.o: set_test.c set.h types.h set_test.h test.h
 set.o: set.c set.h types.h
 	gcc $(CFLAGS) $^
 
-test_character: character_test_exec
+character_test: character_test_exec
 
 character_test_exec: character_test.o character.o
 	gcc -o $@ $^ 
@@ -70,3 +70,6 @@ character_test_run:
 	./character_test_exec
 space_test_run:
 	./space_test_exec
+
+set_test_run:
+	./set_test_exec
