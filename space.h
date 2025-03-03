@@ -14,7 +14,7 @@
 #include "types.h"
 #include "set.h"
 
-#define MAX_OBJECTS = 20;
+#define MAX_OBJECTS 20
 
 typedef struct _Space Space;
 

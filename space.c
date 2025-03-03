@@ -177,7 +177,7 @@ Id space_get_west(Space *space)
 Set *space_get_set_of_objects(Space *space){
   if (!space)
   {
-    return ERROR;
+    return NULL;
   }
   return space->objects;
 }
@@ -204,7 +204,6 @@ Bool space_object_belongs(Space *space, Id object_Id)
 Status space_print(Space *space)
 {
   Id idaux = NO_ID;
-  Id objectId = space_get_objectId(space);
   /* Error Control */
   if (!space)
   {
@@ -261,9 +260,10 @@ Status space_print(Space *space)
   else
   {
     fprintf(stdout, "---> Object id's: \n");
-    for(int i=0;i<set_get_num_elements(space->objects);i++){
-      fprintf(stdout, "%d ", set_get_Id_in_pos(space->objects, i));
+    if(set_print(space->objects)==-1){
+      return ERROR;
     }
+
   }
 
   return OK;

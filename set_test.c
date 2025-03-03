@@ -69,6 +69,10 @@
    if (all || test == 23) test4_set_get_Id_in_pos();
    if (all || test == 24) test5_set_get_Id_in_pos();
    if (all || test == 25) test6_set_get_Id_in_pos();
+   if (all || test == 26) test1_set_get_pos_from_Id();
+   if (all || test == 27) test2_set_get_pos_from_Id();
+   if (all || test == 28) test3_set_get_pos_from_Id();
+   if (all || test == 29) test4_set_get_pos_from_Id();
 
 
 

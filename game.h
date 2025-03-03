@@ -109,9 +109,10 @@
   * @author Alvaro Inigo
   *
   * @param game a pointer to the structure with the game's main information
+  * @param objectId the Id of the object we want to find, returning its location
   * @return the id of the object's location
   */
- Id game_get_object_location(Game **game);
+ Id game_get_object_location(Game **game, Id objectId);
  
  /**
   * @brief changes the id of the object's location to the one passed as an argument
@@ -121,9 +122,10 @@
   *
   * @param game a pointer to the structure with the game's main information
   * @param id the id of the new location
+  * @param objectId the id of the object of which we want to set the location
   * @return Status
   */
- Status game_set_object_location(Game **game, Id id);
+ Status game_set_object_location(Game **game, Id id, Id objectId);
  
  /**
   * @brief returns the last command of the game
@@ -191,14 +193,15 @@
   */
  Player *game_get_player(Game **game);
  /**
-  * @brief gets the object of the game(pointer)
+  * @brief gets the object of the game(pointer) in a determined position
   *
   * @date 12-02-2025
   * @author Alvaro Inigo
   *
   * @param game a double pointer
+  * @param pos the position of the object in the set
   * @return a pointer to the object
   */
- Object *game_get_object(Game **game);
+ Object *game_get_object_in_pos(Game **game, int);
  
  #endif

@@ -35,7 +35,7 @@ Status set_destroy(Set *s){
 }
 
 Status set_add(Set *s, Id elementId){
-    if(!s) return ERROR;
+    if(!s || elementId == NO_ID) return ERROR;
 
     /*Nos aseguramos de que no se haya alcanzado el tamaño máximo*/
     if(s->n_ids == (MAX_ELEMENTS_IN_SET)){
@@ -52,7 +52,7 @@ Status set_add(Set *s, Id elementId){
 }
 
 Status set_del(Set *s, Id elementId){
-    if(!s) return ERROR;
+    if(!s || elementId == NO_ID) return ERROR;
 
     if(!set_belongs(s, elementId)){
         return ERROR;
@@ -82,7 +82,7 @@ int set_print(Set *s){
 }
 
 Bool set_belongs(Set *s, Id elementId){
-    if(!s) return ERROR;
+    if(!s  || elementId == NO_ID) return ERROR;
 
     Bool found=FALSE;
 
@@ -121,7 +121,7 @@ Id set_get_Id_in_pos(Set *s, int pos){
 }
 
 int set_get_pos_from_Id(Set *s, Id elementId){
-    if(!s || !set_belongs(s, elementId)){
+    if(!s  || elementId == NO_ID || !set_belongs(s, elementId)){
         return -1;
     }
     for(int i=0;i<s->n_ids;i++){

@@ -16,12 +16,13 @@
 
 struct _Game
 {
-  Object *object;            /*!<Pointer to the object that is present in the game*/
-  Player *player;            /*!<Pointer to the player that is present in the game*/
-  Space *spaces[MAX_SPACES]; /*!<Array of Spaces*/
-  int n_spaces;              /*!<Number of spaces in the game*/
-  Command *last_cmd;         /*!<Pointer to the last command introduced by the user*/
-  Bool finished;             /*!<Boolean that establishes whether the game has ended or not*/
+  Object *objects[MAX_OBJECTS];    /*!<Pointer to the object that is present in the game*/
+  int n_objects;
+  Player *player;                 /*!<Pointer to the player that is present in the game*/
+  Space *spaces[MAX_SPACES];      /*!<Array of Spaces*/
+  int n_spaces;                   /*!<Number of spaces in the game*/
+  Command *last_cmd;              /*!<Pointer to the last command introduced by the user*/
+  Bool finished;                  /*!<Boolean that establishes whether the game has ended or not*/
 };
 /**
    Private functions
@@ -45,7 +46,7 @@ Status game_create(Game **game)
   int i;
   if (!game)
     return ERROR;
-  *game = (Game *)malloc(sizeof(Game));
+  *game = (Game *)calloc(1, sizeof(Game));
   if (!(*game))
     return ERROR;
   for (i = 0; i < MAX_SPACES; i++)
@@ -55,7 +56,7 @@ Status game_create(Game **game)
 
   (*game)->n_spaces = 0;
   (*game)->player = player_create(ANT);
-  (*game)->object = object_create(SEED);
+  (*game)->n_objects = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
 
@@ -76,7 +77,6 @@ Status game_create_from_file(Game **game, char *filename)
 
   /* The player and the object are located in the first space */
   game_set_player_location(game, game_get_space_id_at(game, 0));
-  game_set_object_location(game, game_get_space_id_at(game, 0));
 
   return OK;
 }
@@ -89,8 +89,9 @@ Status game_destroy(Game **game)
   {
     space_destroy((*game)->spaces[i]);
   }
-  if ((*game)->object)
-    object_destroy((*game)->object);
+  for(int i=0;i<(*game)->n_objects;i++)
+    if ((*game)->objects[i])
+      object_destroy((*game)->objects[i]);
   if ((*game)->player)
     player_destroy((*game)->player);
   if ((*game)->last_cmd)
@@ -137,29 +138,26 @@ Status game_set_player_location(Game **game, Id id)
   return OK;
 }
 
-Id game_get_object_location(Game **game)
+Id game_get_object_location(Game **game, Id objectId)
 {
-  int i = 0;
-  Id id = object_get_id((*game)->object);
-  Id idEsp = space_get_objectId((*game)->spaces[0]);
-  while (id != idEsp && i < (*game)->n_spaces)
-  {
-    i++;
-    idEsp = space_get_objectId((*game)->spaces[i]);
+  int i;
+  
+  for(i=0;i<(*game)->n_spaces;i++){
+    if(space_object_belongs((*game)->spaces[i], objectId)){
+      return space_get_id((*game)->spaces[i]);
+    }
   }
-  if (id == idEsp)
-    return space_get_id((*game)->spaces[i]);
   return NO_ID;
 }
 
-Status game_set_object_location(Game **game, Id id)
+Status game_set_object_location(Game **game, Id id, Id objectId)
 {
 
   if (id == NO_ID)
   {
     return ERROR;
   }
-  if (!(space_add_objectId(game_get_space(game, id), object_get_id((*game)->object))))
+  if (!(space_add_objectId(game_get_space(game, id), objectId)))
     return ERROR;
   return OK;
 }
@@ -198,7 +196,9 @@ void game_print(Game **game)
     space_print((*game)->spaces[i]);
   }
 
-  printf("=> Object location: %d\n", (int)game_get_object_location(game));
+  for(i=0;i<(*game)->n_objects;i++){
+    printf("=> Object '%s' location: %ld",object_get_name(game_get_object_in_pos(game, i)), game_get_object_location(game, object_get_id((*game)->objects[i])));
+  }
   printf("=> Player location: %d\n", (int)game_get_player_location(game));
 }
 
@@ -209,11 +209,11 @@ Player *game_get_player(Game **game)
   return (*game)->player;
 }
 
-Object *game_get_object(Game **game)
+Object *game_get_object_in_pos(Game **game, int pos)
 {
   if (!game)
     return NULL;
-  return (*game)->object;
+  return (*game)->objects[pos];
 }
 /**
    Implementation of private functions

@@ -172,14 +172,14 @@ void game_actions_back(Game **game)
   return;
 }
 
-void game_actions_take(Game **game)
+void game_actions_take(Game **game, Id objectId)
 {
   if (!game)
   {
     return;
   }
   /*We check that the player and the object are in the same space*/
-  if (game_get_player_location(game) == game_get_object_location(game))
+  if (game_get_player_location(game) == game_get_object_location(game, objectId))
   { /*We change the id of the object that the player is carrying*/
     player_set_object(game_get_player(game), object_get_id(game_get_object(game)));
     /*We change the objectId of the space where the object was located to NO_ID*/

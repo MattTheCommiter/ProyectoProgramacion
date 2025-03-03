@@ -24,7 +24,7 @@ struct _Player
   Id id;                    /*!< Id number of the player, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the player */
   Id location;              /*!<Id of the space where the player is located*/
-  Id object;                /*!< Whether the player has an object or not */
+  Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
 };
 
