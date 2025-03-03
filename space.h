@@ -12,6 +12,9 @@
 #define SPACE_H
 
 #include "types.h"
+#include "set.h"
+
+#define MAX_OBJECTS = 20;
 
 typedef struct _Space Space;
 
@@ -139,23 +142,44 @@ Status space_set_west(Space *space, Id id);
 Id space_get_west(Space *space);
 
 /**
- * @brief It sets the Id of the object in the space
- * @author Profesores PPROG
+ * @brief It adds an object's id to the set of objects
+ * @author Matteo Artunedo
  *
  * @param space a pointer to the space
- * @param value an Id, specifying the Id of the new object.
+ * @param object_iD an Id, specifying the Id of the new object.
  * @return OK, if everything goes well or ERROR if an error occurred
  */
-Status space_set_objectId(Space *space, Id object_Id);
+Status space_add_objectId(Space *space, Id object_Id);
 
 /**
- * @brief It gets whether the space has an object or not
- * @author Profesores PPROG
+ * @brief It gets whether an object belongs to a space or not
+ * @author Matteo Artunedo
  *
  * @param space a pointer to the space
- * @return an Id, specifying the Id of the object located at the space
+ * @param object_Id the id of the object we will look for
+ * @return TRUE if the object is in the space and FALSE if it is not
  */
-Id space_get_objectId(Space *space);
+Bool space_object_belongs(Space *space, Id object_Id);
+
+/**
+ * @brief It gets the set of objects in a space
+ * @author Matteo Artunedo
+ *
+ * @param space a pointer to the space
+ * @return pointer to the set where the objects are stored
+ */
+Set *space_get_set_of_objects(Space *space);
+
+/**
+ * @brief It deletes an Id from the space's set of object id's
+ * @author Matteo Artunedo
+ *
+ * @param space a pointer to the space
+ * @param objectId the Id we want to delete from the set
+ * @return OK if the function was compelted succesfully or ERROR if an error occurred
+ */
+Status space_delete_object(Space *space, Id objectId);
+
 
 /**
  * @brief It prints the space information

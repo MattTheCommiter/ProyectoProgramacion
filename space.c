@@ -2,8 +2,8 @@
  * @brief It implements the space module
  *
  * @file space.c
- * @author Profesores PPROG
- * @version 0.1
+ * @author Matteo Artuñedo
+ * @version 1.1
  * @date 27-01-2025
  * @copyright GNU Public License
  */
@@ -26,7 +26,7 @@ struct _Space
   Id south;                 /*!< Id of the space at the south */
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
-  Id object_Id;             /*!< The id of the object present in the space */
+  Set *objects;             /*!< The id of the object present in the space */
 };
 
 Space *space_create(Id id)
@@ -50,18 +50,18 @@ Space *space_create(Id id)
   newSpace->south = NO_ID;
   newSpace->east = NO_ID;
   newSpace->west = NO_ID;
-  newSpace->object_Id = NO_ID;
+  newSpace->objects = set_create();
 
   return newSpace;
 }
 
 Status space_destroy(Space *space)
 {
-  if (!space)
+  if (!space || !space->objects)
   {
     return ERROR;
   }
-
+  set_destroy(space->objects);
   free(space);
   return OK;
 }
@@ -174,23 +174,31 @@ Id space_get_west(Space *space)
   return space->west;
 }
 
-Status space_set_objectId(Space *space, Id object_Id)
+Set *space_get_set_of_objects(Space *space){
+  if (!space)
+  {
+    return ERROR;
+  }
+  return space->objects;
+}
+
+Status space_add_objectId(Space *space, Id object_Id)
 {
   if (!space)
   {
     return ERROR;
   }
-  space->object_Id = object_Id;
+  set_add(space->objects, object_Id);
   return OK;
 }
 
-Id space_get_objectId(Space *space)
+Bool space_object_belongs(Space *space, Id object_Id)
 {
   if (!space)
   {
     return NO_ID;
   }
-  return space->object_Id;
+  return set_belongs(space->objects, object_Id);
 }
 
 Status space_print(Space *space)
@@ -245,14 +253,28 @@ Status space_print(Space *space)
   }
 
   /* 3. Print if there is an object in the space or not */
-  if (objectId)
+  if (set_is_empty(space->objects))
   {
-    fprintf(stdout, "---> Object id: %d\n", (int)objectId);
+    fprintf(stdout, "---> No objects in the space.\n");
+    
   }
   else
   {
-    fprintf(stdout, "---> No object in the space.\n");
+    fprintf(stdout, "---> Object id's: \n");
+    for(int i=0;i<set_get_num_elements(space->objects);i++){
+      fprintf(stdout, "%d ", set_get_Id_in_pos(space->objects, i));
+    }
   }
 
   return OK;
+}
+
+Status space_delete_object(Space *space, Id objectId){
+  if(!space || !space->objects) return ERROR;
+
+  if(!set_del(space->objects, objectId)){
+    return ERROR;
+  }else{
+    return OK;
+  }
 }

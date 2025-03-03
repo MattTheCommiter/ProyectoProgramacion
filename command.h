@@ -21,8 +21,8 @@
  */
 typedef enum
 {
-    CMDS, /*Corresponds to a one-letter code used to identify the command*/
-    CMDL  /*Corresponds to the command's full name*/
+    CMDS, /*!<Corresponds to a one-letter code used to identify the command*/
+    CMDL  /*!<Corresponds to the command's full name*/
 } CommandType;
 
 /**
@@ -30,13 +30,13 @@ typedef enum
  */
 typedef enum
 {
-    NO_CMD = -1,
-    UNKNOWN,
-    EXIT,
-    NEXT,
-    BACK,
-    TAKE,
-    DROP
+    NO_CMD = -1,    /*!<Assigs -1 to the keyword "NO_CMD", which will be used in command-related functions*/            
+    UNKNOWN,        /*!<Assigs 0 to the keyword "UNKNOWN", which will be used in command-related functions*/    
+    EXIT,           /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/           
+    NEXT,           /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/           
+    BACK,           /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/           
+    TAKE,           /*!<Assigs 4 to the keyword "TAKE", which will be used in command-related functions*/           
+    DROP            /*!<Assigs 5 to the keyword "DROP", which will be used in command-related functions*/           
 } CommandCode;
 
 typedef struct _Command Command;

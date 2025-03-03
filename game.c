@@ -159,7 +159,7 @@ Status game_set_object_location(Game **game, Id id)
   {
     return ERROR;
   }
-  if (!(space_set_objectId(game_get_space(game, id), object_get_id((*game)->object))))
+  if (!(space_add_objectId(game_get_space(game, id), object_get_id((*game)->object))))
     return ERROR;
   return OK;
 }

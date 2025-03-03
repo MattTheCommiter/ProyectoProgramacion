@@ -15,7 +15,7 @@
   * @brief this structure will be used for the definition of sets accross the game
   */
 struct _Set{
-    int n_ids;      /*!<Number of elements in the set*/
+    int n_ids;                          /*!<Number of elements in the set*/
     Id ids[MAX_ELEMENTS_IN_SET];        /*!<Id of elements in the set*/
 };
 
@@ -75,7 +75,7 @@ Status set_del(Set *s, Id elementId){
     }
 }
 
-Status set_print(Set *s){
+int set_print(Set *s){
     if(!s) return ERROR;
     
     int i;
@@ -88,4 +88,43 @@ Status set_print(Set *s){
     }
 
     return OK;
+}
+
+Bool set_belongs(Set *s, Id elementId){
+    if(!s) return ERROR;
+
+    Bool found=FALSE;
+
+    for(int i=0;i<s->n_ids && !found;i++){
+        if(s->ids[i] == elementId){
+            found=TRUE;
+        }
+    }
+
+    return found;
+}
+
+Bool set_is_empty(Set *s){
+    if (!s || s->n_ids)
+    {
+        return FALSE;
+    }
+    else
+    {
+        return TRUE;
+    }
+}
+
+int set_get_num_elements(Set *s){
+    if(!s) return -1;
+
+    return s->n_ids;
+}
+
+Id set_get_Id_in_pos(Set *s, int pos){
+    if(!s || pos<0 || pos>(s->n_ids - 1 || !s->n_ids)){
+        return -1;
+    }
+
+    return s->ids[pos];
 }

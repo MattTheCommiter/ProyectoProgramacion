@@ -22,8 +22,8 @@ typedef long Id;
  */
 typedef enum
 {
-    ANT,
-    SEED
+    ANT,    /*!<Corresponde al ID asignado al crear la hormiga*/
+    SEED    /*!<Corresponde al ID asignado al crear el objeto*/
 } Member;
 
 /**
@@ -31,8 +31,8 @@ typedef enum
  */
 typedef enum
 {
-    FALSE,
-    TRUE
+    FALSE,  /*!<Value 0, which corresponds to the logical value FALSE*/
+    TRUE    /*!<Value 1, which corresponds to the logical value TRUE*/
 } Bool;
 
 /**
@@ -40,8 +40,8 @@ typedef enum
  */
 typedef enum
 {
-    ERROR,
-    OK
+    ERROR,  /*!<Assigns 0 to the keyword "FALSE", which will be used as a return in functions*/
+    OK      /*!<Assigns 1 to the keyword "TRUE", which will be used as a return in functions*/
 } Status;
 
 /**
@@ -49,10 +49,10 @@ typedef enum
  */
 typedef enum
 {
-    N,
-    S,
-    E,
-    W
+    N,      /*!<Assigns value 0 to the keyword "N", which will be used in space-related functions*/      
+    S,      /*!<Assigns value 1 to the keyword "S", which will be used in space-related functions*/
+    E,      /*!<Assigns value 2 to the keyword "E", which will be used in space-related functions*/
+    W       /*!<Assigns value 3 to the keyword "W", which will be used in space-related functions*/
 } Direction;
 
 #endif
