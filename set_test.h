@@ -59,6 +59,115 @@
   * @post Output==OK when deleting 5
   */
  void test2_set_del();
+ 
+  /**
+  * @test Test set print
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test1_set_print();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test2_set_print();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test3_set_print();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test1_set_belongs();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test2_set_belongs();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test3_set_belongs();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test1_set_is_empty();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test2_set_is_empty();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test3_set_is_empty();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test1_set_get_num_elements();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test2_set_get_num_elements();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test3_set_get_num_elements();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test1_set_get_Id_in_pos();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test2_set_get_Id_in_pos();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test3_set_get_Id_in_pos();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test4_set_get_Id_in_pos();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test5_set_get_Id_in_pos();
+   /**
+  * @test Test set del
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
+  * @post Output==OK when deleting 5
+  */
+  void test6_set_get_Id_in_pos();
 
 
  #endif  

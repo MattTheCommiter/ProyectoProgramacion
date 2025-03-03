@@ -115,24 +115,14 @@ int set_get_num_elements(Set *s);
  */
 Id set_get_Id_in_pos(Set *s, int pos);
 
-test1_set_print();
-test2_set_print();
-test3_set_print();
-test1_set_belongs();
-test2_set_belongs();
-test3_set_belongs();
-test1_set_is_empty();
-test2_set_is_empty();
-test3_set_is_empty();
-test1_set_get_num_elements();
-test2_set_get_num_elements();
-test3_set_get_num_elements();
-test1_set_get_Id_in_pos();
-test2_set_get_Id_in_pos();
-test3_set_get_Id_in_pos();
-test4_set_get_Id_in_pos();
-test5_set_get_Id_in_pos();
-test6_set_get_Id_in_pos();
+/**
+ * @brief returns the position of a specific element in the set
+ * 
+ * @param s pointer to the set
+ * @param elementId the Id we want to look for
+ * @return the position of the element or -1 if an error occurrs
+ */
+int set_get_pos_from_Id(Set *s, Id elementId);
 
 
 

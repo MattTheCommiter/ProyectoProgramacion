@@ -163,7 +163,10 @@ void test3_set_print(){
   s = set_create();
   set_add(s, 3);
   set_add(s, 5);
-  PRINT_TEST_RESULT (result=(set_print(s) == 2));
+  set_add(s, 7);
+  set_add(s, 6);
+  set_del(s, 5);
+  PRINT_TEST_RESULT (result=(set_print(s) == 3));
   set_destroy(s);
 }
 
@@ -178,7 +181,7 @@ void test2_set_belongs(){
   Set *s;
   s=set_create();
   set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_beongs(s, 3)==FALSE));
+  PRINT_TEST_RESULT(result = (set_belongs(s, 3)==FALSE));
   set_destroy(s); 
 }
 
@@ -187,7 +190,7 @@ void test3_set_belongs(){
   Set *s;
   s=set_create();
   set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_beongs(s, 5)==TRUE));
+  PRINT_TEST_RESULT(result = (set_belongs(s, 5)==TRUE));
   set_destroy(s); 
 }
 

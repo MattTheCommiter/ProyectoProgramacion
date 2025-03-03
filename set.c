@@ -37,16 +37,13 @@ Status set_destroy(Set *s){
 Status set_add(Set *s, Id elementId){
     if(!s) return ERROR;
 
-    int i;
     /*Nos aseguramos de que no se haya alcanzado el tamaño máximo*/
     if(s->n_ids == (MAX_ELEMENTS_IN_SET)){
         return ERROR;
     }
     /*Si el elemento ya está en el set, devolvemos OK*/
-    for(i=0;i<s->n_ids;i++){
-        if(elementId == s->ids[i]){
-            return OK;
-        }
+    if(set_belongs(s, elementId)){
+        return OK;
     }
     /*Añadimos el elemento al set y aumentamos el número de elementos de este*/
     s->ids[s->n_ids] = elementId;
@@ -56,38 +53,32 @@ Status set_add(Set *s, Id elementId){
 
 Status set_del(Set *s, Id elementId){
     if(!s) return ERROR;
-    int i,j, found=0;
 
-    for(i=0;i<s->n_ids && !found;i++){
-        if(s->ids[i] == elementId){
-            found=1;
-        }
-    }
-    if(found){
-        for(j=i;j<s->n_ids;j++){
-            s->ids[j-1] = s->ids[j];
-        }
-        s->ids[--j] = '\0';
-        s->n_ids--;
-        return OK;
-    }else{
+    if(!set_belongs(s, elementId)){
         return ERROR;
     }
+
+    int pos = set_get_pos_from_Id(s, elementId);
+    s->n_ids--;
+    s->ids[pos] = s->ids[s->n_ids];
+    s->ids[s->n_ids] = NO_ID;
+    return OK;
 }
 
 int set_print(Set *s){
-    if(!s) return ERROR;
+    if(!s) return -1;
     
     int i;
 
     printf("\nThe id's of the elements of the set are: ");
     for(i=0;i<s->n_ids;i++){
-        if(!(printf("%ld", s->ids[i]))){
-            return ERROR;
+        if(!(printf("%ld ", s->ids[i]))){
+            return -1;
         }
     }
+    printf("\n");
 
-    return OK;
+    return (i);
 }
 
 Bool set_belongs(Set *s, Id elementId){
@@ -122,9 +113,20 @@ int set_get_num_elements(Set *s){
 }
 
 Id set_get_Id_in_pos(Set *s, int pos){
-    if(!s || pos<0 || pos>(s->n_ids - 1 || !s->n_ids)){
+    if(!s || pos<0 || pos>(s->n_ids - 1) || (!s->n_ids)){
         return -1;
     }
 
     return s->ids[pos];
+}
+
+int set_get_pos_from_Id(Set *s, Id elementId){
+    if(!s || !set_belongs(s, elementId)){
+        return -1;
+    }
+    for(int i=0;i<s->n_ids;i++){
+        if(s->ids[i] == elementId){
+            return i;
+        }
+    }
 }
