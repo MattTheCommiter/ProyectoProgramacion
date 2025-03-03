@@ -78,10 +78,7 @@
 
  void test2_set_destroy() {
   int result;
-  Set *s;
-  s = set_create();
-  set_destroy(s);
-  s=NULL;
+  Set *s=NULL;
   PRINT_TEST_RESULT(result=(set_destroy(s)==ERROR));
 }
  

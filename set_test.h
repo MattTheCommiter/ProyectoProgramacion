@@ -13,13 +13,13 @@
  
  /**
   * @test Test set creation
-  * @pre
+  * @pre void
   * @post Non NULL pointer to set 
   */
  void test1_set_create();
 
   /**
-  * @test Test set creation
+  * @test Test set destruction
   * @pre pointer to set
   * @post Output==OK
   */
@@ -34,28 +34,28 @@
  
  /**
   * @test Test set add
-  * @pre pointer to set
+  * @pre pointer to empty set, Id '3' of an element we want to add
   * @post Output == OK when adding 3 as an Id
   */
  void test1_set_add();
  
  /**
   * @test Test set add
-  * @pre pointer to set with one element: 5 
-  * @post Ouput==OK when adding 3
+  * @pre pointer to set with one element '5', Id '3' of an element we want to add 
+  * @post Ouput==OK when adding 3 as an Id
   */
  void test2_set_add();
  
  /**
   * @test Test set del
-  * @pre pointer to set with element 5
+  * @pre pointer to set with element '5', Id '3' of the element we want to delete
   * @post Output==ERROR when trying to delete 3
   */
  void test1_set_del();
  
  /**
   * @test Test set del
-  * @pre pointer to set_name with element 5
+  * @pre pointer to set_name with element 5, Id '5' of the element we want to delete
   * @post Output==OK when deleting 5
   */
  void test2_set_del();
