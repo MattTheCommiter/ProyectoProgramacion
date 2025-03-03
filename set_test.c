@@ -153,7 +153,7 @@ void test2_set_print(){
   Set *s=NULL;
   s = set_create();
   set_add(s, 3);
-  PRINT_TEST_RESULT (result=(set_print(s) != 2));
+  PRINT_TEST_RESULT (result=(set_print(s) == 1));
   set_destroy(s);
 }
 
@@ -251,7 +251,7 @@ void test2_set_get_Id_in_pos(){
   int result;
   Set *s;
   s=set_create();
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1)==-1));
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 0)==-1));
   set_destroy(s); 
 }
 
@@ -279,7 +279,6 @@ void test5_set_get_Id_in_pos(){
   Set *s;
   s=set_create();
   set_add(s, 5);
-  set_add(s, 3);
   PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, -1)==-1));
   set_destroy(s); 
 }
@@ -291,5 +290,38 @@ void test6_set_get_Id_in_pos(){
   set_add(s, 5);
   set_add(s, 3);
   PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 2)==-1));
+  set_destroy(s); 
+}
+
+void test1_set_get_pos_from_Id(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 0)==NO_ID));
+}
+
+void test2_set_get_pos_from_Id(){
+  int result;
+  Set *s=NULL;
+  s=set_create();
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 2)==-1));
+  set_destroy(s); 
+}
+
+void test3_set_get_pos_from_Id(){
+  int result;
+  Set *s=NULL;
+  s=set_create();
+  set_add(s, 5);
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 2)==-1));
+  set_destroy(s); 
+}
+
+void test4_set_get_pos_from_Id(){
+  int result;
+  Set *s=NULL;
+  s=set_create();
+  set_add(s, 5);
+  set_add(s, 3);
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 3)==1));
   set_destroy(s); 
 }
