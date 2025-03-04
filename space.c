@@ -27,7 +27,7 @@ struct _Space
   Id east;                  /*!< Id of the space at the east */
   Id west;                  /*!< Id of the space at the west */
   Set *objects;             /*!< The set of objects present at the space */
-  Id character;     /*!< The Id of the character present at the space */
+  Id character;             /*!< The Id of the character present at the space */
 };
 
 Space *space_create(Id id)
@@ -279,4 +279,9 @@ Status space_delete_object(Space *space, Id objectId){
   }else{
     return OK;
   }
+}
+
+Id space_get_character(Space *space){
+  if(!space) retturn NO_ID;
+  return space->character;
 }

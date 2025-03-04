@@ -17,15 +17,16 @@
 
 struct _Game
 {
-  Object *objects[MAX_OBJECTS];            /*!<Pointer array to the objects that are present in the game*/
-  int n_objects;              /*!<Number of objects in the game*/
-  Player *player;            /*!<Pointer to the player that is present in the game*/
-  Space *spaces[MAX_SPACES]; /*!<Array of Spaces*/
-  int n_spaces;              /*!<Number of spaces in the game*/
-  Character *characters[MAX_CHARACTERS]; /*!<Number of spaces in the game*/
-  int n_characters;  /*!<Number of characters in the game*/
-  Command *last_cmd;         /*!<Pointer to the last command introduced by the user*/
-  Bool finished;             /*!<Boolean that establishes whether the game has ended or not*/
+  Object *objects[MAX_OBJECTS];             /*!<Pointer array to the objects that are present in the game*/
+  int n_objects;                            /*!<Number of objects in the game*/
+  Player *player;                           /*!<Pointer to the player that is present in the game*/
+  Space *spaces[MAX_SPACES];                /*!<Array of Spaces*/
+  int n_spaces;                             /*!<Number of spaces in the game*/
+  Character *characters[MAX_CHARACTERS];    /*!<Number of spaces in the game*/
+  int n_characters;                         /*!<Number of characters in the game*/
+  Command *last_cmd;                        /*!<Pointer to the last command introduced by the user*/
+  Bool finished;                            /*!<Boolean that establishes whether the game has ended or not*/
+  char message[MAX_MESSAGE];
 };
 /**
    Private functions
@@ -333,4 +334,17 @@ Id game_get_objectId_from_name(Game **game, char *name){
     }
   }
   return NO_ID;
+}
+
+char *game_get_message(Game **game){
+  if(!game) return NULL;
+
+  return (*game)->message;
+}
+
+Status game_set_message(Game **game, char *msg){
+  if(!game || !msg) return ERROR;
+
+  strcpy((*game)->message, msg);
+  return OK;
 }

@@ -181,7 +181,7 @@ Status space_delete_object(Space *space, Id objectId);
 
 /**
  * @brief It prints the space information
- * @author Profesores PPROG
+ * @author Matteo Artunedo
  *
  * This fucntion shows the id and name of the space, the spaces that surrounds it and wheter it has an object or not.
  * @param space a pointer to the space
@@ -189,4 +189,12 @@ Status space_delete_object(Space *space, Id objectId);
  */
 Status space_print(Space *space);
 
+/**
+ * @brief It gets the id of the character present in the space
+ * @author Matteo Artunedo
+ *
+ * @param space a pointer to the space
+ * @return the Id of the character in the space or NO_ID if the space pointer is NULL or the space has no character
+ */
+Id space_get_character(Space *space);
 #endif
