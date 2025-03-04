@@ -54,9 +54,6 @@ set_test_exec: set_test.o set.o
 set_test.o: set_test.c set.h types.h set_test.h test.h
 	gcc $(CFLAGS) $^
 	
-set.o: set.c set.h types.h
-	gcc $(CFLAGS) $^
-
 character_test: character_test_exec
 
 character_test_exec: character_test.o character.o

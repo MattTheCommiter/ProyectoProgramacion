@@ -78,6 +78,10 @@ void game_actions_take(Game **game);
  */
 void game_actions_drop(Game **game);
 
+void game_actions_left(Game **game);
+
+void game_actions_right(Game **game);
+
 /**
    Game actions implementation
 */
@@ -114,6 +118,12 @@ Status game_actions_update(Game **game, Command *command)
     break;
   case DROP:
     game_actions_drop(game);
+    break;
+  case LEFT:
+    game_actions_left(game);
+    break;
+  case RIGHT:
+    game_actions_right(game);
     break;
 
   default:
@@ -201,4 +211,38 @@ void game_actions_drop(Game **game)
     /*We change the Id of the player's object to NO_ID*/
     player_set_object(game_get_player(game), NO_ID);
   }
+}
+
+void game_actions_left(Game **game){
+  Id currentId = NO_ID, nextId = NO_ID;
+  if(!game){
+    return;
+  }
+  currentId = game_get_player_location(game);
+  if(currentId == NO_ID){
+    return;
+  }
+  nextId = space_get_west(game_get_space(game,currentId));
+  if(nextId != NO_ID){
+    game_set_player_location(game,nextId);
+  }
+  return;
+
+}
+
+void game_actions_right(Game **game){
+  Id currentId = NO_ID;
+  Id nextId = NO_ID;
+  if(!game){
+    return;
+  }
+  currentId = game_get_player_location(game);
+  if(currentId == NO_ID){
+    return;
+  }
+  nextId = space_get_east(game_get_space(game,currentId));
+  if(nextId != NO_ID){
+    game_set_player_location(game,nextId);
+  }
+  return;
 }

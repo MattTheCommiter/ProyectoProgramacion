@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2 /*Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 7  /*Number of commands that are possible*/
+#define N_CMD 9  /*Number of commands that are possible*/
 
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
@@ -36,7 +36,9 @@ typedef enum
     NEXT,           /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/           
     BACK,           /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/           
     TAKE,           /*!<Assigs 4 to the keyword "TAKE", which will be used in command-related functions*/           
-    DROP            /*!<Assigs 5 to the keyword "DROP", which will be used in command-related functions*/           
+    DROP,            /*!<Assigs 5 to the keyword "DROP", which will be used in command-related functions*/ 
+    LEFT,           /*!<Assigs 6 to the keyword "LEFT", which will be used in command-related functions*/ 
+    RIGHT           /*!<Assigs 7 to the keyword "RIGTH", which will be used in command-related functions*/ 
 } CommandCode;
 
 typedef struct _Command Command;
