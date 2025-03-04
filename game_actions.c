@@ -271,10 +271,10 @@ void game_actions_right(Game **game){
 void game_actions_chat(Game **game){
   if(!game) return;
 
-  if(!character_get_friendly(game_get_character(game, space_get_character(game_get_player_location(game))))){
+  if(!character_get_friendly(game_get_character(game, space_get_character(game_get_space (game ,game_get_player_location(game)))))){
     return;
   }
 
-  game_set_message(game, character_get_message(game_get_character(game, space_get_character(game_get_player_location(game)))));
+  game_set_message(game, character_get_message(game_get_character(game, space_get_character(game_get_space (game ,game_get_player_location(game))))));
   return;
 }
