@@ -126,7 +126,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
       obj_l = '*';
     else
       obj_l = ' ';
-    if (game_get_object_location(game,1) == id_left)
+    if (game_get_object_location(game,1) == id_right)
       obj_r = '*';
     else
       obj_r = ' ';
