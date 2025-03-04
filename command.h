@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2 /*Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 9  /*Number of commands that are possible*/
+#define N_CMD 13  /*Number of commands that are possible*/
 
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
@@ -34,11 +34,15 @@ typedef enum
     UNKNOWN,        /*!<Assigs 0 to the keyword "UNKNOWN", which will be used in command-related functions*/    
     EXIT,           /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/           
     NEXT,           /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/           
-    BACK,           /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/           
-    TAKE,           /*!<Assigs 4 to the keyword "TAKE", which will be used in command-related functions*/           
-    DROP,            /*!<Assigs 5 to the keyword "DROP", which will be used in command-related functions*/ 
-    LEFT,           /*!<Assigs 6 to the keyword "LEFT", which will be used in command-related functions*/ 
-    RIGHT           /*!<Assigs 7 to the keyword "RIGTH", which will be used in command-related functions*/ 
+    BACK,           /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/                     
+    DROP,            /*!<Assigs 4 to the keyword "DROP", which will be used in command-related functions*/ 
+    LEFT,           /*!<Assigs 5 to the keyword "LEFT", which will be used in command-related functions*/ 
+    RIGHT,           /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/ 
+    TAKE_S,         /*!<Assigs 7 to the keyword "TAKE_S", which represents taking the seed object*/
+    TAKE_G,         /*!<Assigs 8 to the keyword "TAKE_G", which representes taking the grain object*/   
+    TAKE_C,         /*!<Assigs 9 to the keyword "TAKE_C", which representes taking the crumb object**/   
+    TAKE_L,         /*!<Assigs 10 to the keyword "TAKE_L", which representes taking the leaf object**/         
+    CHAT            /*!<Assigs 11 to the keyword "DROP", which will be used in command-related functions*/  
 } CommandCode;
 
 typedef struct _Command Command;

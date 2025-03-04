@@ -18,9 +18,10 @@
  #include "object.h"
  #include "character.h"
  
- #define MAX_SPACES 100 /*The maximum ammount of spaces that can exist in the game*/
- #define MAX_OBJECTS 10 /*The maximum ammount of objects present at the game*/ 
- #define MAX_CHARACTERS 10 /*The maximum ammount of characters present at the game*/
+ #define MAX_SPACES 100     /*!<The maximum ammount of spaces that can exist in the game*/
+ #define MAX_OBJECTS 10     /*!<The maximum ammount of objects present at the game*/ 
+ #define MAX_CHARACTERS 10  /*!<The maximum ammount of characters present at the game*/
+ #define MAX_MESSAGE 50     /*!<The maximum ammout of characters in the messages*/
  typedef struct _Game Game;
  
  /**
@@ -312,9 +313,21 @@
  Id game_get_objectId_from_name(Game **game, char *name);
  
  /** 
-  * @param pos the position of the object in the set
-  * @return a pointer to the object
+  * @brief Gets the message in the game
+  * @date 04/03/25
+  * @author Matteo Artunedo
+  * @param game a double pointer to game
+  * @return a string with the message
   */
- Object *game_get_object_in_pos(Game **game, int);
+ char *game_get_message(Game **game);
  
+ /** 
+  * @brief Sets the message in the game
+  * @date 04/03/25
+  * @author Matteo Artunedo
+  * @param game a double pointer to game
+  * @param char a string with the new message
+  * @return OK if the function is completed succesfully or ERROR if an error occurrs
+  */
+ Status game_set_message(Game **game, char *msg)
  #endif

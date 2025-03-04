@@ -65,8 +65,9 @@ void game_actions_back(Game **game);
  * @author Matteo Artunedo
  * 
  * @param game a double pointer to the structure with the game's main information
+ * @param obj_name a string with the name of the object the player wants to take
  */
-void game_actions_take(Game **game);
+void game_actions_take(Game **game, char *obj_name);
 
 /**
  * @brief drops the object in the space
@@ -81,6 +82,16 @@ void game_actions_drop(Game **game);
 void game_actions_left(Game **game);
 
 void game_actions_right(Game **game);
+
+/**
+ * @brief chats with a character in the same space, assigning the character's message to the message parameter in game
+ *
+ * @date 04-03-2025
+ * @author Matteo Artunedo
+ * 
+ * @param game a double pointer to the structure with the game's main information
+ */
+void game_actions_chat(Game **game);
 
 /**
    Game actions implementation
@@ -112,8 +123,20 @@ Status game_actions_update(Game **game, Command *command)
     game_actions_back(game);
 
     break;
-  case TAKE:
-    game_actions_take(game);
+  case TAKE_S:
+    game_actions_take(game, "Seed");
+
+    break;
+    case TAKE_G:
+    game_actions_take(game, "Grain");
+
+    break;
+    case TAKE_C:
+    game_actions_take(game, "Crumb");
+
+    break;
+    case TAKE_L:
+    game_actions_take(game, "Leaf");
 
     break;
   case DROP:
@@ -182,18 +205,18 @@ void game_actions_back(Game **game)
   return;
 }
 
-void game_actions_take(Game **game)
-{
-  if (!game)
+void game_actions_take(Game **game, char *obj_name)
+{ /*If the pointers are NULL or the player already has an object, nothing happens*/
+  if (!game || player_get_object(game_get_player(game)) != NO_ID || !obj_name)
   {
     return;
   }
-  /*We check that the player and the object are in the same space*/
-  if (game_get_player_location(game) == game_get_object_location(game,game_get_objectId_from_name(game,"Seed")))
+    /*We check that the player and the object are in the same space*/
+  if (game_get_player_location(game) == game_get_object_location(game,game_get_objectId_from_name(game,obj_name)))
   { /*We change the id of the object that the player is carrying*/
-    player_set_object(game_get_player(game), game_get_objectId_from_name(game,"Seed"));
+    player_set_object(game_get_player(game), game_get_objectId_from_name(game,obj_name));
     /*We change the objectId of the space where the object was located to NO_ID*/
-    space_delete_object(game_get_space(game, game_get_player_location(game)), game_get_objectId_from_name(game,"Seed"));
+    space_delete_object(game_get_space(game, game_get_player_location(game)), game_get_objectId_from_name(game,obj_name));
   }
 }
 
@@ -244,5 +267,14 @@ void game_actions_right(Game **game){
   if(nextId != NO_ID){
     game_set_player_location(game,nextId);
   }
+}
+void game_actions_chat(Game **game){
+  if(!game) return;
+
+  if(!character_get_friendly(game_get_character(game, space_get_character(game_get_player_location(game))))){
+    return;
+  }
+
+  game_set_message(game, character_get_message(game_get_character(game, space_get_character(game_get_player_location(game)))));
   return;
 }

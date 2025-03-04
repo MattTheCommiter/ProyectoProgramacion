@@ -12,7 +12,7 @@
  #include <stdlib.h>
  #include <string.h>
  /* Se incluyen los archivos .h pertinentes para el funcionamiento del programa*/
- #include "GameReader.h"
+ #include "gameReader.h"
  #include "game.h"
  
  Status gameReader_load_spaces(Game **game, char *filename)
