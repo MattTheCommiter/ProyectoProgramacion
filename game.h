@@ -329,5 +329,15 @@
   * @param char a string with the new message
   * @return OK if the function is completed succesfully or ERROR if an error occurrs
   */
- Status game_set_message(Game **game, char *msg)
+ Status game_set_message(Game **game, char *msg);
+
+ /** 
+  * @brief Gets the object in a specific position in the object array
+  * @date 04/03/25
+  * @author Matteo Artunedo
+  * @param game a double pointer to game
+  * @param pos an int with the position of the object in the array
+  * @return pointer to the object or NULL if an error occurrs
+  */
+ Object *game_get_object_in_pos(Game **game, int pos);
  #endif

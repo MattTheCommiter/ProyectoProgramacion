@@ -17,7 +17,7 @@
 
 #define CMD_LENGTH 30 /*maximum length of commands written by user*/
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"t s", "Take seed"}, {"t g ", "Take grain"}, {"t c", "Take crumb"}, {"t l", "Take leaf"}, {"d", "Drop"}, {"c", "Chat"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"ts", "Take seed"}, {"tg ", "Take grain"}, {"tc ", "Take crumb"}, {"tl", "Take leaf"}, {"d", "Drop"}, {"c", "Chat"}};
 
 /**
  * @brief Command

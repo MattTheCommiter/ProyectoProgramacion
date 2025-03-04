@@ -159,6 +159,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
     sprintf(str, "  Object in the inventory");
     screen_area_puts(ge->descript, str);
   }
+  /*if (command_get_code(game_get_last_command(game)) == CHAT)
+  {
+    sprintf(str, "  Message: %s", game_get_message(game));
+    screen_area_puts(ge->descript, str);
+  }*/
 
   /* Paint in the banner area */
   screen_area_puts(ge->banner, "    The anthill game ");

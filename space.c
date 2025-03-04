@@ -282,6 +282,6 @@ Status space_delete_object(Space *space, Id objectId){
 }
 
 Id space_get_character(Space *space){
-  if(!space) retturn NO_ID;
+  if(!space) return NO_ID;
   return space->character;
 }
