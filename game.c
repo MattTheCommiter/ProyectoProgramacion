@@ -189,11 +189,11 @@ Status game_set_last_command(Game **game, Command *command)
 
 Bool game_get_finished(Game **game) { return (*game)->finished; }
 
-Status game_set_finished(Game *game, Bool finished)
+Status game_set_finished(Game **game, Bool finished)
 {
   if (!game)
     return ERROR;
-  game->finished = finished;
+  (*game)->finished = finished;
 
   return OK;
 }
