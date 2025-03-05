@@ -13,9 +13,10 @@
 
 #include "types.h"
 
-#define N_CMDT 2 /*Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 13  /*Number of commands that are possible*/
-
+#define N_CMDT 2        /*<!Number of ways the user can type each command (non-case sensitive)*/
+#define N_CMD 10        /*<!Number of commands that are possible*/
+#define MAX_CMD_ARG 20  /*<!Maximum number of characters in the argument parameter of the command*/
+#define N_OBJECTS 4      /*<!Number of objects that can be present in the game*/
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */
@@ -35,15 +36,20 @@ typedef enum
     EXIT,           /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/           
     NEXT,           /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/           
     BACK,           /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/                     
-    DROP,            /*!<Assigs 4 to the keyword "DROP", which will be used in command-related functions*/ 
+    DROP,           /*!<Assigs 4 to the keyword "DROP", which will be used in command-related functions*/ 
     LEFT,           /*!<Assigs 5 to the keyword "LEFT", which will be used in command-related functions*/ 
-    RIGHT,           /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/ 
-    TAKE_S,         /*!<Assigs 7 to the keyword "TAKE_S", which represents taking the seed object*/
-    TAKE_G,         /*!<Assigs 8 to the keyword "TAKE_G", which representes taking the grain object*/   
-    TAKE_C,         /*!<Assigs 9 to the keyword "TAKE_C", which representes taking the crumb object**/   
-    TAKE_L,         /*!<Assigs 10 to the keyword "TAKE_L", which representes taking the leaf object**/         
-    CHAT            /*!<Assigs 11 to the keyword "DROP", which will be used in command-related functions*/  
+    RIGHT,          /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/ 
+    TAKE,           /*!<Assigs 7 to the keyword "TAKE_S", which represents taking the seed object*/
+    CHAT            /*!<Assigs 8 to the keyword "DROP", which will be used in command-related functions*/  
 } CommandCode;
+
+typedef enum{
+    NO_ARG=-1,      /*!<Assigs -1 to the keyword "NO_ARG", signifying the current command does not take arguments*/ 
+    SEED,           /*!<Assigs 0 to the keyword "SEED", signifying the current command takes the argument "seed"*/
+    GRAIN,          /*!<Assigs 1 to the keyword "GRAIN", signifying the current command takes the argument "grain"*/
+    CRUMB,          /*!<Assigs 2 to the keyword "CRUMB", signifying the current command takes the argument "crumb"*/
+    LEAF            /*!<Assigs 3 to the keyword "LEAF", signifying the current command takes the argument "leaf"*/
+}ArgumentCode;
 
 typedef struct _Command Command;
 
@@ -102,4 +108,20 @@ CommandCode command_get_code(Command *command);
  */
 Status command_get_user_input(Command *command);
 
+/**
+ * @brief sets the argument parameter of the command
+ * 
+ * @param command pointer to the command
+ * @param arg code of the new argument
+ * @return Status: whether the function was completed succesfully
+ */
+Status command_set_argument(Command *command, ArgumentCode arg);
+
+/**
+ * @brief gets the argument parameter of the command
+ * 
+ * @param command pointer to the command
+ * @return code with the command argument or NO_CMD if an error occurrs 
+ */
+ArgumentCode command_get_argument(Command *command);
 #endif

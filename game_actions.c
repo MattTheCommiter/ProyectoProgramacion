@@ -65,9 +65,9 @@ void game_actions_back(Game **game);
  * @author Matteo Artunedo
  * 
  * @param game a double pointer to the structure with the game's main information
- * @param obj_name a string with the name of the object the player wants to take
+ * @param arg a code which corresponds to the object being taken
  */
-void game_actions_take(Game **game, char *obj_name);
+void game_actions_take(Game **game, ArgumentCode arg);
 
 /**
  * @brief drops the object in the space
@@ -123,21 +123,8 @@ Status game_actions_update(Game **game, Command *command)
     game_actions_back(game);
 
     break;
-  case TAKE_S:
-    game_actions_take(game, "Seed");
-
-    break;
-    case TAKE_G:
-    game_actions_take(game, "Grain");
-
-    break;
-    case TAKE_C:
-    game_actions_take(game, "Crumb");
-
-    break;
-    case TAKE_L:
-    game_actions_take(game, "Leaf");
-
+  case TAKE:
+    game_actions_take(game, command_get_argument(command));
     break;
   case DROP:
     game_actions_drop(game);
@@ -205,18 +192,36 @@ void game_actions_back(Game **game)
   return;
 }
 
-void game_actions_take(Game **game, char *obj_name)
-{ /*If the pointers are NULL or the player already has an object, nothing happens*/
-  if (!game || player_get_object(game_get_player(game)) != NO_ID || !obj_name)
+void game_actions_take(Game **game, ArgumentCode arg)
+{ Id objectId=NO_ID;
+  /*If the pointers are NULL or the player already has an object, nothing happens*/
+  if (!game || player_get_object(game_get_player(game)) != NO_ID || arg==NO_ARG)
   {
     return;
   }
+  switch(arg){
+    case SEED:
+      objectId = game_get_objectId_from_name(game, "Seed");
+      break;
+    case CRUMB:
+      objectId = game_get_objectId_from_name(game, "Crumb");
+      break;
+    case GRAIN:
+      objectId = game_get_objectId_from_name(game, "Grain");
+      break;
+    case LEAF:
+      objectId = game_get_objectId_from_name(game, "Leaf");
+      break;
+    default:
+      break;
+  }
+
     /*We check that the player and the object are in the same space*/
-  if (game_get_player_location(game) == game_get_object_location(game,game_get_objectId_from_name(game,obj_name)))
+  if (game_get_player_location(game) == game_get_object_location(game, objectId))
   { /*We change the id of the object that the player is carrying*/
-    player_set_object(game_get_player(game), game_get_objectId_from_name(game,obj_name));
+    player_set_object(game_get_player(game), objectId);
     /*We change the objectId of the space where the object was located to NO_ID*/
-    space_delete_object(game_get_space(game, game_get_player_location(game)), game_get_objectId_from_name(game,obj_name));
+    space_delete_object(game_get_space(game, game_get_player_location(game)), objectId);
   }
 }
 
