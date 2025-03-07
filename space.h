@@ -14,6 +14,10 @@
 #include "types.h"
 #include "set.h"
 #include "character.h"
+
+#define N_LINES_IN_GDESC 5
+#define N_ROWS_IN_GDESC 9
+
 typedef struct _Space Space;
 
 /**
@@ -197,4 +201,23 @@ Status space_print(Space *space);
  * @return the Id of the character in the space or NO_ID if the space pointer is NULL or the space has no character
  */
 Id space_get_character(Space *space);
+
+/**
+ * @brief It gets the graphical description of the space
+ * @author Matteo Artunedo
+ *
+ * @param space a pointer to the space
+ * @return a pointer to the graphical description of the space
+ */
+char **space_get_gdesc(Space *space);
+
+/**
+ * @brief It sets the graphical description of the space
+ * @author Matteo Artunedo
+ *
+ * @param space a pointer to the space
+ * @param space_gdescription a double pointer to the incoming graphical description to set
+ * @return OK, if everything goes well or ERROR if an error occurred
+ */
+Status space_set_gdesc(Space *space, char**space_gdescription);
 #endif

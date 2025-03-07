@@ -20,11 +20,25 @@
    FILE *file = NULL;
    char line[WORD_SIZE] = "";
    char name[WORD_SIZE] = "";
+   char **read_gdesc;
    char *toks = NULL;
+   int i;
    Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
    Space *space = NULL;
    Status status = OK;
  
+   if(!(read_gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *)))){
+    return ERROR;
+   }
+   if(!(read_gdesc[0] = (char *)calloc(N_LINES_IN_GDESC*(N_ROWS_IN_GDESC + 1), sizeof(char)))){
+    return ERROR;
+   }
+   for(i=1;i<5;i++){
+       read_gdesc[i] = read_gdesc[0] + (N_ROWS_IN_GDESC + 1)*i;
+   }
+
+  
+
    if (!filename)
    {
      return ERROR;
@@ -55,6 +69,22 @@
        south = atol(toks);
        toks = strtok(NULL, "|");
        west = atol(toks);
+
+       if(strtok(NULL, "|") != NULL){
+          toks = strtok(NULL, "|");
+          strcpy(read_gdesc[0], toks);
+          toks = strtok(NULL, "|");
+          strcpy(read_gdesc[1], toks);
+          toks = strtok(NULL, "|");
+          strcpy(read_gdesc[2], toks);
+          toks = strtok(NULL, "|");
+          strcpy(read_gdesc[3], toks);
+          toks = strtok(NULL, "|");
+          strcpy(read_gdesc[4], toks);
+          
+       }
+
+
  #ifdef DEBUG
        printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
  #endif
@@ -70,10 +100,12 @@
          space_set_south(space, south);
          space_set_west(space, west);
          game_add_space(game, space);
+         space_set_gdesc(space, read_gdesc);
        }
-     }
+      }
    }
- 
+   free(read_gdesc[0]);
+   free(read_gdesc);
    if (ferror(file))
    {
      status = ERROR;

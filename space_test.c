@@ -71,9 +71,9 @@ int main(int argc, char** argv) {
   if (all || test == 25) test2_space_get_east();
   if (all || test == 26) test1_space_get_west();
   if (all || test == 27) test2_space_get_west();
-  if (all || test == 28) test1_space_get_object();
-  if (all || test == 29) test2_space_get_object();
-  if (all || test == 30) test3_space_get_object();
+  if (all || test == 28) test1_space_get_set_of_objects();
+  if (all || test == 29) test2_space_get_set_of_objects();
+  if (all || test == 30) test3_space_get_set_of_objects();
 
   PRINT_PASSED_PERCENTAGE;
 
@@ -188,14 +188,14 @@ void test2_space_get_name() {
   PRINT_TEST_RESULT(space_get_name(s) == NULL);
 }
 
-void test1_space_get_object() {
+void test1_space_get_set_of_objects() {
   Space *s;
   s = space_create(1);
-  PRINT_TEST_RESULT(space_get_object(s) == FALSE);
+  PRINT_TEST_RESULT(space_get_set_of_objects(s) == FALSE);
   space_destroy(s);
 }
 
-void test2_space_get_object() {
+void test2_space_get_set_of_objects() {
   Space *s;
   s = space_create(1);
   space_set_object(s,TRUE);
@@ -203,7 +203,7 @@ void test2_space_get_object() {
   space_destroy(s);  
 }
 
-void test3_space_get_object() {
+void test3_space_get_set_of_objects() {
   Space *s = NULL;
   PRINT_TEST_RESULT(space_get_object(s) == FALSE);
 }

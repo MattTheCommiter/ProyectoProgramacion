@@ -82,6 +82,7 @@ Status command_get_user_input(Command *command)
 {
   char input[CMD_LENGTH] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1, j = NO_ARG + 1;
+  
   CommandCode cmd;
   ArgumentCode arg = NO_ARG;
 
@@ -92,7 +93,6 @@ Status command_get_user_input(Command *command)
   /*read the command entered by the user*/
   if (fgets(input, CMD_LENGTH, stdin))
   {
-    fprintf(stdout, "The line input is: %s", input);
     token = strtok(input, " \n");
     if (!token)
     {

@@ -20,20 +20,21 @@
  */
 struct _Space
 {
-  Id id;                    /*!< Id number of the space, it must be unique */
-  char name[WORD_SIZE + 1]; /*!< Name of the space */
-  Id north;                 /*!< Id of the space at the north */
-  Id south;                 /*!< Id of the space at the south */
-  Id east;                  /*!< Id of the space at the east */
-  Id west;                  /*!< Id of the space at the west */
-  Set *objects;             /*!< The set of objects present at the space */
-  Id character;             /*!< The Id of the character present at the space */
+  Id id;                                              /*!< Id number of the space, it must be unique */
+  char name[WORD_SIZE + 1];                           /*!< Name of the space */
+  Id north;                                           /*!< Id of the space at the north */
+  Id south;                                           /*!< Id of the space at the south */
+  Id east;                                            /*!< Id of the space at the east */
+  Id west;                                            /*!< Id of the space at the west */
+  Set *objects;                                       /*!< The set of objects present at the space */
+  Id character;                                       /*!< The Id of the character present at the space */
+  char **gdesc;                                       /*!< The graphic description of the space */
 };
 
 Space *space_create(Id id)
 {
   Space *newSpace = NULL;
-
+  int i;
   /* Error control */
   if (id == NO_ID)
     return NULL;
@@ -53,7 +54,15 @@ Space *space_create(Id id)
   newSpace->west = NO_ID;
   newSpace->objects = set_create();
   newSpace->character = NO_ID;
-
+  if(!(newSpace->gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *)))){
+    return NULL;
+  }
+  if(!(newSpace->gdesc[0] = (char *)calloc((N_ROWS_IN_GDESC + 1)*N_LINES_IN_GDESC, sizeof(char)))){
+    return NULL;
+  }
+  for(i=1;i<5;i++){
+      newSpace->gdesc[i] = newSpace->gdesc[0] + 10*i;
+  }
   return newSpace;
 }
 
@@ -62,6 +71,12 @@ Status space_destroy(Space *space)
   if (!space || !space->objects)
   {
     return ERROR;
+  }
+  if(space->gdesc){
+    if(space->gdesc[0]){
+      free(space->gdesc[0]);
+    free(space->gdesc);
+    }
   }
   set_destroy(space->objects);
   free(space);
@@ -205,6 +220,7 @@ Bool space_object_belongs(Space *space, Id object_Id)
 
 Status space_print(Space *space)
 {
+  int i;
   Id idaux = NO_ID;
   /* Error Control */
   if (!space)
@@ -267,6 +283,10 @@ Status space_print(Space *space)
     }
 
   }
+  fprintf(stdout, "\nGraphic description of the space: ");
+  for(i=0;i<N_LINES_IN_GDESC;i++){
+    printf("\n%s", space->gdesc[i]);
+  }
 
   return OK;
 }
@@ -284,4 +304,20 @@ Status space_delete_object(Space *space, Id objectId){
 Id space_get_character(Space *space){
   if(!space) return NO_ID;
   return space->character;
+}
+
+char **space_get_gdesc(Space *space){
+  if(!space) return NULL;
+  return space->gdesc;
+}
+
+Status space_set_gdesc(Space *space, char**space_gdescription){
+  int i=0;
+  if(!space) return ERROR;
+  for(i=0;i<N_LINES_IN_GDESC;i++){
+    if(!strcpy(space->gdesc[i], space_gdescription[i])){
+      return ERROR;
+    }
+  }
+  return OK;
 }
