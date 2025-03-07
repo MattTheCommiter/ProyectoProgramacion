@@ -170,11 +170,11 @@
   * @date 27-01-2025
   * @author Profesores
   *
-  * @param game a pointer to the structure with the game's main information
+  * @param game a double pointer to the structure with the game's main information
   * @param finished the new boolean value that describes whether the game has finished or not
   * @return Status if the function has been completed succesfully
   */
- Status game_set_finished(Game *game, Bool finished);
+ Status game_set_finished(Game **game, Bool finished);
  
  /**
   * @brief prints the id of the player's location, the object's location and prints the information regarding all the spaces in the game

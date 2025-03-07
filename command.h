@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2        /*<!Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 10        /*<!Number of commands that are possible*/
+#define N_CMD 11        /*<!Number of commands that are possible*/
 #define MAX_CMD_ARG 20  /*<!Maximum number of characters in the argument parameter of the command*/
 #define N_OBJECTS 4      /*<!Number of objects that can be present in the game*/
 /**
@@ -40,7 +40,8 @@ typedef enum
     LEFT,           /*!<Assigs 5 to the keyword "LEFT", which will be used in command-related functions*/ 
     RIGHT,          /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/ 
     TAKE,           /*!<Assigs 7 to the keyword "TAKE_S", which represents taking the seed object*/
-    CHAT            /*!<Assigs 8 to the keyword "DROP", which will be used in command-related functions*/  
+    CHAT,            /*!<Assigs 8 to the keyword "DROP", which will be used in command-related functions*/ 
+    ATTACK          /*!<Assigs 9 to the keyword "DROP", which will be used in command-related functions*/ 
 } CommandCode;
 
 typedef enum{

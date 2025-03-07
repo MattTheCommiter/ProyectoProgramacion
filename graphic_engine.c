@@ -229,7 +229,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "next or n, back or b, exit or e, take seed or ts,take grain or tg,take crumb or tc, take leaf or tl, drop or d, left or l, right or r, chat or c");
+  sprintf(str, "next or n, back or b, exit or e, take seed or ts,take grain or t g,take crumb or t c, take leaf or t l, drop or d, left or l, right or r, chat or c, attack or a");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
