@@ -348,3 +348,10 @@ Status game_set_message(Game **game, char *msg){
   strcpy((*game)->message, msg);
   return OK;
 }
+
+int game_get_n_objects(Game **game){
+  if(!game){
+    return -1;
+  }
+  return (*game)->n_objects;
+}

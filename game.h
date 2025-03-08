@@ -340,4 +340,13 @@
   * @return pointer to the object or NULL if an error occurrs
   */
  Object *game_get_object_in_pos(Game **game, int pos);
+
+ /**
+  * @brief 
+  * @date 08/03/25
+  * @author Alvaro Inigo
+  * @param game a double pointer to game
+  * @return int , the number of objects in the game
+  */
+ int game_get_n_objects(Game **game);
  #endif
