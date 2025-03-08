@@ -355,3 +355,21 @@ int game_get_n_objects(Game **game){
   }
   return (*game)->n_objects;
 }
+
+int game_get_n_characters(Game **game){
+  if(!game){
+    return -1;
+  }
+  return (*game)->n_characters;
+}
+
+Id game_get_character_location(Game **game, Id character_id){
+  int i;
+  if(!game) return NO_ID;
+  for(i = 0; i < (*game)->n_spaces; i++){
+    if(space_get_character(game_get_space(game, game_get_space_id_at(game, i))) == character_id){
+      return game_get_space_id_at(game, i);
+    }
+  }
+  return NO_ID;
+}

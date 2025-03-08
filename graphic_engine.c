@@ -80,11 +80,11 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
 {
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID, obj_loc = NO_ID;
+  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID, obj_loc = NO_ID, character_loc = NO_ID;
   Space *space_act = NULL;
   char obj = '\0', obj_l = '\0', obj_r = '\0';
-  char str[255], *object_name = NULL;
-  int i;
+  char str[255], *object_name = NULL, *character_gdesc = NULL;
+  int i, character_hp;
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
 
@@ -246,7 +246,17 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
       screen_area_puts(ge->descript, str);
     }
   }
-  sprintf(str, "Player : %d", (int)game_get_player_location(game));
+  sprintf(str, "Characters : ");
+  screen_area_puts(ge->descript, str);
+  for (i = 0; i < game_get_n_characters(game); i++)
+  {
+    character_gdesc = character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
+    character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
+    character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
+    sprintf(str, "  %s location:%d (%d)", character_gdesc, (int)character_loc, character_hp);
+    screen_area_puts(ge->descript, str);
+  }
+  sprintf(str, "Player : %d (%d)", (int)game_get_player_location(game), player_get_health(game_get_player(game)));
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
   screen_area_puts(ge->descript, str);

@@ -342,11 +342,29 @@
  Object *game_get_object_in_pos(Game **game, int pos);
 
  /**
-  * @brief 
+  * @brief gets the numbers of objects un game
   * @date 08/03/25
   * @author Alvaro Inigo
   * @param game a double pointer to game
   * @return int , the number of objects in the game
   */
  int game_get_n_objects(Game **game);
+
+ /**
+  * @brief gets the number of characters in the game
+  * @date 08/03/25
+  * @author Alvaro Inigo
+  * @param game a double pointer to game
+  * @return int , the number of characters in the game
+  */
+ int game_get_n_characters(Game **game);
+/**
+ * @brief gets the Id of the space a character is at 
+ * @date 08/03/25
+  *@author Alvaro Inigo
+ * @param game a double pointer to the game
+ * @param character_id the Id of the character we are loking for
+ * @return Id the id of the space the character is located at.
+ */
+ Id game_get_character_location(Game **game, Id character_id);
  #endif

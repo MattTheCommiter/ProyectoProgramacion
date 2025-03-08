@@ -47,6 +47,7 @@ Player *player_create(Id id)
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
   newPlayer->object = NO_ID;
+  newPlayer->health = 5;
 
   return newPlayer;
 }
