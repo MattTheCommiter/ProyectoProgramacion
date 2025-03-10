@@ -25,6 +25,6 @@
  * @param cmd the newest command
  * @return Status : whether function was completed succesfully
  */
-Status game_actions_update(Game **game, Command *cmd);
+Status game_actions_update(Game *game, Command *cmd);
 
 #endif

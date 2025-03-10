@@ -15,7 +15,7 @@
  #include "gameReader.h"
  #include "game.h"
  
- Status gameReader_load_spaces(Game **game, char *filename)
+ Status gameReader_load_spaces(Game *game, char *filename)
  {
    FILE *file = NULL;
    char line[WORD_SIZE] = "";
@@ -116,7 +116,7 @@
    return status;
  }
 
- Status gameReader_load_objects(Game **game, char *filename)
+ Status gameReader_load_objects(Game *game, char *filename)
  {
    FILE *file = NULL;
    char line[WORD_SIZE] = "";

@@ -26,7 +26,7 @@
  *
  * @param game
  */
-void game_actions_unknown(Game **game);
+void game_actions_unknown(Game *game);
 
 /**
  * @brief doesn't carry out any actions
@@ -36,7 +36,7 @@ void game_actions_unknown(Game **game);
  *
  * @param game
  */
-void game_actions_exit(Game **game);
+void game_actions_exit(Game *game);
 
 /**
  * @brief moves the character to the space in the south, changing the id's accordingly
@@ -46,7 +46,7 @@ void game_actions_exit(Game **game);
  *
  * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_next(Game **game);
+void game_actions_next(Game *game);
 
 /**
  * @brief moves the character to the space in the north, changing the id's accordingly
@@ -56,7 +56,7 @@ void game_actions_next(Game **game);
  *
  * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_back(Game **game);
+void game_actions_back(Game *game);
 
 /**
  * @brief takes the object in the space
@@ -67,7 +67,7 @@ void game_actions_back(Game **game);
  * @param game a double pointer to the structure with the game's main information
  * @param arg a code which corresponds to the object being taken
  */
-void game_actions_take(Game **game, ArgumentCode arg);
+void game_actions_take(Game *game, ArgumentCode arg);
 
 /**
  * @brief drops the object in the space
@@ -77,11 +77,11 @@ void game_actions_take(Game **game, ArgumentCode arg);
  *
  * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_drop(Game **game);
+void game_actions_drop(Game *game);
 
-void game_actions_left(Game **game);
+void game_actions_left(Game *game);
 
-void game_actions_right(Game **game);
+void game_actions_right(Game *game);
 
 /**
  * @brief chats with a character in the same space, assigning the character's message to the message parameter in game
@@ -91,14 +91,14 @@ void game_actions_right(Game **game);
  *
  * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_chat(Game **game);
+void game_actions_chat(Game *game);
 
-void game_actions_attack(Game **game);
+void game_actions_attack(Game *game);
 /**
    Game actions implementation
 */
 
-Status game_actions_update(Game **game, Command *command)
+Status game_actions_update(Game *game, Command *command)
 {
   CommandCode cmd;
 
@@ -151,11 +151,11 @@ Status game_actions_update(Game **game, Command *command)
    Calls implementation for each action
 */
 
-void game_actions_unknown(Game **game) {}
+void game_actions_unknown(Game *game) {}
 
-void game_actions_exit(Game **game) {}
+void game_actions_exit(Game *game) {}
 
-void game_actions_next(Game **game)
+void game_actions_next(Game *game)
 {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
@@ -181,7 +181,7 @@ void game_actions_next(Game **game)
   return;
 }
 
-void game_actions_back(Game **game)
+void game_actions_back(Game *game)
 {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
@@ -205,7 +205,7 @@ void game_actions_back(Game **game)
   return;
 }
 
-void game_actions_take(Game **game, ArgumentCode arg)
+void game_actions_take(Game *game, ArgumentCode arg)
 {
   Id objectId = NO_ID;
   /*If the pointers are NULL or the player already has an object, nothing happens*/
@@ -248,7 +248,7 @@ void game_actions_take(Game **game, ArgumentCode arg)
   return;
 }
 
-void game_actions_drop(Game **game)
+void game_actions_drop(Game *game)
 {
   if (!game)
   {
@@ -269,7 +269,7 @@ void game_actions_drop(Game **game)
   return;
 }
 
-void game_actions_left(Game **game)
+void game_actions_left(Game *game)
 {
   Id currentId = NO_ID, nextId = NO_ID;
   if (!game)
@@ -294,7 +294,7 @@ void game_actions_left(Game **game)
   return;
 }
 
-void game_actions_right(Game **game)
+void game_actions_right(Game *game)
 {
   Id currentId = NO_ID;
   Id nextId = NO_ID;
@@ -319,7 +319,7 @@ void game_actions_right(Game **game)
   game_set_last_command_success(game ,ERROR);
   return;
 }
-void game_actions_chat(Game **game)
+void game_actions_chat(Game *game)
 {
   if (!game){
     game_set_last_command_success(game ,ERROR);
@@ -336,7 +336,7 @@ void game_actions_chat(Game **game)
   return;
 }
 
-void game_actions_attack(Game **game)
+void game_actions_attack(Game *game)
 {
   
   int num;
