@@ -58,9 +58,10 @@ Space *space_create(Id id)
     return NULL;
   }
   if(!(newSpace->gdesc[0] = (char *)calloc((N_ROWS_IN_GDESC + 1)*N_LINES_IN_GDESC, sizeof(char)))){
+    free(newSpace->gdesc);
     return NULL;
   }
-  for(i=1;i<5;i++){
+  for(i=1;i<N_LINES_IN_GDESC;i++){
       newSpace->gdesc[i] = newSpace->gdesc[0] + 10*i;
   }
   return newSpace;

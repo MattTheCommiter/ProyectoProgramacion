@@ -58,6 +58,7 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "game_actions.h": "c",
-    "functional": "c"
+    "functional": "c",
+    "TEST.C": "cpp"
   }
 }

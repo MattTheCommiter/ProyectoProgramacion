@@ -17,6 +17,10 @@
 
 #define N_LINES_IN_GDESC 5
 #define N_ROWS_IN_GDESC 9
+#define N_TOTAL_LINES_IN_GDESC 9
+#define N_TOTAL_ROWS_IN_GDESC 50
+#define N_TOTAL_LINES_IN_SQUARE 9
+#define N_TOTAL_ROWS_IN_SQUARE 13
 
 typedef struct _Space Space;
 

@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "command.h"
 #include "libscreen.h"
@@ -22,7 +23,7 @@
 #define WIDTH_MAP 48
 #define WIDTH_DES 29
 #define WIDTH_BAN 23
-#define HEIGHT_MAP 13
+#define HEIGHT_MAP 30
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
@@ -37,6 +38,24 @@ struct _Graphic_engine
 {
   Area *map, *descript, *banner, *help, *feedback; /*!<All of the different parts of the textual graphic interface*/
 };
+/**
+ * @brief Create a line of spaces
+ * 
+ * @param id_center the id of the object that will be at the center of the line
+ * @return char** matriz with the complete line
+ */
+char **create_line_of_spaces(Game **game, Id id_center);
+
+/**
+ * @brief Create a square space description for the space with the given id
+ * 
+ * @param game 
+ * @param square_id 
+ * @return char** matrix with the square of the space that will be printed on the screen
+ */
+char **create_space_square(Game **game, Id square_id);
+
+
 
 Graphic_engine *graphic_engine_create()
 {
@@ -63,6 +82,147 @@ Graphic_engine *graphic_engine_create()
   return ge;
 }
 
+char **create_space_square(Game **game, Id square_id){
+  char **space_square=NULL, str[255], ant_str[]="m0^", blank_player_str[]="   ", **gdesc, *player, object=' '; /*Quitar este número mágico*/
+  Space *space;
+  int i;
+
+  space = game_get_space(game, square_id);
+  
+  
+  
+  if(!(space_square = (char **)calloc(N_TOTAL_LINES_IN_SQUARE, sizeof(char *)))){
+    return NULL;
+   }
+  if(!(space_square[0] = (char *)calloc(N_TOTAL_LINES_IN_SQUARE*(N_TOTAL_ROWS_IN_SQUARE + 1), sizeof(char)))){
+    free(space_square);
+    return NULL;
+   }
+
+
+
+  for(i=1;i<N_TOTAL_LINES_IN_SQUARE;i++){
+    space_square[i] = space_square[0] + (N_TOTAL_ROWS_IN_SQUARE + 1)*i;
+   }
+
+   strcpy(space_square[0], "hey");
+   
+  if(square_id == NO_ID){
+    for(i=0;i<N_TOTAL_LINES_IN_SQUARE;i++){
+      strcpy(space_square[i], "             ");
+    }
+   }
+   else{
+    if(game_get_player_location(game) == square_id){
+        player = ant_str;
+    }else{
+        player=blank_player_str;
+    }
+
+    gdesc = space_get_gdesc(space);
+
+    sprintf(str, "+-----------+");
+    strcpy(space_square[0], str);
+    if(square_id < MIN_VALUE_WITH_THREE_NUMBERS){
+      sprintf(str, "| %s     %2d| ", player, (int)square_id);
+      strcpy(space_square[1], str);
+    }else{
+      sprintf(str, "| %s    %2d| ", player, (int)square_id);
+      strcpy(space_square[1], str);
+    }
+    sprintf(str, "| %s |", gdesc[0]);
+    strcpy(space_square[2], str);
+    sprintf(str, "| %s |", gdesc[1]);
+    strcpy(space_square[3], str);
+    sprintf(str, "| %s |", gdesc[2]);
+    strcpy(space_square[4], str);
+    sprintf(str, "| %s |", gdesc[3]);
+    strcpy(space_square[5], str);
+    sprintf(str, "| %s |", gdesc[4]);
+    strcpy(space_square[6], str);
+    sprintf(str, "  |     %c     |", object);
+    strcpy(space_square[7], str);
+    sprintf(str, "+-----------+");
+    strcpy(space_square[8], str);
+  }
+
+
+  return space_square;
+}
+
+char **create_line_of_spaces(Game **game, Id id_center){
+  char **gdesc_line=NULL, **left_square=NULL, **center_square=NULL, **right_square=NULL, str[255];
+  int i;
+  Id id_left, id_right;
+
+  id_left = space_get_west(game_get_space(game, id_center));
+  id_right = space_get_east(game_get_space(game, id_center));
+
+  /*Create the matrix to store the entire line*/
+  if(!(gdesc_line = (char **)calloc(N_TOTAL_LINES_IN_GDESC, sizeof(char *)))){
+    return NULL;
+   }
+  if(!(gdesc_line[0] = (char *)calloc(N_TOTAL_LINES_IN_GDESC*(N_TOTAL_ROWS_IN_GDESC + 1), sizeof(char)))){
+    free(gdesc_line);
+    return NULL;
+   }
+  for(i=1;i<N_TOTAL_LINES_IN_GDESC;i++){
+       gdesc_line[i] = gdesc_line[0] + (N_TOTAL_ROWS_IN_GDESC + 1)*i;
+   }
+  /*End of creating the matrix*/
+   
+  left_square = create_space_square(game, NO_ID);
+  center_square = create_space_square(game, id_center);
+  right_square = create_space_square(game, NO_ID);
+
+  /*Create the lines manually*/
+  sprintf(str, "%s  %s  %s", left_square[0], center_square[0], right_square[0]);
+  strcpy(gdesc_line[0], str);
+  sprintf(str, "%s  %s  %s", left_square[1], center_square[1], right_square[1]);
+  strcpy(gdesc_line[1], str);
+  sprintf(str, "%s  %s  %s", left_square[2], center_square[2], right_square[2]);
+  strcpy(gdesc_line[2], str);
+  sprintf(str, "%s  %s  %s", left_square[3], center_square[3], right_square[3]);
+  strcpy(gdesc_line[3], str);
+  sprintf(str, "%s  %s  %s", left_square[4], center_square[4], right_square[4]);
+  strcpy(gdesc_line[4], str);
+  sprintf(str, "%s  %s  %s", left_square[5], center_square[5], right_square[5]);
+  strcpy(gdesc_line[5], str);
+  sprintf(str, "%s  %s  %s", left_square[6], center_square[6], right_square[6]);
+  strcpy(gdesc_line[6], str);
+  sprintf(str, "%s  %s  %s", left_square[7], center_square[7], right_square[7]);
+  strcpy(gdesc_line[7], str);
+  sprintf(str, "%s  %s  %s", left_square[8], center_square[8], right_square[8]);
+  strcpy(gdesc_line[8], str);
+  
+  
+  if(left_square){
+    if(left_square[0]){
+      free(left_square[0]);
+    }
+    free(left_square);
+  }
+
+  if(center_square){
+    if(center_square[0]){
+      free(center_square[0]);
+    }
+    free(center_square);
+  }
+
+  if(right_square){
+    if(right_square[0]){
+      free(right_square[0]);
+    }
+    free(right_square);
+  }
+  /*End of creating the lines*/
+  return gdesc_line;
+}
+
+
+
+
 void graphic_engine_destroy(Graphic_engine *ge)
 {
   if (!ge)
@@ -80,9 +240,9 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
 {
-  Id id_act = NO_ID, id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID, obj_loc = NO_ID, character_loc = NO_ID;
-  Space *space_act = NULL;
-  char obj = '\0', obj_l = '\0', obj_r = '\0';
+  Id id_act = NO_ID, /*id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID,*/ obj_loc = NO_ID, character_loc = NO_ID;
+  /*Space *space_act = NULL;*/
+  char /*obj = '\0', obj_l = '\0', obj_r = '\0',*/ **created_line=NULL;
   char str[255], *object_name = NULL, *character_gdesc = NULL;
   int i, character_hp;
   CommandCode last_cmd = UNKNOWN;
@@ -90,151 +250,33 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game **game)
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
-  if ((id_act = game_get_player_location(game)) != NO_ID)
-  {
-    space_act = game_get_space(game, id_act);
-    id_back = space_get_north(space_act);
-    id_next = space_get_south(space_act);
-    id_left = space_get_west(space_act);
-    id_right = space_get_east(space_act);
-
-    if (game_get_object_location(game, 1) == id_back)
-      obj = '*';
-    else
-      obj = ' ';
-    /*The following lines are dedicated to printing the map that appears on the screen, including the ant and the object (if present)*/
-    if (id_back != NO_ID)
-    {
-      if (id_back < 100)
-      {
-        sprintf(str, "  |         %2d|", (int)id_back);
-      }
-      else
-      {
-        sprintf(str, "  |        %2d|", (int)id_back);
-      }
-      screen_area_puts(ge->map, str);
-      sprintf(str, "  |     %c     |", obj);
-      screen_area_puts(ge->map, str);
-      sprintf(str, "  +-----------+");
-      screen_area_puts(ge->map, str);
-      sprintf(str, "        ^");
-      screen_area_puts(ge->map, str);
-    }
-
-    if (game_get_object_location(game, 1) == id_act)
-      obj = '*';
-    else
-      obj = ' ';
-    if (game_get_object_location(game, 1) == id_left)
-      obj_l = '*';
-    else
-      obj_l = ' ';
-    if (game_get_object_location(game, 1) == id_right)
-      obj_r = '*';
-    else
-      obj_r = ' ';
-
-    if (id_act != NO_ID)
-    {
-      if (id_left != NO_ID)
-      {
-        if (id_right != NO_ID)
-        {
-          sprintf(str, "  +-----------+   +-----------+   +-----------+");
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  |        %2d|   | m0^    %2d|   |        %2d|", (int)id_left, (int)id_act, (int)id_right);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  |     %c     |<  |     %c     |  >|     %c     |", obj_l, obj, obj_r);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  +-----------+   +-----------+   +-----------+");
-          screen_area_puts(ge->map, str);
-        }
-        else
-        {
-          sprintf(str, "  +-----------+   +-----------+");
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  |        %2d|   | m0^    %2d|", (int)id_left, (int)id_act);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  |     %c     |< |     %c     |", obj_l, obj);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  +-----------+   +-----------+");
-          screen_area_puts(ge->map, str);
-        }
-      }
-      if (id_left == NO_ID)
-      {
-        if (id_right != NO_ID)
-        {
-          sprintf(str, "  +-----------+   +-----------+");
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  | m0^    %2d|   |        %2d|", (int)id_act, (int)id_right);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  |     %c     |  >|     %c     |", obj, obj_r);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  +-----------+   +-----------+");
-          screen_area_puts(ge->map, str);
-        }
-        else
-        {
-          sprintf(str, "  +-----------+");
-          screen_area_puts(ge->map, str);
-          if (id_act < 100)
-          {
-            sprintf(str, "  | m0^     %2d|", (int)id_act);
-          }
-          else
-          {
-            sprintf(str, "  | m0^    %2d|", (int)id_act);
-          }
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  |     %c     |", obj);
-          screen_area_puts(ge->map, str);
-          sprintf(str, "  +-----------+");
-          screen_area_puts(ge->map, str);
-        }
+  if ((id_act = game_get_player_location(game)) != NO_ID){
+    created_line = create_line_of_spaces(game, space_get_north(game_get_space(game, id_act)));
+    screen_area_puts(ge->map, created_line[0]);
+    if(created_line!=NULL){
+      for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
+      screen_area_puts(ge->map, created_line[i]);
       }
     }
-
-    if (game_get_object_location(game, 1) == id_next)
-      obj = '*';
-    else
-      obj = ' ';
-
-    if (id_next != NO_ID)
-    {
-      sprintf(str, "        v");
-      screen_area_puts(ge->map, str);
-      sprintf(str, "  +-----------+");
-      screen_area_puts(ge->map, str);
-      if (id_next < 100)
-      {
-        sprintf(str, "  |         %2d|", (int)id_next);
-      }
-      else
-      {
-        sprintf(str, "  |        %2d|", (int)id_next);
-      }
-      screen_area_puts(ge->map, str);
-      sprintf(str, "  |     %c     |", obj);
-      screen_area_puts(ge->map, str);
+    free(created_line[0]);
+    free(created_line);
+    created_line=NULL;
+    created_line = create_line_of_spaces(game, id_act);
+    for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
+      screen_area_puts(ge->map, created_line[i]);
     }
+    free(created_line[0]);
+    free(created_line);
+    created_line=NULL;
+    created_line = create_line_of_spaces(game, space_get_south(game_get_space(game, id_act)));
+    for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
+      screen_area_puts(ge->map, created_line[i]);
+    }
+    free(created_line[0]);  
+    free(created_line);
+    created_line=NULL;
   }
 
-  /* Paint in the description area */
-  /*
-  screen_area_clear(ge->descript);
-  if ((obj_loc = game_get_object_location(game,1)) != NO_ID)
-  {
-    sprintf(str, "  Object location:%d", (int)obj_loc);
-    screen_area_puts(ge->descript, str);
-  }
-  if ((obj_loc = game_get_object_location(game,1)) == NO_ID)
-  {
-    sprintf(str, "Seed in the inventory");
-    screen_area_puts(ge->descript, str);
-  }
-*/
   screen_area_clear(ge->descript);
   for (i = 0; i < game_get_n_objects(game); i++)
   {

@@ -20,7 +20,7 @@
    FILE *file = NULL;
    char line[WORD_SIZE] = "";
    char name[WORD_SIZE] = "";
-   char **read_gdesc;
+   char **read_gdesc, empty_box;
    char *toks = NULL;
    int i;
    Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
@@ -31,6 +31,7 @@
     return ERROR;
    }
    if(!(read_gdesc[0] = (char *)calloc(N_LINES_IN_GDESC*(N_ROWS_IN_GDESC + 1), sizeof(char)))){
+    free(read_gdesc);
     return ERROR;
    }
    for(i=1;i<5;i++){
@@ -81,7 +82,12 @@
           strcpy(read_gdesc[3], toks);
           toks = strtok(NULL, "|");
           strcpy(read_gdesc[4], toks);
-          
+       }else{
+          strcpy(read_gdesc[0], "         ");
+          strcpy(read_gdesc[1], "         ");
+          strcpy(read_gdesc[2], "         ");
+          strcpy(read_gdesc[3], "         ");
+          strcpy(read_gdesc[4], "         ");
        }
 
 
