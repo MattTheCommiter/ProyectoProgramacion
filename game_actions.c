@@ -159,10 +159,14 @@ void game_actions_next(Game **game)
 {
   Id current_id = NO_ID;
   Id space_id = NO_ID;
-
+  if(!game){
+    game_set_last_command_success(game ,ERROR);
+    return;
+  }
   space_id = game_get_player_location(game);
   if (space_id == NO_ID)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
 
@@ -170,8 +174,10 @@ void game_actions_next(Game **game)
   if (current_id != NO_ID)
   {
     game_set_player_location(game, current_id);
+    game_set_last_command_success(game ,OK);
+    return;
   }
-
+  game_set_last_command_success(game ,ERROR);
   return;
 }
 
@@ -182,8 +188,9 @@ void game_actions_back(Game **game)
 
   space_id = game_get_player_location(game);
 
-  if (NO_ID == space_id)
+  if (NO_ID == space_id || !game)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
 
@@ -191,8 +198,10 @@ void game_actions_back(Game **game)
   if (current_id != NO_ID)
   {
     game_set_player_location(game, current_id);
+    game_set_last_command_success(game ,OK);
+    return;
   }
-
+  game_set_last_command_success(game ,ERROR);
   return;
 }
 
@@ -202,6 +211,7 @@ void game_actions_take(Game **game, ArgumentCode arg)
   /*If the pointers are NULL or the player already has an object, nothing happens*/
   if (!game || player_get_object(game_get_player(game)) != NO_ID || arg == NO_ARG)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   switch (arg)
@@ -221,30 +231,42 @@ void game_actions_take(Game **game, ArgumentCode arg)
   default:
     break;
   }
-
+  if(game_get_object_location(game, objectId) == NO_ID){
+    game_set_last_command_success(game ,ERROR);
+    return;
+  }
   /*We check that the player and the object are in the same space*/
   if (game_get_player_location(game) == game_get_object_location(game, objectId))
   { /*We change the id of the object that the player is carrying*/
     player_set_object(game_get_player(game), objectId);
     /*We change the objectId of the space where the object was located to NO_ID*/
     space_delete_object(game_get_space(game, game_get_player_location(game)), objectId);
+    game_set_last_command_success(game ,OK);
+    return;
   }
+  game_set_last_command_success(game ,ERROR);
+  return;
 }
 
 void game_actions_drop(Game **game)
 {
   if (!game)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   /*We check that the player is carrying an object*/
   if (player_get_object(game_get_player(game)) != NO_ID)
   {
     /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
-    space_add_objectId(game_get_space(game, game_get_player_location(game)), game_get_objectId_from_name(game, "Seed"));
+    space_add_objectId(game_get_space(game, game_get_player_location(game)),player_get_object(game_get_player(game)));
     /*We change the Id of the player's object to NO_ID*/
     player_set_object(game_get_player(game), NO_ID);
+    game_set_last_command_success(game ,OK);
+    return;
   }
+  game_set_last_command_success(game ,ERROR);
+  return;
 }
 
 void game_actions_left(Game **game)
@@ -252,18 +274,23 @@ void game_actions_left(Game **game)
   Id currentId = NO_ID, nextId = NO_ID;
   if (!game)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   currentId = game_get_player_location(game);
   if (currentId == NO_ID)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   nextId = space_get_west(game_get_space(game, currentId));
   if (nextId != NO_ID)
   {
     game_set_player_location(game, nextId);
+    game_set_last_command_success(game ,OK);
+    return;
   }
+  game_set_last_command_success(game ,ERROR);
   return;
 }
 
@@ -273,30 +300,39 @@ void game_actions_right(Game **game)
   Id nextId = NO_ID;
   if (!game)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   currentId = game_get_player_location(game);
   if (currentId == NO_ID)
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   nextId = space_get_east(game_get_space(game, currentId));
   if (nextId != NO_ID)
   {
     game_set_player_location(game, nextId);
+    game_set_last_command_success(game ,OK);
+    return;
   }
+  game_set_last_command_success(game ,ERROR);
+  return;
 }
 void game_actions_chat(Game **game)
 {
-  if (!game)
+  if (!game){
+    game_set_last_command_success(game ,ERROR);
     return;
-
+  }
   if (!character_get_friendly(game_get_character(game, space_get_character(game_get_space(game, game_get_player_location(game))))))
   {
+    game_set_last_command_success(game ,ERROR);
     return;
   }
 
   game_set_message(game, character_get_message(game_get_character(game, space_get_character(game_get_space(game, game_get_player_location(game))))));
+  game_set_last_command_success(game ,OK);
   return;
 }
 
@@ -312,21 +348,25 @@ void game_actions_attack(Game **game)
     return;
   }
   cha_Id = space_get_character(game_get_space(game, game_get_player_location(game)));
-  cha = game_get_character(game,space_get_character(game_get_space(game, game_get_player_location(game))));
   if(cha_Id == NO_ID){
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   cha = game_get_character(game, cha_Id);
   if(cha == NULL){
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   if(character_get_friendly(cha) == TRUE || character_get_health(cha) == 0){
+    game_set_last_command_success(game ,ERROR);
     return;
   }
   if(num <= 4){
     player_set_health(game_get_player(game), player_get_health(game_get_player(game)) - 1);
+    game_set_last_command_success(game ,OK);
   }else{
     character_set_health(cha, character_get_health(cha) - 1);
+    game_set_last_command_success(game ,OK);
   }
   if(player_get_health(game_get_player(game)) == 0){
     game_set_finished(game, TRUE);

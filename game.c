@@ -25,6 +25,7 @@ struct _Game
   Character *characters[MAX_CHARACTERS];    /*!<Number of spaces in the game*/
   int n_characters;                         /*!<Number of characters in the game*/
   Command *last_cmd;                        /*!<Pointer to the last command introduced by the user*/
+  Status command_success;                   /*!<Status that stablishes wheter the command was successful*/
   Bool finished;                            /*!<Boolean that establishes whether the game has ended or not*/
   char message[MAX_MESSAGE];
 };
@@ -65,6 +66,7 @@ Status game_create(Game **game)
   (*game)->n_objects = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
+  (*game)->command_success = OK;
 
   return OK;
 }
@@ -372,4 +374,19 @@ Id game_get_character_location(Game **game, Id character_id){
     }
   }
   return NO_ID;
+}
+
+Status game_set_last_command_success(Game **game, Status success){
+  if(!game){
+    return ERROR;
+  }
+  (*game)->command_success = success;
+  return OK;
+}
+
+Status game_get_last_command_success(Game **game){
+  if(!game){
+    return ERROR;
+  }
+  return (*game)->command_success;
 }
