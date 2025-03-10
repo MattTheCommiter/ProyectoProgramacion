@@ -44,7 +44,7 @@ struct _Graphic_engine
  * @param id_center the id of the object that will be at the center of the line
  * @return char** matriz with the complete line
  */
-char **create_line_of_spaces(Game **game, Id id_center);
+char **create_line_of_spaces(Game *game, Id id_center);
 
 /**
  * @brief Create a square space description for the space with the given id
@@ -53,7 +53,7 @@ char **create_line_of_spaces(Game **game, Id id_center);
  * @param square_id 
  * @return char** matrix with the square of the space that will be printed on the screen
  */
-char **create_space_square(Game **game, Id square_id);
+char **create_space_square(Game *game, Id square_id);
 
 
 
@@ -82,7 +82,7 @@ Graphic_engine *graphic_engine_create()
   return ge;
 }
 
-char **create_space_square(Game **game, Id square_id){
+char **create_space_square(Game *game, Id square_id){
   char **space_square=NULL, str[255], ant_str[]="m0^", blank_player_str[]="   ", **gdesc, *player, object=' '; /*Quitar este número mágico*/
   Space *space;
   int i;
@@ -150,7 +150,7 @@ char **create_space_square(Game **game, Id square_id){
   return space_square;
 }
 
-char **create_line_of_spaces(Game **game, Id id_center){
+char **create_line_of_spaces(Game *game, Id id_center){
   char **gdesc_line=NULL, **left_square=NULL, **center_square=NULL, **right_square=NULL, str[255];
   int i;
   Id id_left, id_right;
@@ -171,9 +171,9 @@ char **create_line_of_spaces(Game **game, Id id_center){
    }
   /*End of creating the matrix*/
    
-  left_square = create_space_square(game, NO_ID);
+  left_square = create_space_square(game, id_left);
   center_square = create_space_square(game, id_center);
-  right_square = create_space_square(game, NO_ID);
+  right_square = create_space_square(game, id_right);
 
   /*Create the lines manually*/
   sprintf(str, "%s  %s  %s", left_square[0], center_square[0], right_square[0]);
