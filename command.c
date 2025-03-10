@@ -114,6 +114,9 @@ Status command_get_user_input(Command *command)
     if (cmd == TAKE)
     {
       token = strtok(NULL, "\n");
+      if(!token){
+        return command_set_argument(command, NO_ARG);
+      }
       while(arg==NO_ARG && j < N_OBJECTS){
         if(!strcasecmp(token, arg_to_str[j][CMDS]) || !strcasecmp(token, arg_to_str[j][CMDL])){
           arg = j;
@@ -123,17 +126,6 @@ Status command_get_user_input(Command *command)
           j++;
         }
       }
-
-      /*
-      if(!strcasecmp(token, "Seed")){
-        arg=SEED;
-      }else if(!strcasecmp(token, "Crumb")){
-        arg=CRUMB;
-      }else if(!strcasecmp(token, "Grain")){
-        arg=GRAIN;
-      }else if(!strcasecmp(token, "Leaf")){
-        arg=LEAF;
-      }*/
       command_set_argument(command, arg);
     }
     else

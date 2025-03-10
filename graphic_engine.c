@@ -105,7 +105,7 @@ char **create_space_square(Game *game, Id square_id){
     space_square[i] = space_square[0] + (N_TOTAL_ROWS_IN_SQUARE + 1)*i;
    }
 
-   strcpy(space_square[0], "hey");
+   
    
   if(square_id == NO_ID){
     for(i=0;i<N_TOTAL_LINES_IN_SQUARE;i++){

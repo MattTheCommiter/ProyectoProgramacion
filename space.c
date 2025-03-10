@@ -62,7 +62,7 @@ Space *space_create(Id id)
     return NULL;
   }
   for(i=1;i<N_LINES_IN_GDESC;i++){
-      newSpace->gdesc[i] = newSpace->gdesc[0] + 10*i;
+      newSpace->gdesc[i] = newSpace->gdesc[0] + (N_ROWS_IN_GDESC + 1)*i;
   }
   return newSpace;
 }
