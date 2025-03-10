@@ -104,7 +104,7 @@
    if ((*gengine = graphic_engine_create()) == NULL)
    {
      fprintf(stderr, "Error while initializing graphic engine.\n");
-     game_destroy(game);
+     game_destroy((*game));
      return 1;
    }
  
@@ -129,13 +129,13 @@
      return;
    }
  
-   last_cmd = game_get_last_command(&game);
+   last_cmd = game_get_last_command(game);
  
-   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(&game) == FALSE))
+   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE))
    {
-     graphic_engine_paint_game(gengine, &game);
+     graphic_engine_paint_game(gengine, game);
      command_get_user_input(last_cmd);
-     game_actions_update(&game, last_cmd);
+     game_actions_update(game, last_cmd);
    }
  }
  
@@ -150,6 +150,6 @@
   */
  void game_loop_cleanup(Game *game, Graphic_engine *gengine)
  {
-   game_destroy(&game);
+   game_destroy(game);
    graphic_engine_destroy(gengine);
  }

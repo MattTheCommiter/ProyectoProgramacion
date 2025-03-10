@@ -34,7 +34,7 @@
   * @param space a pointer to the space that is going to be added
   * @return Status: if the function was completed succesfully
   */
- Status game_add_space(Game **game, Space *space);
+ Status game_add_space(Game *game, Space *space);
  
  /**
   * @brief Dynamically allocates memory for the game and initializes all the structures components
@@ -68,7 +68,7 @@
   * @param game a double pointer to the structure with the game's main information
   * @return Status: if the function was completed succesfully
   */
- Status game_destroy(Game **game);
+ Status game_destroy(Game *game);
  
  /**
   * @brief returns a pointer to the space that has the id passed as an argument
@@ -80,7 +80,7 @@
   * @param id the id of the desired space
   * @return a pointer to the desired space
   */
- Space *game_get_space(Game **game, Id id);
+ Space *game_get_space(Game *game, Id id);
  
  /**
   * @brief returns the id of the player's location
@@ -91,7 +91,7 @@
   * @param game a pointer to the structure with the game's main information
   * @return the id of the player's location
   */
- Id game_get_player_location(Game **game);
+ Id game_get_player_location(Game *game);
  
  /**
   * @brief changes the id of the player's location to the one passed as an argument
@@ -103,7 +103,7 @@
   * @param id the id of the new location
   * @return Status: if the function was completed succesfully
   */
- Status game_set_player_location(Game **game, Id id);
+ Status game_set_player_location(Game *game, Id id);
  
  /**
   * @brief returns the id of the object's location
@@ -115,7 +115,7 @@
   * @param objectId the Id of the object we want to find, returning its location
   * @return the id of the object's location
   */
- Id game_get_object_location(Game **game, Id objectId);
+ Id game_get_object_location(Game *game, Id objectId);
  
  /**
   * @brief changes the id of the object's location to the one passed as an argument
@@ -128,7 +128,7 @@
   * @param objectId the id of the object of which we want to set the location
   * @return Status
   */
- Status game_set_object_location(Game **game, Id id, Id objectId);
+ Status game_set_object_location(Game *game, Id id, Id objectId);
  
  /**
   * @brief returns the last command of the game
@@ -139,7 +139,7 @@
   * @param game a pointer to the structure with the game's main information
   * @return a pointer to the last command
   */
- Command *game_get_last_command(Game **game);
+ Command *game_get_last_command(Game *game);
  
  /**
   * @brief changes the game's last_cmd parameter to a pointer to a new last_cmd
@@ -151,7 +151,7 @@
   * @param command the new last_cmd
   * @return Status: if the function was completed succesfully
   */
- Status game_set_last_command(Game **game, Command *command);
+ Status game_set_last_command(Game *game, Command *command);
  
  /**
   * @brief returns a boolean value that describes if the game has finished or not
@@ -162,7 +162,7 @@
   * @param game a pointer to the structure with the game's main information
   * @return Bool (TRUE or FALSE) that describes if the game is finished or not
   */
- Bool game_get_finished(Game **game);
+ Bool game_get_finished(Game *game);
  
  /**
   * @brief Changes the state of the game, starting or finishing it
@@ -174,7 +174,7 @@
   * @param finished the new boolean value that describes whether the game has finished or not
   * @return Status if the function has been completed succesfully
   */
- Status game_set_finished(Game **game, Bool finished);
+ Status game_set_finished(Game *game, Bool finished);
  
  /**
   * @brief prints the id of the player's location, the object's location and prints the information regarding all the spaces in the game
@@ -184,7 +184,7 @@
   *
   * @param game a double pointer to the structure with the game's main information
   */
- void game_print(Game **game);
+ void game_print(Game *game);
  /**
   * @brief Gets the player of the game(pointer)
   *
@@ -194,7 +194,7 @@
   * @param game a double pointer to the strucuture.
   * @return a pointer to the player.
   */
- Player *game_get_player(Game **game);
+ Player *game_get_player(Game *game);
  /**
   * @brief gets the object of the game(pointer) in a determined position
   *
@@ -205,7 +205,7 @@
   * @param id the id of the desired object
   * @return a pointer to the object
   */
- Object *game_get_object(Game **game,Id id);
+ Object *game_get_object(Game *game,Id id);
 /**
  * @brief adds an object to the game
  * @date 03/03/25
@@ -214,7 +214,7 @@
  * @param object a pointer to the object we want to add
  * @return Status if the function has been completed succesfully
  */
- Status game_add_object(Game **game, Object *object);
+ Status game_add_object(Game *game, Object *object);
 /**
  * @brief adds an object to the game
  * @date 03/03/25
@@ -223,7 +223,7 @@
  * @param position the position in the array of objects of the object we want to get the Id
  * @return Id the id of the object
  */
- Id game_get_object_id_at(Game **game, int position);
+ Id game_get_object_id_at(Game *game, int position);
  /**
  * @brief adds a character to the game
  * @date 03/03/25
@@ -232,7 +232,7 @@
  * @param character a pointer to the character we want to add
  * @return Status if the function has been completed succesfully
  */
- Status game_add_character(Game **game, Character *character);
+ Status game_add_character(Game *game, Character *character);
  /**
  * @brief adds an object to the game
  * @date 03/03/25
@@ -241,7 +241,7 @@
  * @param position the position in the array of objects of the object we want to get the Id
  * @return Id the id of the character
  */
- Id game_get_character_id_at(Game **game, int position);
+ Id game_get_character_id_at(Game *game, int position);
 
 /**
   * @brief gets the object of the game(pointer)
@@ -253,7 +253,7 @@
   * @param id the id of the desired object
   * @return a pointer to the object
   */
- Object *game_get_object(Game **game,Id id);
+ Object *game_get_object(Game *game,Id id);
 /**
  * @brief adds an object to the game
  * @date 03/03/25
@@ -262,7 +262,7 @@
  * @param object a pointer to the object we want to add
  * @return Status if the function has been completed succesfully
  */
- Status game_add_object(Game **game, Object *object);
+ Status game_add_object(Game *game, Object *object);
 /**
  * @brief adds an object to the game
  * @date 03/03/25
@@ -271,7 +271,7 @@
  * @param position the position in the array of objects of the object we want to get the Id
  * @return Id the id of the object
  */
- Id game_get_object_id_at(Game **game, int position);
+ Id game_get_object_id_at(Game *game, int position);
  /**
  * @brief adds a character to the game
  * @date 03/03/25
@@ -280,7 +280,7 @@
  * @param character a pointer to the character we want to add
  * @return Status if the function has been completed succesfully
  */
- Status game_add_character(Game **game, Character *character);
+ Status game_add_character(Game *game, Character *character);
  /**
  * @brief adds an object to the game
  * @date 03/03/25
@@ -289,7 +289,7 @@
  * @param position the position in the array of objects of the object we want to get the Id
  * @return Id the id of the character
  */
- Id game_get_character_id_at(Game **game, int position);
+ Id game_get_character_id_at(Game *game, int position);
 
 /**
   * @brief gets the object of the game(pointer)
@@ -301,7 +301,7 @@
   * @param id the id of the desired object
   * @return a pointer to the object
   */
- Character *game_get_character(Game **game, Id id);
+ Character *game_get_character(Game *game, Id id);
 /**
  * @brief Gets an object's Id from its name
  * @date 03/03/25
@@ -310,7 +310,7 @@
  * @param name a pointer to char, the name of the object
  * @return Id the id of the object with the name
  */
- Id game_get_objectId_from_name(Game **game, char *name);
+ Id game_get_objectId_from_name(Game *game, char *name);
  
  /** 
   * @brief Gets the message in the game
@@ -319,7 +319,7 @@
   * @param game a double pointer to game
   * @return a string with the message
   */
- char *game_get_message(Game **game);
+ char *game_get_message(Game *game);
  
  /** 
   * @brief Sets the message in the game
@@ -329,7 +329,7 @@
   * @param char a string with the new message
   * @return OK if the function is completed succesfully or ERROR if an error occurrs
   */
- Status game_set_message(Game **game, char *msg);
+ Status game_set_message(Game *game, char *msg);
 
  /** 
   * @brief Gets the object in a specific position in the object array
@@ -339,7 +339,7 @@
   * @param pos an int with the position of the object in the array
   * @return pointer to the object or NULL if an error occurrs
   */
- Object *game_get_object_in_pos(Game **game, int pos);
+ Object *game_get_object_in_pos(Game *game, int pos);
 
  /**
   * @brief gets the numbers of objects un game
@@ -348,7 +348,7 @@
   * @param game a double pointer to game
   * @return int , the number of objects in the game
   */
- int game_get_n_objects(Game **game);
+ int game_get_n_objects(Game *game);
 
  /**
   * @brief gets the number of characters in the game
@@ -357,7 +357,7 @@
   * @param game a double pointer to game
   * @return int , the number of characters in the game
   */
- int game_get_n_characters(Game **game);
+ int game_get_n_characters(Game *game);
 /**
  * @brief gets the Id of the space a character is at 
  * @date 08/03/25
@@ -366,5 +366,22 @@
  * @param character_id the Id of the character we are loking for
  * @return Id the id of the space the character is located at.
  */
- Id game_get_character_location(Game **game, Id character_id);
+ Id game_get_character_location(Game *game, Id character_id);
+/**
+ * @brief Sets if the last command called was succesful or not
+ * @date 09/03/25
+  *@author Alvaro Inigo
+ * @param game double pointer to the game
+ * @param success Status, the new status for the game data structure.
+ * @return Status ERROR or OK if everything was correct.
+ */
+ Status game_set_last_command_success(Game *game, Status success);
+/**
+ * @brief Returns the Status of the last command called in the game.
+ * @date 09/03/25
+  *@author Alvaro Inigo
+ * @param game a double pointer to the game
+ * @return Status OK or ERROR.
+ */
+ Status game_get_last_command_success(Game *game);
  #endif
