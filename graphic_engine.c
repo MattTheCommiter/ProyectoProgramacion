@@ -124,10 +124,10 @@ char **create_space_square(Game *game, Id square_id){
     sprintf(str, "+-----------+");
     strcpy(space_square[0], str);
     if(square_id < MIN_VALUE_WITH_THREE_NUMBERS){
-      sprintf(str, "| %s     %2d| ", player, (int)square_id);
+      sprintf(str, "| %s     %2d|", player, (int)square_id);
       strcpy(space_square[1], str);
     }else{
-      sprintf(str, "| %s    %2d| ", player, (int)square_id);
+      sprintf(str, "| %s    %2d|", player, (int)square_id);
       strcpy(space_square[1], str);
     }
     sprintf(str, "| %s |", gdesc[0]);
@@ -140,7 +140,7 @@ char **create_space_square(Game *game, Id square_id){
     strcpy(space_square[5], str);
     sprintf(str, "| %s |", gdesc[4]);
     strcpy(space_square[6], str);
-    sprintf(str, "  |     %c     |", object);
+    sprintf(str, "|     %c     |", object);
     strcpy(space_square[7], str);
     sprintf(str, "+-----------+");
     strcpy(space_square[8], str);

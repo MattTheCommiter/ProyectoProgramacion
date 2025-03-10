@@ -20,7 +20,7 @@
    FILE *file = NULL;
    char line[WORD_SIZE] = "";
    char name[WORD_SIZE] = "";
-   char **read_gdesc, empty_box;
+   char **read_gdesc;
    char *toks = NULL;
    int i;
    Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
