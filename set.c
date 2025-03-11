@@ -10,7 +10,6 @@
 
  #include "set.h"
 
- #define MAX_ELEMENTS_IN_SET 100
  /**
   * @brief this structure will be used for the definition of sets accross the game
   */
@@ -95,14 +94,18 @@ Bool set_belongs(Set *s, Id elementId){
 }
 
 Bool set_is_empty(Set *s){
-    if (!s || s->n_ids)
+    if (s->n_ids != 0)
     {
         return FALSE;
     }
-    else
-    {
+    return TRUE;
+}
+
+Bool set_is_full(Set *s){
+    if(!s || s->n_ids == MAX_ELEMENTS_IN_SET){
         return TRUE;
     }
+    return FALSE;
 }
 
 int set_get_num_elements(Set *s){

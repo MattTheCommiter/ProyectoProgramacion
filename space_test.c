@@ -163,16 +163,16 @@ void test2_space_set_west() {
   PRINT_TEST_RESULT(space_set_west(s, 4) == ERROR);
 }
 
-void test1_space_set_object() {
+void test1_space_add_objectId() {
   Space *s;
   s = space_create(1);
-  PRINT_TEST_RESULT(space_set_object(s,TRUE) == OK);
+  PRINT_TEST_RESULT(space_add_objectId(s,1) == OK);
   space_destroy(s);
 }
 
-void test2_space_set_object() {
+void test2_space_add_objectId() {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_set_object(s,TRUE) == ERROR);
+  PRINT_TEST_RESULT(space_set_object(s,1) == ERROR);
 }
 
 void test1_space_get_name() {
@@ -270,4 +270,74 @@ void test1_space_get_id() {
 void test2_space_get_id() {
   Space *s = NULL;
   PRINT_TEST_RESULT(space_get_id(s) == NO_ID);
+}
+
+void test1_space_object_belongs(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_object_belongs(s, 3) == FALSE);
+  space_destroy(s);
+}
+
+void test2_space_object_belongs(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_add_objectId(s, 3);
+  PRINT_TEST_RESULT(space_object_belongs(s, 5) == FALSE);
+  space_destroy(s);
+}
+
+void test3_space_object_belongs(){
+  Space *s = NULL;
+  s = space_create(25);
+  PRINT_TEST_RESULT(space_object_belongs(s, 5) == FALSE);
+  space_destroy(s);
+}
+
+void test4_space_object_belongs(){
+  Space *s = NULL;
+  space_add_objectId(s, 5);
+  PRINT_TEST_RESULT(space_object_belongs(s, 5) == TRUE);
+  space_destroy(s);
+}
+
+void test1_space_has_no_objects(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_has_no_objects(s) == TRUE);
+  space_destroy(s);
+}
+
+void test2_space_has_no_objects(){
+  Space *s = NULL;
+  s = space_create(25);
+  PRINT_TEST_RESULT(space_has_no_objects(s) == TRUE);
+  space_destroy(s);
+}
+
+void test3_space_has_no_objects(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_add_objectId(s, 3);
+  PRINT_TEST_RESULT(space_has_no_objects(s) == FALSE);
+  space_destroy(s);
+}
+
+void test1_space_get_num_of_objects(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_get_num_of_objects(s) == 0);
+  space_destroy(s);
+}
+
+void test2_space_get_num_of_objects(){
+  Space *s = NULL;
+  s = space_create(25);
+  PRINT_TEST_RESULT(space_get_num_of_objects(s) == 0);
+  space_destroy(s);
+}
+
+void test3_space_get_num_of_objects(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_add_objectId(s, 3);
+  PRINT_TEST_RESULT(space_get_num_of_objects(s) == 1);
+  space_destroy(s);
 }

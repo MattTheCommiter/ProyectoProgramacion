@@ -15,7 +15,9 @@
  #include <stdlib.h>
  #include "types.h"
 
-typedef struct _Set Set;
+ #define MAX_ELEMENTS_IN_SET 10
+
+ typedef struct _Set Set;
 /**
  * @brief creates an empty set
  *
@@ -91,6 +93,17 @@ Bool set_belongs(Set *s, Id elementId);
  * @return TRUE if the set is empty and FALSE if it contains element(s)
  */
 Bool set_is_empty(Set *s);
+
+/**
+ * @brief Returns whether a set is full or not
+ *
+ * @date 27-02-2025
+ * @author Matteo Artunedo
+ *
+ * @param s a pointer to the set 
+ * @return TRUE if the set is full and FALSE if it can contain more elements
+ */
+Bool set_is_full(Set *s);
 
 /**
  * @brief Returns the number of elements in the set

@@ -65,6 +65,16 @@ character_test.o: character_test.c character.h types.h character_test.h test.h
 character.o: character.c character.h types.h
 	gcc $(CFLAGS) $^
 
+space_test: space_test_exec
+
+space_test_exec: space_test.o space.o
+	gcc -o $@ $^ 
+
+space_test.o: space_test.c space.h types.h space_test.h test.h
+	gcc $(CFLAGS) $^
+	
+
+
 character_test_run:
 	./character_test_exec
 space_test_run:

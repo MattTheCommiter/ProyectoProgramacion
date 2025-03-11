@@ -116,6 +116,7 @@ const char *space_get_name(Space *space)
   return space->name;
 }
 
+/*NORTH AND SOUTH RELATED FUNCTIONS*/
 Status space_set_north(Space *space, Id id)
 {
   if (!space || id == NO_ID)
@@ -191,33 +192,7 @@ Id space_get_west(Space *space)
   }
   return space->west;
 }
-
-Set *space_get_set_of_objects(Space *space){
-  if (!space)
-  {
-    return NULL;
-  }
-  return space->objects;
-}
-
-Status space_add_objectId(Space *space, Id object_Id)
-{
-  if (!space)
-  {
-    return ERROR;
-  }
-  set_add(space->objects, object_Id);
-  return OK;
-}
-
-Bool space_object_belongs(Space *space, Id object_Id)
-{
-  if (!space)
-  {
-    return NO_ID;
-  }
-  return set_belongs(space->objects, object_Id);
-}
+/*END OF NORTH AND SOUTH RELATED FUNCTIONS*/
 
 Status space_print(Space *space)
 {
@@ -292,21 +267,15 @@ Status space_print(Space *space)
   return OK;
 }
 
-Status space_delete_object(Space *space, Id objectId){
-  if(!space || !space->objects) return ERROR;
-
-  if(!set_del(space->objects, objectId)){
-    return ERROR;
-  }else{
-    return OK;
-  }
-}
-
+/*CHARACTER RELATED FUNCTIONS*/
 Id space_get_character(Space *space){
   if(!space) return NO_ID;
   return space->character;
 }
+/*CHARACTER RELATED FUNCTIONS*/
 
+
+/*GDESC RELATED FUNCTIONS*/
 char **space_get_gdesc(Space *space){
   if(!space) return NULL;
   return space->gdesc;
@@ -322,3 +291,55 @@ Status space_set_gdesc(Space *space, char**space_gdescription){
   }
   return OK;
 }
+/*END OF GDESC RELATED FUNCTIONS*/
+
+/*OBJECT RELATED FUNCTIONS*/
+Status space_add_objectId(Space *space, Id object_Id)
+{
+  if (!space)
+  {
+    return ERROR;
+  }
+  set_add(space->objects, object_Id);
+  return OK;
+}
+
+Bool space_object_belongs(Space *space, Id object_Id)
+{
+  if (!space)
+  {
+    return NO_ID;
+  }
+  return set_belongs(space->objects, object_Id);
+}
+
+Status space_delete_object(Space *space, Id objectId){
+  if(!space || !space->objects) return ERROR;
+
+  if(!set_del(space->objects, objectId)){
+    return ERROR;
+  }else{
+    return OK;
+  }
+}
+
+Bool space_has_no_objects(Space *space){
+  if(!space){
+    return TRUE;
+  }
+  return set_is_empty(space->objects);
+}
+
+Bool space_set_of_objects_is_full(Space *space){
+  if(!space){
+    return TRUE;
+  }
+  return set_is_full(space->objects);
+}
+
+int space_get_num_of_objects(Space *space){
+  if(!space) return 0;
+
+  return set_get_num_elements(space->objects);
+}
+/*END OF OBJECT RELATED FUNCTIONS*/

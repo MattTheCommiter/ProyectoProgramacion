@@ -114,6 +114,9 @@
   * @post Output==FALSE when checking if the set is empty
   */
   void test3_set_is_empty();
+  void test1_set_is_full();
+  void test2_set_is_full();
+  void test3_set_is_full();
   /**
   * @test Test set get number of elements
   * @pre pointer to NULL

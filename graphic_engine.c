@@ -38,6 +38,8 @@ struct _Graphic_engine
 {
   Area *map, *descript, *banner, *help, *feedback; /*!<All of the different parts of the textual graphic interface*/
 };
+
+
 /**
  * @brief Create a line of spaces
  * 
@@ -57,31 +59,7 @@ char **create_space_square(Game *game, Id square_id);
 
 
 
-Graphic_engine *graphic_engine_create()
-{
-  static Graphic_engine *ge = NULL;
-
-  if (ge)
-  {
-    return ge;
-  }
-
-  screen_init(HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + HEIGHT_FDB + 4, WIDTH_MAP + WIDTH_DES + 3);
-  ge = (Graphic_engine *)malloc(sizeof(Graphic_engine));
-  if (ge == NULL)
-  {
-    return NULL;
-  }
-  /*Initializes all of the components of the game's graphic interface*/
-  ge->map = screen_area_init(1, 1, WIDTH_MAP, HEIGHT_MAP);
-  ge->descript = screen_area_init(WIDTH_MAP + 2, 1, WIDTH_DES, HEIGHT_MAP);
-  ge->banner = screen_area_init((int)((WIDTH_MAP + WIDTH_DES + 1 - WIDTH_BAN) / 2), HEIGHT_MAP + 2, WIDTH_BAN, HEIGHT_BAN);
-  ge->help = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + 2, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_HLP);
-  ge->feedback = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + 3, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_FDB);
-
-  return ge;
-}
-
+/*PRIVATE FUNCTIONS*/
 char **create_space_square(Game *game, Id square_id){
   char **space_square=NULL, str[255], ant_str[]="m0^", blank_player_str[]="   ", **gdesc, *player, object=' '; /*Quitar este número mágico*/
   Space *space;
@@ -166,15 +144,15 @@ char **create_line_of_spaces(Game *game, Id id_center){
   }
 
   /*Create the matrix to store the entire line*/
-  if(!(gdesc_line = (char **)calloc(N_TOTAL_LINES_IN_GDESC, sizeof(char *)))){
+  if(!(gdesc_line = (char **)calloc(N_TOTAL_LINES_IN_3_SQUARES, sizeof(char *)))){
     return NULL;
    }
-  if(!(gdesc_line[0] = (char *)calloc(N_TOTAL_LINES_IN_GDESC*(N_TOTAL_ROWS_IN_GDESC + 1), sizeof(char)))){
+  if(!(gdesc_line[0] = (char *)calloc(N_TOTAL_LINES_IN_3_SQUARES*(N_TOTAL_ROWS_IN_3_SQUARES + 1), sizeof(char)))){
     free(gdesc_line);
     return NULL;
    }
-  for(i=1;i<N_TOTAL_LINES_IN_GDESC;i++){
-       gdesc_line[i] = gdesc_line[0] + (N_TOTAL_ROWS_IN_GDESC + 1)*i;
+  for(i=1;i<N_TOTAL_LINES_IN_3_SQUARES;i++){
+       gdesc_line[i] = gdesc_line[0] + (N_TOTAL_ROWS_IN_3_SQUARES + 1)*i;
    }
   /*End of creating the matrix*/
    
@@ -226,9 +204,33 @@ char **create_line_of_spaces(Game *game, Id id_center){
   /*End of creating the lines*/
   return gdesc_line;
 }
+/*END OF PRIVATE FUNCTIONS*/
 
 
+Graphic_engine *graphic_engine_create()
+{
+  static Graphic_engine *ge = NULL;
 
+  if (ge)
+  {
+    return ge;
+  }
+
+  screen_init(HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + HEIGHT_FDB + 4, WIDTH_MAP + WIDTH_DES + 3);
+  ge = (Graphic_engine *)malloc(sizeof(Graphic_engine));
+  if (ge == NULL)
+  {
+    return NULL;
+  }
+  /*Initializes all of the components of the game's graphic interface*/
+  ge->map = screen_area_init(1, 1, WIDTH_MAP, HEIGHT_MAP);
+  ge->descript = screen_area_init(WIDTH_MAP + 2, 1, WIDTH_DES, HEIGHT_MAP);
+  ge->banner = screen_area_init((int)((WIDTH_MAP + WIDTH_DES + 1 - WIDTH_BAN) / 2), HEIGHT_MAP + 2, WIDTH_BAN, HEIGHT_BAN);
+  ge->help = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + 2, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_HLP);
+  ge->feedback = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + 3, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_FDB);
+
+  return ge;
+}
 
 void graphic_engine_destroy(Graphic_engine *ge)
 {
@@ -272,7 +274,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     created_line = create_line_of_spaces(game, id_north);
     screen_area_puts(ge->map, created_line[0]);
     if(created_line!=NULL){
-      for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
+      for(i=0;i<N_TOTAL_LINES_IN_3_SQUARES;i++){
         screen_area_puts(ge->map, created_line[i]);
       }
     }
@@ -283,7 +285,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     sprintf(str, "                           %c                           ", north_arrow);
     screen_area_puts(ge->map, str);
     created_line = create_line_of_spaces(game, id_act);
-    for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
+    for(i=0;i<N_TOTAL_LINES_IN_3_SQUARES;i++){
       screen_area_puts(ge->map, created_line[i]);
     }
     sprintf(str, "                           %c                           ", south_arrow);
@@ -293,7 +295,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     created_line=NULL;
     
     created_line = create_line_of_spaces(game, id_south);
-    for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
+    for(i=0;i<N_TOTAL_LINES_IN_3_SQUARES;i++){
       screen_area_puts(ge->map, created_line[i]);
     }
     free(created_line[0]);  
