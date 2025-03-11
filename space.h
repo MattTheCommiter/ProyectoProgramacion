@@ -15,12 +15,12 @@
 #include "set.h"
 #include "character.h"
 
-#define N_LINES_IN_GDESC 5
-#define N_ROWS_IN_GDESC 9
-#define N_TOTAL_LINES_IN_GDESC 9
-#define N_TOTAL_ROWS_IN_GDESC 59
-#define N_TOTAL_LINES_IN_SQUARE 9
-#define N_TOTAL_ROWS_IN_SQUARE 17
+#define N_LINES_IN_GDESC 5              /*<!Number of lines in the graphic description of a space*/
+#define N_ROWS_IN_GDESC 9               /*<!Number of lines in the graphic description of a space*/
+#define N_TOTAL_LINES_IN_3_SQUARES 9    /*<!Number of lines in a sequence of 3 squares placed horizontally*/
+#define N_TOTAL_ROWS_IN_3_SQUARES 59    /*<!Number of lines in a sequence of 3 squares placed horizontally*/
+#define N_TOTAL_LINES_IN_SQUARE 9       /*<!Number of lines in one of the space squares*/
+#define N_TOTAL_ROWS_IN_SQUARE 17          /*<!Number of rows in one of the space squares*/
 
 typedef struct _Space Space;
 
