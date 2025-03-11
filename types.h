@@ -22,7 +22,9 @@ typedef long Id;
  */
 typedef enum
 {
-    ANT    /*!<Corresponds to the ID assigned to the ant*/
+    ANT ,       /*!<Corresponds to the ID assigned to the ant*/
+    SPIDER,     /*!<Corresponds to the ID assigned to the spider*/
+    ANT_FRIEND  /*!<Corresponds to the ID assigned to the ant friend*/
 } Member;
 
 /**

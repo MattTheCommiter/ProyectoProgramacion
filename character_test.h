@@ -35,6 +35,10 @@ void test02_character_get_message();
 void test02_character_print();
 
 
+void test01_character_spider_create();
+void test02_character_spider_create();
+void test01_character_ant_friend_create();
+void test02_character_ant_frient_create();
 
 
 #endif

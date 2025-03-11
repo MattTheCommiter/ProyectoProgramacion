@@ -18,10 +18,12 @@
  #include "object.h"
  #include "character.h"
  
- #define MAX_SPACES 100     /*!<The maximum ammount of spaces that can exist in the game*/
- #define MAX_OBJECTS 10     /*!<The maximum ammount of objects present at the game*/ 
- #define MAX_CHARACTERS 10  /*!<The maximum ammount of characters present at the game*/
- #define MAX_MESSAGE 50     /*!<The maximum ammout of characters in the messages*/
+ #define MAX_SPACES 100          /*!<The maximum ammount of spaces that can exist in the game*/
+ #define MAX_OBJECTS 10          /*!<The maximum ammount of objects present at the game*/ 
+ #define MAX_CHARACTERS 10       /*!<The maximum ammount of characters present at the game*/
+ #define MAX_MESSAGE 50          /*!<The maximum ammout of characters in the messages*/
+ #define SPIDER_LOCATION 121     /*!<The id of the space the spider is located*/
+ #define ANT_FRIEND_LOCATION 122 /*!<*The id of the space the ant friend is located*/
  typedef struct _Game Game;
  
  /**

@@ -6,7 +6,7 @@
 #include "character_test.h"
 #include "character.h"
 
-#define MAX_TESTS 30
+#define MAX_TESTS 34
 
 /** 
  * @brief Main function for SPACE unit tests. 
@@ -66,6 +66,12 @@ int main(int argc, char** argv) {
   if (all || test == 28)test02_character_get_friendly();
   if (all || test == 29)test02_character_get_message();
   if (all || test == 30)test02_character_print();
+
+  if (all || test == 31)test01_character_spider_create();
+  if (all || test == 32)test02_character_spider_create();
+  if (all || test == 33)test01_character_ant_friend_create();
+  if (all || test == 34)test02_character_ant_frient_create();
+
 
   PRINT_PASSED_PERCENTAGE;
 
@@ -169,6 +175,18 @@ void test01_character_print() {
 }
 
 
+void test01_character_spider_create(){
+    Character *spider = character_spider_create();
+    PRINT_TEST_RESULT(spider != NULL);
+    character_destroy(spider);
+}
+
+void test01_character_ant_friend_create(){
+    Character *ant = character_ant_friend_create();
+    PRINT_TEST_RESULT(ant != NULL);
+    character_destroy(ant);
+}
+
 
 
 
@@ -254,4 +272,18 @@ void test02_character_get_message() {
 void test02_character_print() {
     Character *c = NULL;
     PRINT_TEST_RESULT(character_print(c) == ERROR);
+}
+
+
+
+void test02_character_spider_create(){
+    Character *spider = character_spider_create();
+    PRINT_TEST_RESULT(character_get_friendly(spider) == FALSE && !strcmp(character_get_gdesc(spider),"/\\oo/\\") && character_get_health(spider) == 5  && !strcmp(character_get_name(spider),"Spider") && character_get_id(spider) == SPIDER);
+    character_destroy(spider);
+}
+
+void test02_character_ant_frient_create(){
+    Character *ant = character_ant_friend_create();
+    PRINT_TEST_RESULT(character_get_friendly(ant) == TRUE && !strcmp(character_get_gdesc(ant),"^0m") && character_get_health(ant) == 5  && !strcmp(character_get_name(ant),"Ant") && character_get_id(ant) == ANT_FRIEND && !strcmp(character_get_message(ant),"Hi!"));
+    character_destroy(ant);
 }

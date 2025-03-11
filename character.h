@@ -13,6 +13,7 @@
 
 #include "types.h"
 
+
 typedef struct _Character Character;
 /**
  * @brief 
@@ -141,7 +142,21 @@ char *character_get_message(Character *c);
  */
 Status character_print(Character *cha);
 
+/**
+ * @brief Creates the spider character
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Character* a pointer to the spider character.
+ */
+Character *character_spider_create();
 
+/**
+ * @brief Creater the ant friend character
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Character* a pointer to the ant character.
+ */
+Character *character_ant_friend_create();
 
 
 

@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "character.h"
+
 #define GdescTam 7
 #define MAXHEALTH 100
 /**
@@ -139,4 +140,31 @@ Status character_print(Character *cha){
   fprintf(stdout, "---> The message: %s",cha->message);
 
   return OK;
+}
+
+Character *character_spider_create(){
+    Character *spider = NULL;
+    spider = character_create(SPIDER);
+    if(!spider){
+        return NULL;
+    }
+    spider->friendly = FALSE;
+    strcpy(spider->gdesc,"/\\oo/\\");
+    spider->health = 5;
+    strcpy(spider->name,"Spider");
+    return spider;
+}
+
+Character *character_ant_friend_create(){
+    Character *ant = NULL;
+    ant = character_create(ANT_FRIEND);
+    if(!ant){
+        return NULL;
+    }
+    ant->friendly = TRUE;
+    strcpy(ant->gdesc,"^0m");
+    strcpy(ant->message,"Hi!");
+    ant->health = 5;
+    strcpy(ant->name,"Ant");
+    return ant;
 }
