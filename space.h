@@ -168,13 +168,20 @@ Status space_add_objectId(Space *space, Id object_Id);
 Bool space_object_belongs(Space *space, Id object_Id);
 
 /**
- * @brief It gets the set of objects in a space
- * @author Matteo Artunedo
- *
+ * @brief Returns whether the set of objects in the space is empty or not
+ * 
  * @param space a pointer to the space
- * @return pointer to the set where the objects are stored
+ * @return if space pointer is NULL or set is empty return TRUE, else return FALSE
  */
-Set *space_get_set_of_objects(Space *space);
+Bool space_has_no_objects(Space *space);
+
+/**
+ * @brief returns whether the set of objects in the space is full or not
+ * 
+ * @param space a pointer to the space
+ * @return if space pointer is NULL or set is full return TRUE, else return FALSE
+ */
+Bool space_set_of_objects_is_full(Space *space);
 
 /**
  * @brief It deletes an Id from the space's set of object id's
