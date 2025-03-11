@@ -14,8 +14,7 @@
 #include <string.h>
 #include "character.h"
 
-#define GdescTam 7
-#define MAXHEALTH 100
+
 /**
  * @brief definition for the struct Character
  * @author Alvaro Inigo
@@ -24,7 +23,7 @@
 struct _Character{
     Id id;
     char name[WORD_SIZE];
-    char gdesc[GdescTam];
+    char gdesc[GDESCTAM];
     int health;
     Bool friendly;
     char message[WORD_SIZE];
@@ -162,7 +161,7 @@ Character *character_ant_friend_create(){
         return NULL;
     }
     ant->friendly = TRUE;
-    strcpy(ant->gdesc,"^0m");
+    strcpy(ant->gdesc,"   ^0m");
     strcpy(ant->message,"Hi!");
     ant->health = 5;
     strcpy(ant->name,"Ant");

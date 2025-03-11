@@ -207,8 +207,8 @@ Status game_set_finished(Game *game, Bool finished)
 {
   if(!game){
     return ERROR;
-    game->finished = finished;
   }
+  game->finished = finished;
 
   return OK;
 }

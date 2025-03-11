@@ -127,6 +127,9 @@ Status game_actions_update(Game *game, Command *command)
   case TAKE:
     game_actions_take(game, command_get_argument(command));
     break;
+  case CHAT:
+    game_actions_chat(game);
+    break;
   case DROP:
     game_actions_drop(game);
     break;
@@ -367,9 +370,6 @@ void game_actions_attack(Game *game)
   }else{
     character_set_health(cha, character_get_health(cha) - 1);
     game_set_last_command_success(game ,OK);
-  }
-  if(player_get_health(game_get_player(game)) == 0){
-    game_set_finished(game, TRUE);
   }
   return;
 

@@ -18,6 +18,7 @@
 #include "libscreen.h"
 #include "space.h"
 #include "types.h"
+#include "character.h"
 
 /*Constant values used for the creation of the game's graphic interface*/
 #define WIDTH_MAP 60
@@ -83,7 +84,7 @@ Graphic_engine *graphic_engine_create()
 }
 
 char **create_space_square(Game *game, Id square_id){
-  char **space_square=NULL, str[255], ant_str[]="m0^", blank_player_str[]="   ", **gdesc, *player, object=' '; /*Quitar este número mágico*/
+  char **space_square=NULL, str[255], ant_str[]="m0^", blank_player_str[]="   ", **gdesc, *player, object=' ', character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   int i;
 
@@ -118,16 +119,21 @@ char **create_space_square(Game *game, Id square_id){
     }else{
         player=blank_player_str;
     }
-
+    if(space_get_character(space) == NO_ID){
+      strcpy(character, blank_character_str);
+    }else{
+      strcpy(character, character_get_gdesc(game_get_character(game,space_get_character(space))));
+    }
+    
     gdesc = space_get_gdesc(space);
 
     sprintf(str, "+---------------+");
     strcpy(space_square[0], str);
     if(square_id < MIN_VALUE_WITH_THREE_NUMBERS){
-      sprintf(str, "| %s         %2d|", player, (int)square_id);
+      sprintf(str, "| %s  %s %2d|", player, character, (int)square_id);
       strcpy(space_square[1], str);
     }else{
-      sprintf(str, "| %s        %2d|", player, (int)square_id);
+      sprintf(str, "| %s %s %2d|", player, character,(int)square_id);
       strcpy(space_square[1], str);
     }
     sprintf(str, "|%s      |", gdesc[0]);
@@ -360,6 +366,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     sprintf(str, " %s (%s) ERROR", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
   }else{
     sprintf(str, " %s (%s) OK", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
+  }
+  screen_area_puts(ge->feedback, str);
+
+  if(player_get_health(game_get_player(game)) == 0){
+    sprintf(str, "Has muerto !!");
+    game_set_finished(game, TRUE);
   }
   screen_area_puts(ge->feedback, str);
 
