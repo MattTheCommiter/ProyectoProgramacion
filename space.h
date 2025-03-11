@@ -184,6 +184,14 @@ Bool space_has_no_objects(Space *space);
 Bool space_set_of_objects_is_full(Space *space);
 
 /**
+ * @brief returns the number of objects the space has
+ * 
+ * @param space a pointer to the space
+ * @return int with the number of objects in the space
+ */
+int space_get_num_of_objects(Space *space);
+
+/**
  * @brief It deletes an Id from the space's set of object id's
  * @author Matteo Artunedo
  *

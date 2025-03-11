@@ -272,14 +272,13 @@ Id space_get_character(Space *space){
   if(!space) return NO_ID;
   return space->character;
 }
-/*CHARACTER RELATED FUNCTIONS*/
-
 
 Status space_set_character(Space *space, Id characterId){
   if(!space) return ERROR;
   space->character = characterId;
   return OK;
 }
+/*CHARACTER RELATED FUNCTIONS*/
 
 /*GDESC RELATED FUNCTIONS*/
 char **space_get_gdesc(Space *space){
