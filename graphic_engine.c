@@ -20,10 +20,10 @@
 #include "types.h"
 
 /*Constant values used for the creation of the game's graphic interface*/
-#define WIDTH_MAP 48
+#define WIDTH_MAP 60
 #define WIDTH_DES 29
 #define WIDTH_BAN 23
-#define HEIGHT_MAP 30
+#define HEIGHT_MAP 29
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
@@ -109,7 +109,7 @@ char **create_space_square(Game *game, Id square_id){
    
   if(square_id == NO_ID){
     for(i=0;i<N_TOTAL_LINES_IN_SQUARE;i++){
-      strcpy(space_square[i], "             ");
+      strcpy(space_square[i], "                 ");
     }
    }
    else{
@@ -121,28 +121,28 @@ char **create_space_square(Game *game, Id square_id){
 
     gdesc = space_get_gdesc(space);
 
-    sprintf(str, "+-----------+");
+    sprintf(str, "+---------------+");
     strcpy(space_square[0], str);
     if(square_id < MIN_VALUE_WITH_THREE_NUMBERS){
-      sprintf(str, "| %s     %2d|", player, (int)square_id);
+      sprintf(str, "| %s         %2d|", player, (int)square_id);
       strcpy(space_square[1], str);
     }else{
-      sprintf(str, "| %s    %2d|", player, (int)square_id);
+      sprintf(str, "| %s        %2d|", player, (int)square_id);
       strcpy(space_square[1], str);
     }
-    sprintf(str, "| %s |", gdesc[0]);
+    sprintf(str, "|%s      |", gdesc[0]);
     strcpy(space_square[2], str);
-    sprintf(str, "| %s |", gdesc[1]);
+    sprintf(str, "|%s      |", gdesc[1]);
     strcpy(space_square[3], str);
-    sprintf(str, "| %s |", gdesc[2]);
+    sprintf(str, "|%s      |", gdesc[2]);
     strcpy(space_square[4], str);
-    sprintf(str, "| %s |", gdesc[3]);
+    sprintf(str, "|%s      |", gdesc[3]);
     strcpy(space_square[5], str);
-    sprintf(str, "| %s |", gdesc[4]);
+    sprintf(str, "|%s      |", gdesc[4]);
     strcpy(space_square[6], str);
-    sprintf(str, "|     %c     |", object);
+    sprintf(str, "|       %c       |", object);
     strcpy(space_square[7], str);
-    sprintf(str, "+-----------+");
+    sprintf(str, "+---------------+");
     strcpy(space_square[8], str);
   }
 
@@ -151,12 +151,19 @@ char **create_space_square(Game *game, Id square_id){
 }
 
 char **create_line_of_spaces(Game *game, Id id_center){
-  char **gdesc_line=NULL, **left_square=NULL, **center_square=NULL, **right_square=NULL, str[255];
+  char **gdesc_line=NULL, **left_square=NULL, **center_square=NULL, **right_square=NULL, str[255], left_square_arrow=' ', right_square_arrow=' ';
   int i;
   Id id_left, id_right;
 
   id_left = space_get_west(game_get_space(game, id_center));
   id_right = space_get_east(game_get_space(game, id_center));
+
+  if(id_right != NO_ID){
+    right_square_arrow = '>';
+  }
+  if(id_left != NO_ID){
+    left_square_arrow = '<';
+  }
 
   /*Create the matrix to store the entire line*/
   if(!(gdesc_line = (char **)calloc(N_TOTAL_LINES_IN_GDESC, sizeof(char *)))){
@@ -184,7 +191,7 @@ char **create_line_of_spaces(Game *game, Id id_center){
   strcpy(gdesc_line[2], str);
   sprintf(str, "%s  %s  %s", left_square[3], center_square[3], right_square[3]);
   strcpy(gdesc_line[3], str);
-  sprintf(str, "%s  %s  %s", left_square[4], center_square[4], right_square[4]);
+  sprintf(str, "%s %c%s%c %s", left_square[4], left_square_arrow, center_square[4], right_square_arrow, right_square[4]);
   strcpy(gdesc_line[4], str);
   sprintf(str, "%s  %s  %s", left_square[5], center_square[5], right_square[5]);
   strcpy(gdesc_line[5], str);
@@ -240,10 +247,10 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, /*id_back = NO_ID, id_next = NO_ID, id_left = NO_ID, id_right = NO_ID,*/ obj_loc = NO_ID, character_loc = NO_ID;
-  /*Space *space_act = NULL;*/
-  char /*obj = '\0', obj_l = '\0', obj_r = '\0',*/ **created_line=NULL;
-  char str[255], *object_name = NULL, *character_gdesc = NULL;
+  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north=NO_ID, id_south=NO_ID;
+  
+  char **created_line=NULL;
+  char str[255], *object_name = NULL, *character_gdesc = NULL, north_arrow = ' ', south_arrow = ' ';
   int i, character_hp;
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
@@ -252,24 +259,40 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /* Paint the in the map area */
   screen_area_clear(ge->map);
   if ((id_act = game_get_player_location(game)) != NO_ID){
-    created_line = create_line_of_spaces(game, space_get_north(game_get_space(game, id_act)));
+    id_north = space_get_north(game_get_space(game, id_act));
+    id_south = space_get_south(game_get_space(game, id_act));
+
+    if(id_north != NO_ID){
+      north_arrow = '^';
+    }
+    if(id_south != NO_ID){
+      south_arrow = 'v';
+    }
+
+    created_line = create_line_of_spaces(game, id_north);
     screen_area_puts(ge->map, created_line[0]);
     if(created_line!=NULL){
       for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
-      screen_area_puts(ge->map, created_line[i]);
+        screen_area_puts(ge->map, created_line[i]);
       }
     }
     free(created_line[0]);
     free(created_line);
     created_line=NULL;
+    
+    sprintf(str, "                           %c                           ", north_arrow);
+    screen_area_puts(ge->map, str);
     created_line = create_line_of_spaces(game, id_act);
     for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
       screen_area_puts(ge->map, created_line[i]);
     }
+    sprintf(str, "                           %c                           ", south_arrow);
+    screen_area_puts(ge->map, str);
     free(created_line[0]);
     free(created_line);
     created_line=NULL;
-    created_line = create_line_of_spaces(game, space_get_south(game_get_space(game, id_act)));
+    
+    created_line = create_line_of_spaces(game, id_south);
     for(i=0;i<N_TOTAL_LINES_IN_GDESC;i++){
       screen_area_puts(ge->map, created_line[i]);
     }
