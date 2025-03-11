@@ -13,8 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "character.h"
-#define GdescTam 7
-#define MAXHEALTH 100
+
+
 /**
  * @brief definition for the struct Character
  * @author Alvaro Inigo
@@ -23,7 +23,7 @@
 struct _Character{
     Id id;
     char name[WORD_SIZE];
-    char gdesc[GdescTam];
+    char gdesc[GDESCTAM];
     int health;
     Bool friendly;
     char message[WORD_SIZE];
@@ -139,4 +139,31 @@ Status character_print(Character *cha){
   fprintf(stdout, "---> The message: %s",cha->message);
 
   return OK;
+}
+
+Character *character_spider_create(){
+    Character *spider = NULL;
+    spider = character_create(SPIDER);
+    if(!spider){
+        return NULL;
+    }
+    spider->friendly = FALSE;
+    strcpy(spider->gdesc,"/\\oo/\\");
+    spider->health = 5;
+    strcpy(spider->name,"Spider");
+    return spider;
+}
+
+Character *character_ant_friend_create(){
+    Character *ant = NULL;
+    ant = character_create(ANT_FRIEND);
+    if(!ant){
+        return NULL;
+    }
+    ant->friendly = TRUE;
+    strcpy(ant->gdesc,"   ^0m");
+    strcpy(ant->message,"Hi!");
+    ant->health = 5;
+    strcpy(ant->name,"Ant");
+    return ant;
 }

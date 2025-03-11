@@ -68,6 +68,7 @@ Status game_create(Game **game)
   (*game)->finished = FALSE;
   (*game)->command_success = OK;
 
+
   return OK;
 }
 
@@ -89,6 +90,12 @@ Status game_create_from_file(Game **game, char *filename)
 
   /* The player is located in the first space */
   game_set_player_location((*game), game_get_space_id_at((*game), 0));
+  (*game)->characters[0] = character_spider_create();
+  space_set_character(game_get_space((*game),SPIDER_LOCATION),SPIDER);
+  (*game)->characters[1] = character_ant_friend_create();
+  space_set_character(game_get_space((*game),ANT_FRIEND_LOCATION),ANT_FRIEND);
+  (*game)->n_characters = 2;
+
   return OK;
 }
 
@@ -107,11 +114,14 @@ Status game_destroy(Game *game)
     if (game->objects[i])
     object_destroy(game->objects[i]);
   }
-  
+  for(i = 0; i < 2; i++){
+    if(game->characters[i]) character_destroy(game->characters[i]);
+  }
   if (game->player)
     player_destroy(game->player);
   if (game->last_cmd)
     command_destroy(game->last_cmd);
+  
   free(game);
 
   return OK;
@@ -197,8 +207,8 @@ Status game_set_finished(Game *game, Bool finished)
 {
   if(!game){
     return ERROR;
-    game->finished = finished;
   }
+  game->finished = finished;
 
   return OK;
 }

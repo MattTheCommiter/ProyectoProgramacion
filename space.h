@@ -214,6 +214,15 @@ Status space_print(Space *space);
 Id space_get_character(Space *space);
 
 /**
+ * @brief Sets the character of the space
+ * @author Alvaro Inigo
+ * @param space a pointer to the space
+ * @param characterId the Id of the character
+ * @return Status Returns ERROR or OK.
+ */
+Status space_set_character(Space *space, Id characterId);
+
+/**
  * @brief It gets the graphical description of the space
  * @author Matteo Artunedo
  *
