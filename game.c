@@ -94,6 +94,8 @@ Status game_create_from_file(Game **game, char *filename)
   game_set_player_location((*game), game_get_space_id_at((*game), 0));
 
   /*The characters are created and located*/
+
+  
   if((spider = character_spider_create()) == NULL){
     return ERROR;
   }
