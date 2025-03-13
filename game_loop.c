@@ -98,6 +98,7 @@
    if (game_create_from_file(game, file_name) == ERROR)
    {
      fprintf(stderr, "Error while initializing game.\n");
+     game_destroy((*game));
      return 1;
    }
  

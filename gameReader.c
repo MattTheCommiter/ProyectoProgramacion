@@ -68,20 +68,19 @@
        east = atol(toks);
        toks = strtok(NULL, "|");
        south = atol(toks);
-       toks = strtok(NULL, "|");
+       toks = strtok(NULL, "|\n");
        west = atol(toks);
 
-       if(strtok(NULL, "|") != NULL){
-          toks = strtok(NULL, "|");
+       if((toks = strtok(NULL, "|\n")) != NULL){
           strcpy(read_gdesc[0], toks);
           toks = strtok(NULL, "|");
-          strcpy(read_gdesc[1], toks);
+          if(toks)strcpy(read_gdesc[1], toks);
           toks = strtok(NULL, "|");
-          strcpy(read_gdesc[2], toks);
+          if (toks) strcpy(read_gdesc[2], toks);
           toks = strtok(NULL, "|");
-          strcpy(read_gdesc[3], toks);
+          if (toks) strcpy(read_gdesc[3], toks);
           toks = strtok(NULL, "|");
-          strcpy(read_gdesc[4], toks);
+          if (toks) strcpy(read_gdesc[4], toks);
        }else{
           strcpy(read_gdesc[0], "         ");
           strcpy(read_gdesc[1], "         ");
@@ -107,6 +106,11 @@
          space_set_west(space, west);
          game_add_space(game, space);
          space_set_gdesc(space, read_gdesc);
+       }else{
+        fclose(file);
+        free(read_gdesc[0]);
+        free(read_gdesc);
+        return ERROR;
        }
       }
    }
