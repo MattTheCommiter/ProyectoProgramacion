@@ -57,8 +57,6 @@ int main(int argc, char** argv) {
   if (all || test == 11) test2_space_set_east();
   if (all || test == 12) test1_space_set_west();
   if (all || test == 13) test2_space_set_west();
-  if (all || test == 14) test1_space_set_object();
-  if (all || test == 15) test2_space_set_object();
   if (all || test == 16) test1_space_get_id();
   if (all || test == 17) test2_space_get_id();
   if (all || test == 18) test1_space_get_name();
@@ -71,13 +69,25 @@ int main(int argc, char** argv) {
   if (all || test == 25) test2_space_get_east();
   if (all || test == 26) test1_space_get_west();
   if (all || test == 27) test2_space_get_west();
-  if (all || test == 28) test1_space_get_set_of_objects();
-  if (all || test == 29) test2_space_get_set_of_objects();
-  if (all || test == 30) test3_space_get_set_of_objects();
+  if (all || test == 31) test1_space_add_objectId();
+  if (all || test == 32) test2_space_add_objectId();
+  if (all || test == 33) test1_space_object_belongs();
+  if (all || test == 34) test2_space_object_belongs();
+  if (all || test == 35) test3_space_object_belongs();
+  if (all || test == 36) test4_space_object_belongs();
+  if (all || test == 37) test4_space_object_belongs();
+  if (all || test == 38) test1_space_has_no_objects();
+  if (all || test == 39) test2_space_has_no_objects();
+  if (all || test == 40) test3_space_has_no_objects();
+  if (all || test == 41) test1_space_get_num_of_objects();
+  if (all || test == 42) test2_space_get_num_of_objects();
+  if (all || test == 43) test3_space_get_num_of_objects();
+
+  
 
   PRINT_PASSED_PERCENTAGE;
 
-  return 1;
+  return 0;
 }
 
 void test1_space_create() {
@@ -165,14 +175,14 @@ void test2_space_set_west() {
 
 void test1_space_add_objectId() {
   Space *s;
-  s = space_create(1);
+  s = space_create(5);
   PRINT_TEST_RESULT(space_add_objectId(s,1) == OK);
   space_destroy(s);
 }
 
 void test2_space_add_objectId() {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_set_object(s,1) == ERROR);
+  PRINT_TEST_RESULT(space_add_objectId(s,1) == ERROR);
 }
 
 void test1_space_get_name() {
@@ -186,26 +196,6 @@ void test1_space_get_name() {
 void test2_space_get_name() {
   Space *s = NULL;
   PRINT_TEST_RESULT(space_get_name(s) == NULL);
-}
-
-void test1_space_get_set_of_objects() {
-  Space *s;
-  s = space_create(1);
-  PRINT_TEST_RESULT(space_get_set_of_objects(s) == FALSE);
-  space_destroy(s);
-}
-
-void test2_space_get_set_of_objects() {
-  Space *s;
-  s = space_create(1);
-  space_set_object(s,TRUE);
-  PRINT_TEST_RESULT(space_get_object(s) == TRUE);
-  space_destroy(s);  
-}
-
-void test3_space_get_set_of_objects() {
-  Space *s = NULL;
-  PRINT_TEST_RESULT(space_get_object(s) == FALSE);
 }
 
 void test1_space_get_north() {
@@ -294,6 +284,14 @@ void test3_space_object_belongs(){
 }
 
 void test4_space_object_belongs(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_add_objectId(s, 3);
+  PRINT_TEST_RESULT(space_object_belongs(s, NO_ID) == FALSE);
+  space_destroy(s);
+}
+
+void test5_space_object_belongs(){
   Space *s = NULL;
   space_add_objectId(s, 5);
   PRINT_TEST_RESULT(space_object_belongs(s, 5) == TRUE);

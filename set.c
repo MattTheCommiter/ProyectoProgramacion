@@ -55,7 +55,7 @@ Status set_del(Set *s, Id elementId){
     if(!s || elementId == NO_ID) return ERROR;
 
     if(!set_belongs(s, elementId)){
-        return ERROR;
+        return OK;
     }
 
     s->n_ids--;
@@ -82,6 +82,7 @@ int set_print(Set *s){
 Bool set_belongs(Set *s, Id elementId){
     int i;
     Bool found=FALSE;
+    if(!s || elementId == NO_ID) return FALSE;
     if(!s  || elementId == NO_ID) return ERROR;
 
     for(i=0;i<s->n_ids && !found;i++){
@@ -94,6 +95,9 @@ Bool set_belongs(Set *s, Id elementId){
 }
 
 Bool set_is_empty(Set *s){
+    if(!s){
+        return TRUE;
+    }
     if (s->n_ids != 0)
     {
         return FALSE;

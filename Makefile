@@ -40,7 +40,7 @@ set.o: set.c set.h types.h
 .PHONY: clean run runV test_set set_test_run character_test character_test_run space_test space_test_run
 
 clean:
-	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec
+	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec space_test_exec
 run:
 	./juego_hormiga anthill.dat
 runV:
@@ -67,7 +67,7 @@ character.o: character.c character.h types.h
 
 space_test: space_test_exec
 
-space_test_exec: space_test.o space.o
+space_test_exec: space_test.o space.o set.o
 	gcc -o $@ $^ 
 
 space_test.o: space_test.c space.h types.h space_test.h test.h

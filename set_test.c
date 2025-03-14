@@ -54,7 +54,7 @@
    if (all || test == 8) test2_set_del();
    if (all || test == 9) test1_set_print();
    if (all || test == 10) test2_set_print();
-   if (all || test == 11)test3_set_print();
+   if (all || test == 11) test3_set_print();
    if (all || test == 12) test1_set_belongs();
    if (all || test == 13) test2_set_belongs();
    if (all || test == 14) test3_set_belongs();
@@ -88,7 +88,7 @@
  
    PRINT_PASSED_PERCENTAGE;
  
-   return 1;
+   return 0;
  }
  
  void test1_set_create() {
@@ -138,12 +138,19 @@
   set_destroy(s);
  }
 
+ void test4_set_add(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT(result = (set_add(s, 3)==ERROR));
+  set_destroy(s);
+ }
+
  void test1_set_del(){
   int result;
   Set *s;
   s=set_create();
   set_add(s,5);
-  PRINT_TEST_RESULT(result = (set_del(s, 3)==ERROR));
+  PRINT_TEST_RESULT(result = (set_del(s, 3)==OK));
   set_destroy(s);
  }
 
@@ -153,6 +160,21 @@
   s=set_create();
   set_add(s,5);
   PRINT_TEST_RESULT(result = (set_del(s, 5)==OK));
+  set_destroy(s);
+ }
+
+ void test3_set_del(){
+  int result;
+  Set *s=NULL;
+  PRINT_TEST_RESULT(result = (set_del(s, 5)==ERROR));
+  set_destroy(s);
+ }
+
+ void test4_set_del(){
+  int result;
+  Set *s=NULL;
+  s = set_create();
+  PRINT_TEST_RESULT(result = (set_del(s, NO_ID)==ERROR));
   set_destroy(s);
  }
  
@@ -208,6 +230,16 @@ void test3_set_belongs(){
   set_destroy(s); 
 }
 
+void test4_set_belongs(){
+  int result;
+  Set *s;
+  s=set_create();
+  set_add(s, 5);
+  PRINT_TEST_RESULT(result = (set_belongs(s, NO_ID)==FALSE));
+  set_destroy(s); 
+}
+
+
 void test1_set_is_empty(){
   int result;
   Set *s=NULL;
@@ -246,19 +278,12 @@ void test2_set_is_full(){
 }
 
 void test3_set_is_full(){
-  int result;
+  int result, i;
   Set *s;
   s=set_create();
-  set_add(s, 5);
-  set_add(s, 3);
-  set_add(s, 1);
-  set_add(s, 6);
-  set_add(s, 4);
-  set_add(s, 8);
-  set_add(s, 9);
-  set_add(s, 12);
-  set_add(s, 16);
-  set_add(s, 13);
+  for(i=0;i<MAX_ELEMENTS_IN_SET;i++){
+    set_add(s, (long)(i+1));
+  }
   PRINT_TEST_RESULT(result = (set_is_full(s)==TRUE));
   set_destroy(s); 
 }

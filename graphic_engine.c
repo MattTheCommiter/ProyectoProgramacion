@@ -41,6 +41,24 @@ struct _Graphic_engine
 };
 
 /**
+ * @brief Set the values of the arrows in the space
+ * 
+ * @author Matteo Artunedo
+ * @date 14-3-25
+ * 
+ * @param game pointer to the game
+ * @param spaceId id of the space where the character is located
+ * @param north1 arrow that connects the west space with its north
+ * @param south1 arrow that connects the west space with its south
+ * @param north2 arrow that connects the player's space with its south
+ * @param south2 arrow that connects the player's space with its south
+ * @param north3 arrow that connects the east space with its south
+ * @param south3 arrow that connects the east space with its south
+ * @return Status 
+ */
+Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3);
+
+/**
  * @brief Create a line of spaces
  *
  * @param id_center the id of the object that will be at the center of the line
@@ -58,6 +76,40 @@ char **create_line_of_spaces(Game *game, Id id_center);
 char **create_space_square(Game *game, Id square_id);
 
 /*PRIVATE FUNCTIONS*/
+Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3){
+  Id id_east=NO_ID, id_west=NO_ID, id_north=NO_ID, id_south=NO_ID;
+  id_north = space_get_north(game_get_space(game, spaceId));
+  id_south = space_get_south(game_get_space(game, spaceId));
+  id_east = space_get_west(game_get_space(game, spaceId));
+  id_west = space_get_east(game_get_space(game, spaceId));
+
+  if(!game || !north1 || !south1 || !north2 || !south2 || !north3 || !south3){
+    return ERROR;
+  }
+
+  if(id_north != NO_ID){
+    *north2 = '^';
+  }
+  if(id_south != NO_ID){
+    *south2 = 'v';
+  }
+  /*Estudiamos si el espacio en el este del espacio del jugador tiene norte y/o sur*/
+  if(space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_east)))) != NO_ID){
+    *north1 = '^';
+  }
+  if(space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_east)))) != NO_ID){
+    *south1 = 'v';
+  }
+  if(space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_west)))) != NO_ID){
+    *north3 = '^';
+  }
+  if(space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_west)))) != NO_ID){
+    *south3 = 'v';
+  }
+
+  return OK;
+}
+
 char **create_space_square(Game *game, Id square_id)
 {
   char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - 1], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
@@ -299,10 +351,10 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID;
+  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_west=NO_ID, id_east=NO_ID;
 
   char **created_line = NULL;
-  char str[255], *object_name = NULL, *character_gdesc = NULL, north_arrow = ' ', south_arrow = ' ';
+  char str[255], *object_name = NULL, *character_gdesc = NULL, north_arrow1 = ' ', south_arrow1 = ' ', north_arrow2 = ' ', south_arrow2 = ' ', north_arrow3 = ' ', south_arrow3 = ' ';
   int i, character_hp;
   CommandCode last_cmd = UNKNOWN;
   extern char *cmd_to_str[N_CMD][N_CMDT];
@@ -315,14 +367,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     id_north = space_get_north(game_get_space(game, id_act));
     id_south = space_get_south(game_get_space(game, id_act));
 
-    if (id_north != NO_ID)
-    {
-      north_arrow = '^';
-    }
-    if (id_south != NO_ID)
-    {
-      south_arrow = 'v';
-    }
+    set_arrows(game, id_act, &north_arrow1, &south_arrow1, &north_arrow2, &south_arrow2, &north_arrow3, &south_arrow3);
+    
 
     /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
     if (character_get_health(game_get_character(game, SPIDER)) == 0)
@@ -343,14 +389,14 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     free(created_line);
     created_line = NULL;
 
-    sprintf(str, "                           %c                           ", north_arrow);
+    sprintf(str, "             %c              %c               %c            ", north_arrow1, north_arrow2, north_arrow3);
     screen_area_puts(ge->map, str);
     created_line = create_line_of_spaces(game, id_act);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);
     }
-    sprintf(str, "                           %c                           ", south_arrow);
+    sprintf(str, "             %c              %c               %c            ", south_arrow1, south_arrow2, south_arrow3);
     screen_area_puts(ge->map, str);
     free(created_line[0]);
     free(created_line);

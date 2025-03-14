@@ -311,9 +311,9 @@ Status space_add_objectId(Space *space, Id object_Id)
 
 Bool space_object_belongs(Space *space, Id object_Id)
 {
-  if (!space)
+  if (!space || object_Id == NO_ID)
   {
-    return NO_ID;
+    return FALSE;
   }
   return set_belongs(space->objects, object_Id);
 }
