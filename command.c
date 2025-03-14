@@ -16,9 +16,9 @@
 #include <strings.h>
 
 #define CMD_LENGTH 30 /*maximum length of commands written by user*/
+#define ARG_LENGTH 30 /*maximum length of object names*/
 
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"},{"a", "Attack"}};
-char *arg_to_str[N_OBJECTS][N_CMDT] = {{"s", "seed"}, {"g", "grain"}, {"c", "crumb"}, {"l", "leaf"}};
 /**
  * @brief Command
  *
@@ -27,7 +27,7 @@ char *arg_to_str[N_OBJECTS][N_CMDT] = {{"s", "seed"}, {"g", "grain"}, {"c", "cru
 struct _Command
 {
   CommandCode code; /*!< Name of the command */
-  ArgumentCode arg;
+  char arg_description[ARG_LENGTH];
 };
 
 Command *command_create()
@@ -117,16 +117,7 @@ Status command_get_user_input(Command *command)
       if(!token){
         return command_set_argument(command, NO_ARG);
       }
-      while(arg==NO_ARG && j < N_OBJECTS){
-        if(!strcasecmp(token, arg_to_str[j][CMDS]) || !strcasecmp(token, arg_to_str[j][CMDL])){
-          arg = j;
-        }
-        else
-        {
-          j++;
-        }
-      }
-      command_set_argument(command, arg);
+      command_set_argument(command, token);
     }
     else
     {

@@ -59,6 +59,7 @@
   "files.associations": {
     "game_actions.h": "c",
     "functional": "c",
-    "TEST.C": "cpp"
+    "TEST.C": "cpp",
+    "space.h": "c"
   }
 }

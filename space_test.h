@@ -75,8 +75,17 @@ void test1_space_get_east();
 void test2_space_get_east();
 void test1_space_get_west();
 void test2_space_get_west();
-void test1_space_get_object();
-void test2_space_get_object();
-void test3_space_get_object();
+void test1_space_add_objectId();
+void test2_space_add_objectId();
+void test1_space_object_belongs();
+void test2_space_object_belongs();
+void test3_space_object_belongs();
+void test4_space_object_belongs();
+void test1_space_has_no_objects();
+void test2_space_has_no_objects();
+void test3_space_has_no_objects();
+void test1_space_get_num_of_objects();
+void test2_space_get_num_of_objects();
+void test3_space_get_num_of_objects();
 
 #endif
