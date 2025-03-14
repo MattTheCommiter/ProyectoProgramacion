@@ -74,6 +74,8 @@ Status game_create(Game **game)
 
 Status game_create_from_file(Game **game, char *filename)
 {
+  Character *spider = NULL, *ant_friend = NULL;
+
   if (game_create(game) == ERROR)
   {
     return ERROR;
@@ -90,11 +92,20 @@ Status game_create_from_file(Game **game, char *filename)
 
   /* The player is located in the first space */
   game_set_player_location((*game), game_get_space_id_at((*game), 0));
-  (*game)->characters[0] = character_spider_create();
+
+  /*The characters are created and located*/
+  if((spider = character_spider_create()) == NULL){
+    return ERROR;
+  }
+  (*game)->characters[0] = spider;
   space_set_character(game_get_space((*game),SPIDER_LOCATION),SPIDER);
-  (*game)->characters[1] = character_ant_friend_create();
+  if((ant_friend = character_ant_friend_create()) == NULL){
+    return ERROR;
+  }
+  (*game)->characters[1] = ant_friend;
   space_set_character(game_get_space((*game),ANT_FRIEND_LOCATION),ANT_FRIEND);
   (*game)->n_characters = 2;
+  
 
   return OK;
 }

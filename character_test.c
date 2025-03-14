@@ -284,6 +284,6 @@ void test02_character_spider_create(){
 
 void test02_character_ant_frient_create(){
     Character *ant = character_ant_friend_create();
-    PRINT_TEST_RESULT(character_get_friendly(ant) == TRUE && !strcmp(character_get_gdesc(ant),"^0m") && character_get_health(ant) == 5  && !strcmp(character_get_name(ant),"Ant") && character_get_id(ant) == ANT_FRIEND && !strcmp(character_get_message(ant),"Hi!"));
+    PRINT_TEST_RESULT(character_get_friendly(ant) == TRUE && !strcmp(character_get_gdesc(ant),"   ^0m")  && character_get_health(ant) == 5  && !strcmp(character_get_name(ant),"Ant") && character_get_id(ant) == ANT_FRIEND && !strcmp(character_get_message(ant),"Hi!"));
     character_destroy(ant);
 }
