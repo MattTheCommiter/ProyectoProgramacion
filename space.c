@@ -86,7 +86,7 @@ Status space_destroy(Space *space)
 
 Id space_get_id(Space *space)
 {
-  if (!space)
+  if (space == NULL)
   {
     return NO_ID;
   }

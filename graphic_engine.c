@@ -65,7 +65,7 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
  * @param id_center the id of the object that will be at the center of the line
  * @return char** matriz with the complete line
  */
-char **create_line_of_spaces(Game *game, Id id_center, int height);
+char **create_line_of_spaces(Game *game, Id id_center, int height, Id id_player);
 
 /**
  * @brief Create a square space description for the space with the given id
@@ -107,7 +107,6 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
   if(space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_west)))) != NO_ID){
     *south1 = 'v';
   }
-
   return OK;
 }
 
@@ -117,7 +116,7 @@ char **create_space_square(Game *game, Id square_id)
   Space *space;
   Object *object_in_pos = NULL;
   Bool full = FALSE;
-  int i,j , len_printed = 0;
+  int i, len_printed = 0;
 
   space = game_get_space(game, square_id);
 
@@ -223,7 +222,7 @@ char **create_space_square(Game *game, Id square_id)
   return space_square;
 }
 
-char **create_line_of_spaces(Game *game, Id id_center, int height)
+char **create_line_of_spaces(Game *game, Id id_center, int height, Id id_player)
 {
   char **gdesc_line = NULL, **left_square = NULL, **center_square = NULL, **right_square = NULL, str[255], left_square_arrow = ' ', right_square_arrow = ' ';
   int i;
@@ -238,15 +237,15 @@ char **create_line_of_spaces(Game *game, Id id_center, int height)
   }
   else{
     if(height == 3){
-      id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_center))))))));
+      id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
     }
     else if(height == 1){
-      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_center))))))));
+      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
     }
     else if(height == 2){
-      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_center))))))));
+      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
       if(id_right == NO_ID){
-        id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_center))))))));
+        id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
       }
     }
   }
@@ -256,15 +255,15 @@ char **create_line_of_spaces(Game *game, Id id_center, int height)
   }
   else{
     if(height == 3){
-      id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_center))))))));
+      id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
     }
     else if(height == 1){
-      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_center))))))));
+      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
     }
     else if(height == 2){
-      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_center))))))));
+      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
       if(id_left == NO_ID){
-        id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_center))))))));
+        id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
       }
     }
   }
@@ -397,9 +396,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   {
     id_north = space_get_north(game_get_space(game, id_act));
     id_south = space_get_south(game_get_space(game, id_act));
-
     set_arrows(game, id_act, &north_arrow1, &south_arrow1, &north_arrow2, &south_arrow2, &north_arrow3, &south_arrow3);
-    
+    if(id_north == NO_ID){
+      id_north = space_get_id(game_get_space(game, space_get_west(game_get_space(game, space_get_north(game_get_space(game, space_get_east(game_get_space(game, id_act))))))));
+      if(id_north == NO_ID){
+        id_north = space_get_id(game_get_space(game, space_get_east(game_get_space(game, space_get_north(game_get_space(game, space_get_west(game_get_space(game, id_act))))))));
+      }
+    }
+    if(id_south == NO_ID){
+      id_south = space_get_id(game_get_space(game, space_get_west(game_get_space(game, space_get_south(game_get_space(game, space_get_east(game_get_space(game, id_act))))))));
+      if(id_south == NO_ID){
+        id_south = space_get_id(game_get_space(game, space_get_east(game_get_space(game, space_get_south(game_get_space(game, space_get_west(game_get_space(game, id_act))))))));
+      }
+    }
 
     /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
     if (character_get_health(game_get_character(game, SPIDER)) == 0)
@@ -407,7 +416,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       character_set_gdesc(game_get_character(game, SPIDER), "\\/xx\\/");
     }
 
-    created_line = create_line_of_spaces(game, id_north, 3);
+    created_line = create_line_of_spaces(game, id_north, 3, id_act);
     screen_area_puts(ge->map, created_line[0]);
     if (created_line != NULL)
     {
@@ -422,18 +431,20 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     sprintf(str, "        %c                  %c                  %c          ", north_arrow1, north_arrow2, north_arrow3);
     screen_area_puts(ge->map, str);
-    created_line = create_line_of_spaces(game, id_act, 2);
+    
+    created_line = create_line_of_spaces(game, id_act, 2, id_act);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);
     }
-    sprintf(str, "        %c                  %c                  %c          ", south_arrow1, south_arrow2, south_arrow3);
-    screen_area_puts(ge->map, str);
     free(created_line[0]);
     free(created_line);
     created_line = NULL;
+    
+    sprintf(str, "        %c                  %c                  %c          ", south_arrow1, south_arrow2, south_arrow3);
+    screen_area_puts(ge->map, str);
 
-    created_line = create_line_of_spaces(game, id_south, 1);
+    created_line = create_line_of_spaces(game, id_south, 1, id_act);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);

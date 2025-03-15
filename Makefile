@@ -34,6 +34,7 @@ player.o: player.c player.h types.h space.h
 	
 caracter.o: character.c character.h types.h 
 	gcc $(CFLAGS) $^
+	
 set.o: set.c set.h types.h
 	gcc $(CFLAGS) $^
 	
