@@ -17,6 +17,7 @@
 #define N_CMD 11        /*<!Number of commands that are possible*/
 #define MAX_CMD_ARG 20  /*<!Maximum number of characters in the argument parameter of the command*/
 #define N_OBJECTS 4      /*<!Number of objects that can be present in the game*/
+#define NO_ARG NULL     /*<!the pointer defined for no argument*/
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */
@@ -44,13 +45,7 @@ typedef enum
     ATTACK          /*!<Assigs 9 to the keyword "DROP", which will be used in command-related functions*/ 
 } CommandCode;
 
-typedef enum{
-    NO_ARG=-1,      /*!<Assigs -1 to the keyword "NO_ARG", signifying the current command does not take arguments*/ 
-    SEED,           /*!<Assigs 0 to the keyword "SEED", signifying the current command takes the argument "seed"*/
-    GRAIN,          /*!<Assigs 1 to the keyword "GRAIN", signifying the current command takes the argument "grain"*/
-    CRUMB,          /*!<Assigs 2 to the keyword "CRUMB", signifying the current command takes the argument "crumb"*/
-    LEAF            /*!<Assigs 3 to the keyword "LEAF", signifying the current command takes the argument "leaf"*/
-}ArgumentCode;
+
 
 typedef struct _Command Command;
 
@@ -116,7 +111,7 @@ Status command_get_user_input(Command *command);
  * @param arg code of the new argument
  * @return Status: whether the function was completed succesfully
  */
-Status command_set_argument(Command *command, ArgumentCode arg);
+Status command_set_argument(Command *command, char *arg);
 
 /**
  * @brief gets the argument parameter of the command
@@ -124,5 +119,5 @@ Status command_set_argument(Command *command, ArgumentCode arg);
  * @param command pointer to the command
  * @return code with the command argument or NO_CMD if an error occurrs 
  */
-ArgumentCode command_get_argument(Command *command);
+char *command_get_argument(Command *command);
 #endif

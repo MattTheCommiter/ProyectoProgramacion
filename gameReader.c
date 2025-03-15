@@ -68,10 +68,10 @@
        east = atol(toks);
        toks = strtok(NULL, "|");
        south = atol(toks);
-       toks = strtok(NULL, "|\n");
+       toks = strtok(NULL, "|");
        west = atol(toks);
 
-       if((toks = strtok(NULL, "|\n")) != NULL){
+       if((toks = strtok(NULL, "|\n\r")) != NULL){
           strcpy(read_gdesc[0], toks);
           toks = strtok(NULL, "|");
           if(toks)strcpy(read_gdesc[1], toks);

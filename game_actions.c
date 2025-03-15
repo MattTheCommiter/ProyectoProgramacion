@@ -67,7 +67,7 @@ void game_actions_back(Game *game);
  * @param game a double pointer to the structure with the game's main information
  * @param arg a code which corresponds to the object being taken
  */
-void game_actions_take(Game *game, ArgumentCode arg);
+void game_actions_take(Game *game, char *arg);
 
 /**
  * @brief drops the object in the space
@@ -208,32 +208,36 @@ void game_actions_back(Game *game)
   return;
 }
 
-void game_actions_take(Game *game, ArgumentCode arg)
+void game_actions_take(Game *game, char *arg)
 {
   Id objectId = NO_ID;
+  int i;
+  Bool found = FALSE;
+
   /*If the pointers are NULL or the player already has an object, nothing happens*/
   if (!game || player_get_object(game_get_player(game)) != NO_ID || arg == NO_ARG)
   {
     game_set_last_command_success(game ,ERROR);
     return;
   }
-  switch (arg)
-  {
-  case SEED:
-    objectId = game_get_objectId_from_name(game, "Seed");
-    break;
-  case CRUMB:
-    objectId = game_get_objectId_from_name(game, "Crumb");
-    break;
-  case GRAIN:
-    objectId = game_get_objectId_from_name(game, "Grain");
-    break;
-  case LEAF:
-    objectId = game_get_objectId_from_name(game, "Leaf");
-    break;
-  default:
-    break;
+  
+  /*first, we find the object with the name "arg" */
+
+  for(i = 0; i < game_get_n_objects(game) && found == FALSE; i++){
+    if(strcasecmp(arg, object_get_name(game_get_object_in_pos(game, i))) == 0){
+      found = TRUE;
+      i--;
+    }
   }
+  if(found == FALSE){
+    game_set_last_command_success(game ,ERROR);
+    return;
+  }
+  
+  /*Now, that we have found the object with the name, we get its Id*/
+  objectId = game_get_object_id_at(game, i);
+
+
   if(game_get_object_location(game, objectId) == NO_ID){
     game_set_last_command_success(game ,ERROR);
     return;
