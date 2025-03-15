@@ -14,6 +14,7 @@
 #include "command.h"
 #include "game.h"
 #include "types.h"
+#include <strings.h>
 
 /**
  * @brief Updates the game's last_cmd to the newest command, calling the action functions (which are private) depending on the command

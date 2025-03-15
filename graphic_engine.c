@@ -28,7 +28,8 @@
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
-
+#define NUMBER_OF_BARS 2
+#define SIZE_OF_SPACE 2
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
  *
@@ -115,7 +116,8 @@ char **create_space_square(Game *game, Id square_id)
   char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - 1], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   Object *object_in_pos = NULL;
-  int i, full = 0, len_printed = 0;
+  Bool full = FALSE;
+  int i,j , len_printed = 0;
 
   space = game_get_space(game, square_id);
 
@@ -160,17 +162,18 @@ char **create_space_square(Game *game, Id square_id)
       strcpy(character, character_get_gdesc(game_get_character(game, space_get_character(space))));
     }
 
-    for (i = 0; i < game_get_n_objects(game) && full == 0; i++)
+    for (i = 0; i < game_get_n_objects(game) && full == FALSE; i++)
     {
       object_in_pos = game_get_object_in_pos(game, i);
       if (space_object_belongs(space, object_get_id(object_in_pos)))
       {
 
-        if ((len_printed + strlen(object_get_name(object_in_pos))) > (N_TOTAL_ROWS_IN_SQUARE - 2 - 2))
+        if ((len_printed + strlen(object_get_name(object_in_pos))) > (N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS - SIZE_OF_SPACE))
         {
-
-          len_printed += snprintf(object + len_printed, sizeof(object) - len_printed, "......");
-          full = 1;
+          while(len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS){
+            len_printed += sprintf(object + len_printed, ".");
+          }
+          full = TRUE;
         }
         else
         {
