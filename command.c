@@ -18,7 +18,7 @@
 #define CMD_LENGTH 30 /*maximum length of commands written by user*/
 #define ARG_LENGTH 30 /*maximum length of object names*/
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"},{"a", "Attack"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}};
 /**
  * @brief Command
  *
@@ -26,8 +26,8 @@ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "E
  */
 struct _Command
 {
-  CommandCode code; /*!< Name of the command */
-  char arg_description[ARG_LENGTH];
+  CommandCode code;                 /*!< Name of the command */
+  char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
 };
 
 Command *command_create()
@@ -82,7 +82,7 @@ Status command_get_user_input(Command *command)
 {
   char input[CMD_LENGTH] = "", *token = NULL;
   int i = UNKNOWN - NO_CMD + 1;
-  
+
   CommandCode cmd;
 
   if (!command)
@@ -99,6 +99,8 @@ Status command_get_user_input(Command *command)
     }
 
     cmd = UNKNOWN;
+    /* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
+    /*If either of the comparisons are true, the loop ends and the index 'i' is used to save the chosen command through the command_set_code function*/
     while (cmd == UNKNOWN && i < N_CMD)
     {
       if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL]))
@@ -113,11 +115,12 @@ Status command_get_user_input(Command *command)
     if (cmd == TAKE)
     {
       token = strtok(NULL, "\n");
-      
-      if(!token){
+
+      if (!token)
+      {
         return command_set_argument(command, NO_ARG);
       }
-      printf("token genered : '%s'",token);
+      printf("token genered : '%s'", token);
       command_set_argument(command, token);
     }
     else
@@ -133,8 +136,6 @@ Status command_get_user_input(Command *command)
   }
 }
 
-/* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
-/*If either of the comparisons are true, the loop ends and the index 'i' is used to save the chosen command through the command_set_code function*/
 char *command_get_argument(Command *command)
 {
   if (!command)
@@ -144,12 +145,14 @@ char *command_get_argument(Command *command)
 
 Status command_set_argument(Command *command, char *argument_desc)
 {
-  if (!command) return ERROR;
-  if(argument_desc == NO_ARG){
+  if (!command)
+    return ERROR;
+  if (argument_desc == NO_ARG)
+  {
     command->arg_description[0] = '\0';
     return OK;
-  } 
+  }
   strcpy(command->arg_description, argument_desc);
- 
+
   return OK;
 }
