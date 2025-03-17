@@ -13,10 +13,10 @@
 
 #include "types.h"
 
-#define N_CMDT 2        /*<!Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 11        /*<!Number of commands that are possible*/
-#define MAX_CMD_ARG 20  /*<!Maximum number of characters in the argument parameter of the command*/
-#define NO_ARG NULL     /*<!the pointer defined for no argument*/
+#define N_CMDT 2       /*<!Number of ways the user can type each command (non-case sensitive)*/
+#define N_CMD 11       /*<!Number of commands that are possible*/
+#define MAX_CMD_ARG 20 /*<!Maximum number of characters in the argument parameter of the command*/
+#define NO_ARG NULL    /*<!the pointer defined for no argument*/
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */
@@ -31,20 +31,18 @@ typedef enum
  */
 typedef enum
 {
-    NO_CMD = -1,    /*!<Assigs -1 to the keyword "NO_CMD", which will be used in command-related functions*/            
-    UNKNOWN,        /*!<Assigs 0 to the keyword "UNKNOWN", which will be used in command-related functions*/    
-    EXIT,           /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/           
-    NEXT,           /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/           
-    BACK,           /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/                     
-    DROP,           /*!<Assigs 4 to the keyword "DROP", which will be used in command-related functions*/ 
-    LEFT,           /*!<Assigs 5 to the keyword "LEFT", which will be used in command-related functions*/ 
-    RIGHT,          /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/ 
-    TAKE,           /*!<Assigs 7 to the keyword "TAKE", which represents taking the an object*/
-    CHAT,           /*!<Assigs 8 to the keyword "CHAT", which will be used in command-related functions*/ 
-    ATTACK          /*!<Assigs 9 to the keyword "ATTACK", which will be used in command-related functions*/ 
+    NO_CMD = -1, /*!<Assigs -1 to the keyword "NO_CMD", which will be used in command-related functions*/
+    UNKNOWN,     /*!<Assigs 0 to the keyword "UNKNOWN", which will be used in command-related functions*/
+    EXIT,        /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/
+    NEXT,        /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/
+    BACK,        /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/
+    DROP,        /*!<Assigs 4 to the keyword "DROP", which will be used in command-related functions*/
+    LEFT,        /*!<Assigs 5 to the keyword "LEFT", which will be used in command-related functions*/
+    RIGHT,       /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/
+    TAKE,        /*!<Assigs 7 to the keyword "TAKE", which represents taking the an object*/
+    CHAT,        /*!<Assigs 8 to the keyword "CHAT", which will be used in command-related functions*/
+    ATTACK       /*!<Assigs 9 to the keyword "ATTACK", which will be used in command-related functions*/
 } CommandCode;
-
-
 
 typedef struct _Command Command;
 
@@ -105,7 +103,7 @@ Status command_get_user_input(Command *command);
 
 /**
  * @brief sets the argument parameter of the command
- * 
+ *
  * @param command pointer to the command
  * @param arg code of the new argument
  * @return Status: whether the function was completed succesfully
@@ -114,9 +112,9 @@ Status command_set_argument(Command *command, char *arg);
 
 /**
  * @brief gets the argument parameter of the command
- * 
+ *
  * @param command pointer to the command
- * @return code with the command argument or NO_CMD if an error occurrs 
+ * @return code with the command argument or NO_CMD if an error occurrs
  */
 char *command_get_argument(Command *command);
 #endif
