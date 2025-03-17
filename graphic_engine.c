@@ -178,17 +178,19 @@ char **create_space_square(Game *game, Id square_id)
         {
           if (len_printed == 0)
           {
-            len_printed += snprintf(object + len_printed, sizeof(object) - len_printed, "%s", object_get_name(object_in_pos));
+            len_printed += sprintf(object + len_printed, "%s", object_get_name(object_in_pos));
           }
           else
           {
-            len_printed += snprintf(object + len_printed, sizeof(object) - len_printed, ", %s", object_get_name(object_in_pos));
+            len_printed += sprintf(object + len_printed, ", %s", object_get_name(object_in_pos));
           }
         }
       }
     }
-    snprintf(object + len_printed, sizeof(object) - len_printed, "                ");
-
+    while(len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS){
+      len_printed += sprintf(object + len_printed, " ");
+    }
+    
     gdesc = space_get_gdesc(space);
 
     sprintf(str, "+---------------+");
