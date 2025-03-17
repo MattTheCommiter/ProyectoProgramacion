@@ -1,3 +1,13 @@
+/** 
+ * @brief It tests character module
+ * 
+ * @file character_test.c
+ * @author Alvaro Inigo
+ * @version 0.0 
+ * @date 117-03-2025
+ */
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
