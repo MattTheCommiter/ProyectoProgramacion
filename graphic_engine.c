@@ -64,7 +64,7 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
 
 /**
  * @brief Create a line of spaces (3 space squares placed horizontally one after the other)
- *
+ * @author Matteo Artunedo
  * @param game pointer to the game structure
  * @param id_center the id of the space that will be in the center of the line
  * @param id_player the id of where the player is located
@@ -75,7 +75,7 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
 
 /**
  * @brief Create a square space description for the space with the given id
- *
+ * @author Matteo Artunedo
  * @param game pointer to the game structure
  * @param square_id id of the space which corresponds to the box being created
  * @return char** matrix with the square of the space that will be printed on the screen
@@ -84,7 +84,7 @@ char **create_space_square(Game *game, Id square_id);
 
 /**
  * @brief returns the id of the space that is at the side of id_center
- *
+ * @author Matteo Artunedo
  * @param game pointer to game
  * @param id_player id of the space where the player is located
  * @param space_get_adjacent pointer to the function that will determine which position we want to access (it will be either space_get_west or space_get_east)
@@ -95,7 +95,7 @@ Id horizontally_adjacent_square(Game *game, Id id_player, Id(space_get_adjacent)
 
 /**
  * @brief returns the id of the space that is at the vertically adjacent to id_center
- *
+ * @author Matteo Artunedo
  * @param game pointer to game
  * @param id_player id of the space where the player is located
  * @param space_get_v_adjacent pointer to the function that will determine which position we want to access (it will be either space_get_north or space_get_south)

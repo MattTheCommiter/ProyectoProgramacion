@@ -93,6 +93,8 @@ Status player_print(Player *player);
 
 /**
  * @brief returns the id of the space where the player is currently in
+ * @author Matteo Artunedo
+ * 
  * @param player a pointer to the player
  * @return the id of the player's location
  */
@@ -100,6 +102,7 @@ Id player_get_location(Player *player);
 
 /**
  * @brief sets the id of the player's location to a new id
+ * @author Matteo Artunedo
  * @param player pointer to the player
  * @param spaceId Id of the new player location
  * @return Status: whether the function was completed succesfully

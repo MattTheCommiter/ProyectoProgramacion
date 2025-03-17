@@ -45,7 +45,7 @@ Status set_destroy(Set *s);
  *
  * @param s a pointer to the set where the element will be added
  * @param elementId the id of the new element
- * @return returns OK if the element is added or if the element is already in the set and ERROR if the given pointer to the set is NULL
+ * @return returns OK if the element is added or if the element is already in the set and ERROR if the given pointer to the set is NULL or the set is full
  */
 Status set_add(Set *s, Id elementId);
 /**
@@ -130,6 +130,9 @@ Id set_get_Id_in_pos(Set *s, int pos);
 
 /**
  * @brief returns the position of a specific element in the set
+ * 
+ * @date 27-02-2025
+ * @author Matteo Artunedo
  * 
  * @param s pointer to the set
  * @param elementId the Id we want to look for

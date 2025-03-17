@@ -20,8 +20,13 @@ struct _Set{
 
 Set *set_create(){  
     Set *s;
+    int i;
     if(!(s = (Set *)calloc(sizeof(Set), 1))){
         return NULL;
+    }
+    /*Inicializamos todas las posiciones del set a NO_ID*/
+    for(i=0;i<MAX_ELEMENTS_IN_SET;i++){
+        s->ids[i] = NO_ID;
     }
     s->n_ids = 0;
     return s;
@@ -59,6 +64,7 @@ Status set_del(Set *s, Id elementId){
     }
 
     s->n_ids--;
+    /*Movemos el último elemento a la posición del elemento que hemos eliminado*/
     s->ids[pos] = s->ids[s->n_ids];
     s->ids[s->n_ids] = NO_ID;
     return OK;
@@ -83,7 +89,6 @@ Bool set_belongs(Set *s, Id elementId){
     int i;
     Bool found=FALSE;
     if(!s || elementId == NO_ID) return FALSE;
-    if(!s  || elementId == NO_ID) return ERROR;
 
     for(i=0;i<s->n_ids && !found;i++){
         if(s->ids[i] == elementId){

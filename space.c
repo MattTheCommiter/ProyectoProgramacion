@@ -20,15 +20,15 @@
  */
 struct _Space
 {
-  Id id;                                              /*!< Id number of the space, it must be unique */
-  char name[WORD_SIZE + 1];                           /*!< Name of the space */
-  Id north;                                           /*!< Id of the space at the north */
-  Id south;                                           /*!< Id of the space at the south */
-  Id east;                                            /*!< Id of the space at the east */
-  Id west;                                            /*!< Id of the space at the west */
-  Set *objects;                                       /*!< The set of objects present at the space */
-  Id character;                                       /*!< The Id of the character present at the space */
-  char **gdesc;                                       /*!< The graphic description of the space */
+  Id id;                    /*!< Id number of the space, it must be unique */
+  char name[WORD_SIZE + 1]; /*!< Name of the space */
+  Id north;                 /*!< Id of the space at the north */
+  Id south;                 /*!< Id of the space at the south */
+  Id east;                  /*!< Id of the space at the east */
+  Id west;                  /*!< Id of the space at the west */
+  Set *objects;             /*!< The set of objects present at the space */
+  Id character;             /*!< The Id of the character present at the space */
+  char **gdesc;             /*!< The graphic description of the space */
 };
 
 Space *space_create(Id id)
@@ -54,15 +54,19 @@ Space *space_create(Id id)
   newSpace->west = NO_ID;
   newSpace->objects = set_create();
   newSpace->character = NO_ID;
-  if(!(newSpace->gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *)))){
+  if (!(newSpace->gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
+  {
+    space_destroy(newSpace);
     return NULL;
   }
-  if(!(newSpace->gdesc[0] = (char *)calloc((N_ROWS_IN_GDESC + 1)*N_LINES_IN_GDESC, sizeof(char)))){
-    free(newSpace->gdesc);
+  if (!(newSpace->gdesc[0] = (char *)calloc((N_ROWS_IN_GDESC + 1) * N_LINES_IN_GDESC, sizeof(char))))
+  {
+    space_destroy(newSpace);
     return NULL;
   }
-  for(i=1;i<N_LINES_IN_GDESC;i++){
-      newSpace->gdesc[i] = newSpace->gdesc[0] + (N_ROWS_IN_GDESC + 1)*i;
+  for (i = 1; i < N_LINES_IN_GDESC; i++)
+  {
+    newSpace->gdesc[i] = newSpace->gdesc[0] + (N_ROWS_IN_GDESC + 1) * i;
   }
   return newSpace;
 }
@@ -73,11 +77,13 @@ Status space_destroy(Space *space)
   {
     return ERROR;
   }
-  if(space->gdesc){
-    if(space->gdesc[0]){
+  if (space->gdesc)
+  {
+    if (space->gdesc[0])
+    {
       free(space->gdesc[0]);
-    free(space->gdesc);
     }
+    free(space->gdesc);
   }
   set_destroy(space->objects);
   free(space);
@@ -249,18 +255,18 @@ Status space_print(Space *space)
   if (set_is_empty(space->objects))
   {
     fprintf(stdout, "---> No objects in the space.\n");
-    
   }
   else
   {
     fprintf(stdout, "---> Object id's: \n");
-    if(set_print(space->objects)==-1){
+    if (set_print(space->objects) == -1)
+    {
       return ERROR;
     }
-
   }
   fprintf(stdout, "\nGraphic description of the space: ");
-  for(i=0;i<N_LINES_IN_GDESC;i++){
+  for (i = 0; i < N_LINES_IN_GDESC; i++)
+  {
     printf("\n%s", space->gdesc[i]);
   }
 
@@ -268,34 +274,49 @@ Status space_print(Space *space)
 }
 
 /*CHARACTER RELATED FUNCTIONS*/
-Id space_get_character(Space *space){
-  if(!space) return NO_ID;
+
+Id space_get_character(Space *space)
+{
+  if (!space)
+    return NO_ID;
   return space->character;
 }
 
-Status space_set_character(Space *space, Id characterId){
-  if(!space) return ERROR;
-  if(space->character == NO_ID){
-    space->character = characterId;}
-  else{
+Status space_set_character(Space *space, Id characterId)
+{
+  if (!space)
+    return ERROR;
+  if (space->character == NO_ID)
+  {
+    space->character = characterId;
+  }
+  else
+  {
     return ERROR;
   }
-  
+
   return OK;
 }
 /*CHARACTER RELATED FUNCTIONS*/
 
 /*GDESC RELATED FUNCTIONS*/
-char **space_get_gdesc(Space *space){
-  if(!space) return NULL;
+
+char **space_get_gdesc(Space *space)
+{
+  if (!space)
+    return NULL;
   return space->gdesc;
 }
 
-Status space_set_gdesc(Space *space, char**space_gdescription){
-  int i=0;
-  if(!space) return ERROR;
-  for(i=0;i<N_LINES_IN_GDESC;i++){
-    if(!strcpy(space->gdesc[i], space_gdescription[i])){
+Status space_set_gdesc(Space *space, char **space_gdescription)
+{
+  int i = 0;
+  if (!space)
+    return ERROR;
+  for (i = 0; i < N_LINES_IN_GDESC; i++)
+  {
+    if (!strcpy(space->gdesc[i], space_gdescription[i]))
+    {
       return ERROR;
     }
   }
@@ -304,14 +325,14 @@ Status space_set_gdesc(Space *space, char**space_gdescription){
 /*END OF GDESC RELATED FUNCTIONS*/
 
 /*OBJECT RELATED FUNCTIONS*/
+
 Status space_add_objectId(Space *space, Id object_Id)
 {
   if (!space || object_Id == NO_ID)
   {
     return ERROR;
   }
-  set_add(space->objects, object_Id);
-  return OK;
+  return set_add(space->objects, object_Id);
 }
 
 Bool space_object_belongs(Space *space, Id object_Id)
@@ -323,28 +344,36 @@ Bool space_object_belongs(Space *space, Id object_Id)
   return set_belongs(space->objects, object_Id);
 }
 
-Status space_delete_object(Space *space, Id objectId){
-  if(!space || !(space->objects)) return ERROR;
+Status space_delete_object(Space *space, Id objectId)
+{
+  if (!space || !(space->objects) || objectId == NO_ID)
+    return ERROR;
 
   return set_del(space->objects, objectId);
 }
 
-Bool space_has_no_objects(Space *space){
-  if(!space){
+Bool space_has_no_objects(Space *space)
+{
+  if (!space)
+  {
     return TRUE;
   }
   return set_is_empty(space->objects);
 }
 
-Bool space_set_of_objects_is_full(Space *space){
-  if(!space){
+Bool space_set_of_objects_is_full(Space *space)
+{
+  if (!space)
+  {
     return TRUE;
   }
   return set_is_full(space->objects);
 }
 
-int space_get_num_of_objects(Space *space){
-  if(!space) return 0;
+int space_get_num_of_objects(Space *space)
+{
+  if (!space)
+    return 0;
 
   return set_get_num_elements(space->objects);
 }

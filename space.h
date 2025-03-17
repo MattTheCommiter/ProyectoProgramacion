@@ -169,7 +169,7 @@ Bool space_object_belongs(Space *space, Id object_Id);
 
 /**
  * @brief Returns whether the set of objects in the space is empty or not
- * 
+ * @author Matteo Artunedo
  * @param space a pointer to the space
  * @return if space pointer is NULL or set is empty return TRUE, else return FALSE
  */
@@ -177,7 +177,7 @@ Bool space_has_no_objects(Space *space);
 
 /**
  * @brief returns whether the set of objects in the space is full or not
- * 
+ * @author Matteo Artunedo
  * @param space a pointer to the space
  * @return if space pointer is NULL or set is full return TRUE, else return FALSE
  */
@@ -185,7 +185,7 @@ Bool space_set_of_objects_is_full(Space *space);
 
 /**
  * @brief returns the number of objects the space has
- * 
+ * @author Matteo Artunedo
  * @param space a pointer to the space
  * @return int with the number of objects in the space
  */

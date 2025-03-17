@@ -167,15 +167,17 @@ Status player_print(Player *player)
   return OK;
 }
 
-
-
-Status player_set_health(Player *p, int hp){
-  if(!p) return ERROR;
+Status player_set_health(Player *p, int hp)
+{
+  if (!p)
+    return ERROR;
   p->health = hp;
   return OK;
 }
 
-int player_get_health(Player *p){
-  if(!p) return NO_HP;
+int player_get_health(Player *p)
+{
+  if (!p)
+    return NO_HP;
   return p->health;
 }
