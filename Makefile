@@ -2,6 +2,12 @@ CFLAGS = -Wall -ansi -pedantic -g -c
 
 all : juego_hormiga
 
+set_test: set_test_exec
+
+character_test: character_test_exec
+
+space_test: space_test_exec
+
 juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o gameReader.o object.o player.o character.o set.o
 	gcc -g -o $@ $^ -L./ -lscreen
 
@@ -37,25 +43,12 @@ caracter.o: character.c character.h types.h
 	
 set.o: set.c set.h types.h
 	gcc $(CFLAGS) $^
-	
-.PHONY: clean run runV test_set set_test_run character_test character_test_run space_test space_test_run
-
-clean:
-	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec space_test_exec
-run:
-	./juego_hormiga anthill.dat
-runV:
-	valgrind --leak-check=full ./juego_hormiga anthill.dat
-
-test_set: set_test_exec
 
 set_test_exec: set_test.o set.o
 	gcc -o $@ $^ 
 
 set_test.o: set_test.c set.h types.h set_test.h test.h
-	gcc $(CFLAGS) $^
-	
-character_test: character_test_exec
+	gcc $(CFLAGS) $^	
 
 character_test_exec: character_test.o character.o
 	gcc -o $@ $^ 
@@ -66,15 +59,20 @@ character_test.o: character_test.c character.h types.h character_test.h test.h
 character.o: character.c character.h types.h
 	gcc $(CFLAGS) $^
 
-space_test: space_test_exec
-
 space_test_exec: space_test.o space.o set.o
 	gcc -o $@ $^ 
 
 space_test.o: space_test.c space.h types.h space_test.h test.h
 	gcc $(CFLAGS) $^
 	
+.PHONY: clean run runV test_set set_test_run character_test character_test_run space_test space_test_run
 
+clean:
+	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec space_test_exec
+run:
+	./juego_hormiga anthill.dat
+runV:
+	valgrind --leak-check=full ./juego_hormiga anthill.dat
 
 character_test_run:
 	./character_test_exec
@@ -83,3 +81,4 @@ space_test_run:
 
 set_test_run:
 	./set_test_exec
+

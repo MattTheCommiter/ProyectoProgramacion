@@ -60,6 +60,7 @@
     "game_actions.h": "c",
     "functional": "c",
     "TEST.C": "cpp",
-    "space.h": "c"
+    "space.h": "c",
+    "typeinfo": "cpp"
   }
 }
