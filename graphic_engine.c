@@ -2,10 +2,9 @@
  * @brief It implements a textual graphic engine
  *
  * @file graphic_engine.c
- * @author Profesores PPROG
- * @version 0.1
- * @date 12-02-2025
- * @copyright GNU Public License
+ * @author Matteo Artuned
+ * @version 0.2
+ * @date 12-03-2025
  */
 
 #include "graphic_engine.h"
@@ -28,8 +27,8 @@
 #define HEIGHT_BAN 1
 #define HEIGHT_HLP 2
 #define HEIGHT_FDB 3
-#define NUMBER_OF_BARS 2
-#define SIZE_OF_SPACE 2
+#define NUMBER_OF_BARS 2 /*!<The number of bars '|' at the sides of the square*/
+#define SIZE_OF_SPACE 2  /*!<Size of the ' ,' between two objects*/
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
  *

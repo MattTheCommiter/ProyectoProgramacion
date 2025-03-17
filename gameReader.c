@@ -1,8 +1,8 @@
 /**
  * @file It implements the reading and loading of spaces
  * @author Alvaro Inigo
- * @version 0.1
- * @date 2025-02-08
+ * @version 0.2
+ * @date 2025-03-014
  *
  * @copyright Copyright (c) 2025
  *

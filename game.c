@@ -27,7 +27,7 @@ struct _Game
   Command *last_cmd;                        /*!<Pointer to the last command introduced by the user*/
   Status command_success;                   /*!<Status that stablishes wheter the command was successful*/
   Bool finished;                            /*!<Boolean that establishes whether the game has ended or not*/
-  char message[MAX_MESSAGE];
+  char message[MAX_MESSAGE];                /*!<String that has the message of the character showed in the game*/
 };
 /**
    Private functions
