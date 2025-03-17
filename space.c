@@ -275,7 +275,12 @@ Id space_get_character(Space *space){
 
 Status space_set_character(Space *space, Id characterId){
   if(!space) return ERROR;
-  space->character = characterId;
+  if(space->character == NO_ID){
+    space->character = characterId;}
+  else{
+    return ERROR;
+  }
+  
   return OK;
 }
 /*CHARACTER RELATED FUNCTIONS*/
