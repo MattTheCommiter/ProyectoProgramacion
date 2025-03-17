@@ -306,7 +306,7 @@ Status space_set_gdesc(Space *space, char**space_gdescription){
 /*OBJECT RELATED FUNCTIONS*/
 Status space_add_objectId(Space *space, Id object_Id)
 {
-  if (!space)
+  if (!space || object_Id == NO_ID)
   {
     return ERROR;
   }

@@ -11,7 +11,7 @@
 #ifndef GRAPHIC_ENGINE_H
 #define GRAPHIC_ENGINE_H
 
-#define MIN_VALUE_WITH_THREE_NUMBERS 100
+#define MIN_VALUE_WITH_THREE_NUMBERS 100    /*<!The smallest value that requires three positions to be written*/
 #include "game.h"
 
 typedef struct _Graphic_engine Graphic_engine;

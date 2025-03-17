@@ -15,7 +15,7 @@
 #include "space_test.h"
 #include "test.h"
 
-#define MAX_TESTS 30
+#define MAX_TESTS 39  /*!<Total number of test functions*/
 
 /** 
  * @brief Main function for SPACE unit tests. 
@@ -57,31 +57,32 @@ int main(int argc, char** argv) {
   if (all || test == 11) test2_space_set_east();
   if (all || test == 12) test1_space_set_west();
   if (all || test == 13) test2_space_set_west();
-  if (all || test == 16) test1_space_get_id();
-  if (all || test == 17) test2_space_get_id();
-  if (all || test == 18) test1_space_get_name();
-  if (all || test == 19) test2_space_get_name();
-  if (all || test == 20) test1_space_get_north();
-  if (all || test == 21) test2_space_get_north();
-  if (all || test == 22) test1_space_get_south();
-  if (all || test == 23) test2_space_get_south();
-  if (all || test == 24) test1_space_get_east();
-  if (all || test == 25) test2_space_get_east();
-  if (all || test == 26) test1_space_get_west();
-  if (all || test == 27) test2_space_get_west();
-  if (all || test == 31) test1_space_add_objectId();
-  if (all || test == 32) test2_space_add_objectId();
-  if (all || test == 33) test1_space_object_belongs();
-  if (all || test == 34) test2_space_object_belongs();
-  if (all || test == 35) test3_space_object_belongs();
-  if (all || test == 36) test4_space_object_belongs();
-  if (all || test == 37) test4_space_object_belongs();
-  if (all || test == 38) test1_space_has_no_objects();
-  if (all || test == 39) test2_space_has_no_objects();
-  if (all || test == 40) test3_space_has_no_objects();
-  if (all || test == 41) test1_space_get_num_of_objects();
-  if (all || test == 42) test2_space_get_num_of_objects();
-  if (all || test == 43) test3_space_get_num_of_objects();
+  if (all || test == 14) test1_space_get_id();
+  if (all || test == 15) test2_space_get_id();
+  if (all || test == 16) test1_space_get_name();
+  if (all || test == 17) test2_space_get_name();
+  if (all || test == 18) test1_space_get_north();
+  if (all || test == 19) test2_space_get_north();
+  if (all || test == 20) test1_space_get_south();
+  if (all || test == 21) test2_space_get_south();
+  if (all || test == 22) test1_space_get_east();
+  if (all || test == 23) test2_space_get_east();
+  if (all || test == 24) test1_space_get_west();
+  if (all || test == 25) test2_space_get_west();
+  if (all || test == 26) test1_space_add_objectId();
+  if (all || test == 27) test2_space_add_objectId();
+  if (all || test == 28) test3_space_add_objectId();
+  if (all || test == 29) test1_space_object_belongs();
+  if (all || test == 30) test2_space_object_belongs();
+  if (all || test == 31) test3_space_object_belongs();
+  if (all || test == 32) test4_space_object_belongs();
+  if (all || test == 33) test5_space_object_belongs();
+  if (all || test == 34) test1_space_has_no_objects();
+  if (all || test == 35) test2_space_has_no_objects();
+  if (all || test == 36) test3_space_has_no_objects();
+  if (all || test == 37) test1_space_get_num_of_objects();
+  if (all || test == 38) test2_space_get_num_of_objects();
+  if (all || test == 39) test3_space_get_num_of_objects();
 
   
 
@@ -183,6 +184,13 @@ void test1_space_add_objectId() {
 void test2_space_add_objectId() {
   Space *s = NULL;
   PRINT_TEST_RESULT(space_add_objectId(s,1) == ERROR);
+}
+
+void test3_space_add_objectId() {
+  Space *s = NULL;
+  s = space_create(5);
+  PRINT_TEST_RESULT(space_add_objectId(s,NO_ID) == ERROR);
+  space_destroy(s);
 }
 
 void test1_space_get_name() {
@@ -293,6 +301,7 @@ void test4_space_object_belongs(){
 
 void test5_space_object_belongs(){
   Space *s = NULL;
+  s = space_create(25);
   space_add_objectId(s, 5);
   PRINT_TEST_RESULT(space_object_belongs(s, 5) == TRUE);
   space_destroy(s);
