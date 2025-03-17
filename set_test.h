@@ -19,9 +19,9 @@
  void test1_set_create();
 
 /**
- * @test Test the creation of a set
- * @pre No input parameters
- * @post A non-NULL pointer to a newly created set is returned
+ * @test Test that a created set is empty
+ * @pre pointer to created set
+ * @post Output == TRUE when calling set_is_empty
  */
 void test2_set_create();
 
@@ -47,11 +47,25 @@ void test2_set_create();
  void test1_set_add();
  
  /**
- * @test Test adding an element to a non-empty set
- * @pre A pointer to a set containing one element ('5') and an Id '3' to add
- * @post The function returns OK after successfully adding the Id
+ * @test Test adding an element with id NO_ID to a created set
+ * @pre A pointer to an empty set and an Id 'NO_ID' to add
+ * @post The function returns ERROR after trying to add the id
  */
  void test2_set_add();
+
+  /**
+ * @test Test adding an element to a set that already contains that element
+ * @pre A pointer to a set containing one element ('5) and an Id '5' to add
+ * @post The function returns OK after checking that the id is already in the set
+ */
+void test3_set_add();
+ 
+/**
+* @test Test adding an element to a NULL set
+* @pre A NULL pointer to set and an Id '3' to add
+* @post The function returns ERROR due to the NULL pointer
+*/
+void test4_set_add();
  
  /**
  * @test Test deleting an element not present in the set
@@ -101,7 +115,7 @@ void test2_set_create();
   void test3_set_print();
  /**
  * @test Test checking if an element belongs to a NULL set
- * @pre A NULL pointer to a set and an Id '5'
+ * @pre A NULL pointer to a set and an Id '3'
  * @post The function returns FALSE, as the set pointer is NULL
  */
   void test1_set_belongs();
@@ -117,6 +131,12 @@ void test2_set_create();
  * @post The function returns TRUE, as the Id '5' is in the set
  */
   void test3_set_belongs();
+ /**
+ * @test Test checking if an element with id 'NO_ID' belongs to a set
+ * @pre A pointer to a set containing the element '5' and an Id 'NO_ID'
+ * @post The function returns ERROR, as the Id is 'NO_ID'
+ */
+  void test4_set_belongs();
  /**
  * @test Test checking if a NULL set is empty
  * @pre A NULL pointer to a set

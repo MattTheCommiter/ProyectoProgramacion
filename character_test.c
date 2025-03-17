@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 
     PRINT_PASSED_PERCENTAGE;
 
-    return 1;
+    return EXIT_SUCCESS;
 }
 
 void test01_character_create()

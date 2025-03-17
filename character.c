@@ -153,16 +153,16 @@ Status character_print(Character *cha)
         return ERROR;
 
     /* 1. Print the id and the name of the character */
-    fprintf(stdout, "--> Character (Id: %ld; Name: %s gDescription: %s health: %d)\n", cha->id, cha->name, cha->gdesc, cha->health);
+    fprintf(stdout, "--> Character (Id: %ld; Name: %s; gDescription: %s; health: %d)\n", cha->id, cha->name, cha->gdesc, cha->health);
     if (cha->friendly == FALSE)
     {
-        fprintf(stdout, "--> The character is agressive");
+        fprintf(stdout, "\n--> The character is agressive");
     }
     else
     {
-        fprintf(stdout, "--> The character is friendly");
+        fprintf(stdout, "\n--> The character is friendly");
     }
-    fprintf(stdout, "---> The message: %s", cha->message);
+    fprintf(stdout, "\n---> The message: %s\n", cha->message);
 
     return OK;
 }

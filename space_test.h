@@ -61,6 +61,20 @@ void test1_space_set_north();
 void test2_space_set_north();
 
 /**
+ * @test Test function for space's north connection setting
+ * @pre Space pointer != NULL, valid ID '3' for north
+ * @post space_get_north returns 3, which corresponds to the set id
+ */
+void test3_space_set_north();
+
+/**
+ * @test Test function for space's north connection setting 
+ * @pre Space pointer != NULL, valid ID 'NO_ID' for north
+ * @post Output==ERROR
+ */
+void test4_space_set_north();
+
+/**
  * @test Test function for space's south connection setting
  * @pre Space pointer != NULL, valid ID for south
  * @post Output==OK
@@ -73,6 +87,20 @@ void test1_space_set_south();
  * @post Output==ERROR
  */
 void test2_space_set_south();
+
+/**
+ * @test Test function for space's south connection setting
+ * @pre Space pointer != NULL, valid ID '3' for south
+ * @post space_get_south returns 3, which corresponds to the set id
+ */
+void test3_space_set_south();
+
+/**
+ * @test Test function for space's south connection setting 
+ * @pre Space pointer != NULL, valid ID 'NO_ID' for south
+ * @post Output==ERROR
+ */
+void test4_space_set_south();
 
 /**
  * @test Test function for space's east connection setting
@@ -89,6 +117,20 @@ void test1_space_set_east();
 void test2_space_set_east();
 
 /**
+ * @test Test function for space's east connection setting
+ * @pre Space pointer != NULL, valid ID '3' for east
+ * @post space_get_east returns 3, which corresponds to the set id
+ */
+void test3_space_set_east();
+
+/**
+ * @test Test function for space's east connection setting 
+ * @pre Space pointer != NULL, valid ID 'NO_ID' for east
+ * @post Output==ERROR
+ */
+void test4_space_set_east();
+
+/**
  * @test Test function for space's west connection setting
  * @pre Space pointer != NULL, valid ID for west
  * @post Output==OK
@@ -101,6 +143,20 @@ void test1_space_set_west();
  * @post Output==ERROR
  */
 void test2_space_set_west();
+
+/**
+ * @test Test function for space's west connection setting
+ * @pre Space pointer != NULL, valid ID '3' for west
+ * @post space_get_west returns 3, which corresponds to the set id
+ */
+void test3_space_set_west();
+
+/**
+ * @test Test function for space's west connection setting 
+ * @pre Space pointer != NULL, valid ID 'NO_ID' for west
+ * @post Output==ERROR
+ */
+void test4_space_set_west();
 
 /**
  * @test Test adding object ID to space
@@ -257,7 +313,7 @@ void test1_space_has_no_objects();
 void test2_space_has_no_objects();
 
 /**
- * @test Test if space has no objects (space with objects)
+ * @test Test if a non-empty space has no objects
  * @pre Space pointer != NULL, object added
  * @post Output==FALSE
  */

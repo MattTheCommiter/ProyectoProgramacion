@@ -15,7 +15,7 @@
  #include "set_test.h"
  #include "test.h"
  
- #define MAX_TESTS 35 /*!<Total number of test functions for the Set module*/
+ #define MAX_TESTS 38 /*!<Total number of test functions for the Set module*/
  
  /** 
   * @brief Main function for SET unit tests. 
@@ -50,59 +50,53 @@
    if (all || test == 4) test2_set_destroy();
    if (all || test == 5) test1_set_add();
    if (all || test == 6) test2_set_add();
-   if (all || test == 7) test1_set_del();
-   if (all || test == 8) test2_set_del();
+   if (all || test == 7) test3_set_add();
+   if (all || test == 8) test4_set_add();
    if (all || test == 9) test1_set_del();
    if (all || test == 10) test2_set_del();
-   if (all || test == 11) test1_set_print();
-   if (all || test == 12) test2_set_print();
-   if (all || test == 13) test3_set_print();
-   if (all || test == 14) test1_set_belongs();
-   if (all || test == 15) test2_set_belongs();
-   if (all || test == 16) test3_set_belongs();
-   if (all || test == 17) test1_set_is_empty();
-   if (all || test == 18) test2_set_is_empty();
-   if (all || test == 19) test3_set_is_empty();
-   if (all || test == 20) test1_set_get_num_elements();
-   if (all || test == 21) test2_set_get_num_elements();
-   if (all || test == 22) test3_set_get_num_elements();
-   if (all || test == 23) test1_set_get_Id_in_pos();
-   if (all || test == 24) test2_set_get_Id_in_pos();
-   if (all || test == 25) test3_set_get_Id_in_pos();
-   if (all || test == 26) test4_set_get_Id_in_pos();
-   if (all || test == 27) test5_set_get_Id_in_pos();
-   if (all || test == 28) test6_set_get_Id_in_pos();
-   if (all || test == 29) test1_set_get_pos_from_Id();
-   if (all || test == 30) test2_set_get_pos_from_Id();
-   if (all || test == 31) test3_set_get_pos_from_Id();
-   if (all || test == 32) test4_set_get_pos_from_Id();
-   if (all || test == 33) test1_set_is_full();
-   if (all || test == 34) test2_set_is_full();
-   if (all || test == 35) test3_set_is_full();
-
-
-
-
-
-
-
-
-
+   if (all || test == 11) test3_set_del();
+   if (all || test == 12) test4_set_del();
+   if (all || test == 13) test1_set_print();
+   if (all || test == 14) test2_set_print();
+   if (all || test == 15) test3_set_print();
+   if (all || test == 16) test1_set_belongs();
+   if (all || test == 17) test2_set_belongs();
+   if (all || test == 18) test3_set_belongs();
+   if (all || test == 19) test4_set_belongs();
+   if (all || test == 20) test1_set_is_empty();
+   if (all || test == 21) test2_set_is_empty();
+   if (all || test == 22) test3_set_is_empty();
+   if (all || test == 23) test1_set_get_num_elements();
+   if (all || test == 24) test2_set_get_num_elements();
+   if (all || test == 25) test3_set_get_num_elements();
+   if (all || test == 26) test1_set_get_Id_in_pos();
+   if (all || test == 27) test2_set_get_Id_in_pos();
+   if (all || test == 28) test3_set_get_Id_in_pos();
+   if (all || test == 29) test4_set_get_Id_in_pos();
+   if (all || test == 30) test5_set_get_Id_in_pos();
+   if (all || test == 31) test6_set_get_Id_in_pos();
+   if (all || test == 32) test1_set_get_pos_from_Id();
+   if (all || test == 33) test2_set_get_pos_from_Id();
+   if (all || test == 34) test3_set_get_pos_from_Id();
+   if (all || test == 35) test4_set_get_pos_from_Id();
+   if (all || test == 36) test1_set_is_full();
+   if (all || test == 37) test2_set_is_full();
+   if (all || test == 38) test3_set_is_full();
 
 
 
  
    PRINT_PASSED_PERCENTAGE;
  
-   return 0;
+   return EXIT_SUCCESS;
  }
  
  void test1_set_create() {
-   int result;
-   Set *s;
-   s = set_create();
-   PRINT_TEST_RESULT(result=(s!=NULL));
-   set_destroy(s);
+  int result;
+  Set *s;
+  s = set_create();
+  PRINT_TEST_RESULT(result=(s!=NULL));
+  set_destroy(s);
  }
 
  void test2_set_create() {
@@ -113,10 +107,10 @@
 }
  
  void test1_set_destroy() {
-   int result;
-   Set *s;
-   s = set_create();
-   PRINT_TEST_RESULT(result=(set_destroy(s) == OK));
+  int result;
+  Set *s;
+  s = set_create();
+  PRINT_TEST_RESULT(result=(set_destroy(s) == OK));
  }
 
  void test2_set_destroy() {
@@ -126,19 +120,18 @@
 }
  
  void test1_set_add(){
-    int result;
-    Set *s;
-    s=set_create();
-    PRINT_TEST_RESULT(result = (set_add(s, 3)==OK));
-    set_destroy(s);
+  int result;
+  Set *s;
+  s=set_create();
+  PRINT_TEST_RESULT(result = (set_add(s, 3)==OK));
+  set_destroy(s);
  }
 
  void test2_set_add(){
   int result;
   Set *s;
   s=set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_add(s, 5)==OK));
+  PRINT_TEST_RESULT(result = (set_add(s, NO_ID)==ERROR));
   set_destroy(s);
  }
 
@@ -147,7 +140,7 @@
   Set *s;
   s=set_create();
   set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_add(s, 3)==OK));
+  PRINT_TEST_RESULT(result = (set_add(s, 5)==OK));
   set_destroy(s);
  }
 
@@ -251,7 +244,6 @@ void test4_set_belongs(){
   PRINT_TEST_RESULT(result = (set_belongs(s, NO_ID)==FALSE));
   set_destroy(s); 
 }
-
 
 void test1_set_is_empty(){
   int result;
