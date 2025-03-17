@@ -89,6 +89,12 @@ Status object_print(Object *object)
     /*Error checking*/
     if (!object)
         return ERROR;
-    fprintf(stdout, "--->Object (Id: %ld ; Name: %s)\n", object->id, object->name);
-    return OK;
+    if (fprintf(stdout, "--->Object (Id: %ld ; Name: %s)\n", object->id, object->name))
+    {
+        return OK;
+    }
+    else
+    {
+        return ERROR;
+    }
 }
