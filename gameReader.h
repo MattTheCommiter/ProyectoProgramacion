@@ -26,6 +26,17 @@
  * @return Status: if the function was completed succesfully
  */
 Status gameReader_load_spaces(Game *game, char *filename);
+
+/**
+ * @brief Creates the objects given the data file given a specific format.
+ *
+ * @date 7-03-2025
+ * @author Álvaro Inigo
+ *
+ * @param game a pointer to the structure with the game's main information
+ * @param filename the name of the text file
+ * @return Status: if the function was completed succesfully
+ */
 Status gameReader_load_objects(Game *game, char *filename);
 
 #endif
