@@ -29,6 +29,10 @@
 #define HEIGHT_FDB 3      /*!<Height of the feedback box in the graphic interface*/
 #define NUMBER_OF_BARS 2  /*!<Number and size of the '|' at the sides of the squares*/
 #define SIZE_OF_SPACE 2   /*!<Size of the chars ' ,' between each object name*/
+#define FINAL_CHARACTER 1 /*!<Size corresponding to the \0 character of the string*/
+#define BOTTOM_HEIGHT 1   /*!<Height of the lowest line of spaces in the map*/
+#define MIDDLE_HEIGHT 2   /*!<Height of the middle line of spaces in the map*/
+#define TOP_HEIGHT 3      /*!<Height of the highest line of spaces in the map*/
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
  *
@@ -42,10 +46,10 @@ struct _Graphic_engine
 
 /**
  * @brief Set the values of the arrows in the space
- * 
+ *
  * @author Matteo Artunedo
  * @date 14-3-25
- * 
+ *
  * @param game pointer to the game
  * @param spaceId id of the space where the character is located
  * @param north1 arrow that connects the west space with its north
@@ -54,18 +58,18 @@ struct _Graphic_engine
  * @param south2 arrow that connects the player's space with its south
  * @param north3 arrow that connects the east space with its south
  * @param south3 arrow that connects the east space with its south
- * @return Status 
+ * @return Status
  */
 Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3);
 
 /**
- * @brief Create a line of spaces
+ * @brief Create a line of spaces (3 space squares placed horizontally one after the other)
  *
- * @param game pointer to the game structure 
+ * @param game pointer to the game structure
  * @param id_center the id of the space that will be in the center of the line
  * @param id_player the id of where the player is located
- * @param height 1 if it is the last line that is printed in the map box, 2 if it is the middle line and 3 if it is the top line
- * @return char** matriz with the complete line
+ * @param height 1 if the line being created is the last one that is printed in the map box, 2 if it is the middle line and 3 if it is the top line
+ * @return char** matrix with the complete line
  */
 char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height);
 
@@ -80,49 +84,73 @@ char **create_space_square(Game *game, Id square_id);
 
 /**
  * @brief returns the id of the space that is at the side of id_center
- * 
+ *
  * @param game pointer to game
  * @param id_player id of the space where the player is located
- * @param space_get_adjacent pointer to the function that will determine which position we want to acces (it will be either space_get_west or space_get_east)
+ * @param space_get_adjacent pointer to the function that will determine which position we want to access (it will be either space_get_west or space_get_east)
  * @param height 1 if it is the last line that is printed in the map box, 2 if it is the middle line and 3 if it is the top line
  * @return Id of the adjacent space
  */
-Id adjacent_square(Game *game, Id id_player, Id (space_get_adjacent)(Space *space), int height);
+Id horizontally_adjacent_square(Game *game, Id id_player, Id(space_get_adjacent)(Space *space), int height);
 
-
-
-
+/**
+ * @brief returns the id of the space that is at the vertically adjacent to id_center
+ *
+ * @param game pointer to game
+ * @param id_player id of the space where the player is located
+ * @param space_get_v_adjacent pointer to the function that will determine which position we want to access (it will be either space_get_north or space_get_south)
+ * @return Id of the vertically adjacent space
+ */
+Id vertically_adjacent_square(Game *game, Id id_center, Id((*space_get_v_adjacent)(Space *space)));
 
 /*PRIVATE FUNCTIONS*/
-Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3){
-  Id id_east=NO_ID, id_west=NO_ID, id_north=NO_ID, id_south=NO_ID;
+Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3)
+{
+  Id id_east = NO_ID, id_west = NO_ID, id_north = NO_ID, id_south = NO_ID;
   id_north = space_get_north(game_get_space(game, spaceId));
   id_south = space_get_south(game_get_space(game, spaceId));
   id_east = space_get_east(game_get_space(game, spaceId));
   id_west = space_get_west(game_get_space(game, spaceId));
 
-  if(!game || !north1 || !south1 || !north2 || !south2 || !north3 || !south3){
+  if (!game || !north1 || !south1 || !north2 || !south2 || !north3 || !south3)
+  {
     return ERROR;
   }
 
-  if(id_north != NO_ID){
+  if (id_north != NO_ID)
+  {
     *north2 = '^';
   }
-  if(id_south != NO_ID){
+  if (id_south != NO_ID)
+  {
     *south2 = 'v';
   }
+
+  if (id_west == NO_ID)
+  {
+    id_west = horizontally_adjacent_square(game, spaceId, space_get_west, MIDDLE_HEIGHT);
+  }
+  if (id_east == NO_ID)
+  {
+    id_east = horizontally_adjacent_square(game, spaceId, space_get_east, MIDDLE_HEIGHT);
+  }
+
   /*Estudiamos si el espacio al este del espacio del jugador tiene norte y/o sur, poniendo las flechas acorde a esa información*/
-  if(space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_east)))) != NO_ID){
+  if (space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_east)))) != NO_ID)
+  {
     *north3 = '^';
   }
-  if(space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_east)))) != NO_ID){
+  if (space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_east)))) != NO_ID)
+  {
     *south3 = 'v';
   }
   /*Estudiamos si el espacio al oeste del espacio del jugador tiene norte y/o sur, poniendo las flechas acorde a esa información*/
-  if(space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_west)))) != NO_ID){
+  if (space_get_id(game_get_space(game, space_get_north(game_get_space(game, id_west)))) != NO_ID)
+  {
     *north1 = '^';
   }
-  if(space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_west)))) != NO_ID){
+  if (space_get_id(game_get_space(game, space_get_south(game_get_space(game, id_west)))) != NO_ID)
+  {
     *south1 = 'v';
   }
   return OK;
@@ -130,7 +158,7 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
 
 char **create_space_square(Game *game, Id square_id)
 {
-  char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - 1], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
+  char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   Object *object_in_pos = NULL;
   Bool full = FALSE;
@@ -144,7 +172,7 @@ char **create_space_square(Game *game, Id square_id)
   {
     return NULL;
   }
-  if (!(space_square[0] = (char *)calloc(N_TOTAL_LINES_IN_SQUARE * (N_TOTAL_ROWS_IN_SQUARE + 1), sizeof(char))))
+  if (!(space_square[0] = (char *)calloc(N_TOTAL_LINES_IN_SQUARE * (N_TOTAL_ROWS_IN_SQUARE + FINAL_CHARACTER), sizeof(char))))
   {
     free(space_square);
     return NULL;
@@ -197,7 +225,8 @@ char **create_space_square(Game *game, Id square_id)
         if ((len_printed + strlen(object_get_name(object_in_pos))) > (N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS - SIZE_OF_SPACE))
         {
           /*If the next name doest fit, we print ... to show there are more objects*/
-          while(len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS){
+          while (len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS)
+          {
             len_printed += sprintf(object + len_printed, ".");
           }
           full = TRUE;
@@ -217,10 +246,11 @@ char **create_space_square(Game *game, Id square_id)
       }
     }
     /*If there are no more objects to print, we fill the string with spaces*/
-    while(len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS){
+    while (len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS)
+    {
       len_printed += sprintf(object + len_printed, " ");
     }
-    
+
     gdesc = space_get_gdesc(space);
     /*Imprimimos la descripción gráfica del espacio (esté esta en blanco o con dibujos)*/
     sprintf(str, "+---------------+");
@@ -254,21 +284,37 @@ char **create_space_square(Game *game, Id square_id)
   return space_square;
 }
 
-Id adjacent_square(Game *game, Id id_player, Id (*space_get_adjacent)(Space *space), int height){
+Id vertically_adjacent_square(Game *game, Id id_center, Id((*space_get_v_adjacent)(Space *space)))
+{
   Id found_id = NO_ID;
-  /*Buscamos si el espacio situado a la derecha o la izquierda (según la función space:get que se pase como argumento) existe mediante caminos más complejos. De este modo, podemos imprimir el espacio aunque no haya acceso directo desde el espacio del centro de la línea*/
-  if(height == 3){
+  found_id = space_get_id(game_get_space(game, space_get_west(game_get_space(game, space_get_v_adjacent(game_get_space(game, space_get_east(game_get_space(game, id_center))))))));
+  if (found_id == NO_ID)
+  {
+    found_id = space_get_id(game_get_space(game, space_get_east(game_get_space(game, space_get_v_adjacent(game_get_space(game, space_get_west(game_get_space(game, id_center))))))));
+  }
+  return found_id;
+}
+
+Id horizontally_adjacent_square(Game *game, Id id_player, Id (*space_get_adjacent)(Space *space), int height)
+{
+  Id found_id = NO_ID;
+  /*Buscamos si el espacio situado a la derecha o la izquierda (según la función space_get que se pase como argumento) existe mediante caminos más complejos. De este modo, podemos imprimir el espacio aunque no haya acceso directo desde el espacio del centro de la línea*/
+  if (height == TOP_HEIGHT)
+  {
     /*Si la línea que se está imprimiendo es la superior, probamos a llegar al espacio de la derecha/izquierda desde el espacio del jugador, moviéndonos primero a la derecha/izquierda y después subiendo*/
     found_id = space_get_north(game_get_space(game, space_get_adjacent(game_get_space(game, id_player))));
   }
-  else if(height == 1){
+  else if (height == BOTTOM_HEIGHT)
+  {
     /*Si la línea que se está imprimiendo es la inferior, probamos a llegar al espacio de la derecha/izquierda desde el espacio del jugador, moviéndonos primero a la derecha/izquierda y después bajando*/
     found_id = space_get_south(game_get_space(game, space_get_adjacent(game_get_space(game, id_player))));
   }
-  else if(height == 2){
+  else if (height == MIDDLE_HEIGHT)
+  {
     /*En caso de que el la línea sea la del centro, probamos ambos caminos, tanto el que sube al final como el que baja*/
-    found_id = space_get_south(game_get_space(game, space_get_adjacent(game_get_space(game, space_get_south((game_get_space(game, id_player)))))));
-    if(found_id == NO_ID){
+    found_id = space_get_south(game_get_space(game, space_get_adjacent(game_get_space(game, space_get_north((game_get_space(game, id_player)))))));
+    if (found_id == NO_ID)
+    {
       found_id = space_get_north(game_get_space(game, space_get_adjacent(game_get_space(game, space_get_south((game_get_space(game, id_player)))))));
     }
   }
@@ -292,9 +338,10 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
   {
     right_square_arrow = '>';
   }
-  else{
+  else
+  {
     /*Buscamos si existe el espacio desde otros caminos*/
-    id_right = adjacent_square(game, id_player, space_get_east, height);
+    id_right = horizontally_adjacent_square(game, id_player, space_get_east, height);
   }
 
   /*Si el espacio del centro tiene conexión directa con el de la izquierda, imprimiremos una flecha*/
@@ -302,9 +349,10 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
   {
     left_square_arrow = '<';
   }
-  else{
+  else
+  {
     /*Buscamos si existe el espacio desde otros caminos*/
-    id_left = adjacent_square(game, id_player, space_get_west, height);
+    id_left = horizontally_adjacent_square(game, id_player, space_get_west, height);
   }
 
   /*FIN DE LA OBTENCIÓN DE LOS ID_LEFT E ID_RIGHT*/
@@ -314,7 +362,7 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
   {
     return NULL;
   }
-  if (!(gdesc_line[0] = (char *)calloc(N_TOTAL_LINES_IN_3_SQUARES * (N_TOTAL_ROWS_IN_3_SQUARES + 1), sizeof(char))))
+  if (!(gdesc_line[0] = (char *)calloc(N_TOTAL_LINES_IN_3_SQUARES * (N_TOTAL_ROWS_IN_3_SQUARES + FINAL_CHARACTER), sizeof(char))))
   {
     free(gdesc_line);
     return NULL;
@@ -381,10 +429,6 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
 }
 /*END OF PRIVATE FUNCTIONS*/
 
-
-
-
-
 /*PUBLIC FUNCTIONS*/
 Graphic_engine *graphic_engine_create()
 {
@@ -444,17 +488,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     id_north = space_get_north(game_get_space(game, id_act));
     id_south = space_get_south(game_get_space(game, id_act));
     set_arrows(game, id_act, &north_arrow1, &south_arrow1, &north_arrow2, &south_arrow2, &north_arrow3, &south_arrow3);
-    if(id_north == NO_ID){
-      id_north = space_get_id(game_get_space(game, space_get_west(game_get_space(game, space_get_north(game_get_space(game, space_get_east(game_get_space(game, id_act))))))));
-      if(id_north == NO_ID){
-        id_north = space_get_id(game_get_space(game, space_get_east(game_get_space(game, space_get_north(game_get_space(game, space_get_west(game_get_space(game, id_act))))))));
-      }
+    if (id_north == NO_ID)
+    {
+      /*Probamos a llegar al norte desde caminos alternativos*/
+      id_north = vertically_adjacent_square(game, id_act, space_get_north);
     }
-    if(id_south == NO_ID){
-      id_south = space_get_id(game_get_space(game, space_get_west(game_get_space(game, space_get_south(game_get_space(game, space_get_east(game_get_space(game, id_act))))))));
-      if(id_south == NO_ID){
-        id_south = space_get_id(game_get_space(game, space_get_east(game_get_space(game, space_get_south(game_get_space(game, space_get_west(game_get_space(game, id_act))))))));
-      }
+    if (id_south == NO_ID)
+    {
+      /*Probamos a llega al sur desde caminos alternativos*/
+      id_south = vertically_adjacent_square(game, id_act, space_get_south);
     }
 
     /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
@@ -465,7 +507,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     /*fin del cambio grafico para la araña muerta*/
 
     /*Imprimimos la primera línea de espacios */
-    created_line = create_line_of_spaces(game, id_north, id_act, 3);
+    created_line = create_line_of_spaces(game, id_north, id_act, TOP_HEIGHT);
     screen_area_puts(ge->map, created_line[0]);
     if (created_line != NULL)
     {
@@ -481,9 +523,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     /*Imprimimos las flechas que unen la primera línea con la segunda*/
     sprintf(str, "        %c                  %c                  %c          ", north_arrow1, north_arrow2, north_arrow3);
     screen_area_puts(ge->map, str);
-    
+
     /*Imprimimos la segunda línea de espacios*/
-    created_line = create_line_of_spaces(game, id_act, id_act, 2);
+    created_line = create_line_of_spaces(game, id_act, id_act, MIDDLE_HEIGHT);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);
@@ -491,13 +533,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     free(created_line[0]);
     free(created_line);
     created_line = NULL;
-    
+
     /*Imprimimos las flechas que unen la segunda línea con la tercera*/
     sprintf(str, "        %c                  %c                  %c          ", south_arrow1, south_arrow2, south_arrow3);
     screen_area_puts(ge->map, str);
 
     /*Imprimimos la segunda línea de espacios*/
-    created_line = create_line_of_spaces(game, id_south, id_act, 1);
+    created_line = create_line_of_spaces(game, id_south, id_act, BOTTOM_HEIGHT);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);
@@ -508,7 +550,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /***
-  **** printing all the information in the game description 
+  **** printing all the information in the game description
   ***/
   screen_area_clear(ge->descript);
   /*For all the objects in the game, we print its location*/
@@ -575,13 +617,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   if (last_cmd_succ == ERROR)
   {
     sprintf(str, " %s (%s) : ERROR", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
-    
   }
   else
   {
     sprintf(str, " %s (%s) : OK", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
   }
-  
+
   screen_area_puts(ge->feedback, str);
 
   /*Print a message if the player dies and the game ends*/
