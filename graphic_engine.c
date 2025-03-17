@@ -21,15 +21,15 @@
 #include "character.h"
 
 /*Constant values used for the creation of the game's graphic interface*/
-#define WIDTH_MAP 60
-#define WIDTH_DES 29
-#define WIDTH_BAN 23
-#define HEIGHT_MAP 29
-#define HEIGHT_BAN 1
-#define HEIGHT_HLP 2
-#define HEIGHT_FDB 3
-#define NUMBER_OF_BARS 2
-#define SIZE_OF_SPACE 2
+#define WIDTH_MAP 60      /*!<Width of the map in the graphic interface*/
+#define WIDTH_DES 29      /*!<Width of the description box in the graphic interface*/
+#define WIDTH_BAN 23      /*!<Width of the banner in the graphic interface*/
+#define HEIGHT_MAP 29     /*!<Height of the map in the graphic interface*/
+#define HEIGHT_BAN 1      /*!<Height of the banner in the graphic interface*/
+#define HEIGHT_HLP 2      /*!<Height of the help box in the graphic interface*/
+#define HEIGHT_FDB 3      /*!<Height of the feedback box in the graphic interface*/
+#define NUMBER_OF_BARS 2  /*!<Width of the map in the graphic interface*/
+#define SIZE_OF_SPACE 2   /*!<Width of the map in the graphic interface*/
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
  *
@@ -239,15 +239,15 @@ char **create_line_of_spaces(Game *game, Id id_center, int height, Id id_player)
   }
   else{
     if(height == 3){
-      id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+      id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, id_player))));
     }
     else if(height == 1){
-      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, id_player))));
     }
     else if(height == 2){
-      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+      id_right = space_get_south(game_get_space(game, space_get_east(game_get_space(game, space_get_north((game_get_space(game, id_player)))))));
       if(id_right == NO_ID){
-        id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+        id_right = space_get_north(game_get_space(game, space_get_east(game_get_space(game, space_get_south(game_get_space(game, id_player))))));
       }
     }
   }
@@ -257,15 +257,15 @@ char **create_line_of_spaces(Game *game, Id id_center, int height, Id id_player)
   }
   else{
     if(height == 3){
-      id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+      id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, id_player))));
     }
     else if(height == 1){
-      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, id_player))));
     }
     else if(height == 2){
-      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+      id_left = space_get_south(game_get_space(game, space_get_west(game_get_space(game, space_get_north((game_get_space(game, id_player)))))));
       if(id_left == NO_ID){
-        id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_id(game_get_space(game, id_player))))));
+        id_left = space_get_north(game_get_space(game, space_get_west(game_get_space(game, space_get_south((game_get_space(game, id_player)))))));
       }
     }
   }

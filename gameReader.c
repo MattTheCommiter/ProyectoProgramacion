@@ -74,14 +74,34 @@
        if((toks = strtok(NULL, "|\n\r")) != NULL){
           strcpy(read_gdesc[0], toks);
           toks = strtok(NULL, "|");
-          if(toks)strcpy(read_gdesc[1], toks);
+          if(toks){
+            strcpy(read_gdesc[1], toks);
+          }else{
+            game_set_finished(game, TRUE);
+            fprintf(stdout, "Invalid graphic description");
+          }
           toks = strtok(NULL, "|");
-          if (toks) strcpy(read_gdesc[2], toks);
+          if (toks) {
+            strcpy(read_gdesc[2], toks);
+          }else{
+            game_set_finished(game, TRUE);
+            fprintf(stdout, "Invalid graphic description");
+          }
           toks = strtok(NULL, "|");
-          if (toks) strcpy(read_gdesc[3], toks);
+          if (toks) {
+            strcpy(read_gdesc[3], toks);
+          }else{
+            game_set_finished(game, TRUE);
+            fprintf(stdout, "Invalid graphic description");
+          }
           toks = strtok(NULL, "|");
-          if (toks) strcpy(read_gdesc[4], toks);
-       }else{
+          if (toks) {
+            strcpy(read_gdesc[4], toks);
+          }else{
+            game_set_finished(game, TRUE);
+            fprintf(stdout, "Invalid graphic description");
+          }
+          }else{
           strcpy(read_gdesc[0], "         ");
           strcpy(read_gdesc[1], "         ");
           strcpy(read_gdesc[2], "         ");

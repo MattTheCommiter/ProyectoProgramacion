@@ -11,9 +11,10 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#define WORD_SIZE 1000 /*Maximum size of words*/
-#define NO_ID -1       /*Identification code used for when no id is given*/
-#define NO_HP -1       /*identification for the hp when it is not given*/
+#define WORD_SIZE 1000 /*!<Maximum size of words*/
+#define NO_ID -1       /*!<Identification code used for when no id is given*/
+#define NO_HP -1       /*!<Identification for the hp when it is not given*/
+
 /*The Id is neccesary for initialising the player and object*/
 typedef long Id;
 

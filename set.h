@@ -15,7 +15,7 @@
  #include <stdlib.h>
  #include "types.h"
 
- #define MAX_ELEMENTS_IN_SET 30
+ #define MAX_ELEMENTS_IN_SET 30 /*<!Maximum elements that can be added to a set*/
 
  typedef struct _Set Set;
 /**
