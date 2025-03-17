@@ -55,7 +55,7 @@ Status set_del(Set *s, Id elementId){
     if(!s || elementId == NO_ID) return ERROR;
 
     if(!set_belongs(s, elementId)){
-        return OK;
+        return ERROR;
     }
 
     s->n_ids--;

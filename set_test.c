@@ -15,7 +15,7 @@
  #include "set_test.h"
  #include "test.h"
  
- #define MAX_TESTS 30 /*!<Total number of test functions for the Set module*/
+ #define MAX_TESTS 35 /*!<Total number of test functions for the Set module*/
  
  /** 
   * @brief Main function for SET unit tests. 
@@ -45,35 +45,41 @@
  
  
    if (all || test == 1) test1_set_create();
-   if (all || test == 2) test1_set_destroy();
-   if (all || test == 3) test2_set_destroy();
-   if (all || test == 4) test1_set_add();
-   if (all || test == 5) test2_set_add();
+   if (all || test == 2) test2_set_create();
+   if (all || test == 3) test1_set_destroy();
+   if (all || test == 4) test2_set_destroy();
+   if (all || test == 5) test1_set_add();
    if (all || test == 6) test2_set_add();
    if (all || test == 7) test1_set_del();
    if (all || test == 8) test2_set_del();
-   if (all || test == 9) test1_set_print();
-   if (all || test == 10) test2_set_print();
-   if (all || test == 11) test3_set_print();
-   if (all || test == 12) test1_set_belongs();
-   if (all || test == 13) test2_set_belongs();
-   if (all || test == 14) test3_set_belongs();
-   if (all || test == 15) test1_set_is_empty();
-   if (all || test == 16) test2_set_is_empty();
-   if (all || test == 17) test3_set_is_empty();
-   if (all || test == 18) test1_set_get_num_elements();
-   if (all || test == 19) test2_set_get_num_elements();
-   if (all || test == 20) test3_set_get_num_elements();
-   if (all || test == 21) test1_set_get_Id_in_pos();
-   if (all || test == 22) test2_set_get_Id_in_pos();
-   if (all || test == 23) test3_set_get_Id_in_pos();
-   if (all || test == 24) test4_set_get_Id_in_pos();
-   if (all || test == 25) test5_set_get_Id_in_pos();
-   if (all || test == 26) test6_set_get_Id_in_pos();
-   if (all || test == 27) test1_set_get_pos_from_Id();
-   if (all || test == 28) test2_set_get_pos_from_Id();
-   if (all || test == 29) test3_set_get_pos_from_Id();
-   if (all || test == 30) test4_set_get_pos_from_Id();
+   if (all || test == 9) test1_set_del();
+   if (all || test == 10) test2_set_del();
+   if (all || test == 11) test1_set_print();
+   if (all || test == 12) test2_set_print();
+   if (all || test == 13) test3_set_print();
+   if (all || test == 14) test1_set_belongs();
+   if (all || test == 15) test2_set_belongs();
+   if (all || test == 16) test3_set_belongs();
+   if (all || test == 17) test1_set_is_empty();
+   if (all || test == 18) test2_set_is_empty();
+   if (all || test == 19) test3_set_is_empty();
+   if (all || test == 20) test1_set_get_num_elements();
+   if (all || test == 21) test2_set_get_num_elements();
+   if (all || test == 22) test3_set_get_num_elements();
+   if (all || test == 23) test1_set_get_Id_in_pos();
+   if (all || test == 24) test2_set_get_Id_in_pos();
+   if (all || test == 25) test3_set_get_Id_in_pos();
+   if (all || test == 26) test4_set_get_Id_in_pos();
+   if (all || test == 27) test5_set_get_Id_in_pos();
+   if (all || test == 28) test6_set_get_Id_in_pos();
+   if (all || test == 29) test1_set_get_pos_from_Id();
+   if (all || test == 30) test2_set_get_pos_from_Id();
+   if (all || test == 31) test3_set_get_pos_from_Id();
+   if (all || test == 32) test4_set_get_pos_from_Id();
+   if (all || test == 33) test1_set_is_full();
+   if (all || test == 34) test2_set_is_full();
+   if (all || test == 35) test3_set_is_full();
+
 
 
 
@@ -98,6 +104,13 @@
    PRINT_TEST_RESULT(result=(s!=NULL));
    set_destroy(s);
  }
+
+ void test2_set_create() {
+  Set *s;
+  s = set_create();
+  PRINT_TEST_RESULT(set_is_empty(s) == TRUE);
+  set_destroy(s);
+}
  
  void test1_set_destroy() {
    int result;
@@ -150,7 +163,7 @@
   Set *s;
   s=set_create();
   set_add(s,5);
-  PRINT_TEST_RESULT(result = (set_del(s, 3)==OK));
+  PRINT_TEST_RESULT(result = (set_del(s, 3)==ERROR));
   set_destroy(s);
  }
 
@@ -273,7 +286,7 @@ void test2_set_is_full(){
   int result;
   Set *s;
   s=set_create();
-  PRINT_TEST_RESULT(result = (set_is_empty(s)==FALSE));
+  PRINT_TEST_RESULT(result = (set_is_full(s)==FALSE));
   set_destroy(s); 
 }
 
