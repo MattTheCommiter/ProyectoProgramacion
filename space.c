@@ -119,7 +119,7 @@ const char *space_get_name(Space *space)
 /*NORTH AND SOUTH RELATED FUNCTIONS*/
 Status space_set_north(Space *space, Id id)
 {
-  if (!space || id == NO_ID)
+  if (!space)
   {
     return ERROR;
   }
@@ -138,7 +138,7 @@ Id space_get_north(Space *space)
 
 Status space_set_south(Space *space, Id id)
 {
-  if (!space || id == NO_ID)
+  if (!space)
   {
     return ERROR;
   }
@@ -157,7 +157,7 @@ Id space_get_south(Space *space)
 
 Status space_set_east(Space *space, Id id)
 {
-  if (!space || id == NO_ID)
+  if (!space)
   {
     return ERROR;
   }
@@ -176,7 +176,7 @@ Id space_get_east(Space *space)
 
 Status space_set_west(Space *space, Id id)
 {
-  if (!space || id == NO_ID)
+  if (!space)
   {
     return ERROR;
   }
@@ -324,13 +324,9 @@ Bool space_object_belongs(Space *space, Id object_Id)
 }
 
 Status space_delete_object(Space *space, Id objectId){
-  if(!space || !space->objects) return ERROR;
+  if(!space || !(space->objects)) return ERROR;
 
-  if(!set_del(space->objects, objectId)){
-    return ERROR;
-  }else{
-    return OK;
-  }
+  return set_del(space->objects, objectId);
 }
 
 Bool space_has_no_objects(Space *space){

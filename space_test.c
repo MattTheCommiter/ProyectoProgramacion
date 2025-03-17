@@ -15,7 +15,7 @@
 #include "space_test.h"
 #include "test.h"
 
-#define MAX_TESTS 39  /*!<Total number of test functions*/
+#define MAX_TESTS 54  /*!<Total number of test functions*/
 
 /** 
  * @brief Main function for SPACE unit tests. 
@@ -83,6 +83,21 @@ int main(int argc, char** argv) {
   if (all || test == 37) test1_space_get_num_of_objects();
   if (all || test == 38) test2_space_get_num_of_objects();
   if (all || test == 39) test3_space_get_num_of_objects();
+  if (all || test == 40) test1_space_get_character();
+  if (all || test == 41) test2_space_get_character();
+  if (all || test == 42) test3_space_get_character();
+  if (all || test == 43) test1_space_set_character();
+  if (all || test == 44) test2_space_set_character();
+  if (all || test == 45) test3_space_set_character();
+  if (all || test == 46) test1_space_set_of_objects_is_full();
+  if (all || test == 47) test2_space_set_of_objects_is_full();
+  if (all || test == 48) test3_space_set_of_objects_is_full();
+  if (all || test == 49) test4_space_set_of_objects_is_full();
+  if (all || test == 50) test1_space_delete_object();
+  if (all || test == 51) test2_space_delete_object();
+  if (all || test == 52) test3_space_delete_object();
+  if (all || test == 53) test4_space_delete_object();
+  if (all || test == 54) test5_space_delete_object();
 
   
 
@@ -346,5 +361,119 @@ void test3_space_get_num_of_objects(){
   s = space_create(25);
   space_add_objectId(s, 3);
   PRINT_TEST_RESULT(space_get_num_of_objects(s) == 1);
+  space_destroy(s);
+}
+
+
+void test1_space_get_character(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_get_character(s) == NO_ID);
+  space_destroy(s);
+}
+
+
+void test2_space_get_character(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_set_character(s, 10);
+  PRINT_TEST_RESULT(space_get_character(s) == 10);
+  space_destroy(s);
+}
+
+
+void test3_space_get_character(){
+  Space *s = NULL;
+  s = space_create(25);
+  PRINT_TEST_RESULT(space_get_character(s) == NO_ID);
+  space_destroy(s);
+}
+
+void test1_space_set_character(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_set_character(s, 10) == ERROR);
+  space_destroy(s);
+}
+
+
+void test2_space_set_character(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_set_character(s, 5);
+  PRINT_TEST_RESULT(space_set_character(s, 10) == ERROR);
+  space_destroy(s);
+}
+
+void test3_space_set_character(){
+  Space *s = NULL;
+  s = space_create(25);
+  PRINT_TEST_RESULT(space_set_character(s, 10) == OK);
+  space_destroy(s);
+}
+
+void test1_space_set_of_objects_is_full(){
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_set_of_objects_is_full(s) == TRUE);
+  space_destroy(s);
+}
+
+void test2_space_set_of_objects_is_full(){
+  Space *s = NULL;
+  int i;
+  s = space_create(25);
+  for(i=0;i<MAX_ELEMENTS_IN_SET;i++){
+    space_add_objectId(s, (long)(i+1));
+  }
+  PRINT_TEST_RESULT(space_set_of_objects_is_full(s) == TRUE);
+  space_destroy(s);
+}
+
+void test3_space_set_of_objects_is_full(){
+  Space *s = NULL;
+  s = space_create(25);
+  PRINT_TEST_RESULT(space_set_of_objects_is_full(s) == FALSE);
+  space_destroy(s);
+}
+
+void test4_space_set_of_objects_is_full(){
+  Space *s = NULL;
+  s = space_create(25);
+  space_add_objectId(s, 3);
+  PRINT_TEST_RESULT(space_set_of_objects_is_full(s) == FALSE);
+  space_destroy(s);
+}
+
+void test1_space_delete_object() {
+  Space *s;
+  s = space_create(5);
+  PRINT_TEST_RESULT(space_delete_object(s,1) == ERROR);
+  space_destroy(s);
+}
+
+void test2_space_delete_object() {
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_delete_object(s,1) == ERROR);
+}
+
+void test3_space_delete_object() {
+  Space *s = NULL;
+  s = space_create(5);
+  space_add_objectId(s, 6);
+  PRINT_TEST_RESULT(space_delete_object(s,NO_ID) == ERROR);
+  space_destroy(s);
+}
+
+void test4_space_delete_object() {
+  Space *s = NULL;
+  s = space_create(5);
+  space_add_objectId(s, 6);
+  PRINT_TEST_RESULT(space_delete_object(s,5) == ERROR);
+  space_destroy(s);
+}
+
+void test5_space_delete_object() {
+  Space *s = NULL;
+  s = space_create(5);
+  space_add_objectId(s, 5);
+  PRINT_TEST_RESULT(space_delete_object(s,5) == OK);
   space_destroy(s);
 }

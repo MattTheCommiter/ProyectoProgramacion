@@ -284,4 +284,108 @@ void test2_space_get_num_of_objects();
  */
 void test3_space_get_num_of_objects();
 
+/**
+ * @test Test getting id of character in null space
+ * @pre Space pointer == NULL
+ * @post Output==NO_ID
+ */
+void test1_space_get_character();
+
+/**
+ * @test Test getting id of character that is present in space
+ * @pre Space pointer != NULL, character with id 10 present in space
+ * @post Output==10
+ */
+void test2_space_get_character();
+
+/**
+ * @test Test getting id of a space with no characters
+ * @pre Space pointer != NULL, no characters added
+ * @post Output==NO_ID
+ */
+void test3_space_get_character();
+
+/**
+ * @test Test setting id of character in null space
+ * @pre Space pointer == NULL
+ * @post Output==ERROR
+ */
+void test1_space_set_character();
+
+/**
+ * @test Test setting id of character in a valid space that already has a character
+ * @pre Space pointer != NULL, character id 10
+ * @post Output==ERROR
+ */
+void test2_space_set_character();
+
+/**
+ * @test Test setting id of character in a valid space with no characters
+ * @pre Space pointer != NULL, character id 10
+ * @post Output==OK
+ */
+void test3_space_set_character();
+
+/**
+ * @test Test checking if a null space's set of objects is full 
+ * @pre Space pointer is NULL
+ * @post Output==TRUE
+ */
+void test1_space_set_of_objects_is_full();
+
+/**
+ * @test Test checking if a space with full of objects is full 
+ * @pre Space pointer != NULL
+ * @post Output==TRUE
+ */
+void test2_space_set_of_objects_is_full();
+
+/**
+ * @test Test checking if a space with no objects is full
+ * @pre Space pointer != NULL
+ * @post Output==FALSE
+ */
+void test3_space_set_of_objects_is_full();
+
+/**
+ * @test Test checking if a space with one object is full
+ * @pre Space pointer != NULL
+ * @post Output==FALSE
+ */
+void test4_space_set_of_objects_is_full();
+
+/**
+ * @test Test deleting an object from a space with no objects
+ * @pre Space pointer != NULL, id of object 5
+ * @post Output==ERROR
+ */
+void test1_space_delete_object();
+
+/**
+ * @test Test deleting an object from a null space
+ * @pre Space pointer == NULL
+ * @post Output==ERROR
+ */
+void test2_space_delete_object();
+ 
+/**
+ * @test Test deleting a NO_ID object from a created space
+ * @pre Space pointer != NULL, object id NO_ID
+ * @post Output==ERROR
+ */
+void test3_space_delete_object();
+ 
+/**
+ * @test Test deleting an object not present in space
+ * @pre Space pointer != NULL and object id 5 (not present in space)
+ * @post Output==ERROR
+ */
+void test4_space_delete_object();
+ 
+/**
+ * @test Test deleting object present in space
+ * @pre Space pointer != NULL and object id 5 (the one present in space)
+ * @post Output==OK
+ */
+void test5_space_delete_object();
 #endif
