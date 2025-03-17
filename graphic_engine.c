@@ -185,14 +185,18 @@ char **create_space_square(Game *game, Id square_id)
       strcpy(character, character_get_gdesc(game_get_character(game, space_get_character(space))));
     }
 
+    /*PRINT the name of the objects that are at the space*/
+
     for (i = 0; i < game_get_n_objects(game) && full == FALSE; i++)
     {
+      /*We check if the object is at the space*/
       object_in_pos = game_get_object_in_pos(game, i);
       if (space_object_belongs(space, object_get_id(object_in_pos)))
       {
-
+        /*If it does belong to the space, we print the list of names, taking care we dont overflow the object string*/
         if ((len_printed + strlen(object_get_name(object_in_pos))) > (N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS - SIZE_OF_SPACE))
         {
+          /*If the next name doest fit, we print ... to show there are more objects*/
           while(len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS){
             len_printed += sprintf(object + len_printed, ".");
           }
@@ -200,6 +204,7 @@ char **create_space_square(Game *game, Id square_id)
         }
         else
         {
+          /*If the name fits, we print it, if its not the first name, print ' ,' first*/
           if (len_printed == 0)
           {
             len_printed += sprintf(object + len_printed, "%s", object_get_name(object_in_pos));
@@ -211,6 +216,7 @@ char **create_space_square(Game *game, Id square_id)
         }
       }
     }
+    /*If there are no more objects to print, we fill the string with spaces*/
     while(len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS){
       len_printed += sprintf(object + len_printed, " ");
     }
@@ -456,6 +462,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     {
       character_set_gdesc(game_get_character(game, SPIDER), "\\/xx\\/");
     }
+    /*fin del cambio grafico para la araña muerta*/
 
     /*Imprimimos la primera línea de espacios */
     created_line = create_line_of_spaces(game, id_north, id_act, 3);
@@ -500,7 +507,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     created_line = NULL;
   }
 
+  /***
+  **** printing all the information in the game description 
+  ***/
   screen_area_clear(ge->descript);
+  /*For all the objects in the game, we print its location*/
+
   for (i = 0; i < game_get_n_objects(game); i++)
   {
     object_name = object_get_name(game_get_object_in_pos(game, i));
@@ -512,6 +524,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
 
+  /*for all the characters, we print their location and health*/
+
   sprintf(str, "Characters : ");
   screen_area_puts(ge->descript, str);
   for (i = 0; i < game_get_n_characters(game); i++)
@@ -522,6 +536,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     sprintf(str, "  %s location:%d (%d)", character_gdesc, (int)character_loc, character_hp);
     screen_area_puts(ge->descript, str);
   }
+  /*We print the player, its location , health and then the object in the inventory*/
+
   sprintf(str, "Player : %d (%d)", (int)game_get_player_location(game), player_get_health(game_get_player(game)));
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
@@ -536,7 +552,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->descript, str);
     }
   }
-
+  /*Printing the message of the game, given after the command 'Chat'*/
   if (command_get_code(game_get_last_command(game)) == CHAT)
   {
     sprintf(str, "  Message: %s", game_get_message(game));
@@ -568,6 +584,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   
   screen_area_puts(ge->feedback, str);
 
+  /*Print a message if the player dies and the game ends*/
   if (player_get_health(game_get_player(game)) == 0)
   {
     sprintf(str, "Has muerto !!");
