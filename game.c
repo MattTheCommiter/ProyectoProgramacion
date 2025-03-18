@@ -307,6 +307,19 @@ Status game_add_object(Game *game, Object *object)
   return OK;
 }
 
+Object *game_get_object(Game *game, Id id){
+  int i;
+  Object *object = NULL;
+  if(!game || id == NO_ID) return NULL;
+  for(i = 0; i < game_get_n_objects(game); i++){
+    object = game_get_object_in_pos(game, i);
+    if(object_get_id(object) == id){
+      return object;
+    }
+  }
+  return NULL;
+}
+
 Id game_get_object_id_at(Game *game, int position)
 {
   if (position < 0 || position >= game->n_objects)

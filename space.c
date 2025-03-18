@@ -377,4 +377,13 @@ int space_get_num_of_objects(Space *space)
 
   return set_get_num_elements(space->objects);
 }
+
+/****** */
+Id space_get_object_id_in_pos(Space *space, int pos){
+  if(!space || pos>=space_get_num_of_objects(space)) return NO_ID;
+  return set_get_Id_in_pos(space->objects, pos);
+}
+/****** */
+
+
 /*END OF OBJECT RELATED FUNCTIONS*/
