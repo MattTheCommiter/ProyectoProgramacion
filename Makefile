@@ -57,6 +57,9 @@ $(OBJDIR)/character.o: $(SRCDIR)/character.c $(INCDIR)/character.h $(INCDIR)/typ
 $(OBJDIR)/set.o: $(SRCDIR)/set.c $(INCDIR)/set.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/link.o: $(SRCDIR)/link.c $(INCDIR)/link.h $(INCDIR)/types.h
+	gcc $(INC) $(CLAGS) -c $< -o $@
+
 
 
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
