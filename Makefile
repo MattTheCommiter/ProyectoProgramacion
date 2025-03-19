@@ -90,7 +90,7 @@ space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 .PHONY: clean run runV set_test_run character_test_run space_test_run
 
 clean:
-	rm -f $(OBJDIR)/*.o juego_hormiga set_test character_test space_test
+	rm -f $(OBJDIR)/*.o $(EXE)
 
 run:
 	./juego_hormiga anthill.dat
