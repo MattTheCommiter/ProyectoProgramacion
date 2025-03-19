@@ -1,89 +1,108 @@
-CFLAGS = -Wall -ansi -pedantic -g -c
+CFLAGS=-Wall -ansi -pedantic -g
+SRCDIR=./src
+OBJDIR=./obj
+LIBDIR=./lib
+INCDIR=./include
+DOCDIR=./doc
+INC=-Iinclude
+CLIBS=-L$(LIBDIR) -lscreen
+EXE=juego_hormiga tests
 
-all : juego_hormiga
+#make - compile game 
+all: juego_hormiga
 
-set_test: set_test_exec
+#make tests - compile every test
+tests: character_test set_test space_test
 
-character_test: character_test_exec
+#make general - compile both game and tests
+general: $(EXE)
 
-space_test: space_test_exec
+###################################################### GAME EXECUTABLE ######################################################
+juego_hormiga : $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o
+	gcc -g -o $@ $^ $(CLIBS)
 
-juego_hormiga : game_loop.o game.o graphic_engine.o command.o game_actions.o space.o gameReader.o object.o player.o character.o set.o
-	gcc -g -o $@ $^ -L./ -lscreen
 
-game.o: game.c game.h command.h types.h space.h player.h object.h gameReader.h
-	gcc $(CFLAGS) $^
 
-game_loop.o: game_loop.c command.h types.h game.h space.h player.h object.h game_actions.h graphic_engine.h
-	gcc $(CFLAGS) $^
+###################################################### OBJECTS NEEDED FOR GAME ######################################################
+$(OBJDIR)/game.o: $(SRCDIR)/game.c $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/gameReader.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/game_loop.o: $(SRCDIR)/game_loop.c $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/game_actions.h $(INCDIR)/graphic_engine.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h types.h space.h player.h object.h libscreen.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/graphic_engine.o: $(SRCDIR)/graphic_engine.c $(INCDIR)/graphic_engine.h $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/libscreen.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-command.o: command.c command.h types.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/command.o: $(SRCDIR)/command.c $(INCDIR)/command.h $(INCDIR)/types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/game_actions.o: $(SRCDIR)/game_actions.c $(INCDIR)/game_actions.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-space.o: space.c space.h types.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/space.o: $(SRCDIR)/space.c $(INCDIR)/space.h $(INCDIR)/types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-gameReader.o: gameReader.c gameReader.h types.h game.h command.h space.h player.h object.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/gameReader.o: $(SRCDIR)/gameReader.c $(INCDIR)/gameReader.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-object.o: object.c object.h types.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/object.o: $(SRCDIR)/object.c $(INCDIR)/object.h $(INCDIR)/types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-player.o: player.c player.h types.h space.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/player.o: $(SRCDIR)/player.c $(INCDIR)/player.h $(INCDIR)/types.h $(INCDIR)/space.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-caracter.o: character.c character.h types.h 
-	gcc $(CFLAGS) $^
+$(OBJDIR)/character.o: $(SRCDIR)/character.c $(INCDIR)/character.h $(INCDIR)/types.h 
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-set.o: set.c set.h types.h
-	gcc $(CFLAGS) $^
+$(OBJDIR)/set.o: $(SRCDIR)/set.c $(INCDIR)/set.h $(INCDIR)/types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+
+
+###################################################### OBJECTS NEEDED FOR TESTS ######################################################
+$(OBJDIR)/set_test.o: $(SRCDIR)/set_test.c $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/set_test.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/character_test.o: $(SRCDIR)/character_test.c $(INCDIR)/character.h $(INCDIR)/types.h $(INCDIR)/character_test.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types.h $(INCDIR)/space_test.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+
+	
+###################################################### TEST EXECUTABLES ######################################################
 #Set test related 
-set_test_exec: set_test.o set.o
+set_test: $(OBJDIR)/set_test.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
-
-set_test.o: set_test.c set.h types.h set_test.h test.h
-	gcc $(CFLAGS) $^	
 
 #Character test related
-character_test_exec: character_test.o character.o
+character_test: $(OBJDIR)/character_test.o $(OBJDIR)/character.o
 	gcc -o $@ $^ 
-
-character_test.o: character_test.c character.h types.h character_test.h test.h
-	gcc $(CFLAGS) $^
 	
-character.o: character.c character.h types.h
-	gcc $(CFLAGS) $^
-
 #Space test related
-space_test_exec: space_test.o space.o set.o
+space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
-space_test.o: space_test.c space.h types.h space_test.h test.h
-	gcc $(CFLAGS) $^
-	
+
+
 #Additional commands
-.PHONY: clean run runV test_set set_test_run character_test character_test_run space_test space_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run
 
 clean:
-	rm -f *.o *.gch juego_hormiga set_test_exec character_test_exec space_test_exec
+	rm -f $(OBJDIR)/*.o juego_hormiga set_test character_test space_test
+
 run:
 	./juego_hormiga anthill.dat
+
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat
 
 character_test_run:
-	./character_test_exec
-	
+	./character_test
+
 space_test_run:
-	./space_test_exec
+	./space_test
 
 set_test_run:
-	./set_test_exec
-
+	./set_test

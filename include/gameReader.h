@@ -9,7 +9,7 @@
  *
  */
 #ifndef GameReader_H
-#define GameReader_h
+#define GameReader_H
 #include "types.h"
 #include "game.h"
 
