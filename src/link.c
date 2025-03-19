@@ -56,7 +56,7 @@ Status link_set_origin_id(Link *l, Id orig_id) {
     if (l == NULL || orig_id == NO_ID) return ERROR;
 
     /* varibale assignment */
-    l->destination_id = orig_id;
+    l->origin_id = orig_id;
 
     /* correct exit */
     return OK;
