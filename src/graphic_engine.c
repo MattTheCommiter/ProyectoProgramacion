@@ -213,38 +213,35 @@ char **create_space_square(Game *game, Id square_id)
       strcpy(character, character_get_gdesc(game_get_character(game, space_get_character(space))));
     }
 
-    /*PRINT the name of the objects that are at the space*/
 
-    for (i = 0; i < game_get_n_objects(game) && full == FALSE; i++)
-    {
-      /*We check if the object is at the space*/
-      object_in_pos = game_get_object_in_pos(game, i);
-      if (space_object_belongs(space, object_get_id(object_in_pos)))
+   
+    for(i = 0; i < space_get_num_of_objects(space); i++){
+      object_in_pos = game_get_object(game, space_get_object_id_in_pos(space, i));
+
+      /*We print the list of names, taking care we dont overflow the object string*/
+      if ((len_printed + strlen(object_get_name(object_in_pos))) > (N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS - SIZE_OF_SPACE))
       {
-        /*If it does belong to the space, we print the list of names, taking care we dont overflow the object string*/
-        if ((len_printed + strlen(object_get_name(object_in_pos))) > (N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS - SIZE_OF_SPACE))
+        /*If the next name doest fit, we print ... to show there are more objects*/
+        while (len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS)
         {
-          /*If the next name doest fit, we print ... to show there are more objects*/
-          while (len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS)
-          {
-            len_printed += sprintf(object + len_printed, ".");
-          }
-          full = TRUE;
+          len_printed += sprintf(object + len_printed, ".");
+        }
+        full = TRUE;
+      }
+      else
+      {
+        /*If the name fits, we print it, if its not the first name, print ' ,' first*/
+        if (len_printed == 0)
+        {
+          len_printed += sprintf(object + len_printed, "%s", object_get_name(object_in_pos));
         }
         else
         {
-          /*If the name fits, we print it, if its not the first name, print ' ,' first*/
-          if (len_printed == 0)
-          {
-            len_printed += sprintf(object + len_printed, "%s", object_get_name(object_in_pos));
-          }
-          else
-          {
-            len_printed += sprintf(object + len_printed, ", %s", object_get_name(object_in_pos));
-          }
+          len_printed += sprintf(object + len_printed, ", %s", object_get_name(object_in_pos));
         }
       }
     }
+   
     /*If there are no more objects to print, we fill the string with spaces*/
     while (len_printed < N_TOTAL_ROWS_IN_SQUARE - NUMBER_OF_BARS)
     {

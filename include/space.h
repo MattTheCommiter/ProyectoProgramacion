@@ -248,4 +248,13 @@ char **space_get_gdesc(Space *space);
  * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_gdesc(Space *space, char**space_gdescription);
+
+/**
+ * @brief Gets the object Id located in position 'pos' of the array of Id in the set of objects in space
+ * 
+ * @param space a pointer to the space
+ * @param pos int position in the array
+ * @return Id the Id of that object located in the position asked, NO_ID if the position is too large or NULL as space.
+ */
+Id space_get_object_id_in_pos(Space *space, int pos);
 #endif
