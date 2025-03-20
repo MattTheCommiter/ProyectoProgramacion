@@ -401,6 +401,7 @@ Status space_set_discovered(Space *space, Bool discovered){
     return ERROR;
   }
   space->discovered = discovered;
+  return OK;
 }
 
 Bool space_get_discovered(Space *space){

@@ -92,7 +92,7 @@ Status game_create_from_file(Game **game, char *filename)
 
   /* The player is located in the first space */
   game_set_player_location((*game), game_get_space_id_at((*game), 0));
-  space_set_discovered(game_get_space(game, game_get_space_id_at((*game), 0)), TRUE);
+  space_set_discovered(game_get_space((*game), game_get_space_id_at((*game), 0)), TRUE);
 
   /*The characters are created and located*/
 
