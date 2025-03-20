@@ -29,6 +29,7 @@ struct _Space
   Set *objects;             /*!< The set of objects present at the space */
   Id character;             /*!< The Id of the character present at the space */
   char **gdesc;             /*!< The graphic description of the space */
+  Bool discovered;          /*!< Boolean that describes if the space has been discovered by the players or not*/
 };
 
 Space *space_create(Id id)
@@ -54,6 +55,8 @@ Space *space_create(Id id)
   newSpace->west = NO_ID;
   newSpace->objects = set_create();
   newSpace->character = NO_ID;
+  newSpace->discovered = FALSE;
+
   if (!(newSpace->gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
   {
     space_destroy(newSpace);
@@ -269,6 +272,12 @@ Status space_print(Space *space)
   {
     printf("\n%s", space->gdesc[i]);
   }
+  fprintf(stdout, "\nDiscovered state of space: ");
+  if(space->discovered == TRUE){
+    fprintf(stdout, "TRUE");
+  }else{
+    fprintf(stdout, "FALSE");
+  }
 
   return OK;
 }
@@ -378,6 +387,8 @@ int space_get_num_of_objects(Space *space)
   return set_get_num_elements(space->objects);
 }
 
+/*END OF OBJECT RELATED FUNCTIONS*/
+
 /****** */
 Id space_get_object_id_in_pos(Space *space, int pos){
   if(!space || pos>=space_get_num_of_objects(space)) return NO_ID;
@@ -385,5 +396,15 @@ Id space_get_object_id_in_pos(Space *space, int pos){
 }
 /****** */
 
+Status space_set_discovered(Space *space, Bool discovered){
+  if(!space || discovered < 0 || discovered > 1){
+    return ERROR;
+  }
+  space->discovered = discovered;
+}
 
-/*END OF OBJECT RELATED FUNCTIONS*/
+Bool space_get_discovered(Space *space){
+  if(!space) return FALSE;
+
+  return space->discovered;
+}

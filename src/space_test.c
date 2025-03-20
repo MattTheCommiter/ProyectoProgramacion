@@ -606,3 +606,37 @@ void test5_space_delete_object()
   PRINT_TEST_RESULT(space_delete_object(s, 5) == OK);
   space_destroy(s);
 }
+
+void test1_space_set_discovered()
+{
+  Space *s = space_create(5);
+  PRINT_TEST_RESULT(space_set_discovered(s, FALSE) == OK);
+  space_destroy(s);
+}
+
+void test2_space_set_discovered()
+{
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_set_discovered(s, TRUE) == ERROR);
+}
+
+void test3_space_set_discovered()
+{
+  Space *s = space_create(5);
+  PRINT_TEST_RESULT(space_set_discovered(s, -1) == ERROR);
+  space_destroy(s);
+}
+
+void test1_space_get_discovered()
+{
+  Space *s = space_create(5);
+  space_set_discovered(s, TRUE);
+  PRINT_TEST_RESULT(space_get_discovered(s) == TRUE);
+  space_destroy(s);
+}
+
+void test2_space_get_discovered()
+{
+  Space *s = NULL;
+  PRINT_TEST_RESULT(space_get_discovered(s) == FALSE);
+}
