@@ -167,7 +167,7 @@ char **create_space_square(Game *game, Id square_id)
   char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   Object *object_in_pos = NULL;
-  Bool full = FALSE, discovered=space_get_discovered(game_get_space(game, square_id));
+  Bool discovered=space_get_discovered(game_get_space(game, square_id));
   int i, len_printed = 0;
 
   /*El puntero a espacio que le corresponde al cuadrado que vamos a crear*/
@@ -232,7 +232,6 @@ char **create_space_square(Game *game, Id square_id)
         {
           len_printed += sprintf(object + len_printed, ".");
         }
-        full = TRUE;
       }
       else
       {

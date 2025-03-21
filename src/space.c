@@ -400,7 +400,7 @@ Status space_set_discovered(Space *space, Bool discovered){
   if(!space || discovered < 0 || discovered > 1){
     return ERROR;
   }
-  space->discovered = discovered;
+  return space->discovered = discovered;
 }
 
 Bool space_get_discovered(Space *space){
