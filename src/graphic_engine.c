@@ -19,20 +19,26 @@
 #include "types.h"
 #include "character.h"
 
-/*Constant values used for the creation of the game's graphic interface*/
-#define WIDTH_MAP 60      /*!<Width of the map in the graphic interface*/
-#define WIDTH_DES 29      /*!<Width of the description box in the graphic interface*/
-#define WIDTH_BAN 23      /*!<Width of the banner in the graphic interface*/
-#define HEIGHT_MAP 29     /*!<Height of the map in the graphic interface*/
-#define HEIGHT_BAN 1      /*!<Height of the banner in the graphic interface*/
-#define HEIGHT_HLP 2      /*!<Height of the help box in the graphic interface*/
-#define HEIGHT_FDB 3      /*!<Height of the feedback box in the graphic interface*/
-#define NUMBER_OF_BARS 2  /*!<Number and size of the '|' at the sides of the squares*/
-#define SIZE_OF_SPACE 2   /*!<Size of the chars ' ,' between each object name*/
-#define FINAL_CHARACTER 1 /*!<Size corresponding to the \0 character of the string*/
-#define BOTTOM_HEIGHT 1   /*!<Height of the lowest line of spaces in the map*/
-#define MIDDLE_HEIGHT 2   /*!<Height of the middle line of spaces in the map*/
-#define TOP_HEIGHT 3      /*!<Height of the highest line of spaces in the map*/
+/**
+ * @brief Constant values used for the creation of the game's graphic interface
+ * 
+ */
+#define WIDTH_MAP 60              /*!<Width of the map in the graphic interface*/
+#define WIDTH_DES 29              /*!<Width of the description box in the graphic interface*/
+#define WIDTH_BAN 23              /*!<Width of the banner in the graphic interface*/
+#define HEIGHT_MAP 29             /*!<Height of the map in the graphic interface*/
+#define HEIGHT_BAN 1              /*!<Height of the banner in the graphic interface*/
+#define HEIGHT_HLP 2              /*!<Height of the help box in the graphic interface*/
+#define HEIGHT_FDB 3              /*!<Height of the feedback box in the graphic interface*/
+#define NUMBER_OF_BARS 2          /*!<Number and size of the '|' at the sides of the squares*/
+#define SIZE_OF_SPACE 2           /*!<Size of the chars ' ,' between each object name*/
+#define FINAL_CHARACTER 1         /*!<Size corresponding to the \0 character of the string*/
+#define BOTTOM_HEIGHT 1           /*!<Height of the lowest line of spaces in the map*/
+#define MIDDLE_HEIGHT 2           /*!<Height of the middle line of spaces in the map*/
+#define TOP_HEIGHT 3              /*!<Height of the highest line of spaces in the map*/
+#define GDESC_INITIAL_POSITION 2  /*!<The position the first line of the graphic description of a space has in the total space square*/
+#define GDESC_FINAL_POSITION 7    /*!<The position the last line of the graphic description of a space has in the total space square*/
+
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
  *
@@ -161,7 +167,7 @@ char **create_space_square(Game *game, Id square_id)
   char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   Object *object_in_pos = NULL;
-  Bool full = FALSE;
+  Bool full = FALSE, discovered=space_get_discovered(game_get_space(game, square_id));
   int i, len_printed = 0;
 
   /*El puntero a espacio que le corresponde al cuadrado que vamos a crear*/
@@ -204,7 +210,7 @@ char **create_space_square(Game *game, Id square_id)
       player = blank_player_str;
     }
     /*Damos un valor al personaje del espacio si lo hay*/
-    if (space_get_character(space) == NO_ID)
+    if (space_get_character(space) == NO_ID || discovered == FALSE)
     {
       strcpy(character, blank_character_str);
     }
@@ -262,18 +268,28 @@ char **create_space_square(Game *game, Id square_id)
       sprintf(str, "| %s %s %2d|", player, character, (int)square_id);
       strcpy(space_square[1], str);
     }
-    sprintf(str, "|%s      |", gdesc[0]);
-    strcpy(space_square[2], str);
-    sprintf(str, "|%s      |", gdesc[1]);
-    strcpy(space_square[3], str);
-    sprintf(str, "|%s      |", gdesc[2]);
-    strcpy(space_square[4], str);
-    sprintf(str, "|%s      |", gdesc[3]);
-    strcpy(space_square[5], str);
-    sprintf(str, "|%s      |", gdesc[4]);
-    strcpy(space_square[6], str);
-    sprintf(str, "|%s|", object);
-    strcpy(space_square[7], str);
+    if(discovered == TRUE)
+    {
+      sprintf(str, "|%s      |", gdesc[0]);
+      strcpy(space_square[2], str);
+      sprintf(str, "|%s      |", gdesc[1]);
+      strcpy(space_square[3], str);
+      sprintf(str, "|%s      |", gdesc[2]);
+      strcpy(space_square[4], str);
+      sprintf(str, "|%s      |", gdesc[3]);
+      strcpy(space_square[5], str);
+      sprintf(str, "|%s      |", gdesc[4]);
+      strcpy(space_square[6], str);
+      sprintf(str, "|%s|", object);
+      strcpy(space_square[7], str);
+    }
+    else
+    {
+      for(i=GDESC_INITIAL_POSITION;i<=GDESC_FINAL_POSITION;i++){
+        sprintf(str, "|               |");
+        strcpy(space_square[i], str);
+      }
+    }
     sprintf(str, "+---------------+");
     strcpy(space_square[8], str);
   }
