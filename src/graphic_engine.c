@@ -574,7 +574,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     obj_loc = game_get_object_location(game, object_get_id(game_get_object_in_pos(game, i)));
     if (obj_loc != NO_ID)
     {
-      sprintf(str, "  %s location:%d", object_name, (int)obj_loc);
+      if(space_get_discovered(game_get_space(game, obj_loc)) == TRUE){
+        sprintf(str, "  %s location:%d", object_name, (int)obj_loc);
+      }else{
+        sprintf(str, "  %s location:?", object_name);
+      }
+    
       screen_area_puts(ge->descript, str);
     }
   }
@@ -588,7 +593,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_gdesc = character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
-    sprintf(str, "  %s location:%d (%d)", character_gdesc, (int)character_loc, character_hp);
+    if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
+      sprintf(str, "  %s location:%d (%d)", character_gdesc, (int)character_loc, character_hp);
+    }else{
+      sprintf(str, "  %s location:? (%d)", character_gdesc, character_hp);
+    }
     screen_area_puts(ge->descript, str);
   }
   /*We print the player, its location , health and then the object in the inventory*/
