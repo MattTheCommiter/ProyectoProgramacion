@@ -12,7 +12,7 @@ EXE=juego_hormiga tests
 all: juego_hormiga
 
 #make tests - compile every test
-tests: character_test set_test space_test
+tests: character_test set_test space_test link_test
 
 #make general - compile both game and tests
 general: $(EXE)
@@ -72,6 +72,8 @@ $(OBJDIR)/character_test.o: $(SRCDIR)/character_test.c $(INCDIR)/character.h $(I
 $(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types.h $(INCDIR)/space_test.h $(INCDIR)/test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 	
 ###################################################### TEST EXECUTABLES ######################################################
@@ -87,13 +89,15 @@ character_test: $(OBJDIR)/character_test.o $(OBJDIR)/character.o
 space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
+link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
+	gcc -o $@ $^
 
 
 #Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run link_test_run
 
 clean:
-	rm -f $(OBJDIR)/*.o juego_hormiga set_test character_test space_test
+	rm -f $(OBJDIR)/*.o $(EXE)
 
 run:
 	./juego_hormiga anthill.dat
@@ -109,3 +113,6 @@ space_test_run:
 
 set_test_run:
 	./set_test
+
+link_test_run:
+	./link_test
