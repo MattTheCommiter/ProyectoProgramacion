@@ -33,6 +33,16 @@ Link *link_create(Id link_id);
 void link_destroy(Link *l);
 
 /**
+ * @brief Sets the name filed in a given link structure
+ * @author Guilherme Povedano 
+ * @date 20-03-2025
+ * @param l the link structure to be modified 
+ * @param name the name that will be assigned to l
+ * @return OK if everything went well or ERROR otherwise
+*/
+Status link_set_name(Link *l, char *name);
+
+/**
  * @brief Sets the origin_id field in a given link structure
  * @author Guilherme Povedano 
  * @date 19-03-2025
@@ -80,6 +90,15 @@ Status link_set_is_open(Link *l, Bool is_open);
  * @return The id of the given link or NO_ID in case of error 
 */
 Id link_get_id(Link *l);
+
+/**
+ * @brief fetches the name of a given link 
+ * @author Guilherme Povedano
+ * @date 20-03-2025
+ * @param l the link whose data will be retrieved 
+ * @return the name of the given link 
+*/
+const char *link_get_name(Link *l);
 
 /**
  * @brief fetches the origin id of a given link

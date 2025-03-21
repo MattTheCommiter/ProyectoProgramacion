@@ -9,11 +9,12 @@
  * This struct stores all the information relative to a link
 */
 struct _Link {
-    Id link_id;             /*!< Id of the link, it must be unique */
-    Id origin_id;           /*!< Id of the origin space it connects */
-    Id destination_id;      /*!< Id of the destination space it connects */
-    Direction direction;    /*!< Direction the link points towards */
-    Bool is_open;           /*!< Whether link is open/unlocked or not */
+    Id link_id;                 /*!< Id of the link, it must be unique */
+    char name[WORD_SIZE + 1];   /*!< Name of the link, static */
+    Id origin_id;               /*!< Id of the origin space it connects */
+    Id destination_id;          /*!< Id of the destination space it connects */
+    Direction direction;        /*!< Direction the link points towards */
+    Bool is_open;               /*!< Whether link is open/unlocked or not */
 };
 
 Link *link_create(Id link_id) {
@@ -25,8 +26,10 @@ Link *link_create(Id link_id) {
     /* memory allocation */
     if (!(new_link = (Link *) malloc(sizeof(Link)))) return NULL;
 
+
     /* variable initializations */
     new_link->link_id = link_id;
+    new_link->name[0] = '\0';
     new_link->destination_id = NO_ID;
     new_link->origin_id = NO_ID;
     new_link->direction = UNKNOWN_DIR;
@@ -38,6 +41,14 @@ Link *link_create(Id link_id) {
 
 void link_destroy(Link *l) {
     if (l) free(l);
+}
+
+Status link_set_name(Link *l, char *name) {
+    if (!l || !name) return ERROR;
+
+    if (!(strcpy(l->name, name))) return ERROR;
+
+    return OK;
 }
 
 Status link_set_destination_id(Link *l, Id dest_id) {
@@ -84,6 +95,12 @@ Status link_set_is_open(Link *l, Bool open) {
     return OK;
 }
 
+const char *link_get_name(Link *l) {
+    if (!l) return NULL;
+
+    return l->name;
+}
+
 Id link_get_destination_id(Link *l) {
     /* error checks */
     if (l == NULL) return NO_ID;
@@ -128,42 +145,42 @@ void link_print(Link *l) {
 
     /* check link existence */
     if (l == NULL) {
-        fprintf(stdout, "Link does not exist.\n");
+        fprintf(stdout, "-->Link does not exist.\n");
         return; /* early return */
     } else {
-        fprintf(stdout, "Link information (%p):\n", l);
+        fprintf(stdout, "-->Link information - %s - (%p):\n", l->name, l);
     }
 
-    fprintf(stdout, "Link id: %ld\n", l->link_id);                   /* print link id*/
-    fprintf(stdout, "Link destination: %ld\n", l->destination_id);   /* print link destination id */   
+    fprintf(stdout, " --->Link id: %ld\n", l->link_id);                   /* print link id*/
+    fprintf(stdout, " --->Link destination: %ld\n", l->destination_id);   /* print link destination id */   
     fprintf(stdout, "Link origin: %ld\n", l->origin_id);             /* print link origin id */
 
     /* print link direction */
     switch (l->direction) {
         case 0: 
-            fprintf(stdout, "Link direction: UNKNOWN.\n");
+            fprintf(stdout, "--->Link direction: UNKNOWN.\n");
             break;
         case 1: 
-            fprintf(stdout, "Link direction: NORTH.\n");
+            fprintf(stdout, "--->Link direction: NORTH.\n");
             break;
         case 2: 
-            fprintf(stdout, "Link direction: SOUTH.\n");
+            fprintf(stdout, "--->Link direction: SOUTH.\n");
             break;
         case 3: 
-            fprintf(stdout, "Link direction: EAST.\n");
+            fprintf(stdout, "--->Link direction: EAST.\n");
             break;
         case 4: 
-            fprintf(stdout, "Link direction: WEST.\n");
+            fprintf(stdout, "--->Link direction: WEST.\n");
             break;
         default:
-            fprintf(stdout, "Link direction not defined.\n");
+            fprintf(stdout, "--->Link direction not defined.\n");
             break;
     }
 
     /* print whether link is open or not */
     if (l->is_open) {
-        fprintf(stdout, "Link is open.\n");
+        fprintf(stdout, "--->Link is open.\n");
     } else {
-        fprintf(stdout, "Link is closed.\n");
+        fprintf(stdout, "--->Link is closed.\n");
     }
 }
