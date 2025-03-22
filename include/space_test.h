@@ -444,4 +444,38 @@ void test4_space_delete_object();
  * @post Output==OK
  */
 void test5_space_delete_object();
-#endif
+
+/**
+ * @test Test setting discovered state of a space
+ * @pre Space pointer != NULL, discovered state = FALSE
+ * @post Output==OK
+ */
+void test1_space_set_discovered();
+
+/**
+ * @test Test setting discovered state of a NULL space
+ * @pre Space pointer == NULL, discovered state = TRUE
+ * @post Output==ERROR
+ */
+void test2_space_set_discovered();
+
+/**
+ * @test Test setting discovered state of a space with invalid state
+ * @pre Space pointer != NULL, discovered state = -1 (invalid)
+ * @post Output==ERROR
+ */
+void test3_space_set_discovered();
+
+/**
+ * @test Test getting discovered state of a space
+ * @pre Space pointer != NULL, discovered state previously set to TRUE
+ * @post Output==TRUE
+ */
+void test1_space_get_discovered();
+
+/**
+ * @test Test getting discovered state of a NULL space
+ * @pre Space pointer == NULL
+ * @post Output==FALSE
+ */
+void test2_space_get_discovered();
