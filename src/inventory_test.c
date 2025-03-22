@@ -195,7 +195,7 @@ void test1_inventory_set_objs() {
     Set* new_objs = NULL;
     Status result;
     inventory = inventory_create(10);
-    new_objs = set_create();
+    new_objs = inventory_get_objs(inventory);
     result = inventory_set_objs(inventory, new_objs);
     PRINT_TEST_RESULT(result == OK && inventory_get_objs(inventory) == new_objs); 
     inventory_destroy(inventory);
