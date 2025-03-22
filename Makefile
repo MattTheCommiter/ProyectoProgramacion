@@ -12,7 +12,7 @@ EXE=juego_hormiga tests
 all: juego_hormiga
 
 #make tests - compile every test
-tests: character_test set_test space_test
+tests: character_test set_test space_test inventory_test
 
 #make general - compile both game and tests
 general: $(EXE)
@@ -72,6 +72,8 @@ $(OBJDIR)/character_test.o: $(SRCDIR)/character_test.c $(INCDIR)/character.h $(I
 $(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types.h $(INCDIR)/space_test.h $(INCDIR)/test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory_test.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 	
 ###################################################### TEST EXECUTABLES ######################################################
@@ -87,10 +89,14 @@ character_test: $(OBJDIR)/character_test.o $(OBJDIR)/character.o
 space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
+#Inventory test related
+inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
+	gcc -o $@ $^ 
+
 
 
 #Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run
 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE)
@@ -109,3 +115,6 @@ space_test_run:
 
 set_test_run:
 	./set_test
+
+inventory_test_run:
+	./inventory_test
