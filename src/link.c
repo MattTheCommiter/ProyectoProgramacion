@@ -1,7 +1,17 @@
+/** 
+ * @brief It implements the link module interface 
+ * 
+ * @file link.c
+ * @author Guilherme Povedano 
+ * @version 0.0.3
+ * @date 19-03-2025
+ * @copyright GNU Public License 
+*/
 #include "link.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * @brief Link
@@ -135,7 +145,7 @@ Bool link_get_is_open(Link *l) {
 
 Direction link_get_direction(Link *l) {
     /* error checks */
-    if (l == NULL) return NO_ID;
+    if (l == NULL) return UNKNOWN_DIR;
 
     /* correct exit */
     return l->direction;
