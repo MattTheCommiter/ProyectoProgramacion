@@ -17,13 +17,15 @@
 #include "player.h"
 #include "object.h"
 #include "character.h"
+#include "link.h"
 
-#define MAX_SPACES 100          /*!<The maximum ammount of spaces that can exist in the game*/
-#define MAX_OBJECTS 10          /*!<The maximum ammount of objects present at the game*/
-#define MAX_CHARACTERS 10       /*!<The maximum ammount of characters present at the game*/
-#define MAX_MESSAGE 50          /*!<The maximum ammout of characters in the messages*/
-#define SPIDER_LOCATION 121     /*!<The id of the space the spider is located*/
-#define ANT_FRIEND_LOCATION 122 /*!<*The id of the space the ant friend is located*/
+#define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
+#define MAX_OBJECTS 10              /*!<The maximum ammount of objects present at the game*/
+#define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
+#define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
+#define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
+#define SPIDER_LOCATION 121         /*!<The id of the space the spider is located*/
+#define ANT_FRIEND_LOCATION 122     /*!<*The id of the space the ant friend is located*/
 typedef struct _Game Game;
 
 /**
@@ -386,4 +388,27 @@ Status game_set_last_command_success(Game *game, Status success);
  * @return Status OK or ERROR.
  */
 Status game_get_last_command_success(Game *game);
+
+/**
+ * @brief Fetches if a link matching input parameters is open or not 
+ * @author Guilherme Povedano
+ * @date 22/03/2025
+ * @param game pointer to the current game
+ * @param current_space origin_id of the desired link
+ * @param link_direction direction of the desired link
+ * @return Bool for link->is_open if it can be found or FALSE otherwise.
+*/
+Bool game_connection_is_open(Game *game, Id current_space, Direction link_direction);
+
+/**
+ * @brief Fetches the destination_id of a link matching input parameters
+ * @author Guilherme Povedano
+ * @date 22/03/2025
+ * @param game pointer to the current game
+ * @param current_space origin_id of the desired link
+ * @param link_direction direction of the desired link
+ * @return the id number of the destination_id of the link if it exists or FALSE otherwise. 
+*/
+Id game_get_connection(Game *game, Id current_space, Direction link_direction);
+
 #endif

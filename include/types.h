@@ -52,10 +52,10 @@ typedef enum
 typedef enum
 {
     UNKNOWN_DIR,    /*!<Assigns value 0 to the keyword "UNKNOWN_DIR", which will be used in space-related functions*/
-    N,          /*!<Assigns value 1 to the keyword "N", which will be used in space-related functions*/      
-    S,          /*!<Assigns value 2 to the keyword "S", which will be used in space-related functions*/
-    E,          /*!<Assigns value 3 to the keyword "E", which will be used in space-related functions*/
-    W           /*!<Assigns value 4 to the keyword "W", which will be used in space-related functions*/
+    N,              /*!<Assigns value 1 to the keyword "N", which will be used in space-related functions*/      
+    S,              /*!<Assigns value 2 to the keyword "S", which will be used in space-related functions*/
+    E,              /*!<Assigns value 3 to the keyword "E", which will be used in space-related functions*/
+    W               /*!<Assigns value 4 to the keyword "W", which will be used in space-related functions*/
 } Direction;
 
 #endif

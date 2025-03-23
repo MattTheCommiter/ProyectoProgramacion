@@ -24,6 +24,8 @@ struct _Game
   int n_spaces;                          /*!<Number of spaces in the game*/
   Character *characters[MAX_CHARACTERS]; /*!<Number of spaces in the game*/
   int n_characters;                      /*!<Number of characters in the game*/
+  Link *links[MAX_LINKS];                /*!<Array of links*/
+  int n_links;                           /*!<Number of links in the game*/
   Command *last_cmd;                     /*!<Pointer to the last command introduced by the user*/
   Status command_success;                /*!<Status that stablishes wheter the command was successful*/
   Bool finished;                         /*!<Boolean that establishes whether the game has ended or not*/
@@ -63,8 +65,8 @@ Status game_create(Game **game)
   (*game)->n_spaces = 0;
   (*game)->n_characters = 0;
   (*game)->n_objects = 0;
+  (*game)->n_links = 0;
   (*game)->player = player_create(ANT);
-  (*game)->n_objects = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
   (*game)->command_success = OK;
@@ -130,6 +132,11 @@ Status game_destroy(Game *game)
   {
     if (game->objects[i])
       object_destroy(game->objects[i]);
+  }
+  for (i = 0; i < game->n_links; i++)
+  {
+    if (game->links[i])
+      link_destroy(game->links[i]);
   }
   for (i = 0; i < 2; i++)
   {
@@ -308,13 +315,17 @@ Status game_add_object(Game *game, Object *object)
   return OK;
 }
 
-Object *game_get_object(Game *game, Id id){
+Object *game_get_object(Game *game, Id id)
+{
   int i;
   Object *object = NULL;
-  if(!game || id == NO_ID) return NULL;
-  for(i = 0; i < game_get_n_objects(game); i++){
+  if (!game || id == NO_ID)
+    return NULL;
+  for (i = 0; i < game_get_n_objects(game); i++)
+  {
     object = game_get_object_in_pos(game, i);
-    if(object_get_id(object) == id){
+    if (object_get_id(object) == id)
+    {
       return object;
     }
   }
@@ -454,3 +465,57 @@ Status game_get_last_command_success(Game *game)
   }
   return game->command_success;
 }
+
+/*LINK RELATED FUNCTIONS*/
+
+Id game_get_connection(Game *game, Id current_space, Direction link_direction)
+{
+  int i;
+
+  /* error checking */
+  if (!game || current_space == NO_ID || link_direction == UNKNOWN_DIR)
+  {
+    return NO_ID;
+  }
+
+  /* look for link from the current space pointing in the given direction */
+  for (i = 0; i < game->n_links; i++)
+  {
+    if (link_get_origin_id(game->links[i]) == current_space) /*check this condition first for efficiency, less probable*/
+    {
+      if (link_get_direction(game->links[i]) == link_direction) /*check second condition for matching link*/
+      {
+        return link_get_destination_id(game->links[i]); /*return link destination*/
+      }
+    }
+  }
+
+  /*no matching link found, return NO_ID*/
+  return NO_ID;
+}
+
+Bool game_connection_is_open(Game *game, Id current_space, Direction link_direction)
+{
+  int i;
+
+  /* error checking */
+  if (!game || current_space == NO_ID || link_direction == UNKNOWN_DIR)
+    return FALSE;
+
+  /* look for the link matching input arguments in the game->links array */
+  for (i = 0; i < game->n_links; i++)
+  {
+    if (current_space == link_get_id(game->links[i]))
+    {
+      if (link_direction == link_get_direction(game->links[i]))
+      {
+        return link_get_is_open(game->links[i]);
+      }
+    }
+  }
+
+  /* link not found, return false to prevent undefined behaviour */
+  return FALSE;
+}
+
+/*END OF LINK RELATED FUNCTIONS*/
