@@ -475,7 +475,8 @@ Status game_get_last_command_success(Game *game)
 /*LINK RELATED FUNCTIONS*/
 
 /** NOTE: WHENEVER GAME_READER_LOAD_LINKS IS WRITTEN EXIT VALUE FOR THIS FUNCTION SHOULD BE CHECKED AS CORRECT FUNCTION ARGUMENTS ARE NOT SUFFICIENT FOR CORRECT EXIT*/
-Status game_add_link(Game *game, Link *link) {
+Status game_add_link(Game *game, Link *link) 
+{
   Direction aux_dir = link_get_direction(link);
   Id aux_id = link_get_origin_id(link);
 
@@ -530,9 +531,9 @@ Bool game_connection_is_open(Game *game, Id current_space, Direction link_direct
   /* look for the link matching input arguments in the game->links array */
   for (i = 0; i < game->n_links; i++)
   {
-    if (current_space == link_get_id(game->links[i]))
+    if (current_space == link_get_origin_id(game->links[i])) /*check this condition first for efficiency, less probable*/
     {
-      if (link_direction == link_get_direction(game->links[i]))
+      if (link_direction == link_get_direction(game->links[i])) /*check second condition for matching link*/
       {
         return link_get_is_open(game->links[i]);
       }
@@ -541,6 +542,14 @@ Bool game_connection_is_open(Game *game, Id current_space, Direction link_direct
 
   /* link not found, return false to prevent undefined behaviour */
   return FALSE;
+}
+
+int game_get_n_links(Game *game) 
+{
+  if (!game) 
+    return -1;
+
+  return game->n_links;
 }
 
 /*END OF LINK RELATED FUNCTIONS*/

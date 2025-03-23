@@ -400,7 +400,7 @@ Status game_get_last_command_success(Game *game);
 Status game_add_link(Game *game, Link *link);
 
 /**
- * @brief Fetches if a link matching input parameters is open or not 
+ * @brief Fetches if a link matching input parameters is open or not [Time: O(n)] 
  * @author Guilherme Povedano
  * @date 22/03/2025
  * @param game pointer to the current game
@@ -411,7 +411,7 @@ Status game_add_link(Game *game, Link *link);
 Bool game_connection_is_open(Game *game, Id current_space, Direction link_direction);
 
 /**
- * @brief Fetches the destination_id of a link matching input parameters
+ * @brief Fetches the destination_id of a link matching input parameters [Time: O(n)]
  * @author Guilherme Povedano
  * @date 22/03/2025
  * @param game pointer to the current game
@@ -420,5 +420,14 @@ Bool game_connection_is_open(Game *game, Id current_space, Direction link_direct
  * @return the id number of the destination_id of the link if it exists or FALSE otherwise. 
 */
 Id game_get_connection(Game *game, Id current_space, Direction link_direction);
+
+/**
+ * @brief fetches the number of links contained in the game [Time: O(1)]
+ * @author Guilherme Povedano 
+ * @date 23/03/2025
+ * @param game pointer to game structure containing the number of links
+ * @return the number of links in a game, or -1 in case of error
+*/
+int game_get_n_links(Game *game);
 
 #endif
