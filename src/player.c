@@ -46,7 +46,7 @@ Player *player_create(Id id){
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->backpack = inventory_create(5); /* Initialize backpack with a capacity of 5 objects */
+  newPlayer->backpack = inventory_create(MAX_BACKPACK_CAPACITY); /* Initialize backpack with BACKPACK_CAPACITY objects */
   newPlayer->health = 5;
 
   return newPlayer;
@@ -100,10 +100,32 @@ const char *player_get_name(Player *player){
   return player->name;
 }
 
+/**This function checks if the player's backpack is full */
+Bool player_backpack_is_full(Player *player) {
+  if (!player || !player->backpack) {
+    return FALSE;
+  }
+  return inventory_is_full(player->backpack);
+}
+
+/**This function checks if the player's backpack is empty */
+Bool player_backpack_is_empty(Player *player) {
+  if (!player || !player->backpack) {
+    return TRUE;
+  }
+  return inventory_is_empty(player->backpack);
+}
+
+
 /**This function adds an object to the player's backpack if the player and the backpack are valid.
  * It uses the inventory_add_object_id function to add the object to the backpack. */
 Status player_add_object_to_backpack(Player *player, Id obj_id){
   if (player ==NULL || player->backpack == NULL){
+    return ERROR;
+  }
+
+   /* Check if the backpack is full */
+   if (player_backpack_is_full(player)) {
     return ERROR;
   }
   
