@@ -255,6 +255,12 @@ void game_print(Game *game)
     space_print(game->spaces[i]);
   }
 
+  fprintf(stdout, "=> Links:\n");
+  for (i = 0 ; i < game->n_links ; i++) 
+  {
+    link_print(game->links[i]);
+  }
+
   for (i = 0; i < game->n_objects; i++)
   {
     printf("=> Object '%s' location: %ld", object_get_name(game_get_object_in_pos(game, i)), game_get_object_location(game, object_get_id(game->objects[i])));
@@ -467,6 +473,25 @@ Status game_get_last_command_success(Game *game)
 }
 
 /*LINK RELATED FUNCTIONS*/
+
+/** NOTE: WHENEVER GAME_READER_LOAD_LINKS IS WRITTEN EXIT VALUE FOR THIS FUNCTION SHOULD BE CHECKED AS CORRECT FUNCTION ARGUMENTS ARE NOT SUFFICIENT FOR CORRECT EXIT*/
+Status game_add_link(Game *game, Link *link) {
+  Direction aux_dir = link_get_direction(link);
+  Id aux_id = link_get_origin_id(link);
+
+  /* error checking */
+  if (!game || !link || game_get_connection(game, aux_id, aux_dir) != NO_ID) /* third condition checks if a link in that space and direction already exists */
+  {
+    return ERROR;
+  }
+
+  /* add link to game's array */
+  game->links[game->n_links] = link;
+  game->n_links++;
+
+  /* correct exit */
+  return OK;
+}
 
 Id game_get_connection(Game *game, Id current_space, Direction link_direction)
 {

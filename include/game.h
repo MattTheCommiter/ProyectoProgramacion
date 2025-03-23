@@ -390,6 +390,16 @@ Status game_set_last_command_success(Game *game, Status success);
 Status game_get_last_command_success(Game *game);
 
 /**
+ * @brief adds a given link to the array of links in the game structure [Time: O(n)]
+ * @author Guilherme Povedano 
+ * @date 23/03/2025
+ * @param game pointer to the game structure that will be modified 
+ * @param link pointer to the link that will be added to the game structure 
+ * @return OK if everything went well, or ERROR if the arguments aren't valid or a link already exists in that space and direction
+*/
+Status game_add_link(Game *game, Link *link);
+
+/**
  * @brief Fetches if a link matching input parameters is open or not 
  * @author Guilherme Povedano
  * @date 22/03/2025

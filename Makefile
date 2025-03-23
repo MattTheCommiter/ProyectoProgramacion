@@ -6,13 +6,15 @@ INCDIR=./include
 DOCDIR=./doc
 INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
-EXE=juego_hormiga tests
+TESTS=character_test set_test space_test link_test
+EXE=juego_hormiga $(TESTS)
+
 
 #make - compile game 
 all: juego_hormiga
 
 #make tests - compile every test
-tests: character_test set_test space_test link_test
+tests: $(TESTS)
 
 #make general - compile both game and tests
 general: $(EXE)
