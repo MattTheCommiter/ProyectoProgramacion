@@ -2,7 +2,7 @@
  * @brief It defines the player module interface
  *
  * @file player.h
- * @author Matteo Artunedo, AGL (modifications to include backpack)
+ * @author Matteo Artunedo, AGL (modifications for updating Player to include a backpack)
  * @version 0
  * @date 10-02-2025
  * @copyright GNU Public License
@@ -13,6 +13,8 @@
 
 #include "types.h"
 #include "space.h"
+
+#define MAX_BACKPACK_CAPACITY 5
 
 typedef struct _Player Player;
 
@@ -61,6 +63,22 @@ Status player_set_name(Player *player, char *name);
  * @return  a string with the name of the player
  */
 const char *player_get_name(Player *player);
+
+/**
+ * @brief Checks if the player's backpack is full
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the player
+ * @return TRUE if the backpack is full, FALSE otherwise
+ */
+Bool player_backpack_is_full(Player *player);
+
+/**
+ * @brief Checks if the player's backpack is empty
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the player
+ * @return TRUE if the backpack is empty, FALSE otherwise
+ */
+Bool player_backpack_is_empty(Player *player);
 
 /**
  * @brief Adds an object to the player's backpack.
