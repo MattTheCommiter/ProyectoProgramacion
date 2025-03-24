@@ -260,3 +260,11 @@ char *player_get_gdesc(Player *player)
   }
   return player->Gdesc;
 }
+
+Bool player_object_is_in_backpack(Player *player, Id objectId){
+  if(!player)
+  {
+    return FALSE;
+  }
+  return inventory_contains(player->backpack, objectId);
+}

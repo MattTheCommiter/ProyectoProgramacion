@@ -112,17 +112,16 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE || cmd == INSPECT)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP)
     {
       token = strtok(NULL, "\n");
 
       if (!token)
       {
-        command_set_code(command, cmd);
-        return command_set_argument(command, NO_ARG);
+        command_set_argument(command, NO_ARG);
+      }else{
+        command_set_argument(command, token);
       }
-      printf("token genered : '%s'", token);
-      command_set_argument(command, token);
     }
     else
     {

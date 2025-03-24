@@ -187,4 +187,14 @@ Status player_set_gdesc(Player *player, char *gdesc);
  * @return char* a pointer to the string of the gdesc
  */
 char *player_get_gdesc(Player *player);
+
+
+/**
+ * @brief tells if an object is in the players backpack
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @param objectId the id of the object 
+ * @return Bool TRUE if it belongs to the inventory or FALSE
+ */
+Bool player_object_is_in_backpack(Player *player, Id objectId);
 #endif

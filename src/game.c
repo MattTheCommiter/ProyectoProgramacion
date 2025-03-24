@@ -423,6 +423,24 @@ Id game_get_character_location(Game *game, Id character_id)
   return NO_ID;
 }
 
+Character *game_get_character_from_name(Game *game, char *name)
+{
+  int i;
+  if (!game || !name)
+  {
+    return NULL;
+  }
+  for (i = 0; i < game->n_characters; i++)
+  {
+    if (strcmp(character_get_name(game->characters[i]), name) == 0)
+    {
+      return game->characters[i];
+    }
+  }
+  return NULL;
+}
+
+
 Status game_set_last_command_success(Game *game, Status success)
 {
   if (!game)

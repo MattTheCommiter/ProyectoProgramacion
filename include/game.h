@@ -22,8 +22,6 @@
 #define MAX_OBJECTS 10          /*!<The maximum ammount of objects present at the game*/
 #define MAX_CHARACTERS 10       /*!<The maximum ammount of characters present at the game*/
 #define MAX_MESSAGE 50          /*!<The maximum ammout of characters in the messages*/
-#define SPIDER_LOCATION 121     /*!<The id of the space the spider is located*/
-#define ANT_FRIEND_LOCATION 122 /*!<*The id of the space the ant friend is located*/
 typedef struct _Game Game;
 
 /**
@@ -304,6 +302,16 @@ Id game_get_character_id_at(Game *game, int position);
  * @return a pointer to the object
  */
 Character *game_get_character(Game *game, Id id);
+
+/**
+ * @brief returns the character of the game by a specific name
+ * @date 24-03-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param name a string that contains the name
+ * @return Character* a pointer to the character
+ */
+Character *game_get_character_from_name(Game *game, char *name);
 /**
  * @brief Gets an object's Id from its name
  * @date 03/03/25
