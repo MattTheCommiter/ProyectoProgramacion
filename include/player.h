@@ -2,7 +2,7 @@
  * @brief It defines the player module interface
  *
  * @file player.h
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, AGL (modifications for updating Player to include a backpack)
  * @version 0
  * @date 10-02-2025
  * @copyright GNU Public License
@@ -13,6 +13,8 @@
 
 #include "types.h"
 #include "space.h"
+
+#define MAX_BACKPACK_CAPACITY 5
 
 typedef struct _Player Player;
 
@@ -63,23 +65,65 @@ Status player_set_name(Player *player, char *name);
 const char *player_get_name(Player *player);
 
 /**
- * @brief It sets the id of the player's object
- * @author Matteo Artunedo
- *
- * @param player a pointer to the player
- * @param value the id of the new object
- * @return OK, if everything goes well or ERROR if an error occurred
+ * @brief Checks if the player's backpack is full
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the player
+ * @return TRUE if the backpack is full, FALSE otherwise
  */
-Status player_set_object(Player *player, Id objectId);
+Bool player_backpack_is_full(Player *player);
 
 /**
- * @brief It returns the id of the player's object
- * @author Matteo Artunedo
- *
- * @param player a pointer to the player
- * @return the id of the player's object
+ * @brief Checks if the player's backpack is empty
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the player
+ * @return TRUE if the backpack is empty, FALSE otherwise
  */
-Id player_get_object(Player *player);
+Bool player_backpack_is_empty(Player *player);
+
+/**
+ * @brief Adds an object to the player's backpack.
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the Player structure.
+ * @param obj_id The ID of the object to be added to the backpack.
+ * @return Status OK if the object was added successfully, ERROR otherwise.
+ */
+Status player_add_object_to_backpack(Player *player, Id obj_id);
+
+/**
+ * @brief Removes an object from the player's backpack.
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the Player structure.
+ * @param obj_id The ID of the object to be removed from the backpack.
+ * @return Status OK if the object was removed successfully, ERROR otherwise.
+ */
+Status player_remove_object_from_backpack(Player *player, Id obj_id);
+
+/**
+ * @brief Gets the number of objects in the player's backpack.
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the Player structure.
+ * @return int The number of objects in the backpack, or -1 if the player or backpack is invalid.
+ */
+int player_get_num_objects_in_backpack(Player *player);
+
+/**
+ * @brief Gets the object ID at a specified position in the player's backpack
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the Player structure.
+ * @param position The position of the object in the backpack.
+ * @return Id The object ID at the specified position, or NO_ID if the player, backpack, or position is invalid.
+ */
+Id player_get_backpack_object_id_at(Player *player, int position);
+
+/**
+ * @brief Checks if the player's backpack contains a specific object ID.
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the Player structure.
+ * @param obj_id The ID of the object to check for in the backpack.
+ * @return Bool TRUE if the backpack contains the object ID, FALSE otherwise.
+ */
+Bool player_backpack_contains(Player *player, Id obj_id);
+
 
 /**
  * @brief It prints the player information
