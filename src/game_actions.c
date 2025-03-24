@@ -426,20 +426,38 @@ void game_actions_attack(Game *game)
 
 void game_actions_inspect(Game *game, char *arg){
   Id objectId = NO_ID;
-  Space *space = NULL;
+  Space *current_space = NULL;
+  int i;
+  Object *object = NULL;
+  Bool found = FALSE;
+
   if(!game || !arg)
   {
     game_set_last_command_success(game, ERROR);
     return;
   }
-  objectId = game_get_objectId_from_name(game, arg);
-  if(objectId == NO_ID)
+  /*We find the object with tha name arg*/
+  for(i = 0; i < game_get_n_objects(game); i++){
+    object = game_get_object_in_pos(game, i);
+    if(strcasecmp(object_get_name(object), arg) == 0)
+    {
+      found = TRUE;
+      break;
+    }
+  }
+
+  if(found == FALSE){
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  objectId = object_get_id(object);
+  current_space = game_get_space(game, game_get_player_location(game));
+  if(current_space == NULL)
   {
     game_set_last_command_success(game, ERROR);
     return;
   }
-  space = game_get_space(game, game_get_player_location(game));
-  if(space_object_belongs(space ,objectId) == FALSE)
+  if(space_object_belongs(current_space ,objectId) == FALSE)
   {
     game_set_last_command_success(game, ERROR);
     return;
