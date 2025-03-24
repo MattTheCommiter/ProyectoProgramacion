@@ -128,7 +128,7 @@ Status command_get_user_input(Command *command)
     {
       command_set_argument(command, NO_ARG);
     }
-    return command_set_code(command, cmd);;
+    return command_set_code(command, cmd);
   }
   else
   {
