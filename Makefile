@@ -12,8 +12,8 @@ EXE=juego_hormiga tests
 all: juego_hormiga
 
 #make tests - compile every test
+tests: character_test set_test space_test link_test inventory_test
 
-tests: character_test set_test space_test link_test
 
 #make general - compile both game and tests
 general: $(EXE)
@@ -49,7 +49,7 @@ $(OBJDIR)/gameReader.o: $(SRCDIR)/gameReader.c $(INCDIR)/gameReader.h $(INCDIR)/
 $(OBJDIR)/object.o: $(SRCDIR)/object.c $(INCDIR)/object.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: $(SRCDIR)/player.c $(INCDIR)/player.h $(INCDIR)/types.h $(INCDIR)/space.h
+$(OBJDIR)/player.o: $(SRCDIR)/player.c $(INCDIR)/player.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/character.o: $(SRCDIR)/character.c $(INCDIR)/character.h $(INCDIR)/types.h 
@@ -60,6 +60,7 @@ $(OBJDIR)/set.o: $(SRCDIR)/set.c $(INCDIR)/set.h $(INCDIR)/types.h
 
 $(OBJDIR)/inventory.o: $(SRCDIR)/inventory.c $(INCDIR)/inventory.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
+
 
 $(OBJDIR)/link.o: $(SRCDIR)/link.c $(INCDIR)/link.h $(INCDIR)/types.h
 	gcc $(INC) $(CLAGS) -c $< -o $@
@@ -77,9 +78,12 @@ $(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory_test.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
 
 $(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
   gcc $(INC) $(CFLAGS) -c $< -o $@
+
 
 	
 ###################################################### TEST EXECUTABLES ######################################################
@@ -100,7 +104,6 @@ inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
 
-
 #Additional commands
 .PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run
 
@@ -108,8 +111,9 @@ link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 	gcc -o $@ $^
 
 
+
 #Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run link_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run
 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE)
@@ -134,3 +138,4 @@ inventory_test_run:
 
 link_test_run:
 	./link_test
+

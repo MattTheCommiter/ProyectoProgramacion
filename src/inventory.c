@@ -1,7 +1,7 @@
 /**
- * @brief It implements the space module
+ * @brief It implements the inventory module
  *
- * @file space.c
+ * @file inventory.c
  * @author PPROG - Equipo 2101_D - AGL
  * @version 2.0.7
  * @date 27-01-2025
