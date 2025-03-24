@@ -277,7 +277,6 @@ Status gameReader_load_players(Game *game, char *filename)
       toks = strtok(NULL, "|\r\n");
       hp = atoi(toks);
       toks = strtok(NULL, "|\n\r");
-      /*Inventory size es un long??*/
       inventory_size = atoi(toks);
 
 /*
@@ -299,7 +298,7 @@ Status gameReader_load_players(Game *game, char *filename)
         space_set_discovered(game_get_space(game, spaceId), TRUE);
         player_set_health(player, hp);
         /*BEGIN CODE OF PLAYER_SET_INVENTORYSIZE*/
-        /*BEGIN CODE OF GAME_ADD_PLAYER tambien temporal*/
+        /*BEGIN CODE OF GAME_ADD_PLAYER temporal*/
         game_set_player(game, player);
       }
     }
