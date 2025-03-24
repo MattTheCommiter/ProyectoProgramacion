@@ -621,6 +621,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     sprintf(str, "  Message: %s", game_get_message(game));
     screen_area_puts(ge->descript, str);
   }
+  /*Printing the description of the game, given after the command 'Inspect'*/
+  if(command_get_code(game_get_last_command(game)) == INSPECT)
+  {
+    sprintf(str, "Object description: %s", game_get_description(game));
+    screen_area_puts(ge->descript, str);
+  }
 
   /* Paint in the banner area */
   screen_area_puts(ge->banner, "    The anthill game ");

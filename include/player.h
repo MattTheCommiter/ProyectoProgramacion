@@ -125,4 +125,21 @@ Status player_set_health(Player *p, int hp);
  * @return int the health
  */
 int player_get_health(Player *p);
+
+/**
+ * @brief sets the graphic description of a player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @param gdesc a pointer to char, the string that contais the graphic description
+ * @return Status OK of ERROR
+ */
+Status player_set_gdesc(Player *player, char *gdesc);
+
+/**
+ * @brief gets the graphic description of a player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @return char* a pointer to the string of the gdesc
+ */
+char *player_get_gdesc(Player *player);
 #endif

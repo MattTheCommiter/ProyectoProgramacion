@@ -39,4 +39,24 @@ Status gameReader_load_spaces(Game *game, char *filename);
  */
 Status gameReader_load_objects(Game *game, char *filename);
 
+/**
+ * @brief Creates the players given the data file from a specific format
+ * @date 24-03-2025
+ * @author Álvaro Inigo
+ * @param game a pointer to game
+ * @param filename the name of the filename
+ * @return Status OK of ERROR
+ */
+Status gameReader_load_players(Game *game, char *filename);
+
+/**
+ * @brief Creates the characters given the data file from a specific format
+ * @date 24-03-2025
+ * @author Álvaro Inigo
+ * @param game a pointer to game
+ * @param filename the name of the filename
+ * @return Status OK of ERROR
+ */
+Status gameReader_load_characters(Game *game, char *filename);
+
 #endif

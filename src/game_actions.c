@@ -110,6 +110,14 @@ void game_actions_chat(Game *game);
  * @param game a pointer to the game
  */
 void game_actions_attack(Game *game);
+
+/**
+ * @brief The command that allows the player to inspect an object
+ * @date 25-02-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ */
+void game_actions_inspect(Game *game, char *arg);
 /**
    Game actions implementation
 */
@@ -158,7 +166,9 @@ Status game_actions_update(Game *game, Command *command)
   case ATTACK:
     game_actions_attack(game);
     break;
-
+  case INSPECT:
+    game_actions_inspect(game, command_get_argument(command));
+    break;
   default:
     break;
   }
@@ -410,5 +420,32 @@ void game_actions_attack(Game *game)
     character_set_health(cha, character_get_health(cha) - 1);
     game_set_last_command_success(game, OK);
   }
+  return;
+}
+
+
+void game_actions_inspect(Game *game, char *arg){
+  Id objectId = NO_ID;
+  Space *space = NULL;
+  if(!game || !arg)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  objectId = game_get_objectId_from_name(game, arg);
+  if(objectId == NO_ID)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  space = game_get_space(game, game_get_player_location(game));
+  if(space_object_belongs(space ,objectId) == FALSE)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  
+  game_set_description(game, object_get_description(game_get_object(game, objectId)));
+  game_set_last_command_success(game, OK);
   return;
 }

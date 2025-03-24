@@ -28,6 +28,7 @@ struct _Game
   Status command_success;                /*!<Status that stablishes wheter the command was successful*/
   Bool finished;                         /*!<Boolean that establishes whether the game has ended or not*/
   char message[MAX_MESSAGE];             /*!<String that has the message of the character showed in the game*/
+  char description[MAX_MESSAGE];         /*!<String that has the description of an object inspected in the game*/
 };
 /**
    Private functions
@@ -63,18 +64,18 @@ Status game_create(Game **game)
   (*game)->n_spaces = 0;
   (*game)->n_characters = 0;
   (*game)->n_objects = 0;
-  (*game)->player = player_create(ANT);
   (*game)->n_objects = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
   (*game)->command_success = OK;
+  (*game)->message[0] = '\0';
+  (*game)->description[0] = '\0';
 
   return OK;
 }
 
 Status game_create_from_file(Game **game, char *filename)
 {
-  Character *spider = NULL, *ant_friend = NULL;
 
   if (game_create(game) == ERROR)
   {
@@ -89,28 +90,14 @@ Status game_create_from_file(Game **game, char *filename)
   {
     return ERROR;
   }
-
-  /* The player is located in the first space */
-  game_set_player_location((*game), game_get_space_id_at((*game), 0));
-  space_set_discovered(game_get_space((*game), game_get_space_id_at((*game), 0)), TRUE);
-
-  /*The characters are created and located*/
-
-  if ((spider = character_spider_create()) == NULL)
+  if(gameReader_load_players((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  (*game)->characters[0] = spider;
-  space_set_character(game_get_space((*game), SPIDER_LOCATION), SPIDER);
-  if ((ant_friend = character_ant_friend_create()) == NULL)
+  if(gameReader_load_characters((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  (*game)->characters[1] = ant_friend;
-  space_set_character(game_get_space((*game), ANT_FRIEND_LOCATION), ANT_FRIEND);
-  (*game)->n_characters = 2;
-
-  /*End of the creation of the spider and ant*/
 
   return OK;
 }
@@ -453,4 +440,35 @@ Status game_get_last_command_success(Game *game)
     return ERROR;
   }
   return game->command_success;
+}
+
+Status game_set_description(Game *game, char *desc)
+{
+
+  if(!game || !desc){
+    return ERROR;
+  }
+  strcpy(game->description, desc);
+  return OK;
+}
+char *game_get_description(Game *game)
+{
+  if(!game)
+  {
+    return NULL;
+  }
+  return game->description;
+}
+
+/*Funcion temporal, hasta que cambiemos player por un array de jugadores
+necesaria por ahora para el modulo de game reader
+*/
+
+Status game_set_player(Game *game, Player *player){
+  if(!game || !player)
+  {
+    return ERROR;
+  }
+  game->player = player;
+  return OK;
 }

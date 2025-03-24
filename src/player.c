@@ -26,6 +26,7 @@ struct _Player
   Id location;              /*!<Id of the space where the player is located*/
   Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
+  char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
 };
 
 Player *player_create(Id id)
@@ -48,6 +49,7 @@ Player *player_create(Id id)
   newPlayer->location = NO_ID;
   newPlayer->object = NO_ID;
   newPlayer->health = 5;
+  newPlayer->Gdesc[0] = '\0';
 
   return newPlayer;
 }
@@ -180,4 +182,25 @@ int player_get_health(Player *p)
   if (!p)
     return NO_HP;
   return p->health;
+}
+
+Status player_set_gdesc(Player *player, char *gdesc)
+{
+  if (!player || !gdesc)
+  {
+    return ERROR;
+  }
+
+  strcpy(player->Gdesc, gdesc);
+
+  return OK;
+}
+
+char *player_get_gdesc(Player *player)
+{
+  if(!player)
+  {
+    return NULL;
+  }
+  return player->Gdesc;
 }

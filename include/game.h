@@ -381,9 +381,41 @@ Status game_set_last_command_success(Game *game, Status success);
 /**
  * @brief Returns the Status of the last command called in the game.
  * @date 09/03/25
- *@author Alvaro Inigo
+ * @author Alvaro Inigo
  * @param game a pointer to the game
  * @return Status OK or ERROR.
  */
 Status game_get_last_command_success(Game *game);
+
+/**
+ * @brief sets the description of an object in the game
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status OK or ERROR.
+ */
+Status game_set_description(Game *game, char *desc);
+/**
+ * @brief Returns the description of an object in the game
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return char* the string that contains the description
+ */
+char *game_get_description(Game *game);
+
+/*Funcion temporal, hasta que cambiemos player por un array de jugadores
+necesaria por ahora para el modulo de game reader
+*/
+
+/**
+ * @brief sets the player of the game.
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param player a pointer to the new player
+ * @return Status either OK or ERROR
+ */
+Status game_set_player(Game *game, Player *player);
+
+
 #endif
