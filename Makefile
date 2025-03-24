@@ -14,7 +14,6 @@ all: juego_hormiga
 #make tests - compile every test
 tests: character_test set_test space_test link_test inventory_test
 
-
 #make general - compile both game and tests
 general: $(EXE)
 
@@ -80,7 +79,6 @@ $(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types
 $(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory_test.h $(INCDIR)/test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-
 $(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
   gcc $(INC) $(CFLAGS) -c $< -o $@
 
@@ -102,7 +100,6 @@ space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 #Inventory test related
 inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
-
 
 #Additional commands
 .PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run

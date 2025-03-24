@@ -2,13 +2,13 @@
  * @brief It implements the game update through user actions
  *
  * @file game.c
- * @author Matteo Artuñedo
+ * @author Matteo Artuñedo, AGL (modifications for updating Player to include a backpack)
  * @version 0.1
- * @date 10-02-2025
+ * @date 22-03-2025
  * @copyright GNU Public License
  */
 
-#include "game_actions.h"
+#include "../include/game_actions.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,7 +62,7 @@ void game_actions_back(Game *game);
  * @brief takes the object in the space
  *
  * @date 10-02-2025
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, AGL (modifications to update to player's backpack)
  *
  * @param game a double pointer to the structure with the game's main information
  * @param arg the name of the object taken.
@@ -73,11 +73,11 @@ void game_actions_take(Game *game, char *arg);
  * @brief drops the object in the space
  *
  * @date 10-02-2025
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, AGL (modifications to update to player's backpack)
  *
  * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_drop(Game *game);
+void game_actions_drop(Game *game, char *arg);
 
 /**
  * @brief Moves the player to the space on its left
@@ -147,7 +147,7 @@ Status game_actions_update(Game *game, Command *command)
     game_actions_chat(game);
     break;
   case DROP:
-    game_actions_drop(game);
+    game_actions_drop(game, command_get_argument(command));
     break;
   case LEFT:
     game_actions_left(game);
@@ -194,7 +194,6 @@ void game_actions_next(Game *game)
   if (current_id != NO_ID)
   {
     game_set_player_location(game, current_id);
-    space_set_discovered(game_get_space(game, current_id), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
@@ -219,7 +218,6 @@ void game_actions_back(Game *game)
   if (current_id != NO_ID)
   {
     game_set_player_location(game, current_id);
-    space_set_discovered(game_get_space(game, current_id), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
@@ -227,31 +225,25 @@ void game_actions_back(Game *game)
   return;
 }
 
-void game_actions_take(Game *game, char *arg)
-{
+void game_actions_take(Game *game, char *arg){
   Id objectId = NO_ID;
   int i;
   Bool found = FALSE;
 
-  /*If the pointers are NULL or the player already has an object, nothing happens*/
-  if (!game || player_get_object(game_get_player(game)) != NO_ID || arg == NO_ARG)
-  {
+  /*If the arguments (pointers) are NULL or the bacpack of the player is full, nothing happens*/
+  if (!game || arg == NO_ARG || player_backpack_is_full(game_get_player(game))){
     game_set_last_command_success(game, ERROR);
     return;
   }
 
-  /*first, we find the object with the name "arg" */
-
-  for (i = 0; i < game_get_n_objects(game) && found == FALSE; i++)
-  {
-    if (strcasecmp(arg, object_get_name(game_get_object_in_pos(game, i))) == 0)
-    {
+  /*Find the object with the specified name "arg" in the game */
+  for (i = 0; i < game_get_n_objects(game) && found == FALSE; i++){
+    if (strcasecmp(arg, object_get_name(game_get_object_in_pos(game, i))) == 0){
       found = TRUE;
       i--;
     }
-  }
-  if (found == FALSE)
-  {
+  }  
+  if (found == FALSE){
     game_set_last_command_success(game, ERROR);
     return;
   }
@@ -259,39 +251,69 @@ void game_actions_take(Game *game, char *arg)
   /*Now, that we have found the object with the name, we get its Id*/
   objectId = game_get_object_id_at(game, i);
 
-  if (game_get_object_location(game, objectId) == NO_ID)
-  {
+  if (game_get_object_location(game, objectId) == NO_ID){
     game_set_last_command_success(game, ERROR);
     return;
   }
+
   /*We check that the player and the object are in the same space*/
-  if (game_get_player_location(game) == game_get_object_location(game, objectId))
-  { /*We change the id of the object that the player is carrying*/
-    player_set_object(game_get_player(game), objectId);
-    /*We change the objectId of the space where the object was located to NO_ID*/
-    space_delete_object(game_get_space(game, game_get_player_location(game)), objectId);
-    game_set_last_command_success(game, OK);
+  if (game_get_player_location(game) == game_get_object_location(game, objectId)){
+    /*We add the object to the player's backpack*/
+    if (player_add_object_to_backpack(game_get_player(game), objectId) == OK) {
+      /* We change the objectId of the space where the object was located to NO_ID */
+      space_delete_object(game_get_space(game, game_get_player_location(game)), objectId);
+      game_set_last_command_success(game, OK);
+    } else  {
+      game_set_last_command_success(game, ERROR);
+    }
     return;
   }
   game_set_last_command_success(game, ERROR);
   return;
 }
 
-void game_actions_drop(Game *game)
-{
-  if (!game)
-  {
+void game_actions_drop(Game *game, char *arg){
+  Id objectId = NO_ID;
+  int i;
+  Bool found = FALSE;
+
+  /* If the arguments (pointers) are NULL, nothing happens */
+  if (!game || arg == NO_ARG){
     game_set_last_command_success(game, ERROR);
     return;
   }
-  /*We check that the player is carrying an object*/
-  if (player_get_object(game_get_player(game)) != NO_ID)
-  {
-    /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
-    space_add_objectId(game_get_space(game, game_get_player_location(game)), player_get_object(game_get_player(game)));
-    /*We change the Id of the player's object to NO_ID*/
-    player_set_object(game_get_player(game), NO_ID);
-    game_set_last_command_success(game, OK);
+
+  /* Check if the player's backpack is empty */
+  if (player_backpack_is_empty(game_get_player(game))){
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  /* Find the object with the given name in the game */
+  for (i = 0; i < player_get_num_objects_in_backpack(game_get_player(game)) && found == FALSE; i++){
+    if (strcasecmp(arg, object_get_name(game_get_object_in_pos(game, i))) == 0){
+      found = TRUE;
+      i--;
+    }
+  }
+  if (found == FALSE){
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+
+  /* Now, that we have found the object with the name, we get its Id */
+  objectId = game_get_object_id_at(game, i);
+
+  /* We check that the player is carrying the object */
+  if (player_backpack_contains(game_get_player(game), objectId)){
+    /* We add the object to the space where the player is located */
+    if (space_add_objectId(game_get_space(game, game_get_player_location(game)), objectId) == OK){
+      /* We remove the object from the player's backpack */
+      player_remove_object_from_backpack(game_get_player(game), objectId);
+      game_set_last_command_success(game, OK);
+    }else{
+      game_set_last_command_success(game, ERROR);
+    }
+
     return;
   }
   game_set_last_command_success(game, ERROR);
@@ -316,7 +338,6 @@ void game_actions_left(Game *game)
   if (nextId != NO_ID)
   {
     game_set_player_location(game, nextId);
-    space_set_discovered(game_get_space(game, nextId), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
@@ -343,7 +364,6 @@ void game_actions_right(Game *game)
   if (nextId != NO_ID)
   {
     game_set_player_location(game, nextId);
-    space_set_discovered(game_get_space(game, nextId), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
