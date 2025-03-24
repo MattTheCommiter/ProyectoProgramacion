@@ -287,9 +287,9 @@ Status gameReader_load_players(Game *game, char *filename)
 #endif
       printf("Leido: %ld|%s|%s|%ld|%d|%d|\n", id, name, gdesc, spaceId, hp, inventory_size);
       /*
-       * It creates the space with the data that has been read
+       * It creates the player with the data that has been read
        */
-      player = player_create(id); /*calls to object_create providing the id written in the file*/
+      player = player_create(id, inventory_size); /*calls to player_create providing the id written in the file*/
       if (player != NULL)
       { /*Sets the information related to the object and adds it to the game*/
         player_set_name(player, name);
@@ -297,7 +297,6 @@ Status gameReader_load_players(Game *game, char *filename)
         player_set_location(player, spaceId);
         space_set_discovered(game_get_space(game, spaceId), TRUE);
         player_set_health(player, hp);
-        /*BEGIN CODE OF PLAYER_SET_INVENTORYSIZE*/
         /*BEGIN CODE OF GAME_ADD_PLAYER temporal*/
         game_set_player(game, player);
       }
@@ -372,11 +371,11 @@ Status gameReader_load_characters(Game *game, char *filename)
 #endif
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%s|\n", id, name, gdesc, spaceId, hp, friendliness, message);
       /*
-       * It creates the space with the data that has been read
+       * It creates the character with the data that has been read
        */
-      character = character_create(id); /*calls to object_create providing the id written in the file*/
+      character = character_create(id); /*calls to character_create providing the id written in the file*/
       if (character != NULL)
-      { /*Sets the information related to the object and adds it to the game*/
+      { /*Sets the information related to the character and adds it to the game*/
         character_set_name(character, name);
         character_set_gdesc(character, gdesc);
         space_set_character(game_get_space(game, spaceId), id);

@@ -32,7 +32,7 @@ struct _Player
 };
 
 /**This function creates a new player with the given ID and initializes its fields. */
-Player *player_create(Id id){
+Player *player_create(Id id, int inventory_size){
   Player *newPlayer = NULL;
 
   /* Error control */
@@ -48,7 +48,7 @@ Player *player_create(Id id){
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->backpack = inventory_create(MAX_BACKPACK_CAPACITY); /* Initialize backpack with BACKPACK_CAPACITY objects */
+  newPlayer->backpack = inventory_create(inventory_size); /* Initialize backpack with BACKPACK_CAPACITY objects */
   newPlayer->health = 5;
   newPlayer->Gdesc[0] = '\0';
 

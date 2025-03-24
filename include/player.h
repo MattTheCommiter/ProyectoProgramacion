@@ -23,9 +23,10 @@ typedef struct _Player Player;
  * @author Matteo Artunedo
  *
  * @param id the identification number for the new player
+ * @param int the max number of items the player can have in its inventory
  * @return a new player, initialized
  */
-Player *player_create(Id id);
+Player *player_create(Id id,  int inventory_size);
 
 /**
  * @brief It destroys a player, freeing the allocated memory
