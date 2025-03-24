@@ -60,6 +60,7 @@ $(OBJDIR)/set.o: $(SRCDIR)/set.c $(INCDIR)/set.h $(INCDIR)/types.h
 $(OBJDIR)/inventory.o: $(SRCDIR)/inventory.c $(INCDIR)/inventory.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+
 $(OBJDIR)/link.o: $(SRCDIR)/link.c $(INCDIR)/link.h $(INCDIR)/types.h
 	gcc $(INC) $(CLAGS) -c $< -o $@
 
@@ -80,6 +81,7 @@ $(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(I
 
 $(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
   gcc $(INC) $(CFLAGS) -c $< -o $@
+
 
 	
 ###################################################### TEST EXECUTABLES ######################################################
@@ -104,6 +106,7 @@ inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
 	gcc -o $@ $^
+
 
 
 #Additional commands
@@ -132,3 +135,4 @@ inventory_test_run:
 
 link_test_run:
 	./link_test
+
