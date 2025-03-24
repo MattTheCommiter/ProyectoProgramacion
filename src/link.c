@@ -158,7 +158,7 @@ void link_print(Link *l) {
         fprintf(stdout, "-->Link does not exist.\n");
         return; /* early return */
     } else {
-        fprintf(stdout, "-->Link information - %s - (%p):\n", l->name, l);
+        fprintf(stdout, "-->Link information - %s - (%p):\n", l->name, (void *)l);
     }
 
     fprintf(stdout, " --->Link id: %ld\n", l->link_id);                   /* print link id*/

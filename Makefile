@@ -6,13 +6,14 @@ INCDIR=./include
 DOCDIR=./doc
 INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
-EXE=juego_hormiga tests
+TESTS=character_test set_test space_test link_test inventory_test
+EXE=juego_hormiga $(TESTS)
 
 #make - compile game 
 all: juego_hormiga
 
 #make tests - compile every test
-tests: character_test set_test space_test link_test inventory_test
+tests: $(TESTS)
 
 #make general - compile both game and tests
 general: $(EXE)
@@ -101,16 +102,13 @@ space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
-#Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run
-
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
 	gcc -o $@ $^
 
 
 
 #Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run
 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE)
