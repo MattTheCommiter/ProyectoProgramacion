@@ -62,7 +62,7 @@ $(OBJDIR)/inventory.o: $(SRCDIR)/inventory.c $(INCDIR)/inventory.h $(INCDIR)/typ
 
 
 $(OBJDIR)/link.o: $(SRCDIR)/link.c $(INCDIR)/link.h $(INCDIR)/types.h
-	gcc $(INC) $(CLAGS) -c $< -o $@
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
 
@@ -80,7 +80,7 @@ $(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(I
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
-  gcc $(INC) $(CFLAGS) -c $< -o $@
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
 	

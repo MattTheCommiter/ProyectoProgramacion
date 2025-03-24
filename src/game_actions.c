@@ -194,6 +194,7 @@ void game_actions_next(Game *game)
   if (current_id != NO_ID)
   {
     game_set_player_location(game, current_id);
+    space_set_discovered(game_get_space(game, current_id), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
@@ -218,6 +219,7 @@ void game_actions_back(Game *game)
   if (current_id != NO_ID)
   {
     game_set_player_location(game, current_id);
+    space_set_discovered(game_get_space(game, current_id), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
@@ -338,6 +340,7 @@ void game_actions_left(Game *game)
   if (nextId != NO_ID)
   {
     game_set_player_location(game, nextId);
+    space_set_discovered(game_get_space(game, nextId), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
@@ -364,6 +367,7 @@ void game_actions_right(Game *game)
   if (nextId != NO_ID)
   {
     game_set_player_location(game, nextId);
+    space_set_discovered(game_get_space(game, nextId), TRUE);
     game_set_last_command_success(game, OK);
     return;
   }
