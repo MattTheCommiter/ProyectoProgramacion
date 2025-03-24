@@ -201,7 +201,7 @@ char **create_space_square(Game *game, Id square_id)
   else
   {
     /*Damos un valor a player según si el jugador está en el espacio o no*/
-    if (game_get_player_location(game) == square_id)
+    if (game_get_current_player_location(game) == square_id)
     {
       player = ant_str;
     }
@@ -495,7 +495,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
-  if ((id_act = game_get_player_location(game)) != NO_ID)
+  if ((id_act = game_get_current_player_location(game)) != NO_ID)
   {
     id_north = space_get_north(game_get_space(game, id_act));
     id_south = space_get_south(game_get_space(game, id_act));
@@ -601,7 +601,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
   /*We print the player, its location , health and then the object in the inventory*/
 
-  sprintf(str, "Player : %d (%d)", (int)game_get_player_location(game), player_get_health(game_get_player(game)));
+  sprintf(str, "Player : %d (%d)", (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
   screen_area_puts(ge->descript, str);
@@ -647,7 +647,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->feedback, str);
 
   /*Print a message if the player dies and the game ends*/
-  if (player_get_health(game_get_player(game)) == 0)
+  if (player_get_health(game_get_current_player(game)) == 0)
   {
     sprintf(str, "Has muerto !!");
     game_set_finished(game, TRUE);

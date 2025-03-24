@@ -19,7 +19,8 @@ struct _Game
 {
   Object *objects[MAX_OBJECTS];          /*!<Pointer array to the objects that are present in the game*/
   int n_objects;                         /*!<Number of objects in the game*/
-  Player *player;                        /*!<Pointer to the player that is present in the game*/
+  Player *players[N_PLAYERS];            /*Array of the different players in the game*/
+  int turn;                              /*Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];             /*!<Array of Spaces*/
   int n_spaces;                          /*!<Number of spaces in the game*/
   Character *characters[MAX_CHARACTERS]; /*!<Number of spaces in the game*/
@@ -63,7 +64,10 @@ Status game_create(Game **game)
   (*game)->n_spaces = 0;
   (*game)->n_characters = 0;
   (*game)->n_objects = 0;
-  (*game)->player = player_create(ANT);
+  for(i=0;i<N_PLAYERS;i++){
+    (*game)->players[i] = player_create(ANT1 + i);
+  }
+  (*game)->turn = 0;
   (*game)->n_objects = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
@@ -75,7 +79,7 @@ Status game_create(Game **game)
 Status game_create_from_file(Game **game, char *filename)
 {
   Character *spider = NULL, *ant_friend = NULL;
-
+  int i;
   if (game_create(game) == ERROR)
   {
     return ERROR;
@@ -90,8 +94,11 @@ Status game_create_from_file(Game **game, char *filename)
     return ERROR;
   }
 
-  /* The player is located in the first space */
-  game_set_player_location((*game), game_get_space_id_at((*game), 0));
+  /* The players are located in the first space */
+  for(i=0;i<N_PLAYERS;i++){
+    game_set_current_player_location((*game), game_get_space_id_at((*game), 0));
+    (*game)->turn = ((*game)->turn + 1) % N_PLAYERS;
+  }
   space_set_discovered(game_get_space((*game), game_get_space_id_at((*game), 0)), TRUE);
 
   /*The characters are created and located*/
@@ -136,8 +143,11 @@ Status game_destroy(Game *game)
     if (game->characters[i])
       character_destroy(game->characters[i]);
   }
-  if (game->player)
-    player_destroy(game->player);
+  for(i = 0;i < N_PLAYERS; i++){
+    if(game->players[i]){
+      player_destroy(game->players[i]);
+    }
+  }
   if (game->last_cmd)
     command_destroy(game->last_cmd);
 
@@ -166,18 +176,18 @@ Space *game_get_space(Game *game, Id id)
   return NULL;
 }
 
-Id game_get_player_location(Game *game)
+Id game_get_current_player_location(Game *game)
 {
-  return player_get_location(game->player);
+  return player_get_location(game->players[game->turn]);
 }
 
-Status game_set_player_location(Game *game, Id id)
+Status game_set_current_player_location(Game *game, Id id)
 {
   if (id == NO_ID)
   {
     return ERROR;
   }
-  if (!player_set_location(game->player, id))
+  if (!player_set_location(game->players[game->turn], id))
     return ERROR;
 
   return OK;
@@ -252,14 +262,17 @@ void game_print(Game *game)
   {
     printf("=> Object '%s' location: %ld", object_get_name(game_get_object_in_pos(game, i)), game_get_object_location(game, object_get_id(game->objects[i])));
   }
-  printf("=> Player location: %d\n", (int)game_get_player_location(game));
+  for(i=0;i < N_PLAYERS; i++){
+    printf("=> Player location: %d\n", (int)game_get_current_player_location(game));
+    game->turn = (game ->turn + 1)%N_PLAYERS;
+  }
 }
 
-Player *game_get_player(Game *game)
+Player *game_get_current_player(Game *game)
 {
   if (!game)
     return NULL;
-  return game->player;
+  return game->players[game->turn];
 }
 
 Object *game_get_object_in_pos(Game *game, int pos)
