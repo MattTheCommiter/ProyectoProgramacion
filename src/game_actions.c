@@ -308,13 +308,13 @@ void game_actions_drop(Game *game, char *arg)
   }
 
   /* Check if the player's backpack is empty */
-  if (player_backpack_is_empty(game_get_player(game)))
+  if (player_backpack_is_empty(game_get_current_player(game)))
   {
     game_set_last_command_success(game, ERROR);
     return;
   }
   /* Find the object with the given name in the game */
-  player = game_get_player(game);
+  player = game_get_current_player(game);
   for (i = 0; i < player_get_num_objects_in_backpack(player) && found == FALSE; i++)
   {
 
@@ -331,7 +331,7 @@ void game_actions_drop(Game *game, char *arg)
     return;
   }
   /*We check that the player is carrying an object*/
-  if (player_get_object(game_get_player(game)) != NO_ID)
+  if (player_get_object(game_get_current_player(game)) != NO_ID)
   {
     /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
     space_add_objectId(game_get_space(game, game_get_current_player_location(game)), player_get_object(game_get_currentplayer(game)));
@@ -491,13 +491,13 @@ void game_actions_inspect(Game *game, char *arg)
     return;
   }
   objectId = object_get_id(object);
-  current_space = game_get_space(game, game_get_player_location(game));
+  current_space = game_get_space(game, game_get_current_player_location(game));
   if (current_space == NULL)
   {
     game_set_last_command_success(game, ERROR);
     return;
   }
-  if (space_object_belongs(current_space, objectId) == FALSE && player_backpack_contains(game_get_player(game), objectId) == FALSE)
+  if (space_object_belongs(current_space, objectId) == FALSE && player_backpack_contains(game_get_current_player(game), objectId) == FALSE)
   {
     game_set_last_command_success(game, ERROR);
     return;

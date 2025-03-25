@@ -22,7 +22,7 @@
 #define MAX_OBJECTS 10          /*!<The maximum ammount of objects present at the game*/
 #define MAX_CHARACTERS 10       /*!<The maximum ammount of characters present at the game*/
 #define MAX_MESSAGE 50          /*!<The maximum ammout of characters in the messages*/
-#define N_PLAYERS 2             /*!<The number of players that will play at the same time*/
+#define MAX_PLAYERS 4             /*!<The number of players that will play at the same time*/
 typedef struct _Game Game;
 
 /**
@@ -418,13 +418,13 @@ necesaria por ahora para el modulo de game reader
 */
 
 /**
- * @brief sets the player of the game.
+ * @brief adds a player to the game
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param player a pointer to the new player
  * @return Status either OK or ERROR
  */
-Status game_set_player(Game *game, Player *player);
+Status game_add_player(Game *game, Player *player);
 
 
 #endif

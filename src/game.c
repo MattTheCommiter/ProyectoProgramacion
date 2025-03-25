@@ -19,7 +19,8 @@ struct _Game
 {
   Object *objects[MAX_OBJECTS];          /*!<Pointer array to the objects that are present in the game*/
   int n_objects;                         /*!<Number of objects in the game*/
-  Player *players[N_PLAYERS];            /*Array of the different players in the game*/
+  Player *players[MAX_PLAYERS];          /*Array of the different players in the game*/
+  int n_players;                         /*Number of players in the game*/
   int turn;                              /*Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];             /*!<Array of Spaces*/
   int n_spaces;                          /*!<Number of spaces in the game*/
@@ -65,8 +66,8 @@ Status game_create(Game **game)
   (*game)->n_spaces = 0;
   (*game)->n_characters = 0;
   (*game)->n_objects = 0;
-  for(i=0;i<N_PLAYERS;i++){
-    (*game)->players[i] = player_create(ANT1 + i);
+  for(i=0;i<MAX_PLAYERS;i++){
+    (*game)->players[i] = NULL;
   }
   (*game)->turn = 0;
   (*game)->n_objects = 0;
@@ -128,7 +129,7 @@ Status game_destroy(Game *game)
     if (game->characters[i])
       character_destroy(game->characters[i]);
   }
-  for(i = 0;i < N_PLAYERS; i++){
+  for(i = 0;i < game->n_players; i++){
     if(game->players[i]){
       player_destroy(game->players[i]);
     }
@@ -247,9 +248,9 @@ void game_print(Game *game)
   {
     printf("=> Object '%s' location: %ld", object_get_name(game_get_object_in_pos(game, i)), game_get_object_location(game, object_get_id(game->objects[i])));
   }
-  for(i=0;i < N_PLAYERS; i++){
+  for(i=0;i < game->n_players; i++){
     printf("=> Player location: %d\n", (int)game_get_current_player_location(game));
-    game->turn = (game ->turn + 1)%N_PLAYERS;
+    game->turn = (game ->turn + 1)%(game->n_players);
   }
 }
 
@@ -493,11 +494,14 @@ char *game_get_description(Game *game)
 necesaria por ahora para el modulo de game reader
 */
 
-Status game_set_player(Game *game, Player *player){
+Status game_add_player(Game *game, Player *player){
   if(!game || !player)
   {
     return ERROR;
   }
-  game->player = player;
+
+  game->players[game->n_players] = player;
+  game->n_players++;
+  
   return OK;
 }
