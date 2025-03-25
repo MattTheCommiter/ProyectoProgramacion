@@ -82,7 +82,6 @@ Status game_create(Game **game)
 
 Status game_create_from_file(Game **game, char *filename)
 {
-  Character *spider = NULL, *ant_friend = NULL;
   if (game_create(game) == ERROR)
   {
     return ERROR;

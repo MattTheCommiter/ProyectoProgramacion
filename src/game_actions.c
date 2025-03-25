@@ -330,13 +330,12 @@ void game_actions_drop(Game *game, char *arg)
     game_set_last_command_success(game, ERROR);
     return;
   }
-  /*We check that the player is carrying an object*/
-  if (player_get_object(game_get_current_player(game)) != NO_ID)
+
+  /* We add the object to the space where the player is located */
+  if (space_add_objectId(game_get_space(game, game_get_current_player_location(game)), objectId) == OK)
   {
-    /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
-    space_add_objectId(game_get_space(game, game_get_current_player_location(game)), player_get_object(game_get_currentplayer(game)));
-    /*We change the Id of the player's object to NO_ID*/
-    player_set_object(game_get_current_player(game), NO_ID);
+    /* We remove the object from the player's backpack */
+    player_remove_object_from_backpack(game_get_current_player(game), objectId);
     game_set_last_command_success(game, OK);
   }
   else
