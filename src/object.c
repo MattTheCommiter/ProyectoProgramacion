@@ -22,8 +22,9 @@
  */
 struct _Object
 {
-    long id;                  /*!< Id number of the object, it must be unique*/
-    char name[WORD_SIZE + 1]; /*!< Name of the object*/
+    long id;                     /*!< Id number of the object, it must be unique*/
+    char name[WORD_SIZE ];       /*!< Name of the object*/
+    char description[WORD_SIZE]; /*!< The description of the object to inspect*/
 };
 
 Object *object_create(Id id)
@@ -97,4 +98,21 @@ Status object_print(Object *object)
     {
         return ERROR;
     }
+}
+
+Status object_set_description(Object *object, char *desc){
+    if(!object || !desc)
+    {
+        return ERROR;
+    }
+    strcpy(object->description, desc);
+    return OK;
+}   
+
+char *object_get_description(Object *object){
+    if(!object)
+    {
+        return NULL;
+    }
+    return object->description;
 }

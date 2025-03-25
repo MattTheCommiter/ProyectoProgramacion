@@ -221,28 +221,4 @@ void test02_character_get_message();
  */
 void test02_character_print();
 
-/**
- * @test test creating the spider character
- * @pre called spider create
- * @post not NULL returned
- */
-void test01_character_spider_create();
-/**
- * @test test creating the spider character
- * @pre called spider create
- * @post every set is correct
- */
-void test02_character_spider_create();
-/**
- * @test test creating the ant friend character
- * @pre called ant friend create
- * @post not NULL returned
- */
-void test01_character_ant_friend_create();
-/**
- * @test test creating the ant friend character
- * @pre called ant friend create
- * @post every set is correct
- */
-void test02_character_ant_frient_create();
 #endif

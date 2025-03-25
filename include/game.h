@@ -24,8 +24,7 @@
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
 #define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
-#define SPIDER_LOCATION 121         /*!<The id of the space the spider is located*/
-#define ANT_FRIEND_LOCATION 122     /*!<*The id of the space the ant friend is located*/
+
 typedef struct _Game Game;
 
 /**
@@ -306,6 +305,16 @@ Id game_get_character_id_at(Game *game, int position);
  * @return a pointer to the object
  */
 Character *game_get_character(Game *game, Id id);
+
+/**
+ * @brief returns the character of the game by a specific name
+ * @date 24-03-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param name a string that contains the name
+ * @return Character* a pointer to the character
+ */
+Character *game_get_character_from_name(Game *game, char *name);
 /**
  * @brief Gets an object's Id from its name
  * @date 03/03/25
@@ -383,7 +392,7 @@ Status game_set_last_command_success(Game *game, Status success);
 /**
  * @brief Returns the Status of the last command called in the game.
  * @date 09/03/25
- *@author Alvaro Inigo
+ * @author Alvaro Inigo
  * @param game a pointer to the game
  * @return Status OK or ERROR.
  */
@@ -429,5 +438,36 @@ Id game_get_connection(Game *game, Id current_space, Direction link_direction);
  * @return the number of links in a game, or -1 in case of error
 */
 int game_get_n_links(Game *game);
+
+/**
+ * @brief sets the description of an object in the game
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status OK or ERROR.
+ */
+Status game_set_description(Game *game, char *desc);
+/**
+ * @brief Returns the description of an object in the game
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return char* the string that contains the description
+ */
+char *game_get_description(Game *game);
+
+/*Funcion temporal, hasta que cambiemos player por un array de jugadores
+necesaria por ahora para el modulo de game reader
+*/
+
+/**
+ * @brief sets the player of the game.
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param player a pointer to the new player
+ * @return Status either OK or ERROR
+ */
+Status game_set_player(Game *game, Player *player);
+
 
 #endif

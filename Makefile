@@ -111,7 +111,7 @@ link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 .PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run
 
 clean:
-	rm -f $(OBJDIR)/*.o $(EXE)
+	rm -f $(OBJDIR)/*.o $(EXE) $(TESTS)
 
 run:
 	./juego_hormiga anthill.dat

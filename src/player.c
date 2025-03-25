@@ -22,15 +22,17 @@
  */
 struct _Player
 {
-  Id id;                              /*!< Id number of the player, it must be unique */
-  char name[WORD_SIZE + 1];           /*!< Name of the player */
-  Id location;                        /*!<Id of the space where the player is located*/
+  Id id;                    /*!< Id number of the player, it must be unique */
+  char name[WORD_SIZE + 1]; /*!< Name of the player */
+  Id location;              /*!<Id of the space where the player is located*/
+  Id object;                /*!< The Id of the object the player is carrying */
+  int health;               /*!< Hp points of the player*/
+  char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
   Inventory *backpack;                /*!< Backpack to carry multiple objects */
-  int health;                         /*!< Hp points of the player*/
 };
 
 /**This function creates a new player with the given ID and initializes its fields. */
-Player *player_create(Id id){
+Player *player_create(Id id, int inventory_size){
   Player *newPlayer = NULL;
 
   /* Error control */
@@ -46,8 +48,9 @@ Player *player_create(Id id){
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->backpack = inventory_create(MAX_BACKPACK_CAPACITY); /* Initialize backpack with BACKPACK_CAPACITY objects */
+  newPlayer->backpack = inventory_create(inventory_size); /* Initialize backpack with BACKPACK_CAPACITY objects */
   newPlayer->health = 5;
+  newPlayer->Gdesc[0] = '\0';
 
   return newPlayer;
 }
@@ -235,4 +238,33 @@ int player_get_health(Player *p){
   if (!p)
     return NO_HP;
   return p->health;
+}
+
+Status player_set_gdesc(Player *player, char *gdesc)
+{
+  if (!player || !gdesc)
+  {
+    return ERROR;
+  }
+
+  strcpy(player->Gdesc, gdesc);
+
+  return OK;
+}
+
+char *player_get_gdesc(Player *player)
+{
+  if(!player)
+  {
+    return NULL;
+  }
+  return player->Gdesc;
+}
+
+Bool player_object_is_in_backpack(Player *player, Id objectId){
+  if(!player)
+  {
+    return FALSE;
+  }
+  return inventory_contains(player->backpack, objectId);
 }
