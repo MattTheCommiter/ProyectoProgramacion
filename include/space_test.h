@@ -479,3 +479,5 @@ void test1_space_get_discovered();
  * @post Output==FALSE
  */
 void test2_space_get_discovered();
+
+#endif

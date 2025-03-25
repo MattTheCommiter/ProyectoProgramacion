@@ -6,19 +6,20 @@ INCDIR=./include
 DOCDIR=./doc
 INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
-EXE=juego_hormiga tests
+TESTS=character_test set_test space_test link_test inventory_test
+EXE=juego_hormiga $(TESTS)
 
 #make - compile game 
 all: juego_hormiga
 
 #make tests - compile every test
-tests: character_test set_test space_test link_test
+tests: $(TESTS)
 
 #make general - compile both game and tests
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego_hormiga : $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o
+juego_hormiga : $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
 	gcc -g -o $@ $^ $(CLIBS)
 
 
@@ -48,7 +49,7 @@ $(OBJDIR)/gameReader.o: $(SRCDIR)/gameReader.c $(INCDIR)/gameReader.h $(INCDIR)/
 $(OBJDIR)/object.o: $(SRCDIR)/object.c $(INCDIR)/object.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: $(SRCDIR)/player.c $(INCDIR)/player.h $(INCDIR)/types.h $(INCDIR)/space.h
+$(OBJDIR)/player.o: $(SRCDIR)/player.c $(INCDIR)/player.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/character.o: $(SRCDIR)/character.c $(INCDIR)/character.h $(INCDIR)/types.h 
@@ -57,8 +58,12 @@ $(OBJDIR)/character.o: $(SRCDIR)/character.c $(INCDIR)/character.h $(INCDIR)/typ
 $(OBJDIR)/set.o: $(SRCDIR)/set.c $(INCDIR)/set.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/inventory.o: $(SRCDIR)/inventory.c $(INCDIR)/inventory.h $(INCDIR)/types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+
 $(OBJDIR)/link.o: $(SRCDIR)/link.c $(INCDIR)/link.h $(INCDIR)/types.h
-	gcc $(INC) $(CLAGS) -c $< -o $@
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
 
@@ -72,8 +77,12 @@ $(OBJDIR)/character_test.o: $(SRCDIR)/character_test.c $(INCDIR)/character.h $(I
 $(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types.h $(INCDIR)/space_test.h $(INCDIR)/test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory_test.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
 $(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
+
 
 	
 ###################################################### TEST EXECUTABLES ######################################################
@@ -89,12 +98,17 @@ character_test: $(OBJDIR)/character_test.o $(OBJDIR)/character.o
 space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
+#Inventory test related
+inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
+	gcc -o $@ $^ 
+
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
 	gcc -o $@ $^
 
 
+
 #Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run link_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run
 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE)
@@ -114,5 +128,9 @@ space_test_run:
 set_test_run:
 	./set_test
 
+inventory_test_run:
+	./inventory_test
+
 link_test_run:
 	./link_test
+

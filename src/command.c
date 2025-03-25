@@ -18,7 +18,7 @@
 #define CMD_LENGTH 30 /*maximum length of commands written by user*/
 #define ARG_LENGTH 30 /*maximum length of object names*/
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
 /**
  * @brief Command
  *
@@ -112,16 +112,16 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP)
     {
       token = strtok(NULL, "\n");
 
       if (!token)
       {
-        return command_set_argument(command, NO_ARG);
+        command_set_argument(command, NO_ARG);
+      }else{
+        command_set_argument(command, token);
       }
-      printf("token genered : '%s'", token);
-      command_set_argument(command, token);
     }
     else
     {

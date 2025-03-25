@@ -9,10 +9,14 @@
 #s:127|Corridor7|-1|14|-1|126
 #s:14|Hole|-1|-1|-1|127|
 
-#o:1|Seed|11
-#o:2|Grain|11
-#o:3|Crumb|122
-#o:4|Leaf|11
+#o:1|Seed|11|Well, just a seed|
+#o:2|Grain|11|Well, just a grain|
+#o:3|Crumb|122|Well, just a crumb|
+#o:4|Leaf|11|Well, just a leaf|
 
 
+#p:1|ant|mO^|11|5|3|
+
+#c:2|spider|/\oo/\|121|5|0|I won't talk to you!|
+#c:3|ant friend|   ^0m|122|5|1|Hey ant friend!|
 

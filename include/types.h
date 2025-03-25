@@ -18,16 +18,7 @@
 /*The Id is neccesary for initialising the player and object*/
 typedef long Id;
 
-/**
- * @brief this enumeration is used for the id's of the player and the object
- */
-typedef enum
-{
-    ANT1 ,       /*!<Corresponds to the ID assigned to the first player*/
-    ANT2 ,       /*!<Corresponds to the ID assigned to the second player*/
-    SPIDER,     /*!<Corresponds to the ID assigned to the spider*/
-    ANT_FRIEND  /*!<Corresponds to the ID assigned to the ant friend*/
-} Member;
+
 
 /**
  * @brief assigns a 0 to FALSE and a 1 to TRUE

@@ -2,13 +2,13 @@
  * @brief It implements the game update through user actions
  *
  * @file game.c
- * @author Matteo Artuñedo
+ * @author Matteo Artuñedo, AGL (modifications for updating Player to include a backpack)
  * @version 0.1
- * @date 10-02-2025
+ * @date 22-03-2025
  * @copyright GNU Public License
  */
 
-#include "game_actions.h"
+#include "../include/game_actions.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,7 +62,7 @@ void game_actions_back(Game *game);
  * @brief takes the object in the space
  *
  * @date 10-02-2025
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, AGL (modifications to update to player's backpack)
  *
  * @param game a double pointer to the structure with the game's main information
  * @param arg the name of the object taken.
@@ -73,11 +73,11 @@ void game_actions_take(Game *game, char *arg);
  * @brief drops the object in the space
  *
  * @date 10-02-2025
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, AGL (modifications to update to player's backpack)
  *
  * @param game a double pointer to the structure with the game's main information
  */
-void game_actions_drop(Game *game);
+void game_actions_drop(Game *game, char *arg);
 
 /**
  * @brief Moves the player to the space on its left
@@ -110,6 +110,14 @@ void game_actions_chat(Game *game);
  * @param game a pointer to the game
  */
 void game_actions_attack(Game *game);
+
+/**
+ * @brief The command that allows the player to inspect an object
+ * @date 25-02-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ */
+void game_actions_inspect(Game *game, char *arg);
 /**
    Game actions implementation
 */
@@ -147,7 +155,7 @@ Status game_actions_update(Game *game, Command *command)
     game_actions_chat(game);
     break;
   case DROP:
-    game_actions_drop(game);
+    game_actions_drop(game, command_get_argument(command));
     break;
   case LEFT:
     game_actions_left(game);
@@ -158,7 +166,9 @@ Status game_actions_update(Game *game, Command *command)
   case ATTACK:
     game_actions_attack(game);
     break;
-
+  case INSPECT:
+    game_actions_inspect(game, command_get_argument(command));
+    break;
   default:
     break;
   }
@@ -233,15 +243,14 @@ void game_actions_take(Game *game, char *arg)
   int i;
   Bool found = FALSE;
 
-  /*If the pointers are NULL or the player already has an object, nothing happens*/
-  if (!game || player_get_object(game_get_current_player(game)) != NO_ID || arg == NO_ARG)
+  /*If the arguments (pointers) are NULL or the bacpack of the current player is full, nothing happens*/
+  if (!game || arg == NO_ARG || player_backpack_is_full(game_get_current_player(game)))
   {
     game_set_last_command_success(game, ERROR);
     return;
   }
 
-  /*first, we find the object with the name "arg" */
-
+  /*Find the object with the specified name "arg" in the game */
   for (i = 0; i < game_get_n_objects(game) && found == FALSE; i++)
   {
     if (strcasecmp(arg, object_get_name(game_get_object_in_pos(game, i))) == 0)
@@ -264,37 +273,76 @@ void game_actions_take(Game *game, char *arg)
     game_set_last_command_success(game, ERROR);
     return;
   }
+
   /*We check that the player and the object are in the same space*/
   if (game_get_current_player_location(game) == game_get_object_location(game, objectId))
-  { /*We change the id of the object that the player is carrying*/
-    player_set_object(game_get_current_player(game), objectId);
-    /*We change the objectId of the space where the object was located to NO_ID*/
-    space_delete_object(game_get_space(game, game_get_current_player_location(game)), objectId);
-    game_set_last_command_success(game, OK);
+  {
+    /*We add the object to the player's backpack*/
+    if (player_add_object_to_backpack(game_get_current_player(game), objectId) == OK)
+    {
+      /* We change the objectId of the space where the object was located to NO_ID */
+      space_delete_object(game_get_space(game, game_get_current_player_location(game)), objectId);
+      game_set_last_command_success(game, OK);
+    }
+    else
+    {
+      game_set_last_command_success(game, ERROR);
+    }
     return;
   }
   game_set_last_command_success(game, ERROR);
   return;
 }
 
-void game_actions_drop(Game *game)
+void game_actions_drop(Game *game, char *arg)
 {
-  if (!game)
+  Id objectId = NO_ID;
+  int i;
+  Bool found = FALSE;
+  Player *player = NULL;
+  /* If the arguments (pointers) are NULL, nothing happens */
+  if (!game || arg == NO_ARG)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+
+  /* Check if the player's backpack is empty */
+  if (player_backpack_is_empty(game_get_player(game)))
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  /* Find the object with the given name in the game */
+  player = game_get_player(game);
+  for (i = 0; i < player_get_num_objects_in_backpack(player) && found == FALSE; i++)
+  {
+
+    objectId = player_get_backpack_object_id_at(player, i);
+    if (strcasecmp(arg, object_get_name(game_get_object(game, objectId))) == 0)
+    {
+      found = TRUE;
+      i--;
+    }
+  }
+  if (found == FALSE)
   {
     game_set_last_command_success(game, ERROR);
     return;
   }
   /*We check that the player is carrying an object*/
-  if (player_get_object(game_get_current_player(game)) != NO_ID)
+  if (player_get_object(game_get_player(game)) != NO_ID)
   {
     /*We change the objectId of the space where the player is located to the Id of the object being dropped*/
-    space_add_objectId(game_get_space(game, game_get_current_player_location(game)), player_get_object(game_get_current_player(game)));
+    space_add_objectId(game_get_space(game, game_get_current_player_location(game)), player_get_object(game_get_currentplayer(game)));
     /*We change the Id of the player's object to NO_ID*/
     player_set_object(game_get_current_player(game), NO_ID);
     game_set_last_command_success(game, OK);
-    return;
   }
-  game_set_last_command_success(game, ERROR);
+  else
+  {
+    game_set_last_command_success(game, ERROR);
+  }
   return;
 }
 
@@ -410,5 +458,52 @@ void game_actions_attack(Game *game)
     character_set_health(cha, character_get_health(cha) - 1);
     game_set_last_command_success(game, OK);
   }
+  return;
+}
+
+void game_actions_inspect(Game *game, char *arg)
+{
+  Id objectId = NO_ID;
+  Space *current_space = NULL;
+  int i;
+  Object *object = NULL;
+  Bool found = FALSE;
+
+  if (!game || !arg)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  /*We find the object with tha name arg*/
+  for (i = 0; i < game_get_n_objects(game); i++)
+  {
+    object = game_get_object_in_pos(game, i);
+    if (strcasecmp(object_get_name(object), arg) == 0)
+    {
+      found = TRUE;
+      break;
+    }
+  }
+
+  if (found == FALSE)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  objectId = object_get_id(object);
+  current_space = game_get_space(game, game_get_player_location(game));
+  if (current_space == NULL)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+  if (space_object_belongs(current_space, objectId) == FALSE && player_backpack_contains(game_get_player(game), objectId) == FALSE)
+  {
+    game_set_last_command_success(game, ERROR);
+    return;
+  }
+
+  game_set_description(game, object_get_description(game_get_object(game, objectId)));
+  game_set_last_command_success(game, OK);
   return;
 }

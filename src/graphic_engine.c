@@ -512,9 +512,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
 
     /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
-    if (character_get_health(game_get_character(game, SPIDER)) == 0)
+    
+    if (character_get_health(game_get_character_from_name(game, "spider")) == 0)
     {
-      character_set_gdesc(game_get_character(game, SPIDER), "\\/xx\\/");
+      character_set_gdesc(game_get_character_from_name(game, "spider"), "\\/xx\\/");
     }
     /*fin del cambio grafico para la araña muerta*/
 
@@ -619,6 +620,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   if (command_get_code(game_get_last_command(game)) == CHAT)
   {
     sprintf(str, "  Message: %s", game_get_message(game));
+    screen_area_puts(ge->descript, str);
+  }
+  /*Printing the description of the game, given after the command 'Inspect'*/
+  if(command_get_code(game_get_last_command(game)) == INSPECT)
+  {
+    sprintf(str, "Object description:");
+    screen_area_puts(ge->descript, str);
+
+    sprintf(str, "%s", game_get_description(game));
     screen_area_puts(ge->descript, str);
   }
 
