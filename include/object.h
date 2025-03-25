@@ -74,4 +74,23 @@ Status object_set_name(Object *object, char *name);
  */
 Status object_print(Object *object);
 
+/**
+ * @brief sets the description of an object
+ * @date 2025-03-24
+ * @author Alvaro Inigo
+ * @param object a pointer to the object
+ * @param desc the string of the description
+ * @return Status OK of ERROR
+ */
+Status object_set_description(Object *object, char *desc);
+
+
+/**
+ * @brief gets the description of an object
+ * @date 2025-03-24
+ * @author Alvaro Inigo
+ * @param object a pointer to the object
+ * @return char * the description
+ */
+char *object_get_description(Object *object);
 #endif
