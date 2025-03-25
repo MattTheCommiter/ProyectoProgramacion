@@ -43,7 +43,7 @@ $(OBJDIR)/game_actions.o: $(SRCDIR)/game_actions.c $(INCDIR)/game_actions.h $(IN
 $(OBJDIR)/space.o: $(SRCDIR)/space.c $(INCDIR)/space.h $(INCDIR)/types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/gameReader.o: $(SRCDIR)/gameReader.c $(INCDIR)/gameReader.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h
+$(OBJDIR)/gameReader.o: $(SRCDIR)/gameReader.c $(INCDIR)/gameReader.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/object.o: $(SRCDIR)/object.c $(INCDIR)/object.h $(INCDIR)/types.h

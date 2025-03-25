@@ -98,6 +98,10 @@ Status game_create_from_file(Game **game, char *filename)
   {
     return ERROR;
   }
+  if(gameReader_load_links((*game), filename) == ERROR)
+  {
+    return ERROR;
+  }
 
   return OK;
 }
