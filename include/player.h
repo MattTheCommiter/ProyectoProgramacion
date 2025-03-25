@@ -23,9 +23,10 @@ typedef struct _Player Player;
  * @author Matteo Artunedo
  *
  * @param id the identification number for the new player
+ * @param int the max number of items the player can have in its inventory
  * @return a new player, initialized
  */
-Player *player_create(Id id);
+Player *player_create(Id id,  int inventory_size);
 
 /**
  * @brief It destroys a player, freeing the allocated memory
@@ -169,4 +170,31 @@ Status player_set_health(Player *p, int hp);
  * @return int the health
  */
 int player_get_health(Player *p);
+
+/**
+ * @brief sets the graphic description of a player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @param gdesc a pointer to char, the string that contais the graphic description
+ * @return Status OK of ERROR
+ */
+Status player_set_gdesc(Player *player, char *gdesc);
+
+/**
+ * @brief gets the graphic description of a player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @return char* a pointer to the string of the gdesc
+ */
+char *player_get_gdesc(Player *player);
+
+
+/**
+ * @brief tells if an object is in the players backpack
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @param objectId the id of the object 
+ * @return Bool TRUE if it belongs to the inventory or FALSE
+ */
+Bool player_object_is_in_backpack(Player *player, Id objectId);
 #endif
