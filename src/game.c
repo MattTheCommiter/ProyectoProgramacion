@@ -504,3 +504,18 @@ Status game_add_player(Game *game, Player *player){
   
   return OK;
 }
+
+void game_next_turn(Game *game){
+  game->turn= (game->turn + 1)%(game->n_players);
+}
+
+int game_get_turn(Game *game){
+  if(!game){
+    return -1;
+  }
+  return game->turn;
+}
+
+int game_get_n_players(Game *game){
+  return game->n_players;
+}

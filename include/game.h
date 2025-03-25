@@ -427,4 +427,26 @@ necesaria por ahora para el modulo de game reader
 Status game_add_player(Game *game, Player *player);
 
 
+/**
+ * @brief Increments the turn, allowing the next player to play
+ * 
+ * @param game pointer to the game
+ */
+void game_next_turn(Game *game);
+
+/**
+ * @brief receives the current turn of the player
+ * 
+ * @param game pointer to the game
+ * @return current turn
+ */
+int game_get_turn(Game *game);
+
+/**
+ * @brief returns the number of players in the game
+ * 
+ * @param game pointer to the game
+ * @return the number of players
+ */
+int game_get_n_players(Game *game);
 #endif

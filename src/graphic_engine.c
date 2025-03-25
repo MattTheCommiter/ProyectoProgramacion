@@ -164,7 +164,7 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
 
 char **create_space_square(Game *game, Id square_id)
 {
-  char **space_square = NULL, str[255], ant_str[] = "m0^", blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
+  char **space_square = NULL, str[255], blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   Object *object_in_pos = NULL;
   Bool discovered=space_get_discovered(game_get_space(game, square_id));
@@ -203,7 +203,7 @@ char **create_space_square(Game *game, Id square_id)
     /*Damos un valor a player según si el jugador está en el espacio o no*/
     if (game_get_current_player_location(game) == square_id)
     {
-      player = ant_str;
+      player = player_get_gdesc(game_get_current_player(game));
     }
     else
     {
@@ -606,10 +606,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
   screen_area_puts(ge->descript, str);
-  for (i = 0; i < game_get_n_objects(game); i++)
+  for (i = 0; i < player_get_num_objects_in_backpack(game_get_current_player(game)); i++)
   {
-    object_name = object_get_name(game_get_object_in_pos(game, i));
-    obj_loc = game_get_object_location(game, object_get_id(game_get_object_in_pos(game, i)));
+    object_name = object_get_name(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
+    obj_loc = game_get_object_location(game, (player_get_backpack_object_id_at(game_get_current_player(game), i)));
     if (obj_loc == NO_ID)
     {
       sprintf(str, "  %s", object_name);
@@ -665,6 +665,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /* Dump to the terminal */
-  screen_paint();
+  screen_paint((game_get_turn(game) % game_get_n_players(game)));
   printf("prompt:> ");
 }
