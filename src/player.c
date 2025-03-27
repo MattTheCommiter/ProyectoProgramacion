@@ -22,21 +22,19 @@
  */
 struct _Player
 {
-  Id id;                    /*!< Id number of the player, it must be unique */
-  char name[WORD_SIZE + 1]; /*!< Name of the player */
-  Id location;              /*!<Id of the space where the player is located*/
-  Id object;                /*!< The Id of the object the player is carrying */
-  int health;               /*!< Hp points of the player*/
-  char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
+  Id id;                              /*!< Id number of the player, it must be unique */
+  char name[WORD_SIZE + 1];           /*!< Name of the player */
+  Id location;                        /*!<Id of the space where the player is located*/
   Inventory *backpack;                /*!< Backpack to carry multiple objects */
+  int health;                         /*!< Hp points of the player*/
 };
 
 /**This function creates a new player with the given ID and initializes its fields. */
-Player *player_create(Id id, int inventory_size){
+Player *player_create(Id id, int backpack_capacity){
   Player *newPlayer = NULL;
 
   /* Error control */
-  if (id == NO_ID)
+  if (id == NO_ID || backpack_capacity <= 0)
     return NULL;
 
   newPlayer = (Player *)malloc(sizeof(Player));
@@ -48,9 +46,8 @@ Player *player_create(Id id, int inventory_size){
   newPlayer->id = id;
   newPlayer->name[0] = '\0';
   newPlayer->location = NO_ID;
-  newPlayer->backpack = inventory_create(inventory_size); /* Initialize backpack with BACKPACK_CAPACITY objects */
+  newPlayer->backpack = inventory_create(backpack_capacity); /* Initialize backpack with BACKPACK_CAPACITY objects */
   newPlayer->health = 5;
-  newPlayer->Gdesc[0] = '\0';
 
   return newPlayer;
 }
@@ -68,7 +65,7 @@ Status player_destroy(Player *player){
 
 /**This function sets the ID of the player */
 Status player_set_id(Player *player, Id playerId){
-  if (!player || !playerId){
+  if (!player || playerId == NO_ID){
     return ERROR;
   }
   player->id = playerId;
@@ -182,6 +179,14 @@ Bool player_backpack_contains(Player *player, Id obj_id){
   return inventory_contains(player->backpack, obj_id);
 }
 
+/** This function returns the backpack  (inventory) of a player */
+Inventory *player_get_backpack(Player *player) {
+  if (!player) {
+      return NULL;
+  }
+  return player->backpack;
+}
+
 /**This function sets the location of the player */
 Status player_set_location(Player *player, Id spaceId){
   if (!player){
@@ -240,31 +245,3 @@ int player_get_health(Player *p){
   return p->health;
 }
 
-Status player_set_gdesc(Player *player, char *gdesc)
-{
-  if (!player || !gdesc)
-  {
-    return ERROR;
-  }
-
-  strcpy(player->Gdesc, gdesc);
-
-  return OK;
-}
-
-char *player_get_gdesc(Player *player)
-{
-  if(!player)
-  {
-    return NULL;
-  }
-  return player->Gdesc;
-}
-
-Bool player_object_is_in_backpack(Player *player, Id objectId){
-  if(!player)
-  {
-    return FALSE;
-  }
-  return inventory_contains(player->backpack, objectId);
-}
