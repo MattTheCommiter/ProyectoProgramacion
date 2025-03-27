@@ -13,20 +13,20 @@
 
 #include "types.h"
 #include "space.h"
+#include "inventory.h"
 
-#define MAX_BACKPACK_CAPACITY 5
 
 typedef struct _Player Player;
 
 /**
  * @brief It creates a new player, allocating memory and initializing its members
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, AGL (modifications to include backpack)
  *
  * @param id the identification number for the new player
- * @param int the max number of items the player can have in its inventory
+ * @param backpack_capacity the capacity of the player's backpack
  * @return a new player, initialized
  */
-Player *player_create(Id id,  int inventory_size);
+Player *player_create(Id id, int backpack_capacity);
 
 /**
  * @brief It destroys a player, freeing the allocated memory
@@ -36,6 +36,15 @@ Player *player_create(Id id,  int inventory_size);
  * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status player_destroy(Player *player);
+
+/**
+ * @brief Sets the ID of the player.
+ * @author MAG, AGL (modifications)
+ * @param player A pointer to the Player structure.
+ * @param playerId The ID to be set for the player.
+ * @return Status OK if the ID is successfully set, otherwise ERROR.
+ */
+Status player_set_id(Player *player, Id playerId);
 
 /**
  * @brief It gets the id of a player
@@ -125,6 +134,12 @@ Id player_get_backpack_object_id_at(Player *player, int position);
  */
 Bool player_backpack_contains(Player *player, Id obj_id);
 
+/**
+ * @brief Returns the backpack (inventory) of a player.
+ * @author Team 2101_D, AGL
+ * @param player A pointer to the Player structure.
+ * @return The backpack of the player, or NULL if the player is NULL.*/
+Inventory *player_get_backpack(Player *player);
 
 /**
  * @brief It prints the player information
@@ -170,31 +185,4 @@ Status player_set_health(Player *p, int hp);
  * @return int the health
  */
 int player_get_health(Player *p);
-
-/**
- * @brief sets the graphic description of a player
- * @author Alvaro Inigo
- * @param player a pointer to the player
- * @param gdesc a pointer to char, the string that contais the graphic description
- * @return Status OK of ERROR
- */
-Status player_set_gdesc(Player *player, char *gdesc);
-
-/**
- * @brief gets the graphic description of a player
- * @author Alvaro Inigo
- * @param player a pointer to the player
- * @return char* a pointer to the string of the gdesc
- */
-char *player_get_gdesc(Player *player);
-
-
-/**
- * @brief tells if an object is in the players backpack
- * @author Alvaro Inigo
- * @param player a pointer to the player
- * @param objectId the id of the object 
- * @return Bool TRUE if it belongs to the inventory or FALSE
- */
-Bool player_object_is_in_backpack(Player *player, Id objectId);
 #endif
