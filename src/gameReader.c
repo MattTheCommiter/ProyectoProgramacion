@@ -286,7 +286,7 @@ Status gameReader_load_players(Game *game, char *filename)
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|\n", id, name, gdesc, spaceId, hp, inventory_size);
 #endif
-      printf("Leido: %ld|%s|%s|%ld|%d|%d|\n", id, name, gdesc, spaceId, hp, inventory_size);
+ 
       /*
        * It creates the player with the data that has been read
        */
@@ -369,7 +369,7 @@ Status gameReader_load_characters(Game *game, char *filename)
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%s|\n", id, name, gdesc, spaceId, hp, friendliness, message);
 #endif
-      printf("Leido: %ld|%s|%s|%ld|%d|%d|%s|\n", id, name, gdesc, spaceId, hp, friendliness, message);
+
       /*
        * It creates the character with the data that has been read
        */
@@ -447,7 +447,7 @@ Status gameReader_load_links(Game *game, char *filename)
 #ifdef DEBUG
       printf("Leido: %ld|%s|%ld|%ld|%d|%d|\n", id, name, idOrigin, idDest, direccion, open);
 #endif
-      printf("Leido: %ld|%s|%ld|%ld|%d|%d|\n", id, name, idOrigin, idDest, direccion, open);
+
       /*
        * It creates the link with the data that has been read
        */
@@ -459,7 +459,7 @@ Status gameReader_load_links(Game *game, char *filename)
         link_set_destination_id(link, idDest);
         link_set_direction(link, direccion);
         link_set_is_open(link, open);
-        /*Funcion de add para el link*/
+        game_add_link(game, link);
       }
     }
   }
