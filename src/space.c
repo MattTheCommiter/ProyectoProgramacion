@@ -22,10 +22,6 @@ struct _Space
 {
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
-  Id north;                 /*!< Id of the space at the north */
-  Id south;                 /*!< Id of the space at the south */
-  Id east;                  /*!< Id of the space at the east */
-  Id west;                  /*!< Id of the space at the west */
   Set *objects;             /*!< The set of objects present at the space */
   Id character;             /*!< The Id of the character present at the space */
   char **gdesc;             /*!< The graphic description of the space */
@@ -49,10 +45,6 @@ Space *space_create(Id id)
   /* Initialization of an empty space*/
   newSpace->id = id;
   newSpace->name[0] = '\0';
-  newSpace->north = NO_ID;
-  newSpace->south = NO_ID;
-  newSpace->east = NO_ID;
-  newSpace->west = NO_ID;
   newSpace->objects = set_create();
   newSpace->character = NO_ID;
   newSpace->discovered = FALSE;
@@ -125,83 +117,7 @@ const char *space_get_name(Space *space)
   return space->name;
 }
 
-/*NORTH AND SOUTH RELATED FUNCTIONS*/
-Status space_set_north(Space *space, Id id)
-{
-  if (!space)
-  {
-    return ERROR;
-  }
-  space->north = id;
-  return OK;
-}
 
-Id space_get_north(Space *space)
-{
-  if (!space)
-  {
-    return NO_ID;
-  }
-  return space->north;
-}
-
-Status space_set_south(Space *space, Id id)
-{
-  if (!space)
-  {
-    return ERROR;
-  }
-  space->south = id;
-  return OK;
-}
-
-Id space_get_south(Space *space)
-{
-  if (!space)
-  {
-    return NO_ID;
-  }
-  return space->south;
-}
-
-Status space_set_east(Space *space, Id id)
-{
-  if (!space)
-  {
-    return ERROR;
-  }
-  space->east = id;
-  return OK;
-}
-
-Id space_get_east(Space *space)
-{
-  if (!space)
-  {
-    return NO_ID;
-  }
-  return space->east;
-}
-
-Status space_set_west(Space *space, Id id)
-{
-  if (!space)
-  {
-    return ERROR;
-  }
-  space->west = id;
-  return OK;
-}
-
-Id space_get_west(Space *space)
-{
-  if (!space)
-  {
-    return NO_ID;
-  }
-  return space->west;
-}
-/*END OF NORTH AND SOUTH RELATED FUNCTIONS*/
 
 Status space_print(Space *space)
 {

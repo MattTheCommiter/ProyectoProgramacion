@@ -16,16 +16,19 @@
 #include "game.h"
 #include "player.h"
 #include "character.h"
+#include "link.h"
 
 Status gameReader_load_spaces(Game *game, char *filename)
 {
+  /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
+  /*#s:11| Entry|-1|-1|121|-1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|*/
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char **read_gdesc;
   char *toks = NULL;
   int i;
-  Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  Id id;
   Space *space = NULL;
   Status status = OK;
 
@@ -59,22 +62,17 @@ Status gameReader_load_spaces(Game *game, char *filename)
    * @brief reads the file and load each data individually.
    *
    */
+
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
     if (strncmp("#s:", line, 3) == 0)
+    /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
+  /*#s:11| Entry|-1|-1|121|-1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|*/
     {
       toks = strtok(line + 3, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
-      toks = strtok(NULL, "|");
-      north = atol(toks);
-      toks = strtok(NULL, "|");
-      east = atol(toks);
-      toks = strtok(NULL, "|");
-      south = atol(toks);
-      toks = strtok(NULL, "|");
-      west = atol(toks);
 
       /*Si hay una descripción gráfica, la leemos y la copiamos a nuetra matriz read_gdesc*/
       if ((toks = strtok(NULL, "|\n\r")) != NULL)
@@ -141,10 +139,6 @@ Status gameReader_load_spaces(Game *game, char *filename)
       if (space != NULL)
       { /*Sets the information related to the space and adds it to the game*/
         space_set_name(space, name);
-        space_set_north(space, north);
-        space_set_east(space, east);
-        space_set_south(space, south);
-        space_set_west(space, west);
         game_add_space(game, space);
         space_set_gdesc(space, read_gdesc);
       }
@@ -285,7 +279,7 @@ Status gameReader_load_players(Game *game, char *filename)
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|\n", id, name, gdesc, spaceId, hp, inventory_size);
 #endif
-      printf("Leido: %ld|%s|%s|%ld|%d|%d|\n", id, name, gdesc, spaceId, hp, inventory_size);
+ 
       /*
        * It creates the player with the data that has been read
        */
@@ -325,7 +319,7 @@ Status gameReader_load_characters(Game *game, char *filename)
   Character *character = NULL;
   Status status = OK;
   int hp = 0;
-  int friendliness = FALSE;
+  Bool friendliness = FALSE;
 
   if (!filename || !game)
   {
@@ -356,7 +350,6 @@ Status gameReader_load_characters(Game *game, char *filename)
       toks = strtok(NULL, "|\r\n");
       hp = atoi(toks);
       toks = strtok(NULL, "|\r\n");
-      /*Inventory size es un long??*/
       friendliness = atoi(toks);
       toks = strtok(NULL, "|\r");
       strcpy(message, toks);
@@ -368,7 +361,7 @@ Status gameReader_load_characters(Game *game, char *filename)
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%s|\n", id, name, gdesc, spaceId, hp, friendliness, message);
 #endif
-      printf("Leido: %ld|%s|%s|%ld|%d|%d|%s|\n", id, name, gdesc, spaceId, hp, friendliness, message);
+
       /*
        * It creates the character with the data that has been read
        */
@@ -382,6 +375,83 @@ Status gameReader_load_characters(Game *game, char *filename)
         character_set_message(character, message);
         character_set_friendly(character, friendliness);
         game_add_character(game, character);
+      }
+    }
+  }
+
+  if (ferror(file))
+  {
+    status = ERROR;
+  }
+
+  fclose(file);
+
+  return status;
+}
+
+
+Status gameReader_load_links(Game *game, char *filename)
+{
+  FILE *file = NULL;
+  Status status = OK;
+  char line[WORD_SIZE] = "";
+  char *toks = NULL;
+  Link *link= NULL;
+  Id id = NO_ID;
+  char name[WORD_SIZE] = "";
+  Id idOrigin = NO_ID, idDest = NO_ID;
+  Direction direccion = UNKNOWN_DIR;
+  Bool open = FALSE;
+
+  if (!filename || !game)
+  {
+    return ERROR;
+  }
+
+  file = fopen(filename, "r");
+  if (file == NULL)
+  {
+    return ERROR;
+  }
+  /**
+   * @brief reads the file and load each data individually.
+   *
+   */
+  while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
+  {
+    /*#l:31|Entry|11|121|1|1| Id,Nombre,Idsalida,Iddest,direccion,open*/
+    if (strncmp("#l:", line, 3) == 0)
+    {
+      toks = strtok(line + 3, "|\r\n");
+      id = atol(toks);
+      toks = strtok(NULL, "|\r\n"); 
+      strcpy(name, toks);
+      toks = strtok(NULL, "|\r\n");
+      idOrigin = atol(toks);
+      toks = strtok(NULL, "|\r\n");
+      idDest = atol(toks);
+      toks = strtok(NULL, "|\r\n");
+      direccion = atol(toks);
+      toks = strtok(NULL, "|\r\n");
+      open = atol(toks);
+
+
+#ifdef DEBUG
+      printf("Leido: %ld|%s|%ld|%ld|%d|%d|\n", id, name, idOrigin, idDest, direccion, open);
+#endif
+
+      /*
+       * It creates the link with the data that has been read
+       */
+      link = link_create(id); /*calls to link_create providing the id written in the file*/
+      if (link != NULL)
+      { /*Sets the information related to the link and adds it to the game*/
+        link_set_name(link, name);
+        link_set_origin_id(link, idOrigin);
+        link_set_destination_id(link, idDest);
+        link_set_direction(link, direccion);
+        link_set_is_open(link, open);
+        game_add_link(game, link);
       }
     }
   }
