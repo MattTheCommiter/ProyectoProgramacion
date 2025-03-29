@@ -100,6 +100,12 @@ Status game_create_from_file(Game **game, char *filename)
   {
     return ERROR;
   }
+  if(gameReader_load_links((*game), filename) == ERROR)
+  {
+    return ERROR;
+  }
+  /*IF players == 0 game_destroy game_set_finished == TRUE*/
+  
 
   return OK;
 }
@@ -250,9 +256,9 @@ void game_print(Game *game)
 
   for (i = 0; i < game->n_objects; i++)
   {
-    printf("=> Object '%s' location: %ld", object_get_name(game_get_object_in_pos(game, i)), game_get_object_location(game, object_get_id(game->objects[i])));
+    object_print(game->objects[i]);
   }
-  printf("=> Player location: %d\n", (int)game_get_player_location(game));
+  player_print(game_get_player(game));
 }
 
 Player *game_get_player(Game *game)

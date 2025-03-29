@@ -12,7 +12,7 @@
 #define GameReader_H
 #include "types.h"
 #include "game.h"
-
+#include "link.h"
 /*declaration of public functions*/
 /**
  * @brief creates a new space from the text of a file, the text must be in a specific format, separated by '|'
@@ -58,5 +58,15 @@ Status gameReader_load_players(Game *game, char *filename);
  * @return Status OK of ERROR
  */
 Status gameReader_load_characters(Game *game, char *filename);
+
+/**
+ * @brief Creates the links given the data file from a specific format
+ * @date 25-03-2025
+ * @author Álvaro Inigo
+ * @param game a pointer to game
+ * @param filename the name of the filename
+ * @return Status OK of ERROR
+ */
+Status gameReader_load_links(Game *game, char *filename);
 
 #endif

@@ -20,3 +20,23 @@
 #c:2|spider|/\oo/\|121|5|0|I won't talk to you!|
 #c:3|ant friend|   ^0m|122|5|1|Hey ant friend!|
 
+#l:1|Entry1|11|121|2|1|
+#l:2|Entry2|121|11|1|1|
+#l:3|Hall1toHall2|121|122|2|1|
+#l:4|Hall2toHall1|122|121|1|1|
+#l:5|Hall2toHall5|122|125|3|1|
+#l:6|Hall5toHall2|125|122|4|1|
+#l:7|Hall5toHall6|125|126|3|1|
+#l:8|Hall6toHall5|126|125|4|1|
+#l:9|Hall6toHall7|126|127|3|1|
+#l:10|Hall7toHall6|127|126|4|1|
+#l:11|Hall7toHole|127|14|3|1|
+#l:12|HoletoHall7|14|127|4|1|
+#l:13|HoletoPantry|14|13|2|1|
+#l:14|Hall2toHall3|122|123|2|1|
+#l:15|Hall3toHall2|123|122|1|1|
+#l:16|Hall3toHall4|123|124|2|0|
+#l:17|Hall4toHall3|124|123|1|0|
+#l:18|Hall4toPantry|124|13|2|1|
+#l:19|PantrytoHall4|13|124|1|1|
+
