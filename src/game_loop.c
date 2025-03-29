@@ -17,7 +17,7 @@
 #include "game_actions.h"
 #include "graphic_engine.h"
 
-#define TIME_BETWEEN_TURNS 0  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
+#define TIME_BETWEEN_TURNS 1  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)

@@ -42,7 +42,7 @@ void game_actions_exit(Game *game);
  * @brief moves the character to the space in the south, changing the id's accordingly
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Profesores, Matteo Artunedo (changes to incoporate link functions)
  *
  * @param game a double pointer to the structure with the game's main information
  */
@@ -52,7 +52,7 @@ void game_actions_next(Game *game);
  * @brief moves the character to the space in the north, changing the id's accordingly
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Profesores, Matteo Artunedo (changes to incoporate link functions)
  *
  * @param game a double pointer to the structure with the game's main information
  */
@@ -82,14 +82,14 @@ void game_actions_drop(Game *game, char *arg);
 /**
  * @brief Moves the player to the space on its left
  * @date 20-02-2025
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (changes to incoporate link functions)
  * @param game a pointer to the game
  */
 void game_actions_left(Game *game);
 /**
  * @brief Moves the player to the space on its right
  * @date 20-02-2025
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (changes to incoporate link functions)
  * @param game a pointer to the game
  */
 void game_actions_right(Game *game);
@@ -200,7 +200,7 @@ void game_actions_next(Game *game)
     return;
   }
 
-  current_id = space_get_south(game_get_space(game, space_id));
+  current_id = game_get_connection(game, space_id, S);
   if (current_id != NO_ID)
   {
     game_set_current_player_location(game, current_id);
@@ -225,7 +225,7 @@ void game_actions_back(Game *game)
     return;
   }
 
-  current_id = space_get_north(game_get_space(game, space_id));
+  current_id = game_get_connection(game, space_id, N);
   if (current_id != NO_ID)
   {
     game_set_current_player_location(game, current_id);
@@ -359,7 +359,7 @@ void game_actions_left(Game *game)
     game_set_last_command_success(game, ERROR);
     return;
   }
-  nextId = space_get_west(game_get_space(game, currentId));
+  nextId = game_get_connection(game, currentId, N);
   if (nextId != NO_ID)
   {
     game_set_current_player_location(game, nextId);
@@ -386,7 +386,7 @@ void game_actions_right(Game *game)
     game_set_last_command_success(game, ERROR);
     return;
   }
-  nextId = space_get_east(game_get_space(game, currentId));
+  nextId = game_get_connection(game, currentId, N);
   if (nextId != NO_ID)
   {
     game_set_current_player_location(game, nextId);
