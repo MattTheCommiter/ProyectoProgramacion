@@ -17,12 +17,15 @@
 #include "player.h"
 #include "object.h"
 #include "character.h"
+#include "link.h"
 
-#define MAX_SPACES 100          /*!<The maximum ammount of spaces that can exist in the game*/
-#define MAX_OBJECTS 10          /*!<The maximum ammount of objects present at the game*/
-#define MAX_CHARACTERS 10       /*!<The maximum ammount of characters present at the game*/
-#define MAX_MESSAGE 50          /*!<The maximum ammout of characters in the messages*/
+#define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
+#define MAX_OBJECTS 10              /*!<The maximum ammount of objects present at the game*/
+#define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
+#define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
+#define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
 #define MAX_PLAYERS 4             /*!<The number of players that will play at the same time*/
+
 typedef struct _Game Game;
 
 /**
@@ -397,6 +400,47 @@ Status game_set_last_command_success(Game *game, Status success);
 Status game_get_last_command_success(Game *game);
 
 /**
+ * @brief adds a given link to the array of links in the game structure [Time: O(n)]
+ * @author Guilherme Povedano 
+ * @date 23/03/2025
+ * @param game pointer to the game structure that will be modified 
+ * @param link pointer to the link that will be added to the game structure 
+ * @return OK if everything went well, or ERROR if the arguments aren't valid or a link already exists in that space and direction
+*/
+Status game_add_link(Game *game, Link *link);
+
+/**
+ * @brief Fetches if a link matching input parameters is open or not [Time: O(n)] 
+ * @author Guilherme Povedano
+ * @date 22/03/2025
+ * @param game pointer to the current game
+ * @param current_space origin_id of the desired link
+ * @param link_direction direction of the desired link
+ * @return Bool for link->is_open if it can be found or FALSE otherwise.
+*/
+Bool game_connection_is_open(Game *game, Id current_space, Direction link_direction);
+
+/**
+ * @brief Fetches the destination_id of a link matching input parameters [Time: O(n)]
+ * @author Guilherme Povedano
+ * @date 22/03/2025
+ * @param game pointer to the current game
+ * @param current_space origin_id of the desired link
+ * @param link_direction direction of the desired link
+ * @return the id number of the destination_id of the link if it exists or FALSE otherwise. 
+*/
+Id game_get_connection(Game *game, Id current_space, Direction link_direction);
+
+/**
+ * @brief fetches the number of links contained in the game [Time: O(1)]
+ * @author Guilherme Povedano 
+ * @date 23/03/2025
+ * @param game pointer to game structure containing the number of links
+ * @return the number of links in a game, or -1 in case of error
+*/
+int game_get_n_links(Game *game);
+
+/**
  * @brief sets the description of an object in the game
  * @date 24/03/25
  * @author Alvaro Inigo
@@ -429,14 +473,14 @@ Status game_add_player(Game *game, Player *player);
 
 /**
  * @brief Increments the turn, allowing the next player to play
- * 
+ * @author Matteo Artunedo
  * @param game pointer to the game
  */
 void game_next_turn(Game *game);
 
 /**
  * @brief receives the current turn of the player
- * 
+ * @author Matteo Artunedo
  * @param game pointer to the game
  * @return current turn
  */
@@ -444,9 +488,17 @@ int game_get_turn(Game *game);
 
 /**
  * @brief returns the number of players in the game
- * 
+ * @author Matteo Artunedo
  * @param game pointer to the game
  * @return the number of players
  */
 int game_get_n_players(Game *game);
+
+/**
+ * @brief it deletes a player from the array of players, freeing the allocated memory and reorganizing the array
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @return Status either OK or ERROR
+ */
+Status game_delete_player(Game *game);
 #endif

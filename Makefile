@@ -19,13 +19,13 @@ tests: $(TESTS)
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego_hormiga : $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
+juego_hormiga : $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o $(OBJDIR)/link.o 
 	gcc -g -o $@ $^ $(CLIBS)
 
 
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
-$(OBJDIR)/game.o: $(SRCDIR)/game.c $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/gameReader.h
+$(OBJDIR)/game.o: $(SRCDIR)/game.c $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/gameReader.h $(INCDIR)/link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/game_loop.o: $(SRCDIR)/game_loop.c $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/game_actions.h $(INCDIR)/graphic_engine.h
@@ -111,7 +111,7 @@ link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 .PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run
 
 clean:
-	rm -f $(OBJDIR)/*.o $(EXE)
+	rm -f $(OBJDIR)/*.o $(EXE) $(TESTS)
 
 run:
 	./juego_hormiga anthill.dat
