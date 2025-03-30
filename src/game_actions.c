@@ -74,14 +74,14 @@ void game_actions_drop(Game *game, char *arg);
 /**
  * @brief Moves the player to the space on its left
  * @date 20-02-2025
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (changes to incoporate link functions)
  * @param game a pointer to the game
  */
 void game_actions_left(Game *game);
 /**
  * @brief Moves the player to the space on its right
  * @date 20-02-2025
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (changes to incoporate link functions)
  * @param game a pointer to the game
  */
 void game_actions_right(Game *game);
@@ -220,8 +220,8 @@ void game_actions_take(Game *game, char *arg)
   int i;
   Bool found = FALSE;
 
-  /*If the arguments (pointers) are NULL or the bacpack of the player is full, nothing happens*/
-  if (!game || arg == NO_ARG || player_backpack_is_full(game_get_player(game)))
+  /*If the arguments (pointers) are NULL or the bacpack of the current player is full, nothing happens*/
+  if (!game || arg == NO_ARG || player_backpack_is_full(game_get_current_player(game)))
   {
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;
@@ -252,10 +252,10 @@ void game_actions_take(Game *game, char *arg)
   }
 
   /*We check that the player and the object are in the same space*/
-  if (game_get_player_location(game) == game_get_object_location(game, objectId))
+  if (game_get_current_player_location(game) == game_get_object_location(game, objectId))
   {
     /*We add the object to the player's backpack*/
-    if (player_add_object_to_backpack(game_get_player(game), objectId) == OK)
+    if (player_add_object_to_backpack(game_get_current_player(game), objectId) == OK)
     {
       /* We change the objectId of the space where the object was located to NO_ID */
       space_delete_object(game_get_space(game, game_get_player_location(game)), objectId);
@@ -280,13 +280,13 @@ void game_actions_drop(Game *game, char *arg)
   }
 
   /* Check if the player's backpack is empty */
-  if (player_backpack_is_empty(game_get_player(game)))
+  if (player_backpack_is_empty(game_get_current_player(game)))
   {
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;
   }
   /* Find the object with the given name in the game */
-  player = game_get_player(game);
+  player = game_get_current_player(game);
   for (i = 0; i < player_get_num_objects_in_backpack(player) && found == FALSE; i++)
   {
 
@@ -304,7 +304,7 @@ void game_actions_drop(Game *game, char *arg)
   }
 
   /* We add the object to the space where the player is located */
-  if (space_add_objectId(game_get_space(game, game_get_player_location(game)), objectId) == OK)
+  if (space_add_objectId(game_get_space(game, game_get_current_player_location(game)), objectId) == OK)
   {
     /* We remove the object from the player's backpack */
     player_remove_object_from_backpack(game_get_player(game), objectId);
@@ -324,7 +324,7 @@ void game_actions_chat(Game *game)
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;
   }
-  if (!character_get_friendly(game_get_character(game, space_get_character(game_get_space(game, game_get_player_location(game))))))
+  if (!character_get_friendly(game_get_character(game, space_get_character(game_get_space(game, game_get_current_player_location(game))))))
   {
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;
@@ -348,7 +348,7 @@ void game_actions_attack(Game *game)
     return;
   }
   /*first we get the character at the space*/
-  cha_Id = space_get_character(game_get_space(game, game_get_player_location(game)));
+  cha_Id = space_get_character(game_get_space(game, game_get_current_player_location(game)));
   if (cha_Id == NO_ID)
   {
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
@@ -410,13 +410,13 @@ void game_actions_inspect(Game *game, char *arg)
     return;
   }
   objectId = object_get_id(object);
-  current_space = game_get_space(game, game_get_player_location(game));
+  current_space = game_get_space(game, game_get_current_player_location(game));
   if (current_space == NULL)
   {
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;
   }
-  if (space_object_belongs(current_space, objectId) == FALSE && player_backpack_contains(game_get_player(game), objectId) == FALSE)
+  if (space_object_belongs(current_space, objectId) == FALSE && player_backpack_contains(game_get_current_player(game), objectId) == FALSE)
   {
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;

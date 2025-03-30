@@ -2,7 +2,7 @@
  * @brief It defines common types for the whole project
  *
  * @file types.h
- * @author Profesores PPROG
+ * @author Matteo Artunedo
  * @version 0.1
  * @date 12-02-2025
  * @copyright GNU Public License

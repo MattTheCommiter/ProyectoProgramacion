@@ -24,6 +24,7 @@
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
 #define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
+#define MAX_PLAYERS 4             /*!<The number of players that will play at the same time*/
 
 typedef struct _Game Game;
 
@@ -86,7 +87,7 @@ Status game_destroy(Game *game);
 Space *game_get_space(Game *game, Id id);
 
 /**
- * @brief returns the id of the player's location
+ * @brief returns the location of the player that is currently playing
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
@@ -94,10 +95,10 @@ Space *game_get_space(Game *game, Id id);
  * @param game a pointer to the structure with the game's main information
  * @return the id of the player's location
  */
-Id game_get_player_location(Game *game);
+Id game_get_current_player_location(Game *game);
 
 /**
- * @brief changes the id of the player's location to the one passed as an argument
+ * @brief changes the location of the player that is currently playing
  *
  * @date 27-01-2025
  * @author Alvaro Inigo
@@ -106,7 +107,7 @@ Id game_get_player_location(Game *game);
  * @param id the id of the new location
  * @return Status: if the function was completed succesfully
  */
-Status game_set_player_location(Game *game, Id id);
+Status game_set_current_player_location(Game *game, Id id);
 
 /**
  * @brief returns the id of the object's location
@@ -180,7 +181,7 @@ Bool game_get_finished(Game *game);
 Status game_set_finished(Game *game, Bool finished);
 
 /**
- * @brief prints the id of the player's location, the object's location and prints the information regarding all the spaces in the game
+ * @brief prints the players' location, the objects' location and prints the information regarding all the spaces in the game
  *
  * @date 27-01-2025
  * @author Profesores
@@ -189,7 +190,7 @@ Status game_set_finished(Game *game, Bool finished);
  */
 void game_print(Game *game);
 /**
- * @brief Gets the player of the game(pointer)
+ * @brief Gets a pointer to the player that is currently playing
  *
  * @date 12-02-2025
  * @author Alvaro Inigo
@@ -197,7 +198,7 @@ void game_print(Game *game);
  * @param game a pointer to the strucuture.
  * @return a pointer to the player.
  */
-Player *game_get_player(Game *game);
+Player *game_get_current_player(Game *game);
 /**
  * @brief gets the object of the game(pointer) in a determined position
  *
@@ -445,13 +446,43 @@ necesaria por ahora para el modulo de game reader
 */
 
 /**
- * @brief sets the player of the game.
+ * @brief adds a player to the game
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param player a pointer to the new player
  * @return Status either OK or ERROR
  */
-Status game_set_player(Game *game, Player *player);
+Status game_add_player(Game *game, Player *player);
 
 
+/**
+ * @brief Increments the turn, allowing the next player to play
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ */
+void game_next_turn(Game *game);
+
+/**
+ * @brief receives the current turn of the player
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @return current turn
+ */
+int game_get_turn(Game *game);
+
+/**
+ * @brief returns the number of players in the game
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @return the number of players
+ */
+int game_get_n_players(Game *game);
+
+/**
+ * @brief it deletes a player from the array of players, freeing the allocated memory and reorganizing the array
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @return Status either OK or ERROR
+ */
+Status game_delete_player(Game *game);
 #endif

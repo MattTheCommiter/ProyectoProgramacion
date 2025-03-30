@@ -122,7 +122,7 @@ const char *space_get_name(Space *space)
 Status space_print(Space *space)
 {
   int i;
-  Id idaux = NO_ID;
+  /*Id idaux = NO_ID;*/
   /* Error Control */
   if (!space)
   {
@@ -133,7 +133,7 @@ Status space_print(Space *space)
   fprintf(stdout, "--> Space (Id: %ld; Name: %s)\n", space->id, space->name);
 
   /* 2. For each direction, print its link */
-  idaux = space_get_north(space);
+  /*idaux = space_get_north(space);
   if (idaux != NO_ID)
   {
     fprintf(stdout, "---> North link: %ld.\n", idaux);
@@ -168,7 +168,7 @@ Status space_print(Space *space)
   else
   {
     fprintf(stdout, "---> No west link.\n");
-  }
+  }*/
 
   /* 3. Print if there is an object in the space or not */
   if (set_is_empty(space->objects))

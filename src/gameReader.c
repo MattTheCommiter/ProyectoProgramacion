@@ -291,8 +291,7 @@ Status gameReader_load_players(Game *game, char *filename)
         player_set_location(player, spaceId);
         space_set_discovered(game_get_space(game, spaceId), TRUE);
         player_set_health(player, hp);
-        /*BEGIN CODE OF GAME_ADD_PLAYER temporal*/
-        game_set_player(game, player);
+        game_add_player(game, player);
       }
     }
   }
