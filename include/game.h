@@ -380,23 +380,7 @@ int game_get_n_characters(Game *game);
  * @return Id the id of the space the character is located at.
  */
 Id game_get_character_location(Game *game, Id character_id);
-/**
- * @brief Sets if the last command called was succesful or not
- * @date 09/03/25
- *@author Alvaro Inigo
- * @param game pointer to the game
- * @param success Status, the new status for the game data structure.
- * @return Status ERROR or OK if everything was correct.
- */
-Status game_set_last_command_success(Game *game, Status success);
-/**
- * @brief Returns the Status of the last command called in the game.
- * @date 09/03/25
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @return Status OK or ERROR.
- */
-Status game_get_last_command_success(Game *game);
+
 
 /**
  * @brief adds a given link to the array of links in the game structure [Time: O(n)]

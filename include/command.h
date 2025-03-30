@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2       /*<!Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 12       /*<!Number of commands that are possible*/
+#define N_CMD 9       /*<!Number of commands that are possible*/
 #define MAX_CMD_ARG 20 /*<!Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*<!the pointer defined for no argument*/
 /**
@@ -34,15 +34,12 @@ typedef enum
     NO_CMD = -1, /*!<Assigs -1 to the keyword "NO_CMD", which will be used in command-related functions*/
     UNKNOWN,     /*!<Assigs 0 to the keyword "UNKNOWN", which will be used in command-related functions*/
     EXIT,        /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/
-    NEXT,        /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/
-    BACK,        /*!<Assigs 3 to the keyword "BACK", which will be used in command-related functions*/
-    DROP,        /*!<Assigs 4 to the keyword "DROP", which will be used in command-related functions*/
-    LEFT,        /*!<Assigs 5 to the keyword "LEFT", which will be used in command-related functions*/
-    RIGHT,       /*!<Assigs 6 to the keyword "RIGTH", which will be used in command-related functions*/
-    TAKE,        /*!<Assigs 7 to the keyword "TAKE", which represents taking the an object*/
-    CHAT,        /*!<Assigs 8 to the keyword "CHAT", which will be used in command-related functions*/
-    ATTACK,      /*!<Assigs 9 to the keyword "ATTACK", which will be used in command-related functions*/
-    INSPECT      /*!<Assigs 10 to the keyword "INSPECT", which will be used in command-related functions*/
+    MOVE,        /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/
+    DROP,        /*!<Assigs 3 to the keyword "DROP", which will be used in command-related functions*/
+    TAKE,        /*!<Assigs 4 to the keyword "TAKE", which represents taking the an object*/
+    CHAT,        /*!<Assigs 5 to the keyword "CHAT", which will be used in command-related functions*/
+    ATTACK,      /*!<Assigs 6 to the keyword "ATTACK", which will be used in command-related functions*/
+    INSPECT      /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
 } CommandCode;
 
 typedef struct _Command Command;
@@ -113,9 +110,28 @@ Status command_set_argument(Command *command, char *arg);
 
 /**
  * @brief gets the argument parameter of the command
- *
+ * @author Matteo Artuñedo
  * @param command pointer to the command
  * @return code with the command argument or NO_CMD if an error occurrs
  */
 char *command_get_argument(Command *command);
+
+
+/**
+ * @brief sets either the last command was successful or not.
+ * @author Alvaro Inigo
+ * @param command pointer to the command
+ * @param Status lastcmd_succes OK or ERROR
+ * @return Status, OK if everything went right or ERROR
+ */
+Status command_set_lastcmd_success(Command *command, Status lastcmd_success);
+
+
+/**
+ * @brief gets the success parameter of the command
+ * @author Alvaro Inigo
+ * @param command pointer to the command
+ * @return Status code, OK or ERROR
+ */
+Status command_get_lastcmd_success(Command *command);
 #endif

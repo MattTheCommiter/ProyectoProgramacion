@@ -27,7 +27,6 @@ struct _Game
   Link *links[MAX_LINKS];                /*!<Array of links*/
   int n_links;                           /*!<Number of links in the game*/
   Command *last_cmd;                     /*!<Pointer to the last command introduced by the user*/
-  Status command_success;                /*!<Status that stablishes wheter the command was successful*/
   Bool finished;                         /*!<Boolean that establishes whether the game has ended or not*/
   char message[MAX_MESSAGE];             /*!<String that has the message of the character showed in the game*/
   char description[MAX_MESSAGE];         /*!<String that has the description of an object inspected in the game*/
@@ -69,7 +68,6 @@ Status game_create(Game **game)
   (*game)->n_links = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
-  (*game)->command_success = OK;
   (*game)->message[0] = '\0';
   (*game)->description[0] = '\0';
 
@@ -463,25 +461,6 @@ Character *game_get_character_from_name(Game *game, char *name)
   return NULL;
 }
 
-
-Status game_set_last_command_success(Game *game, Status success)
-{
-  if (!game)
-  {
-    return ERROR;
-  }
-  game->command_success = success;
-  return OK;
-}
-
-Status game_get_last_command_success(Game *game)
-{
-  if (!game)
-  {
-    return ERROR;
-  }
-  return game->command_success;
-}
 
 /*LINK RELATED FUNCTIONS*/
 

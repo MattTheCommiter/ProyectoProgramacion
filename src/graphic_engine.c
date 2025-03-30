@@ -639,12 +639,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "next or n, back or b, exit or e, take seed or ts,take grain or t g,take crumb or t c, take leaf or t l, drop or d, left or l, right or r, chat or c, attack or a");
+  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat or c, attack or a, inspect 'arg' or i 'arg'");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
   last_cmd = command_get_code(game_get_last_command(game));
-  last_cmd_succ = game_get_last_command_success(game);
+  last_cmd_succ = command_get_lastcmd_success(game_get_last_command(game));
   if (last_cmd_succ == ERROR)
   {
     sprintf(str, " %s (%s) : ERROR", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
