@@ -24,7 +24,7 @@
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
 #define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
-#define MAX_PLAYERS 4             /*!<The number of players that will play at the same time*/
+#define MAX_PLAYERS 4               /*!<The number of players that will play at the same time*/
 
 typedef struct _Game Game;
 
