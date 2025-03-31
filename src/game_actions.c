@@ -118,7 +118,7 @@ Status game_actions_update(Game *game, Command *command)
 {
   CommandCode cmd;
 
-  game_set_last_command(game, command);
+  game_interface_data_set_last_command(game, command);
 
   cmd = command_get_code(command);
 
@@ -174,7 +174,7 @@ void game_actions_move(Game *game, char *arg)
   Id next_space_id = NO_ID;
   if (!game)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   if(!strcasecmp(arg, "NORTH") || !strcasecmp(arg, "N")){
@@ -190,14 +190,14 @@ void game_actions_move(Game *game, char *arg)
     direction = W;
   }
   if(direction == UNKNOWN_DIR){
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
   current_id = game_get_current_player_location(game);
   if (current_id == NO_ID)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
@@ -206,10 +206,10 @@ void game_actions_move(Game *game, char *arg)
   {
     game_set_current_player_location(game, next_space_id);
     space_set_discovered(game_get_space(game, next_space_id), TRUE);
-    command_set_lastcmd_success(game_get_last_command(game), OK);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
     return;
   }
-  command_set_lastcmd_success(game_get_last_command(game), ERROR);
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;
 }
 
@@ -223,7 +223,7 @@ void game_actions_take(Game *game, char *arg)
   /*If the arguments (pointers) are NULL or the bacpack of the current player is full, nothing happens*/
   if (!game || arg == NO_ARG || player_backpack_is_full(game_get_current_player(game)))
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
@@ -238,7 +238,7 @@ void game_actions_take(Game *game, char *arg)
   }
   if (found == FALSE)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
@@ -247,7 +247,7 @@ void game_actions_take(Game *game, char *arg)
 
   if (game_get_object_location(game, objectId) == NO_ID)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
@@ -259,10 +259,10 @@ void game_actions_take(Game *game, char *arg)
     {
       /* We change the objectId of the space where the object was located to NO_ID */
       space_delete_object(game_get_space(game, game_get_current_player_location(game)), objectId);
-      command_set_lastcmd_success(game_get_last_command(game), OK);
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
     }
   }
-  command_set_lastcmd_success(game_get_last_command(game), ERROR);
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;
 }
 
@@ -275,14 +275,14 @@ void game_actions_drop(Game *game, char *arg)
   /* If the arguments (pointers) are NULL, nothing happens */
   if (!game || arg == NO_ARG)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
   /* Check if the player's backpack is empty */
   if (player_backpack_is_empty(game_get_current_player(game)))
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /* Find the object with the given name in the game */
@@ -299,7 +299,7 @@ void game_actions_drop(Game *game, char *arg)
   }
   if (found == FALSE)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
@@ -308,11 +308,11 @@ void game_actions_drop(Game *game, char *arg)
   {
     /* We remove the object from the player's backpack */
     player_remove_object_from_backpack(game_get_current_player(game), objectId);
-    command_set_lastcmd_success(game_get_last_command(game), OK);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   else
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   }
   return;
 }
@@ -321,17 +321,17 @@ void game_actions_chat(Game *game)
 {
   if (!game)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   if (!character_get_friendly(game_get_character(game, space_get_character(game_get_space(game, game_get_current_player_location(game))))))
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
   game_set_message(game, character_get_message(game_get_character(game, space_get_character(game_get_space(game, game_get_current_player_location(game))))));
-  command_set_lastcmd_success(game_get_last_command(game), OK);
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
 }
 
@@ -351,31 +351,31 @@ void game_actions_attack(Game *game)
   cha_Id = space_get_character(game_get_space(game, game_get_current_player_location(game)));
   if (cha_Id == NO_ID)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   cha = game_get_character(game, cha_Id);
   if (cha == NULL)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /*We check if the character is friendly or not, if its friendly , we cannot attack him*/
   if (character_get_friendly(cha) == TRUE || character_get_health(cha) == 0)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /*Depending on the number genered, character of player lose health*/
   if (num <= 4)
   {
     player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - 1);
-    command_set_lastcmd_success(game_get_last_command(game), OK);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   else
   {
     character_set_health(cha, character_get_health(cha) - 1);
-    command_set_lastcmd_success(game_get_last_command(game), OK);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   return;
 }
@@ -390,7 +390,7 @@ void game_actions_inspect(Game *game, char *arg)
 
   if (!game || !arg)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /*We find the object with tha name arg*/
@@ -406,23 +406,23 @@ void game_actions_inspect(Game *game, char *arg)
 
   if (found == FALSE)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   objectId = object_get_id(object);
   current_space = game_get_space(game, game_get_current_player_location(game));
   if (current_space == NULL)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   if (space_object_belongs(current_space, objectId) == FALSE && player_backpack_contains(game_get_current_player(game), objectId) == FALSE)
   {
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
   game_set_description(game, object_get_description(game_get_object(game, objectId)));
-  command_set_lastcmd_success(game_get_last_command(game), OK);
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
 }

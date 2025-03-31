@@ -109,6 +109,15 @@ Id horizontally_adjacent_square(Game *game, Id id_player, Direction d, int heigh
  */
 Id vertically_adjacent_square(Game *game, Id id_center, Direction d);
 
+/**
+ * @brief Paints the feedback of one command in the player command history
+ * 
+ * @param game pointer to the game
+ * @param ge pointer to the graphic engine
+ * @param pos position of thecommand (whether we want to print the last command, the second to last or the third to last)
+ */
+void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos);
+
 /*PRIVATE FUNCTIONS*/
 Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3)
 {
@@ -489,9 +498,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   char **created_line = NULL;
   char str[255], *object_name = NULL, *character_gdesc = NULL, north_arrow1 = ' ', south_arrow1 = ' ', north_arrow2 = ' ', south_arrow2 = ' ', north_arrow3 = ' ', south_arrow3 = ' ';
   int i, character_hp;
-  CommandCode last_cmd = UNKNOWN;
-  extern char *cmd_to_str[N_CMD][N_CMDT];
-  Status last_cmd_succ = OK;
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
@@ -617,13 +623,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
   /*Printing the message of the game, given after the command 'Chat'*/
-  if (command_get_code(game_get_last_command(game)) == CHAT)
+  if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == CHAT)
   {
     sprintf(str, "  Message: %s", game_get_message(game));
     screen_area_puts(ge->descript, str);
   }
   /*Printing the description of the game, given after the command 'Inspect'*/
-  if(command_get_code(game_get_last_command(game)) == INSPECT)
+  if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT)
   {
     sprintf(str, "Object description:");
     screen_area_puts(ge->descript, str);
@@ -643,18 +649,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
-  last_cmd = command_get_code(game_get_last_command(game));
-  last_cmd_succ = command_get_lastcmd_success(game_get_last_command(game));
-  if (last_cmd_succ == ERROR)
-  {
-    sprintf(str, " %s (%s) : ERROR", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
-  }
-  else
-  {
-    sprintf(str, " %s (%s) : OK", cmd_to_str[last_cmd - NO_CMD][CMDL], cmd_to_str[last_cmd - NO_CMD][CMDS]);
-  }
 
-  screen_area_puts(ge->feedback, str);
+  
+  graphic_interface_paint_feedback_for_pos(game, ge, THIRD_TO_LAST);
+  graphic_interface_paint_feedback_for_pos(game, ge, SECOND_TO_LAST);
+  graphic_interface_paint_feedback_for_pos(game, ge, LAST);
+
 
   /*Print a message if the player dies and the game ends*/
   if (player_get_health(game_get_current_player(game)) == 0)
@@ -676,4 +676,26 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /* Dump to the terminal */
   screen_paint((game_get_turn(game)));
   printf("prompt:> ");
+}
+
+void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos){
+  CommandCode cmd=NO_CMD;
+  Status cmd_succ=ERROR;
+  char str[255];
+  extern char *cmd_to_str[N_CMD][N_CMDT];
+
+  if(!game || !ge) return;
+
+  cmd = command_get_code(game_interface_data_get_cmd_in_pos(game, pos));
+  cmd_succ = command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, pos));
+  if (cmd_succ == ERROR)
+  {
+    sprintf(str, " %s (%s) : ERROR", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
+  }
+  else
+  {
+    sprintf(str, " %s (%s) : OK", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
+  }
+
+  screen_area_puts(ge->feedback, str);
 }

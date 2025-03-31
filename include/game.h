@@ -24,7 +24,17 @@
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
 #define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
-#define MAX_PLAYERS 4               /*!<The number of players that will play at the same time*/
+#define MAX_PLAYERS 8               /*!<The number of players that will play at the same time*/
+
+/**
+ * @brief describes whether we want to access to the last, the second to last or the third to last command
+ * 
+ */
+typedef enum {
+    THIRD_TO_LAST,  /*Indicates we are retreiving the third to last command the player introduced*/
+    SECOND_TO_LAST, /*Indicates we are retreiving the second to last command the player introduced*/
+    LAST            /*Indicates we are retreiving the last command the player introduced*/
+} CommandPosition;
 
 typedef struct _Game Game;
 
@@ -133,29 +143,6 @@ Id game_get_object_location(Game *game, Id objectId);
  * @return Status
  */
 Status game_set_object_location(Game *game, Id id, Id objectId);
-
-/**
- * @brief returns the last command of the game
- *
- * @date 27-01-2025
- * @author Profesores
- *
- * @param game a pointer to the structure with the game's main information
- * @return a pointer to the last command
- */
-Command *game_get_last_command(Game *game);
-
-/**
- * @brief changes the game's last_cmd parameter to a pointer to a new last_cmd
- *
- * @date 27-01-2025
- * @author Profesores
- *
- * @param game a pointer to the structure with the game's main information
- * @param command the new last_cmd
- * @return Status: if the function was completed succesfully
- */
-Status game_set_last_command(Game *game, Command *command);
 
 /**
  * @brief returns a boolean value that describes if the game has finished or not
@@ -485,4 +472,24 @@ int game_get_n_players(Game *game);
  * @return Status either OK or ERROR
  */
 Status game_delete_player(Game *game);
+
+/**
+ * @brief changes the information data type for the current player, updating the last command and moving the ones that already existed one position backwards
+ *
+ * @author Matteo Artunedo
+ *
+ * @param game a pointer to the structure with the game's main information
+ * @param command the new last_cmd
+ * @return Status: if the function was completed succesfully
+ */
+Status game_interface_data_set_last_command(Game *game, Command *last_cmd);
+
+/**
+ * @brief Returns the last, second to last or third to last command according to the position argument
+ * @author Matteo Artunedo
+ * @param game pointer to the game structure
+ * @param pos position of the command we want to get
+ * @return pointer to the desired command
+ */
+Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos);
 #endif

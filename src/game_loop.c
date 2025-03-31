@@ -17,7 +17,7 @@
 #include "game_actions.h"
 #include "graphic_engine.h"
 
-#define TIME_BETWEEN_TURNS 1  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
+#define TIME_BETWEEN_TURNS 3  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -133,7 +133,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine)
     return;
   }
 
-  last_cmd = game_get_last_command(game);
+  last_cmd = game_interface_data_get_cmd_in_pos(game, LAST);
 
   while ((command_get_code(last_cmd) != EXIT) && (game_get_finished(game) == FALSE))
   {
