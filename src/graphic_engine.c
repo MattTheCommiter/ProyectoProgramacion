@@ -674,6 +674,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /* Dump to the terminal */
-  screen_paint((game_get_turn(game) % game_get_n_players(game)));
+  screen_paint((game_get_turn(game)));
   printf("prompt:> ");
 }
