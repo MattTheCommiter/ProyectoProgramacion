@@ -342,7 +342,6 @@ void game_actions_attack(Game *game)
   int num;
   Character *cha = NULL;
   Id cha_Id = NO_ID;
-  srand(time(NULL));
   num = rand() % 10;
   if (!game)
   {
