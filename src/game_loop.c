@@ -10,11 +10,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "command.h"
 #include "game.h"
 #include "game_actions.h"
 #include "graphic_engine.h"
+
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
+
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -37,8 +41,9 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
  *
  * @param game a pointer to the structure with the game's main information
  * @param gengine a pointer to the game's graphic engine
+ * @param logfile a pointer to the log file
  */
-void game_loop_run(Game *game, Graphic_engine *gengine);
+void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file);
 
 /**
  * @brief destroys the game and the graphic engine
@@ -67,16 +72,36 @@ int main(int argc, char *argv[])
 {
   Game *game = NULL;
   Graphic_engine *gengine;
+  FILE *log_file = NULL;
 
-  if (argc < 2)
-  {
-    fprintf(stderr, "Use: %s <game_data_file>\n", argv[0]);
+
+  /*If game data file is missing, the program exits with an error.
+  If the game data file is provided but the log file is not, the code will still proceed with the game
+  If log file are also provided, logging is enabled*/
+  if (argc < 2){
+    fprintf(stderr, "Use: %s <game_data_file> <-l log_file>\n", argv[0]);
     return 1;
   }
-  if (!game_loop_init(&game, &gengine, argv[1]))
-  {
-    game_loop_run(game, gengine);
+
+  /*at least four arguments provided (the program name, game data file, -l flag, and log file name*/
+  if (argc >= 4 && strcmp(argv[2], "-l") == 0){
+    /*  open the log file for writing*/
+    log_file = fopen(argv[3], "w");
+    if (!log_file)  {
+      fprintf(stderr, "Error opening log file: %s\n", argv[3]);
+      return 1;
+    }
+  }
+
+  /* initializes the game and the graphic engine using the game data file*/
+  if (!game_loop_init(&game, &gengine, argv[1])){
+    /*runs the game loop, from user inputs and updates the game state. It also logs commands if a log file is given*/
+    game_loop_run(game, gengine, log_file);
     game_loop_cleanup(game, gengine);
+  }
+
+  if (log_file){
+    fclose(log_file);
   }
 
   return 0;
@@ -120,13 +145,16 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
  *
  * @param game structure with the game's main information
  * @param gengine pointer to the structure with the game's graphic interface information
+ * * @param logfile a pointer to the log file
  */
-void game_loop_run(Game *game, Graphic_engine *gengine)
-{
+void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
   Command *last_cmd;
+  CommandCode cmd_code;
+  char *cmd_name = NULL;
+  char *cmd_arg = NULL;
+  Status cmd_status;
 
-  if (!gengine)
-  {
+  if (!gengine){
     return;
   }
 
@@ -137,6 +165,21 @@ void game_loop_run(Game *game, Graphic_engine *gengine)
     graphic_engine_paint_game(gengine, game);
     command_get_user_input(last_cmd);
     game_actions_update(game, last_cmd);
+
+    /*If log is enabled*/
+    if (log_file){
+      cmd_code = command_get_code(last_cmd);
+      cmd_name = cmd_to_str[cmd_code][CMDL]; /*Converts the command code to a string, through the index of the array*/
+      cmd_arg = command_get_argument(last_cmd);
+      cmd_status = game_get_last_command_success(game);
+
+      /*Log the command (and the argument in some cases) and its result*/
+      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP){
+        fprintf(log_file, "%s %s: %s\n", cmd_name, cmd_arg, cmd_status == OK ? "OK" : "ERROR");
+      }else{
+        fprintf(log_file, "%s: %s\n", cmd_name, cmd_status == OK ? "OK" : "ERROR");
+      }
+    }
   }
 }
 
