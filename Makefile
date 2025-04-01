@@ -8,6 +8,9 @@ INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
 TESTS=character_test set_test space_test link_test inventory_test
 EXE=juego_hormiga $(TESTS)
+vpath %.h $(INCDIR)
+vpath %.c $(SRCDIR)
+vpath %.o $(OBJDIR)
 
 #make - compile game 
 all: juego_hormiga
@@ -25,62 +28,62 @@ juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(
 
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
-$(OBJDIR)/game.o: $(SRCDIR)/game.c $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/gameReader.h $(INCDIR)/link.h
+$(OBJDIR)/game.o: game.c game.h command.h types.h space.h player.h object.h gameReader.h link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_loop.o: $(SRCDIR)/game_loop.c $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/game_actions.h $(INCDIR)/graphic_engine.h
+$(OBJDIR)/game_loop.o: game_loop.c command.h types.h game.h space.h player.h object.h game_actions.h graphic_engine.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-$(OBJDIR)/graphic_engine.o: $(SRCDIR)/graphic_engine.c $(INCDIR)/graphic_engine.h $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/libscreen.h
+$(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h types.h space.h player.h object.h libscreen.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/command.o: $(SRCDIR)/command.c $(INCDIR)/command.h $(INCDIR)/types.h
+$(OBJDIR)/command.o: command.c command.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_actions.o: $(SRCDIR)/game_actions.c $(INCDIR)/game_actions.h $(INCDIR)/command.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h
+$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/space.o: $(SRCDIR)/space.c $(INCDIR)/space.h $(INCDIR)/types.h
+$(OBJDIR)/space.o: space.c space.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/gameReader.o: $(SRCDIR)/gameReader.c $(INCDIR)/gameReader.h $(INCDIR)/types.h $(INCDIR)/game.h $(INCDIR)/command.h $(INCDIR)/space.h $(INCDIR)/player.h $(INCDIR)/object.h $(INCDIR)/link.h
+$(OBJDIR)/gameReader.o: gameReader.c gameReader.h types.h game.h command.h space.h player.h object.h link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/object.o: $(SRCDIR)/object.c $(INCDIR)/object.h $(INCDIR)/types.h
+$(OBJDIR)/object.o: object.c object.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: $(SRCDIR)/player.c $(INCDIR)/player.h $(INCDIR)/types.h $(INCDIR)/space.h $(INCDIR)/inventory.h
+$(OBJDIR)/player.o: player.c player.h types.h space.h inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-$(OBJDIR)/character.o: $(SRCDIR)/character.c $(INCDIR)/character.h $(INCDIR)/types.h 
+$(OBJDIR)/character.o: character.c character.h types.h 
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-$(OBJDIR)/set.o: $(SRCDIR)/set.c $(INCDIR)/set.h $(INCDIR)/types.h
+$(OBJDIR)/set.o: set.c set.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/inventory.o: $(SRCDIR)/inventory.c $(INCDIR)/inventory.h $(INCDIR)/types.h
+$(OBJDIR)/inventory.o: inventory.c inventory.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
-$(OBJDIR)/link.o: $(SRCDIR)/link.c $(INCDIR)/link.h $(INCDIR)/types.h
+$(OBJDIR)/link.o: link.c link.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
 
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
-$(OBJDIR)/set_test.o: $(SRCDIR)/set_test.c $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/set_test.h $(INCDIR)/test.h
+$(OBJDIR)/set_test.o: set_test.c set.h types.h set_test.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/character_test.o: $(SRCDIR)/character_test.c $(INCDIR)/character.h $(INCDIR)/types.h $(INCDIR)/character_test.h $(INCDIR)/test.h
+$(OBJDIR)/character_test.o: character_test.c character.h types.h character_test.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/space_test.o: $(SRCDIR)/space_test.c $(INCDIR)/space.h $(INCDIR)/types.h $(INCDIR)/space_test.h $(INCDIR)/test.h
+$(OBJDIR)/space_test.o: space_test.c space.h types.h space_test.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/inventory_test.o: $(SRCDIR)/inventory_test.c $(INCDIR)/inventory.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory_test.h $(INCDIR)/test.h
+$(OBJDIR)/inventory_test.o: inventory_test.c inventory.h set.h types.h inventory_test.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/link_test.o: $(SRCDIR)/link_test.c $(INCDIR)/link_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
+$(OBJDIR)/link_test.o: link_test.c link_test.h types.h link.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
@@ -102,17 +105,39 @@ space_test: $(OBJDIR)/space_test.o $(OBJDIR)/space.o $(OBJDIR)/set.o
 inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 	gcc -o $@ $^ 
 
+#Link test related
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
 	gcc -o $@ $^
 
 
 
 #Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run
+.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run docs clean_docs
 
+##General clean target 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE) $(TESTS)
 
+## Clean docs: finds subdirectories inside ./doc and removes their files, then removes empty directories
+SUBDIRS := $(shell find ./doc -type d)
+
+clean_docs:
+	@echo "Cleaning in root..."
+	@rm -rf *.html *.js *.css *.map *.md5 *.png *.svg
+	@for dir in $(SUBDIRS); do \
+		echo "Cleaning in $$dir..."; \
+		(cd $$dir && rm -rf *.html *.js *.css *.map *.md5 *.png *.svg); \
+	done
+
+	@echo "Removing empty directories..."
+	@find ./doc -type d -empty -delete
+
+##Generate doxygen docuentation using the project's config file 
+docs: 
+	doxygen Doxyfile 
+
+
+#Various run commmands
 run:
 	./juego_hormiga anthill.dat
 
