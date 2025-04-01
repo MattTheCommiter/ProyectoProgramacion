@@ -7,16 +7,12 @@
  * @copyright Copyright (c) 2025
  *
  */
+#include "gameReader.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/* Se incluyen los archivos .h pertinentes para el funcionamiento del programa*/
-#include "gameReader.h"
-#include "game.h"
-#include "player.h"
-#include "character.h"
-#include "link.h"
+
 
 Status gameReader_load_spaces(Game *game, char *filename)
 {

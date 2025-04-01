@@ -10,8 +10,12 @@
  */
 #ifndef GameReader_H
 #define GameReader_H
+
 #include "types.h"
 #include "game.h"
+#include "player.h"
+#include "character.h"
+#include "object.h"
 #include "link.h"
 /*declaration of public functions*/
 /**

@@ -12,7 +12,9 @@
 #define PLAYER_H
 
 #include "types.h"
-#include "space.h"
+#include "set.h"
+#include "character.h" /* defines GDESCTAM macro */
+#include "inventory.h"
 
 #define MAX_BACKPACK_CAPACITY 5
 

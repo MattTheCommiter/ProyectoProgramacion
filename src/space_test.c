@@ -7,13 +7,11 @@
  * @date 17-02-2025
  * @copyright GNU Public License
  */
+#include "space_test.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "space.h"
-#include "space_test.h"
-#include "test.h"
 
 #define MAX_TESTS 61 /*!<Total number of test functions*/
 

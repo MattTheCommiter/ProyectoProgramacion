@@ -8,11 +8,11 @@
  * @copyright Copyright (c) 2025
  *
  */
+#include "character.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "character.h"
 
 /**
  * @brief definition for the struct Character

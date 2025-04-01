@@ -13,11 +13,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "command.h"
-#include "libscreen.h"
-#include "space.h"
-#include "types.h"
-#include "character.h"
 
 /**
  * @brief Constant values used for the creation of the game's graphic interface

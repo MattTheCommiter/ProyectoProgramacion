@@ -8,9 +8,7 @@
  * @copyright GNU Public License
  */
 
-#include "../include/inventory_test.h"
-#include "../include/inventory.h"
-
+#include "inventory_test.h"
 
  #include <stdio.h> 
  #include <stdlib.h> 

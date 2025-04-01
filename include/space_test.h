@@ -11,6 +11,10 @@
 #ifndef SPACE_TEST_H
 #define SPACE_TEST_H
 
+#include "space.h"
+#include "test.h"
+#include "types.h"
+
 /**
  * @test Test space creation
  * @pre Space ID

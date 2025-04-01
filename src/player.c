@@ -8,8 +8,8 @@
  * @copyright GNU Public License
  */
 
-#include "../include/player.h"
-#include "../include/inventory.h"
+#include "player.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,7 +24,7 @@ struct _Player
 {
   Id id;                    /*!< Id number of the player, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the player */
-  Id location;              /*!<Id of the space where the player is located*/
+  Id location;              /*!<Id of the   where the player is located*/
   Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
   char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/

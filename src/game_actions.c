@@ -7,13 +7,13 @@
  * @date 22-03-2025
  * @copyright GNU Public License
  */
-
+#include "game_actions.h"
 
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "game_actions.h"
+#include <strings.h>
 
 /**
    Private functions

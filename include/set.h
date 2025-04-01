@@ -11,11 +11,10 @@
  #ifndef SET_H
  #define SET_H
 
- #include <stdio.h>
- #include <stdlib.h>
- #include "types.h"
 
- #define MAX_ELEMENTS_IN_SET 30 /*<!Maximum elements that can be added to a set*/
+#include "types.h"
+
+#define MAX_ELEMENTS_IN_SET 30 /*<!Maximum elements that can be added to a set*/
 
  typedef struct _Set Set;
 /**

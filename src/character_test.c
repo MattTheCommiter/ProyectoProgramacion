@@ -6,14 +6,11 @@
  * @version 0.0
  * @date 117-03-2025
  */
+#include "character_test.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "types.h"
-#include "test.h"
-#include "character_test.h"
-#include "character.h"
 
 #define MAX_TESTS 30
 

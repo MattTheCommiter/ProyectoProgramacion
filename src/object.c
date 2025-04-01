@@ -9,11 +9,12 @@
  * @copyright Copyright (c) 2025
  *
  */
+#include "object.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "object.h"
 
 /**
  * @brief Structure where the information about the game`s object is stored

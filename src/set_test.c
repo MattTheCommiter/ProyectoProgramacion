@@ -7,13 +7,12 @@
  * @date 24-02-2025
  * @copyright GNU Public License
  */
+ #include "set_test.h"
 
  #include <stdio.h> 
  #include <stdlib.h> 
  #include <string.h> 
- #include "set.h"
- #include "set_test.h"
- #include "test.h"
+ 
  
  #define MAX_TESTS 38 /*!<Total number of test functions for the Set module*/
  

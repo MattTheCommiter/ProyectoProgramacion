@@ -12,10 +12,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+
+#include "graphic_engine.h"
+#include "game_actions.h"
 #include "command.h"
 #include "game.h"
-#include "game_actions.h"
-#include "graphic_engine.h"
 
 #define TIME_BETWEEN_TURNS 1  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
 

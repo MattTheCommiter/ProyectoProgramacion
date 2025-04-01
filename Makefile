@@ -119,19 +119,17 @@ clean:
 	rm -f $(OBJDIR)/*.o $(EXE) $(TESTS)
 
 ## Clean docs: finds subdirectories inside ./doc and removes their files, then removes empty directories
-SUBDIRS := $(shell find ./doc -type d)
-
 clean_docs:
 	@echo "Cleaning in root..."
 	@rm -rf *.html *.js *.css *.map *.md5 *.png *.svg
-	@for dir in $(SUBDIRS); do \
+	@SUBDIRS=$$(find ./doc -type d); \
+	for dir in $$SUBDIRS; do \
 		echo "Cleaning in $$dir..."; \
 		(cd $$dir && rm -rf *.html *.js *.css *.map *.md5 *.png *.svg); \
 	done
 
 	@echo "Removing empty directories..."
 	@find ./doc -type d -empty -delete
-
 ##Generate doxygen docuentation using the project's config file 
 docs: 
 	doxygen Doxyfile 

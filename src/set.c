@@ -8,7 +8,10 @@
  * @copyright GNU Public License
  */
 
- #include "../include/set.h"
+#include "set.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
  /**
   * @brief this structure will be used for the definition of sets accross the game

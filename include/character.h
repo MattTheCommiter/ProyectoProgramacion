@@ -12,6 +12,7 @@
 #define CHARACTER_H
 
 #include "types.h"
+
 #define GDESCTAM 7    /*!<Maximum size of the graphic description*/
 #define MAXHEALTH 100 /*!<Maximum health a character can have*/
 

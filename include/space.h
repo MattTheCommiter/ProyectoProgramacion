@@ -13,7 +13,6 @@
 
 #include "types.h"
 #include "set.h"
-#include "character.h"
 
 #define N_LINES_IN_GDESC 5              /*<!Number of lines in the graphic description of a space*/
 #define N_ROWS_IN_GDESC 9               /*<!Number of rows in the graphic description of a space*/

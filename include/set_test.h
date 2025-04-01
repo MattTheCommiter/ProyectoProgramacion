@@ -11,6 +11,9 @@
  #ifndef SET_TEST_H
  #define SET_TEST_H
  
+ #include "set.h"
+ #include "test.h"
+ 
  /**
  * @test Test the creation of a set
  * @pre No input parameters

@@ -11,6 +11,10 @@
 #ifndef CHARACTER_TEST_H
 #define CHARACTER_TEST_H
 
+#include "test.h"
+#include "character.h"
+#include "test.h"
+
 /**
  * @test Test character creation
  * @pre Character ID
