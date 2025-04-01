@@ -18,7 +18,7 @@
 #define CMD_LENGTH 30 /*maximum length of commands written by user*/
 #define ARG_LENGTH 30 /*maximum length of object names*/
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
 /**
  * @brief Command
  *
@@ -28,6 +28,7 @@ struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
   char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
+  Status lastcmd_Success;
 };
 
 Command *command_create()
@@ -43,6 +44,7 @@ Command *command_create()
   /* Initialization of an empty command*/
   newCommand->code = NO_CMD;
   newCommand->arg_description[0] = '\0';
+  newCommand->lastcmd_Success = OK;
   return newCommand;
 }
 
@@ -112,7 +114,7 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE)
     {
       token = strtok(NULL, "\n");
 
@@ -155,4 +157,21 @@ Status command_set_argument(Command *command, char *argument_desc)
   strcpy(command->arg_description, argument_desc);
 
   return OK;
+}
+
+Status command_set_lastcmd_success(Command *command, Status lastcmd_success){
+  if(!command)
+  {
+    return ERROR;
+  }
+  command->lastcmd_Success = lastcmd_success;
+  return OK;
+}
+
+Status command_get_lastcmd_success(Command *command){
+  if(!command)
+  {
+    return ERROR;
+  }
+  return command->lastcmd_Success;
 }

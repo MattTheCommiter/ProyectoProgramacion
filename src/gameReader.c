@@ -20,13 +20,15 @@
 
 Status gameReader_load_spaces(Game *game, char *filename)
 {
+  /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
+  /*#s:11| Entry|-1|-1|121|-1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|*/
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char **read_gdesc;
   char *toks = NULL;
   int i;
-  Id id = NO_ID, north = NO_ID, east = NO_ID, south = NO_ID, west = NO_ID;
+  Id id;
   Space *space = NULL;
   Status status = OK;
 
@@ -60,22 +62,17 @@ Status gameReader_load_spaces(Game *game, char *filename)
    * @brief reads the file and load each data individually.
    *
    */
+
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
     if (strncmp("#s:", line, 3) == 0)
+    /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
+  /*#s:11| Entry|-1|-1|121|-1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|*/
     {
       toks = strtok(line + 3, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
-      toks = strtok(NULL, "|");
-      north = atol(toks);
-      toks = strtok(NULL, "|");
-      east = atol(toks);
-      toks = strtok(NULL, "|");
-      south = atol(toks);
-      toks = strtok(NULL, "|");
-      west = atol(toks);
 
       /*Si hay una descripción gráfica, la leemos y la copiamos a nuetra matriz read_gdesc*/
       if ((toks = strtok(NULL, "|\n\r")) != NULL)
@@ -142,10 +139,6 @@ Status gameReader_load_spaces(Game *game, char *filename)
       if (space != NULL)
       { /*Sets the information related to the space and adds it to the game*/
         space_set_name(space, name);
-        space_set_north(space, north);
-        space_set_east(space, east);
-        space_set_south(space, south);
-        space_set_west(space, west);
         game_add_space(game, space);
         space_set_gdesc(space, read_gdesc);
       }
@@ -298,8 +291,7 @@ Status gameReader_load_players(Game *game, char *filename)
         player_set_location(player, spaceId);
         space_set_discovered(game_get_space(game, spaceId), TRUE);
         player_set_health(player, hp);
-        /*BEGIN CODE OF GAME_ADD_PLAYER temporal*/
-        game_set_player(game, player);
+        game_add_player(game, player);
       }
     }
   }

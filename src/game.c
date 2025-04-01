@@ -19,7 +19,9 @@ struct _Game
 {
   Object *objects[MAX_OBJECTS];          /*!<Pointer array to the objects that are present in the game*/
   int n_objects;                         /*!<Number of objects in the game*/
-  Player *player;                        /*!<Pointer to the player that is present in the game*/
+  Player *players[MAX_PLAYERS];          /*Array of the different players in the game*/
+  int n_players;                         /*Number of players in the game*/
+  int turn;                              /*Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];             /*!<Array of Spaces*/
   int n_spaces;                          /*!<Number of spaces in the game*/
   Character *characters[MAX_CHARACTERS]; /*!<Number of spaces in the game*/
@@ -27,7 +29,6 @@ struct _Game
   Link *links[MAX_LINKS];                /*!<Array of links*/
   int n_links;                           /*!<Number of links in the game*/
   Command *last_cmd;                     /*!<Pointer to the last command introduced by the user*/
-  Status command_success;                /*!<Status that stablishes wheter the command was successful*/
   Bool finished;                         /*!<Boolean that establishes whether the game has ended or not*/
   char message[MAX_MESSAGE];             /*!<String that has the message of the character showed in the game*/
   char description[MAX_MESSAGE];         /*!<String that has the description of an object inspected in the game*/
@@ -69,7 +70,6 @@ Status game_create(Game **game)
   (*game)->n_links = 0;
   (*game)->last_cmd = command_create();
   (*game)->finished = FALSE;
-  (*game)->command_success = OK;
   (*game)->message[0] = '\0';
   (*game)->description[0] = '\0';
 
@@ -78,7 +78,6 @@ Status game_create(Game **game)
 
 Status game_create_from_file(Game **game, char *filename)
 {
-
   if (game_create(game) == ERROR)
   {
     return ERROR;
@@ -136,8 +135,11 @@ Status game_destroy(Game *game)
     if (game->characters[i])
       character_destroy(game->characters[i]);
   }
-  if (game->player)
-    player_destroy(game->player);
+  for(i = 0;i < game->n_players; i++){
+    if(game->players[i]){
+      player_destroy(game->players[i]);
+    }
+  }
   if (game->last_cmd)
     command_destroy(game->last_cmd);
 
@@ -166,18 +168,18 @@ Space *game_get_space(Game *game, Id id)
   return NULL;
 }
 
-Id game_get_player_location(Game *game)
+Id game_get_current_player_location(Game *game)
 {
-  return player_get_location(game->player);
+  return player_get_location(game->players[game->turn]);
 }
 
-Status game_set_player_location(Game *game, Id id)
+Status game_set_current_player_location(Game *game, Id id)
 {
   if (id == NO_ID)
   {
     return ERROR;
   }
-  if (!player_set_location(game->player, id))
+  if (!player_set_location(game->players[game->turn], id))
     return ERROR;
 
   return OK;
@@ -258,14 +260,17 @@ void game_print(Game *game)
   {
     object_print(game->objects[i]);
   }
-  player_print(game_get_player(game));
+  for(i=0;i < game->n_players; i++){
+    player_print(game_get_current_player(game));
+    game->turn = (game ->turn + 1)%(game->n_players);
+  }
 }
 
-Player *game_get_player(Game *game)
+Player *game_get_current_player(Game *game)
 {
   if (!game)
     return NULL;
-  return game->player;
+  return game->players[game->turn];
 }
 
 Object *game_get_object_in_pos(Game *game, int pos)
@@ -464,25 +469,6 @@ Character *game_get_character_from_name(Game *game, char *name)
 }
 
 
-Status game_set_last_command_success(Game *game, Status success)
-{
-  if (!game)
-  {
-    return ERROR;
-  }
-  game->command_success = success;
-  return OK;
-}
-
-Status game_get_last_command_success(Game *game)
-{
-  if (!game)
-  {
-    return ERROR;
-  }
-  return game->command_success;
-}
-
 /*LINK RELATED FUNCTIONS*/
 
 /** NOTE: WHENEVER GAME_READER_LOAD_LINKS IS WRITTEN EXIT VALUE FOR THIS FUNCTION SHOULD BE CHECKED AS CORRECT FUNCTION ARGUMENTS ARE NOT SUFFICIENT FOR CORRECT EXIT*/
@@ -586,11 +572,48 @@ char *game_get_description(Game *game)
 necesaria por ahora para el modulo de game reader
 */
 
-Status game_set_player(Game *game, Player *player){
+Status game_add_player(Game *game, Player *player){
   if(!game || !player)
   {
     return ERROR;
   }
-  game->player = player;
+
+  game->players[game->n_players] = player;
+  game->n_players++;
+  
+  return OK;
+}
+
+void game_next_turn(Game *game){
+  game->turn= (game->turn + 1)%(game->n_players);
+}
+
+int game_get_turn(Game *game){
+  if(!game){
+    return -1;
+  }
+  return game->turn;
+}
+
+int game_get_n_players(Game *game){
+  return game->n_players;
+}
+
+Status game_delete_player(Game *game){
+  int i;
+
+  if (!game) return ERROR;
+
+  if(!(player_destroy(game->players[game->turn]))){
+    return ERROR;
+  }
+
+  game->n_players--;
+
+  for(i = game->turn; i<game->n_players; i++){
+    game->players[i] = game->players[i+1];
+  }
+  game->players[game->n_players] = NULL;
+
   return OK;
 }

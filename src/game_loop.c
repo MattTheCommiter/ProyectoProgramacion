@@ -12,13 +12,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <unistd.h>
+#include <time.h>
 #include "command.h"
 #include "game.h"
 #include "game_actions.h"
 #include "graphic_engine.h"
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"n", "Next"}, {"b", "Back"}, {"d", "Drop"}, {"l", "Left"}, {"r", "Right"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
-
+#define TIME_BETWEEN_TURNS 1  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -120,6 +121,7 @@ int main(int argc, char *argv[])
  */
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
 {
+  srand(time(NULL));
   if (game_create_from_file(game, file_name) == ERROR)
   {
     fprintf(stderr, "Error while initializing game.\n");
@@ -152,6 +154,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
   CommandCode cmd_code;
   char *cmd_name = NULL;
   char *cmd_arg = NULL;
+
   Status cmd_status;
 
   if (!gengine){
@@ -180,6 +183,14 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
         fprintf(log_file, "%s: %s\n", cmd_name, cmd_status == OK ? "OK" : "ERROR");
       }
     }
+    if(command_get_code(last_cmd) != EXIT){
+      graphic_engine_paint_game(gengine, game);
+      if(game_get_n_players(game) > 1){
+        sleep(TIME_BETWEEN_TURNS);
+      }
+      game_next_turn(game);
+    }
+    
   }
 }
 
