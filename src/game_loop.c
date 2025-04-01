@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
   /*at least four arguments provided (the program name, game data file, -l flag, and log file name*/
   if (argc >= 4 && strcmp(argv[2], "-l") == 0){
     /*  open the log file for writing*/
-    sprintf(filename, "%s.txt", argv[3]);
+    sprintf(filename, "%s.log", argv[3]);
     log_file = fopen(filename, "w");
     if (!log_file)  {
       fprintf(stderr, "Error opening log file: %s\n", argv[3]);
@@ -149,10 +149,10 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
  *
  * @param game structure with the game's main information
  * @param gengine pointer to the structure with the game's graphic interface information
- * * @param logfile a pointer to the log file
+ * @param logfile a pointer to the log file
  */
 void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
-  Command *last_cmd;
+  Command *last_cmd = NULL;
   CommandCode cmd_code;
   char *cmd_name = NULL;
   char *cmd_arg = NULL;
@@ -176,10 +176,10 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
       cmd_code = command_get_code(last_cmd);
       cmd_name = cmd_to_str[cmd_code - NO_CMD][CMDL];    /*Converts the command code to a string, through the index of the array*/
       cmd_arg = command_get_argument(last_cmd);
-      cmd_status = game_get_last_command_success(game);
+      cmd_status = command_get_lastcmd_success(last_cmd);
 
       /*Log the command (and the argument in some cases) and its result*/
-      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP){
+      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP || cmd_code == MOVE){
         fprintf(log_file, "%s %s: %s\n", cmd_name, cmd_arg, cmd_status == OK ? "OK" : "ERROR");
       }else{
         fprintf(log_file, "%s: %s\n", cmd_name, cmd_status == OK ? "OK" : "ERROR");

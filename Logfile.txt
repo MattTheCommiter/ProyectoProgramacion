@@ -1,4 +1,0 @@
-Unknown: OK
-Attack: ERROR
-Unknown: ERROR
-Exit: ERROR

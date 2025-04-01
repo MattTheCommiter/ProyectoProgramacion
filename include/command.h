@@ -17,9 +17,6 @@
 #define N_CMD 9       /*<!Number of commands that are possible*/
 #define MAX_CMD_ARG 20 /*<!Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*<!the pointer defined for no argument*/
-
-
-
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */
