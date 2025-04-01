@@ -1,13 +1,13 @@
-#s:11| Entry|-1|-1|121|-1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|
-#s:121|Corridor1|11|-1|122|-1|   ___  _|-/   \_/ |     o o |mo'_ OoBo|_ _ /^\_`|
-#s:122|Corridor2|121|125|123|-1|   _v_v_ |_/```--_ |   o  oo |mo" _ Oo |(--/ \--)|
-#s:123|Corridor3|122|-1|124|-1|    V    |  \(")/  |  _(.)_  |o/(_-_)\o|o o\_/o o|   
-#s:124|Corridor4|123|-1|13|-1
-#s:13|Pantry|124|-1|-1|-1
-#s:125|Corridor5|-1|126|-1|122
-#s:126|Corridor6|-1|127|-1|125
-#s:127|Corridor7|-1|14|-1|126
-#s:14|Hole|-1|-1|-1|127|
+#s:11| Entry|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|
+#s:121|Corridor1|   ___  _|-/   \_/ |     o o |mo'_ OoBo|_ _ /^\_`|
+#s:122|Corridor2|   _v_v_ |_/```--_ |   o  oo |mo" _ Oo |(--/ \--)|
+#s:123|Corridor3|    V    |  \(")/  |  _(.)_  |o/(_-_)\o|o o\_/o o|   
+#s:124|Corridor4|
+#s:13|Pantry|
+#s:125|Corridor5|
+#s:126|Corridor6|
+#s:127|Corridor7|
+#s:14|Hole|
 
 #o:1|Seed|11|Well, just a seed|
 #o:2|Grain|11|Well, just a grain|
@@ -16,6 +16,7 @@
 
 
 #p:1|ant|mO^|11|5|3|
+#p:2|worm|ooO|11|5|3|
 
 #c:2|spider|/\oo/\|121|5|0|I won't talk to you!|
 #c:3|ant friend|   ^0m|122|5|1|Hey ant friend!|
