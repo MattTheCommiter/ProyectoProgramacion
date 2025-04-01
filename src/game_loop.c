@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
   Game *game = NULL;
   Graphic_engine *gengine;
   FILE *log_file = NULL;
+  char filename[MAX_MESSAGE];
 
 
   /*If game data file is missing, the program exits with an error.
@@ -87,7 +88,8 @@ int main(int argc, char *argv[])
   /*at least four arguments provided (the program name, game data file, -l flag, and log file name*/
   if (argc >= 4 && strcmp(argv[2], "-l") == 0){
     /*  open the log file for writing*/
-    log_file = fopen(argv[3], "w");
+    sprintf(filename, "%s.txt", argv[3]);
+    log_file = fopen(filename, "w");
     if (!log_file)  {
       fprintf(stderr, "Error opening log file: %s\n", argv[3]);
       return 1;
@@ -154,7 +156,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
   CommandCode cmd_code;
   char *cmd_name = NULL;
   char *cmd_arg = NULL;
-
+  extern char *cmd_to_str[N_CMD][N_CMDT];
   Status cmd_status;
 
   if (!gengine){
@@ -172,7 +174,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
     /*If log is enabled*/
     if (log_file){
       cmd_code = command_get_code(last_cmd);
-      cmd_name = cmd_to_str[cmd_code][CMDL]; /*Converts the command code to a string, through the index of the array*/
+      cmd_name = cmd_to_str[cmd_code - NO_CMD][CMDL];    /*Converts the command code to a string, through the index of the array*/
       cmd_arg = command_get_argument(last_cmd);
       cmd_status = game_get_last_command_success(game);
 

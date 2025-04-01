@@ -116,6 +116,9 @@ clean:
 run:
 	./juego_hormiga anthill.dat
 
+runLog:
+	./juego_hormiga anthill.dat -l Logfile
+
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat
 
