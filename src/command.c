@@ -28,7 +28,7 @@ struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
   char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
-  Status lastcmd_Success;
+  Status lastcmd_Success;           /*Whether the last command was succesful or not*/
 };
 
 Command *command_create()

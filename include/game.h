@@ -433,8 +433,8 @@ necesaria por ahora para el modulo de game reader
 */
 
 /**
- * @brief adds a player to the game
- * @author Alvaro Inigo
+ * @brief adds a player to the game, as well as his command history
+ * @author Alvaro Inigo, Matteo Artunedo (command history)
  * @param game a pointer to the game
  * @param player a pointer to the new player
  * @return Status either OK or ERROR
@@ -466,7 +466,7 @@ int game_get_turn(Game *game);
 int game_get_n_players(Game *game);
 
 /**
- * @brief it deletes a player from the array of players, freeing the allocated memory and reorganizing the array
+ * @brief it deletes a player from the array of players as well as his command history, freeing the allocated memory and reorganizing the arrays
  * @author Matteo Artunedo
  * @param game pointer to the game
  * @return Status either OK or ERROR

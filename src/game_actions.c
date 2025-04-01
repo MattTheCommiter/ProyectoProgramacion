@@ -260,6 +260,7 @@ void game_actions_take(Game *game, char *arg)
       /* We change the objectId of the space where the object was located to NO_ID */
       space_delete_object(game_get_space(game, game_get_current_player_location(game)), objectId);
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+      return;
     }
   }
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);

@@ -659,16 +659,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /*Print a message if the player dies and the game ends*/
   if (player_get_health(game_get_current_player(game)) == 0)
   {
-    sprintf(str, "Jugador %d ha muerto!", (game_get_turn(game) + 1));
-    /*If several players are still alive, the player currently playing is removed from the game*/
-    if(game_get_n_players(game) > 1){
-      game_delete_player(game);
-    }
-    /*If only one player is left, the game finishes upon his death*/
-    else
-    {
+
+    /*We print a death message according to the number of players in the game*/
+    if(game_get_n_players(game) == 1){
       sprintf(str, "GAME OVER");
-      game_set_finished(game, TRUE);
+    }else{
+      sprintf(str, "Jugador %d ha muerto!", (game_get_turn(game) + 1));
     }
     screen_area_puts(ge->feedback, str);
   }

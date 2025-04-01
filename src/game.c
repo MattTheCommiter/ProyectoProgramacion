@@ -21,8 +21,7 @@
  * 
  */
 typedef struct _InterfaceData{
-  Command *lastCmd, *second_to_lastCmd, *third_to_lastCmd;  /*Pointers to the last 3 commands that have been saved*/
-  Bool messageHasToBePrinted;                               /*Whether the chat message has to be printed or not*/
+  Command *lastCmd, *second_to_lastCmd, *third_to_lastCmd;  /*Pointers to the last 3 commands that have been saved*/                              /*Whether the chat message has to be printed or not*/
 }InterfaceData;
 
 struct _Game
@@ -77,10 +76,6 @@ Status game_create(Game **game)
   for (i = 0; i < MAX_SPACES; i++)
   {
     (*game)->spaces[i] = NULL;
-  }
-  for (i = 0; i < MAX_PLAYERS; i++)
-  {
-    (*game)->playerCmdHistory[i] = game_interface_data_create();
   }
 
   /*initialize the game */
@@ -160,9 +155,8 @@ Status game_destroy(Game *game)
     }
   }
 
-  for (i = 0; i < MAX_PLAYERS; i++)
+  for (i = 0; i < game->n_players; i++)
   {
-
     command_destroy(game->playerCmdHistory[i]->lastCmd);
     command_destroy(game->playerCmdHistory[i]->second_to_lastCmd);
     command_destroy(game->playerCmdHistory[i]->third_to_lastCmd);
@@ -589,6 +583,7 @@ Status game_add_player(Game *game, Player *player){
   }
 
   game->players[game->n_players] = player;
+  game->playerCmdHistory[game->n_players] = game_interface_data_create();
   game->n_players++;
   
   return OK;
@@ -617,13 +612,19 @@ Status game_delete_player(Game *game){
   if(!(player_destroy(game->players[game->turn]))){
     return ERROR;
   }
-
+  command_destroy(game->playerCmdHistory[game->turn]->lastCmd);
+  game->playerCmdHistory[game->turn]->lastCmd = NULL;
+  command_destroy(game->playerCmdHistory[game->turn]->second_to_lastCmd);
+  command_destroy(game->playerCmdHistory[game->turn]->third_to_lastCmd);
+  free(game->playerCmdHistory[game->turn]);
   game->n_players--;
 
   for(i = game->turn; i<game->n_players; i++){
     game->players[i] = game->players[i+1];
+    game->playerCmdHistory[i] = game->playerCmdHistory[i+1];
   }
   game->players[game->n_players] = NULL;
+  game->playerCmdHistory[i] = NULL;
 
   return OK;
 }
@@ -660,6 +661,9 @@ Status game_interface_data_set_last_command(Game *game, Command *last_cmd){
 
 Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos) {
   if (!game) return NULL;
+  if(!game->playerCmdHistory[game->turn]){
+    return NULL;
+  }
   switch(pos){
     case LAST:
       return game->playerCmdHistory[game->turn]->lastCmd; 
