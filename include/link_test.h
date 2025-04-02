@@ -149,6 +149,12 @@ void test03_link_set_is_open();
 void test04_link_set_is_open();
 
 /**
+ * @test sets is_open on a valid link with invalid boolean value
+ * @pre valid link, invalid argument value -1
+ * @post function returns OK
+*/
+void test05_link_set_is_open();
+/**
  * @test sets name on a NULL link
  * @pre valid name, invalid link
  * @post function returns ERROR
@@ -213,7 +219,7 @@ void test01_link_get_id();
 
 /**
  * @test fetches id from valid link
- * @pre valid link, (valid id)
+ * @pre valid link, (valid id 1)
  * @post function returns id set to link (1)
 */
 void test02_link_get_id();
@@ -256,7 +262,7 @@ void test01_link_get_name();
 /**
  * @test fetches name on a valid link
  * @pre valid link
- * @post function returns char *name != NULL
+ * @post function returns char *name != NULL, which is true since the default name of the link is a char pointer to '\0'
 */
 void test02_link_get_name();
 

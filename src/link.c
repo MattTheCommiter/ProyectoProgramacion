@@ -96,7 +96,7 @@ Status link_set_direction(Link *l, Direction dir) {
 
 Status link_set_is_open(Link *l, Bool open) {
     /* error checks */
-    if (l == NULL) return ERROR;
+    if (l == NULL || open > TRUE || open < FALSE) return ERROR;
 
     /* variable assignment */
     l->is_open = open;

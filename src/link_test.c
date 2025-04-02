@@ -51,22 +51,23 @@ int main(int argc, char *argv[]) {
     if (all || test == 17) test02_link_set_is_open();
     if (all || test == 18) test03_link_set_is_open();
     if (all || test == 19) test04_link_set_is_open();
-    if (all || test == 20) test01_link_set_name(); 
-    if (all || test == 21) test02_link_set_name(); 
-    if (all || test == 22) test03_link_set_name(); 
-    if (all || test == 23) test04_link_set_name(); 
-    if (all || test == 24) test01_link_get_is_open();
-    if (all || test == 25) test02_link_get_is_open();
-    if (all || test == 26) test01_link_get_direction();
-    if (all || test == 27) test02_link_get_direction();
-    if (all || test == 28) test01_link_get_id();
-    if (all || test == 29) test02_link_get_id();
-    if (all || test == 30) test01_link_get_origin_id();
-    if (all || test == 31) test02_link_get_origin_id();
-    if (all || test == 32) test01_link_get_destination_id();
-    if (all || test == 33) test02_link_get_destination_id();
-    if (all || test == 34) test01_link_get_name(); 
-    if (all || test == 35) test02_link_get_name(); 
+    if (all || test == 20) test04_link_set_is_open();
+    if (all || test == 21) test01_link_set_name(); 
+    if (all || test == 22) test02_link_set_name(); 
+    if (all || test == 23) test03_link_set_name(); 
+    if (all || test == 24) test04_link_set_name(); 
+    if (all || test == 25) test01_link_get_is_open();
+    if (all || test == 26) test02_link_get_is_open();
+    if (all || test == 27) test01_link_get_direction();
+    if (all || test == 28) test02_link_get_direction();
+    if (all || test == 29) test01_link_get_id();
+    if (all || test == 30) test02_link_get_id();
+    if (all || test == 31) test01_link_get_origin_id();
+    if (all || test == 32) test02_link_get_origin_id();
+    if (all || test == 33) test01_link_get_destination_id();
+    if (all || test == 34) test02_link_get_destination_id();
+    if (all || test == 35) test01_link_get_name(); 
+    if (all || test == 36) test02_link_get_name(); 
 
 
  
@@ -186,6 +187,12 @@ void test04_link_set_is_open() {
     Link *l = link_create(1);
     link_set_is_open(l, FALSE);
     PRINT_TEST_RESULT(link_get_is_open(l) == FALSE);
+    link_destroy(l);
+}
+
+void test05_link_set_is_open() {
+    Link *l = link_create(1);
+    PRINT_TEST_RESULT(link_set_is_open(l, -1) == ERROR);
     link_destroy(l);
 }
 

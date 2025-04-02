@@ -53,7 +53,7 @@ Status link_set_name(Link *l, char *name);
 Status link_set_origin_id(Link *l, Id origin_id);
 
 /**
- * @brief Sets the origin_id field in a given link structure
+ * @brief Sets the destination_id field in a given link structure
  * @author Guilherme Povedano 
  * @date 19-03-2025
  * @param l the link structure to me modified
@@ -63,7 +63,7 @@ Status link_set_origin_id(Link *l, Id origin_id);
 Status link_set_destination_id(Link *l, Id destination_id);
 
 /**
- * @brief Sets the origin_id field in a given link structure
+ * @brief Sets the direction field in a given link structure
  * @author Guilherme Povedano 
  * @date 19-03-2025
  * @param l the link structure to me modified
@@ -119,7 +119,7 @@ Id link_get_origin_id(Link *l);
 Id link_get_destination_id(Link *l);
 
 /**
- * @brief fetches teh direction of a given link
+ * @brief fetches the direction of a given link
  * @author Guilherme Povedano 
  * @date 19-03-2025
  * @param l a pointer to the link structure whose data will be fecthed 
