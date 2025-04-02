@@ -202,11 +202,11 @@ void game_actions_move(Game *game, char *arg)
   }
 
   if(game_connection_is_open(game, current_id, direction) ==  FALSE){
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   if(game_connection_is_open(game, current_id, direction) ==  FALSE){
-    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   next_space_id = game_get_connection(game, current_id, direction);
