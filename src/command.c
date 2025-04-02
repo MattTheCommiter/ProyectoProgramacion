@@ -94,7 +94,7 @@ Status command_get_user_input(Command *command)
   /*read the command entered by the user*/
   if (fgets(input, CMD_LENGTH, stdin))
   {
-    token = strtok(input, " \n");
+    token = strtok(input, " \r\n");
     if (!token)
     {
       return command_set_code(command, UNKNOWN);
@@ -116,7 +116,7 @@ Status command_get_user_input(Command *command)
     }
     if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE)
     {
-      token = strtok(NULL, "\n");
+      token = strtok(NULL, "\r\n");
 
       if (!token)
       {
