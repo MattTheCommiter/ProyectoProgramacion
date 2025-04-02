@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 35
+#define MAX_TESTS 36
 
 int main(int argc, char *argv[]) {
     int test = 0; 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     if (all || test == 17) test02_link_set_is_open();
     if (all || test == 18) test03_link_set_is_open();
     if (all || test == 19) test04_link_set_is_open();
-    if (all || test == 20) test04_link_set_is_open();
+    if (all || test == 20) test05_link_set_is_open();
     if (all || test == 21) test01_link_set_name(); 
     if (all || test == 22) test02_link_set_name(); 
     if (all || test == 23) test03_link_set_name(); 
