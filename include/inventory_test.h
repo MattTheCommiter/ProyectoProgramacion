@@ -1,5 +1,5 @@
 /** 
- * @brief  test functions  for the Inventary module
+ * @brief  test functions  for the Inventory module
  * 
  * @file inventory_test.h
  * @author PPROG - Team 2101_D - AGL
@@ -18,7 +18,7 @@
 /**
  * @test Test whether a new inventory is successfully created
  * @pre Inventory is created with a maximum of 10 objects
- * @post Non-NULL pointer to the set of objects in the inventory
+ * @post Non-NULL pointer to the set of objects in the inventory, with a created set inside the structure
  */
 void test1_inventory_create();
  

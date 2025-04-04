@@ -4,7 +4,7 @@
  * @file inventory.c
  * @author PPROG - Equipo 2101_D - AGL
  * @version 2.0.7
- * @date 27-01-2025
+ * @date 21-03-2025
  * @copyright GNU Public License
  */
 
@@ -92,11 +92,7 @@ Bool inventory_contains(Inventory *inventory, Id object_id) {
     return FALSE;
   }
 
-  if(set_belongs(inventory->objs, object_id) == FALSE){
-    return FALSE;
-  }
-
-  return TRUE;
+  return set_belongs(inventory->objs, object_id);
 }
 
 /*** This function sets the set of objects contained in the inventory. It updates
@@ -142,18 +138,11 @@ Bool inventory_is_full(Inventory* inventory) {
 * function to get the number of elements in the set. */
 Bool inventory_is_empty(Inventory *inventory){
 
-  int num_objects = 0;
 
   if (!inventory) {
     return TRUE; 
   }
-
-  num_objects = set_get_num_elements(inventory->objs);
-  if(num_objects == 0 || num_objects == -1){
-    return TRUE;
-  }
-
-  return FALSE;
+  return set_is_empty(inventory->objs);
 }
 
 /**This function returns the object ID at the specified position in the inventory. */
@@ -175,11 +164,7 @@ Status inventory_add_object_id(Inventory* inventory, Id obj_id) {
     return ERROR;
   }
 
-  if(set_add(inventory->objs, obj_id) == ERROR){
-    return ERROR;
-  }
-
-  return OK;
+  return set_add(inventory->objs, obj_id);
 }
 
 /** This function removes an object from the inventory */
@@ -189,11 +174,7 @@ Status inventory_del_object_id(Inventory* inventory, Id obj_id) {
   }
 
   /*set_del checks first if the object belogs to the set, and then removes it*/
-  if(set_del(inventory->objs, obj_id) == ERROR){
-    return ERROR;
-  }
-
-  return OK;
+  return set_del(inventory->objs, obj_id);
 }
 
 /**This function prints the details of the inventory, including the maximum
