@@ -90,7 +90,7 @@ Status object_print(Object *object)
     /*Error checking*/
     if (!object)
         return ERROR;
-    if (fprintf(stdout, "--->Object (Id: %ld ; Name: %s)\n", object->id, object->name))
+    if (fprintf(stdout, "--->Object (Id: %ld ; Name: %s ; Description: %s)\n", object->id, object->name, object->description))
     {
         return OK;
     }
