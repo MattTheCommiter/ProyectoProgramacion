@@ -108,7 +108,8 @@ inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 #Link test related
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
 	gcc -o $@ $^
-
+	
+#Object test related
 object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o 
 	gcc -o $@ $^
 
