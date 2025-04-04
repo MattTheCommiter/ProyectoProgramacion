@@ -193,7 +193,7 @@ void game_actions_move(Game *game, char *arg)
     command_set_lastcmd_success(game_get_last_command(game), ERROR);
     return;
   }
-
+  
   current_id = game_get_current_player_location(game);
   if (current_id == NO_ID)
   {
@@ -201,6 +201,11 @@ void game_actions_move(Game *game, char *arg)
     return;
   }
 
+  if(game_connection_is_open(game, current_id, direction) ==  FALSE){
+    command_set_lastcmd_success(game_get_last_command(game), ERROR);
+    return;
+  }
+  
   next_space_id = game_get_connection(game, current_id, direction);
   if(next_space_id != NO_ID)
   {

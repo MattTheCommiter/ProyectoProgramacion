@@ -37,7 +37,7 @@
 #l:14|Hall2toHall3|122|123|2|1|
 #l:15|Hall3toHall2|123|122|1|1|
 #l:16|Hall3toHall4|123|124|2|0|
-#l:17|Hall4toHall3|124|123|1|0|
+#l:17|Hall4toHall3|124|123|1|1|
 #l:18|Hall4toPantry|124|13|2|1|
 #l:19|PantrytoHall4|13|124|1|1|
 
