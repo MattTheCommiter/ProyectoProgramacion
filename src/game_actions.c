@@ -375,14 +375,14 @@ void game_actions_attack(Game *game)
     return;
   }
   /*Depending on the number genered, character of player lose health*/
-  if (num <= 4)
+  if (num <= ATTACK_CHANCE)
   {
-    player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - 1);
+    player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - ENEMY_DAMAGE);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   else
   {
-    character_set_health(cha, character_get_health(cha) - 1);
+    character_set_health(cha, character_get_health(cha) - PLAYER_DAMAGE);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   return;

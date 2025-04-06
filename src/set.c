@@ -67,7 +67,7 @@ Status set_del(Set *s, Id elementId){
     int pos = set_get_pos_from_Id(s, elementId);
     if(!s || elementId == NO_ID) return ERROR;
 
-    if(!set_belongs(s, elementId)){
+    if(!set_belongs(s, elementId) || set_is_empty(s)){
         return ERROR;
     }
 

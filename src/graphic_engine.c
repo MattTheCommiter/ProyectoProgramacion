@@ -2,8 +2,8 @@
  * @brief It implements a textual graphic engine
  *
  * @file graphic_engine.c
- * @author Matteo Artuned
- * @version 0.2
+ * @author Matteo Artunedo, Alvaro Inigo
+ * @version 1.3
  * @date 12-03-2025
  */
 
@@ -38,6 +38,7 @@
 #define TOP_HEIGHT 3              /*!<Height of the highest line of spaces in the map*/
 #define GDESC_INITIAL_POSITION 2  /*!<The position the first line of the graphic description of a space has in the total space square*/
 #define GDESC_FINAL_POSITION 7    /*!<The position the last line of the graphic description of a space has in the total space square*/
+#define MAX_STR 255               /*The maximum characters of a line*/
 
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
@@ -47,7 +48,12 @@
  */
 struct _Graphic_engine
 {
-  Area *map, *descript, *banner, *help, *feedback; /*!<All of the different parts of the textual graphic interface*/
+  Area 
+  *map,       /*Map area of the graphic engine. Here we can see the players, objects, spaces, graphical descriptions, etc*/
+  *descript,  /*Description area of the graphic engine. Here the player can get info about the game such as object and character placement, his health, etc*/
+  *banner,    /*Title area in the graphic engine. Here we can see the title of the game and the player who is currently playing*/
+  *help,      /*Help area of the graphic engine. Here all of the possible commands a player can run are displayed*/
+  *feedback;  /*Feedback area in the graphic engine. Here the player can see the commands he has executed and if they were succesful*/
 };
 
 /**
@@ -66,7 +72,7 @@ struct _Graphic_engine
  * @param south3 arrow that connects the east space with its south
  * @return Status
  */
-Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3);
+Status graphic_engine_set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3);
 
 /**
  * @brief Create a line of spaces (3 space squares placed horizontally one after the other)
@@ -77,7 +83,7 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
  * @param height 1 if the line being created is the last one that is printed in the map box, 2 if it is the middle line and 3 if it is the top line
  * @return char** matrix with the complete line
  */
-char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height);
+char **graphic_engine_create_line_of_spaces(Game *game, Id id_center, Id id_player, int height);
 
 /**
  * @brief Create a square space description for the space with the given id
@@ -86,7 +92,7 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
  * @param square_id id of the space which corresponds to the box being created
  * @return char** matrix with the square of the space that will be printed on the screen
  */
-char **create_space_square(Game *game, Id square_id);
+char **graphic_engine_create_space_square(Game *game, Id square_id);
 
 /**
  * @brief returns the id of the space that is at the side of id_center
@@ -97,7 +103,7 @@ char **create_space_square(Game *game, Id square_id);
  * @param height 1 if it is the last line that is printed in the map box, 2 if it is the middle line and 3 if it is the top line
  * @return Id of the adjacent space
  */
-Id horizontally_adjacent_square(Game *game, Id id_player, Direction d, int height);
+Id graphic_engine_horizontally_adjacent_square(Game *game, Id id_player, Direction d, int height);
 
 /**
  * @brief returns the id of the space that is at the vertically adjacent to id_center
@@ -107,7 +113,7 @@ Id horizontally_adjacent_square(Game *game, Id id_player, Direction d, int heigh
  * @param d direction used to look for the adjacent square (N or S)
  * @return Id of the vertically adjacent space
  */
-Id vertically_adjacent_square(Game *game, Id id_center, Direction d);
+Id graphic_engine_vertically_adjacent_square(Game *game, Id id_center, Direction d);
 
 /**
  * @brief Paints the feedback of one command in the player command history
@@ -116,10 +122,10 @@ Id vertically_adjacent_square(Game *game, Id id_center, Direction d);
  * @param ge pointer to the graphic engine
  * @param pos position of thecommand (whether we want to print the last command, the second to last or the third to last)
  */
-void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos);
+char *graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos);
 
 /*PRIVATE FUNCTIONS*/
-Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3)
+Status graphic_engine_set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3)
 {
   Id id_east = NO_ID, id_west = NO_ID, id_north = NO_ID, id_south = NO_ID;
   id_north = game_get_connection(game, spaceId, N);
@@ -143,11 +149,11 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
 
   if (id_west == NO_ID)
   {
-    id_west = horizontally_adjacent_square(game, spaceId, W, MIDDLE_HEIGHT);
+    id_west = graphic_engine_horizontally_adjacent_square(game, spaceId, W, MIDDLE_HEIGHT);
   }
   if (id_east == NO_ID)
   {
-    id_east = horizontally_adjacent_square(game, spaceId, E, MIDDLE_HEIGHT);
+    id_east = graphic_engine_horizontally_adjacent_square(game, spaceId, E, MIDDLE_HEIGHT);
   }
 
   /*Estudiamos si el espacio al este del espacio del jugador tiene norte y/o sur, poniendo las flechas acorde a esa información*/
@@ -171,9 +177,9 @@ Status set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *nort
   return OK;
 }
 
-char **create_space_square(Game *game, Id square_id)
+char **graphic_engine_create_space_square(Game *game, Id square_id)
 {
-  char **space_square = NULL, str[255], blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
+  char **space_square = NULL, str[MAX_STR], blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
   Space *space;
   Object *object_in_pos = NULL;
   Bool discovered=space_get_discovered(game_get_space(game, square_id));
@@ -305,7 +311,7 @@ char **create_space_square(Game *game, Id square_id)
   return space_square;
 }
 
-Id vertically_adjacent_square(Game *game, Id id_center, Direction d)
+Id graphic_engine_vertically_adjacent_square(Game *game, Id id_center, Direction d)
 {
   Id found_id = NO_ID;
   found_id = game_get_connection(game, game_get_connection(game, game_get_connection(game, id_center, E), d), W);
@@ -316,7 +322,7 @@ Id vertically_adjacent_square(Game *game, Id id_center, Direction d)
   return found_id;
 }
 
-Id horizontally_adjacent_square(Game *game, Id id_player, Direction d, int height)
+Id graphic_engine_horizontally_adjacent_square(Game *game, Id id_player, Direction d, int height)
 {
   Id found_id = NO_ID;
   /*Buscamos si el espacio situado a la derecha o la izquierda (según la función space_get que se pase como argumento) existe mediante caminos más complejos. De este modo, podemos imprimir el espacio aunque no haya acceso directo desde el espacio del centro de la línea*/
@@ -342,9 +348,9 @@ Id horizontally_adjacent_square(Game *game, Id id_player, Direction d, int heigh
   return found_id;
 }
 
-char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
+char **graphic_engine_create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
 {
-  char **gdesc_line = NULL, **left_square = NULL, **center_square = NULL, **right_square = NULL, str[255], left_square_arrow = ' ', right_square_arrow = ' ';
+  char **gdesc_line = NULL, **left_square = NULL, **center_square = NULL, **right_square = NULL, str[MAX_STR], left_square_arrow = ' ', right_square_arrow = ' ';
   int i;
   Id id_left, id_right;
 
@@ -362,7 +368,7 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
   else
   {
     /*Buscamos si existe el espacio desde otros caminos*/
-    id_right = horizontally_adjacent_square(game, id_player, E, height);
+    id_right = graphic_engine_horizontally_adjacent_square(game, id_player, E, height);
   }
 
   /*Si el espacio del centro tiene conexión directa con el de la izquierda, imprimiremos una flecha*/
@@ -373,7 +379,7 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
   else
   {
     /*Buscamos si existe el espacio desde otros caminos*/
-    id_left = horizontally_adjacent_square(game, id_player, W, height);
+    id_left = graphic_engine_horizontally_adjacent_square(game, id_player, W, height);
   }
 
   /*FIN DE LA OBTENCIÓN DE LOS ID_LEFT E ID_RIGHT*/
@@ -394,9 +400,9 @@ char **create_line_of_spaces(Game *game, Id id_center, Id id_player, int height)
   }
   /*End of creating the matrix*/
 
-  left_square = create_space_square(game, id_left);
-  center_square = create_space_square(game, id_center);
-  right_square = create_space_square(game, id_right);
+  left_square = graphic_engine_create_space_square(game, id_left);
+  center_square = graphic_engine_create_space_square(game, id_center);
+  right_square = graphic_engine_create_space_square(game, id_right);
 
   /*Create the lines manually*/
   sprintf(str, "%s  %s  %s", left_square[0], center_square[0], right_square[0]);
@@ -496,7 +502,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID;
 
   char **created_line = NULL;
-  char str[255], *object_name = NULL, *character_gdesc = NULL, north_arrow1 = ' ', south_arrow1 = ' ', north_arrow2 = ' ', south_arrow2 = ' ', north_arrow3 = ' ', south_arrow3 = ' ';
+  char str[MAX_STR], *object_name = NULL, *character_gdesc = NULL, north_arrow1 = ' ', south_arrow1 = ' ', north_arrow2 = ' ', south_arrow2 = ' ', north_arrow3 = ' ', south_arrow3 = ' ';
   int i, character_hp;
 
   /* Paint the in the map area */
@@ -505,16 +511,16 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   {
     id_north = game_get_connection(game, id_act, N);
     id_south = game_get_connection(game, id_act, S);
-    set_arrows(game, id_act, &north_arrow1, &south_arrow1, &north_arrow2, &south_arrow2, &north_arrow3, &south_arrow3);
+    graphic_engine_set_arrows(game, id_act, &north_arrow1, &south_arrow1, &north_arrow2, &south_arrow2, &north_arrow3, &south_arrow3);
     if (id_north == NO_ID)
     {
       /*Probamos a llegar al norte desde caminos alternativos*/
-      id_north = vertically_adjacent_square(game, id_act, N);
+      id_north = graphic_engine_vertically_adjacent_square(game, id_act, N);
     }
     if (id_south == NO_ID)
     {
       /*Probamos a llega al sur desde caminos alternativos*/
-      id_south = vertically_adjacent_square(game, id_act, S);
+      id_south = graphic_engine_vertically_adjacent_square(game, id_act, S);
     }
 
     /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
@@ -526,7 +532,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     /*fin del cambio grafico para la araña muerta*/
 
     /*Imprimimos la primera línea de espacios */
-    created_line = create_line_of_spaces(game, id_north, id_act, TOP_HEIGHT);
+    created_line = graphic_engine_create_line_of_spaces(game, id_north, id_act, TOP_HEIGHT);
     screen_area_puts(ge->map, created_line[0]);
     if (created_line != NULL)
     {
@@ -544,7 +550,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     screen_area_puts(ge->map, str);
 
     /*Imprimimos la segunda línea de espacios*/
-    created_line = create_line_of_spaces(game, id_act, id_act, MIDDLE_HEIGHT);
+    created_line = graphic_engine_create_line_of_spaces(game, id_act, id_act, MIDDLE_HEIGHT);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);
@@ -558,7 +564,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     screen_area_puts(ge->map, str);
 
     /*Imprimimos la segunda línea de espacios*/
-    created_line = create_line_of_spaces(game, id_south, id_act, BOTTOM_HEIGHT);
+    created_line = graphic_engine_create_line_of_spaces(game, id_south, id_act, BOTTOM_HEIGHT);
     for (i = 0; i < N_TOTAL_LINES_IN_3_SQUARES; i++)
     {
       screen_area_puts(ge->map, created_line[i]);
@@ -639,7 +645,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /* Paint in the banner area */
-  screen_area_puts(ge->banner, "    The anthill game ");
+  sprintf(str, "    The anthill game: player %d", (game_get_turn(game) + 1));
+  screen_area_puts(ge->banner, str);
 
   /* Paint in the help area */
   screen_area_clear(ge->help);
@@ -651,9 +658,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /* Paint in the feedback area */
 
   
-  graphic_interface_paint_feedback_for_pos(game, ge, THIRD_TO_LAST);
-  graphic_interface_paint_feedback_for_pos(game, ge, SECOND_TO_LAST);
-  graphic_interface_paint_feedback_for_pos(game, ge, LAST);
+  strcpy(str, graphic_interface_paint_feedback_for_pos(game, ge, THIRD_TO_LAST));
+  screen_area_puts(ge->feedback, str);
+  strcpy(str, graphic_interface_paint_feedback_for_pos(game, ge, SECOND_TO_LAST));
+  screen_area_puts(ge->feedback, str);
+  strcpy(str, graphic_interface_paint_feedback_for_pos(game, ge, LAST));
+  screen_area_puts(ge->feedback, str);
 
 
   /*Print a message if the player dies and the game ends*/
@@ -674,13 +684,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   printf("prompt:> ");
 }
 
-void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos){
+char *graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos){
   CommandCode cmd=NO_CMD;
   Status cmd_succ=ERROR;
-  char str[255];
+  char *str;
   extern char *cmd_to_str[N_CMD][N_CMDT];
 
-  if(!game || !ge) return;
+  if(!game || !ge) return NULL;
+
+  str = (char *)calloc(MAX_STR, sizeof(char));
 
   cmd = command_get_code(game_interface_data_get_cmd_in_pos(game, pos));
   cmd_succ = command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, pos));
@@ -693,5 +705,5 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
     sprintf(str, " %s (%s) : OK", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
   }
 
-  screen_area_puts(ge->feedback, str);
+  return str;
 }

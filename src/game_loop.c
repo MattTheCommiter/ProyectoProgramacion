@@ -2,7 +2,7 @@
  * @brief It defines the game loop
  *
  * @file game_loop.c
- * @author Profesores PPROG
+ * @author Profesores PPROG, Matteo Artunedo (mutiplayer implementation), AGL and Alvaro Inigo (log implementation)
  * @version 0
  * @date 27-01-2025
  * @copyright GNU Public License

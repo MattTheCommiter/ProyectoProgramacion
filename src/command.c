@@ -2,7 +2,7 @@
  * @brief It implements the command interpreter
  *
  * @file command.c
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, Alvaro Inigo
  * @version 0
  * @date 11-02-2025
  * @copyright GNU Public License

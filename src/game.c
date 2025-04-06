@@ -2,7 +2,7 @@
  * @brief It implements the game structure
  *
  * @file game.c
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (multiplayer implementation and command history), Guilherme Povedano (link implementation)
  * @version 0.1
  * @date 12-02-2025
  * @copyright GNU Public License
@@ -117,7 +117,6 @@ Status game_create_from_file(Game **game, char *filename)
   {
     return ERROR;
   }
-  /*IF players == 0 game_destroy game_set_finished == TRUE*/
   
 
   return OK;
