@@ -116,8 +116,9 @@ Id graphic_engine_vertically_adjacent_square(Game *game, Id id_center, Direction
  * @param game pointer to the game
  * @param ge pointer to the graphic engine
  * @param pos position of thecommand (whether we want to print the last command, the second to last or the third to last)
+ * @param str the string to which the feedback will be copied
  */
-char *graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos);
+void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
 
 /*PRIVATE FUNCTIONS*/
 Status graphic_engine_set_arrows(Game *game, Id spaceId, char *north1, char *south1, char *north2, char *south2, char *north3, char *south3)
@@ -640,7 +641,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /* Paint in the banner area */
-  sprintf(str, "    The anthill game: player %d", (game_get_turn(game) + 1));
+  sprintf(str, "  The anthill game: P%d", (game_get_turn(game) + 1));
   screen_area_puts(ge->banner, str);
 
   /* Paint in the help area */
@@ -653,11 +654,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   /* Paint in the feedback area */
 
   
-  strcpy(str, graphic_interface_paint_feedback_for_pos(game, ge, THIRD_TO_LAST));
+  graphic_interface_paint_feedback_for_pos(game, ge, THIRD_TO_LAST, str);
   screen_area_puts(ge->feedback, str);
-  strcpy(str, graphic_interface_paint_feedback_for_pos(game, ge, SECOND_TO_LAST));
+  graphic_interface_paint_feedback_for_pos(game, ge, SECOND_TO_LAST, str);
   screen_area_puts(ge->feedback, str);
-  strcpy(str, graphic_interface_paint_feedback_for_pos(game, ge, LAST));
+  graphic_interface_paint_feedback_for_pos(game, ge, LAST, str);
   screen_area_puts(ge->feedback, str);
 
 
@@ -679,15 +680,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   printf("prompt:> ");
 }
 
-char *graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos){
+void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str){
   CommandCode cmd=NO_CMD;
   Status cmd_succ=ERROR;
-  char *str;
   extern char *cmd_to_str[N_CMD][N_CMDT];
 
-  if(!game || !ge) return NULL;
-
-  str = (char *)calloc(MAX_STR, sizeof(char));
+  if(!game || !ge || !str) return;
 
   cmd = command_get_code(game_interface_data_get_cmd_in_pos(game, pos));
   cmd_succ = command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, pos));
@@ -700,5 +698,5 @@ char *graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Co
     sprintf(str, " %s (%s) : OK", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
   }
 
-  return str;
+  return;
 }
