@@ -1,11 +1,12 @@
 /**
- * @brief Defines constant values and functions that will be used for tests
+ * @brief It defines common test functions for the whole project
  *
  * @file test.h
  * @author PROFESORES PPROG
- * @version 1.3
- * @date 10-02-2025
- */
+ * @version 1.0.0
+ * @date Unknown
+ * @copyright GNU Public License
+*/
 
 #ifndef _TEST_H
 #define _TEST_H

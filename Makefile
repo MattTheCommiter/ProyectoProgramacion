@@ -6,13 +6,13 @@ INCDIR=./include
 DOCDIR=./doc
 INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
-TESTS=character_test set_test space_test link_test inventory_test
+TESTS=character_test set_test space_test link_test inventory_test object_test player_test
 EXE=juego_hormiga $(TESTS)
 vpath %.h $(INCDIR)
 vpath %.c $(SRCDIR)
 vpath %.o $(OBJDIR)
 
-.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run test_run tests
+.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run docs clean_docs tests test_run
 
 #make - compile game 
 all: juego_hormiga
@@ -88,8 +88,11 @@ $(OBJDIR)/inventory_test.o: inventory_test.c inventory.h set.h types.h inventory
 $(OBJDIR)/link_test.o: link_test.c link_test.h types.h link.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/object_test.o: $(SRCDIR)/object_test.c $(INCDIR)/object_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-	
+$(OBJDIR)/player_test.o: $(SRCDIR)/player_test.c $(INCDIR)/player_test.h $(INCDIR)/player.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory.h $(INCDIR)/test.h  $(INCDIR)/space.h $(INCDIR)/character.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 ###################################################### TEST EXECUTABLES ######################################################
 #Set test related 
 set_test: $(OBJDIR)/set_test.o $(OBJDIR)/set.o
@@ -110,8 +113,10 @@ inventory_test: $(OBJDIR)/inventory_test.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
 #Link test related
 link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o 
 	gcc -o $@ $^
-
-
+	
+#Object test related
+object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o 
+	gcc -o $@ $^
 
 ##General clean target 
 clean:
@@ -179,4 +184,10 @@ test_run:
 	./inventory_test
 	@echo ">>>>>>Running link_test:"
 	./link_test
+
+object_test_run:
+	./object_test
+
+player_test_run:
+	./player_test
 

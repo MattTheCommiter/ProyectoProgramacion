@@ -1,13 +1,13 @@
 /**
- * @file GameReader.h
+ * @brief Provides functions to load game data from text files.
+ * 
+ * @file gameReader.h
  * @author Alvaro
- * @brief Declares the public function used in GameReader.c and game.c
  * @version 1.3
  * @date 2025-02-08
- *
  * @copyright Copyright (c) 2025
- *
  */
+
 #ifndef GameReader_H
 #define GameReader_H
 
@@ -17,7 +17,9 @@
 #include "character.h"
 #include "object.h"
 #include "link.h"
+
 /*declaration of public functions*/
+
 /**
  * @brief creates a new space from the text of a file, the text must be in a specific format, separated by '|'
  * gets all the information needed to create a new space.

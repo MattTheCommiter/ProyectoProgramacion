@@ -40,7 +40,7 @@ Player *player_create(Id id, int inventory_size){
     return NULL;
 
   newPlayer = (Player *)malloc(sizeof(Player));
-  if (newPlayer == NULL){
+  if (newPlayer == NULL || inventory_size < 0){
     return NULL;
   }
 
@@ -68,7 +68,7 @@ Status player_destroy(Player *player){
 
 /**This function sets the ID of the player */
 Status player_set_id(Player *player, Id playerId){
-  if (!player || !playerId){
+  if (!player || playerId == NO_ID){
     return ERROR;
   }
   player->id = playerId;
