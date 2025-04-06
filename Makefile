@@ -12,6 +12,8 @@ vpath %.h $(INCDIR)
 vpath %.c $(SRCDIR)
 vpath %.o $(OBJDIR)
 
+.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run test_run tests
+
 #make - compile game 
 all: juego_hormiga
 
@@ -111,9 +113,6 @@ link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 
 
 
-#Additional commands
-.PHONY: clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run docs clean_docs
-
 ##General clean target 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE) $(TESTS)
@@ -139,21 +138,45 @@ docs:
 run:
 	./juego_hormiga anthill.dat
 
+runLog:
+	./juego_hormiga anthill.dat -l Logfile
+
+runLog_read:
+	./juego_hormiga anthill.dat -l Logfile < game1.cmd
+
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat
 
 character_test_run:
+	@echo ">>>>>>Running character_test:"
 	./character_test
 
 space_test_run:
+	@echo ">>>>>>Running space_test:"
 	./space_test
 
 set_test_run:
+	@echo ">>>>>>Running set_test:"
 	./set_test
 
 inventory_test_run:
+	@echo ">>>>>>Running inventory_test:"
 	./inventory_test
 
 link_test_run:
+	@echo ">>>>>>Running link_test:"
+	./link_test
+
+test_run:
+	@echo ">>>>>>Running all tests:"
+	@echo ">>>>>>Running character_test:"
+	./character_test
+	@echo ">>>>>>Running set_test:"
+	./set_test
+	@echo ">>>>>>Running space_test:"
+	./space_test
+	@echo ">>>>>>Running inventory_test:"
+	./inventory_test
+	@echo ">>>>>>Running link_test:"
 	./link_test
 

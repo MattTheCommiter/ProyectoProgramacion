@@ -1,3 +1,12 @@
+/**
+ * @brief Defines constant values and functions that will be used for tests
+ *
+ * @file test.h
+ * @author PROFESORES PPROG
+ * @version 1.3
+ * @date 10-02-2025
+ */
+
 #ifndef _TEST_H
 #define _TEST_H
 

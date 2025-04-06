@@ -2,7 +2,7 @@
  * @brief It implements the command interpreter
  *
  * @file command.c
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, Alvaro Inigo
  * @version 0
  * @date 11-02-2025
  * @copyright GNU Public License
@@ -28,7 +28,7 @@ struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
   char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
-  Status lastcmd_Success;
+  Status lastcmd_Success;           /*Whether the last command was succesful or not*/
 };
 
 Command *command_create()
@@ -94,7 +94,7 @@ Status command_get_user_input(Command *command)
   /*read the command entered by the user*/
   if (fgets(input, CMD_LENGTH, stdin))
   {
-    token = strtok(input, " \n");
+    token = strtok(input, " \r\n");
     if (!token)
     {
       return command_set_code(command, UNKNOWN);
@@ -116,7 +116,7 @@ Status command_get_user_input(Command *command)
     }
     if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE)
     {
-      token = strtok(NULL, "\n");
+      token = strtok(NULL, "\r\n");
 
       if (!token)
       {
