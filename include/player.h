@@ -40,6 +40,17 @@ Player *player_create(Id id,  int inventory_size);
 Status player_destroy(Player *player);
 
 /**
+ * @brief Sets the ID of the player.
+ * @author Matteo Artunedo, AGL
+ * @param player Pointer to the Player structure.
+ * @param playerId The new ID to be assigned to the player.
+ * @return Status indicating the success or failure of the operation.
+ *         - OK if the ID is successfully set.
+ *         - ERROR if the player pointer or playerId is invalid.
+ */
+Status player_set_id(Player *player, Id playerId);
+
+/**
  * @brief It gets the id of a player
  * @author Matteo Artunedo
  *
