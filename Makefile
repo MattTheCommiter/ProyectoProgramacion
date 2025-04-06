@@ -118,6 +118,12 @@ link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o 
 	gcc -o $@ $^
 
+
+#player test related
+player_test: $(OBJDIR)/player_test.o $(OBJDIR)/player.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
+	gcc -o $@ $^
+
+
 ##General clean target 
 clean:
 	rm -f $(OBJDIR)/*.o $(EXE) $(TESTS)
