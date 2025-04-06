@@ -1,7 +1,7 @@
 /** 
- * @brief  test functions  for the object module
+ * @brief Test functions for the object module
  * 
- * @file inventory_test.h
+ * @file object_test.h
  * @author Alvaro Inigo
  * @version 1.0
  * @date 04-04-2025
