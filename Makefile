@@ -42,10 +42,10 @@ $(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h t
 $(OBJDIR)/command.o: command.c command.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h
+$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h character.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/space.o: space.c space.h types.h
+$(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/gameReader.o: gameReader.c gameReader.h types.h game.h command.h space.h player.h object.h link.h
@@ -54,7 +54,7 @@ $(OBJDIR)/gameReader.o: gameReader.c gameReader.h types.h game.h command.h space
 $(OBJDIR)/object.o: object.c object.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: player.c player.h types.h space.h inventory.h
+$(OBJDIR)/player.o: player.c player.h types.h space.h inventory.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/character.o: character.c character.h types.h 
@@ -152,8 +152,11 @@ run:
 runLog:
 	./juego_hormiga anthill.dat -l Logfile
 
-runLog_read:
+runLog_read1:
 	./juego_hormiga anthill.dat -l Logfile < game1.cmd
+
+runLog_read2:
+	./juego_hormiga anthill.dat -l Logfile < game2.cmd
 
 runV:
 	valgrind --leak-check=full ./juego_hormiga anthill.dat

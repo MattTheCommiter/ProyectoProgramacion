@@ -1,9 +1,12 @@
-move east
+t seed
 move west
-move south
-a
-a
-take seed
-move north
 i seed
-exit
+move s
+move s
+move r
+move r
+move v
+a
+a
+m w
+e
