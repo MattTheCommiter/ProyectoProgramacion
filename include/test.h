@@ -14,11 +14,11 @@
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 #ifndef NOCOLOR
-#define KRED  "\x1B[31m"
-#define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
-#define KCYN  "\x1B[36m"
-#define RESET "\033[0m"
+#define KRED  "\x1B[31m"  /*!<Code for red color*/
+#define KGRN  "\x1B[32m"  /*!<Code for green color*/
+#define KYEL  "\x1B[33m"  /*!<Code for yellow color*/
+#define KCYN  "\x1B[36m"  /*!<Code for cyan color*/
+#define RESET "\033[0m"   /*!<Code for resetting color*/
 #else
 #define KRED
 #define KGRN
