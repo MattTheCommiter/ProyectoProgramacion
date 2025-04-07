@@ -11,6 +11,7 @@
 #ifndef OBJECT_TEST
 #define OBJECT_TEST
 
+#include "types.h"
 #include "test.h"
 #include "object.h"
 
