@@ -1,7 +1,7 @@
 /**
  * @brief It implements the game update through user actions
  *
- * @file game.c
+ * @file game_actions.c
  * @author Matteo Artuñedo,Alvaro Inigo, AGL (modifications for updating Player to include a backpack)
  * @version 0.1
  * @date 22-03-2025
