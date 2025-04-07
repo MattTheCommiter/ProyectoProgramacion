@@ -12,7 +12,7 @@ vpath %.h $(INCDIR)
 vpath %.c $(SRCDIR)
 vpath %.o $(OBJDIR)
 
-.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run docs clean_docs tests test_run
+.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run object_test_run player_test_run docs clean_docs tests test_run
 
 #make - compile game 
 all: juego_hormiga
