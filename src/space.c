@@ -118,8 +118,6 @@ const char *space_get_name(Space *space)
   return space->name;
 }
 
-
-
 Status space_print(Space *space)
 {
   int i;
@@ -190,9 +188,12 @@ Status space_print(Space *space)
     printf("\n%s", space->gdesc[i]);
   }
   fprintf(stdout, "\nDiscovered state of space: ");
-  if(space->discovered == TRUE){
+  if (space->discovered == TRUE)
+  {
     fprintf(stdout, "TRUE");
-  }else{
+  }
+  else
+  {
     fprintf(stdout, "FALSE");
   }
 
@@ -307,22 +308,28 @@ int space_get_num_of_objects(Space *space)
 /*END OF OBJECT RELATED FUNCTIONS*/
 
 /****** */
-Id space_get_object_id_in_pos(Space *space, int pos){
-  if(!space || pos>=space_get_num_of_objects(space)) return NO_ID;
+Id space_get_object_id_in_pos(Space *space, int pos)
+{
+  if (!space || pos >= space_get_num_of_objects(space))
+    return NO_ID;
   return set_get_Id_in_pos(space->objects, pos);
 }
 /****** */
 
-Status space_set_discovered(Space *space, Bool discovered){
-  if(!space || discovered < 0 || discovered > 1){
+Status space_set_discovered(Space *space, Bool discovered)
+{
+  if (!space || discovered < 0 || discovered > 1)
+  {
     return ERROR;
   }
   space->discovered = discovered;
   return OK;
 }
 
-Bool space_get_discovered(Space *space){
-  if(!space) return FALSE;
+Bool space_get_discovered(Space *space)
+{
+  if (!space)
+    return FALSE;
 
   return space->discovered;
 }
