@@ -149,7 +149,7 @@ Status gameReader_load_spaces(Game *game, char *filename)
   }
   free(read_gdesc[0]);
   free(read_gdesc);
-  if (ferror(file))
+  if (ferror(file) || space == NULL)
   {
     status = ERROR;
   }
@@ -213,7 +213,7 @@ Status gameReader_load_objects(Game *game, char *filename)
     }
   }
 
-  if (ferror(file))
+  if (ferror(file) || object == NULL)
   {
     status = ERROR;
   }
@@ -290,7 +290,7 @@ Status gameReader_load_players(Game *game, char *filename)
     }
   }
 
-  if (ferror(file))
+  if (ferror(file) || !player)
   {
     status = ERROR;
   }
@@ -372,7 +372,7 @@ Status gameReader_load_characters(Game *game, char *filename)
     }
   }
 
-  if (ferror(file))
+  if (ferror(file) || character == NULL)
   {
     status = ERROR;
   }
@@ -451,7 +451,7 @@ Status gameReader_load_links(Game *game, char *filename)
     }
   }
 
-  if (ferror(file))
+  if (ferror(file) || !link)
   {
     status = ERROR;
   }
