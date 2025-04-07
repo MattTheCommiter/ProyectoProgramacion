@@ -14,6 +14,9 @@
 
 #include "types.h"
 
+/**
+ * @brief Defines a new type for the Object structure.
+ */
 typedef struct _Object Object;
 
 /**
