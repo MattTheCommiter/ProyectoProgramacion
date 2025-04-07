@@ -21,16 +21,22 @@
  * 
  */
 typedef struct _InterfaceData{
-  Command *lastCmd, *second_to_lastCmd, *third_to_lastCmd;  /*Pointers to the last 3 commands that have been saved*/                              /*Whether the chat message has to be printed or not*/
+  Command *lastCmd;           /*!<Pointer to the last command that have been saved*/
+  Command *second_to_lastCmd; /*!<Pointer to the second-to-last command that have been saved*/
+  Command *third_to_lastCmd;  /*!<Pointer to the third-to-last command that have been saved*/
 }InterfaceData;
 
+/**
+ * @brief Structure where all the game's main information is stored (players, objects, links, spaces...)
+ * 
+ */
 struct _Game
 {
   Object *objects[MAX_OBJECTS];                 /*!<Pointer array to the objects that are present in the game*/
   int n_objects;                                /*!<Number of objects in the game*/
-  Player *players[MAX_PLAYERS];                 /*Array of the different players in the game*/
-  int n_players;                                /*Number of players in the game*/
-  int turn;                                     /*Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
+  Player *players[MAX_PLAYERS];                 /*!<Array of the different players in the game*/
+  int n_players;                                /*!<Number of players in the game*/
+  int turn;                                     /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];                    /*!<Array of Spaces*/
   int n_spaces;                                 /*!<Number of spaces in the game*/
   Character *characters[MAX_CHARACTERS];        /*!<Number of spaces in the game*/
@@ -40,7 +46,7 @@ struct _Game
   Bool finished;                                /*!<Boolean that establishes whether the game has ended or not*/
   char message[MAX_MESSAGE];                    /*!<String that has the message of the character showed in the game*/
   char description[MAX_MESSAGE];                /*!<String that has the description of an object inspected in the game*/
-  InterfaceData *playerCmdHistory[MAX_PLAYERS]; /*There exists a pointer to InterfaceData for each player, where the command history of the player is strored*/
+  InterfaceData *playerCmdHistory[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored*/
 };
 /**
    Private functions
