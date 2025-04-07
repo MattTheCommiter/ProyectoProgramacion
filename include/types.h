@@ -15,8 +15,11 @@
 #define NO_ID -1       /*!<Identification code used for when no id is given*/
 #define NO_HP -1       /*!<Identification for the hp when it is not given*/
 
-/*The Id is neccesary for initialising the player and object*/
-typedef long Id;
+
+/**
+ * @brief Specification of Id type that will be used to define and identify players, objects, links, etc.
+ */
+typedef long Id;    /*!<Identification code*/
 
 
 

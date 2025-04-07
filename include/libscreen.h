@@ -11,7 +11,15 @@
 #ifndef LIBSCREEN_H
 #define LIBSCREEN_H
 
+/**
+ * @brief Definition of Area type for the _Area structure
+ * 
+ */
 typedef struct _Area Area;
+/**
+ * @brief Enumeration that will allow the program to assign different colors to each player according to their turn
+ * 
+ */
 typedef enum {BLUE, GREEN, BLACK, RED, YELLOW, PURPLE, CYAN, WHITE} Frame_color;
 
 

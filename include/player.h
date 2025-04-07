@@ -2,7 +2,7 @@
  * @brief It defines the player module interface
  *
  * @file player.h
- * @author Matteo Artunedo, AGL (modifications for updating Player to include a backpack)
+ * @author Matteo Artunedo, Alvaro Inigo,  AGL (modifications for updating Player to include a backpack)
  * @version 0
  * @date 10-02-2025
  * @copyright GNU Public License
@@ -16,8 +16,9 @@
 #include "character.h" /* defines GDESCTAM macro */
 #include "inventory.h"
 
-#define MAX_BACKPACK_CAPACITY 5
-
+/**
+ * @brief Defines a new type for the Player structure.
+ */
 typedef struct _Player Player;
 
 /**
@@ -25,7 +26,7 @@ typedef struct _Player Player;
  * @author Matteo Artunedo
  *
  * @param id the identification number for the new player
- * @param int the max number of items the player can have in its inventory
+ * @param inventory_size the max number of items the player can have in its inventory
  * @return a new player, initialized
  */
 Player *player_create(Id id,  int inventory_size);
@@ -140,11 +141,12 @@ Bool player_backpack_contains(Player *player, Id obj_id);
 
 
 /**
- * @brief It prints the player information
+ * @brief It prints the details of the player.
  * @author Matteo Artunedo
  *
- * This function shows the id and name of the player, the space it is located in and whether it has an object or not.
- * @param space a pointer to the space
+ 
+ * This function prints the details of the player, including the ID, name, location, health, and backpack contents.
+ * @param player a pointer to the player
  * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status player_print(Player *player);

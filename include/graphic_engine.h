@@ -19,8 +19,11 @@
 #include "types.h"
 #include "character.h"
 
-#define MIN_VALUE_WITH_THREE_NUMBERS 100    /*<!The smallest value that requires three positions to be written*/
-
+#define MIN_VALUE_WITH_THREE_NUMBERS 100    /*!<The smallest value that requires three positions to be written*/
+/**
+ * @brief Structure where the entire graphic interface will be stored and updated
+ * 
+ */
 typedef struct _Graphic_engine Graphic_engine;
 
 /**
