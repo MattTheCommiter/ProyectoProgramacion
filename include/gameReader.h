@@ -50,7 +50,7 @@ Status gameReader_load_objects(Game *game, char *filename);
  * @date 24-03-2025
  * @author Álvaro Inigo
  * @param game a pointer to game
- * @param filename the name of the filename
+ * @param filename the name of the text file
  * @return Status OK of ERROR
  */
 Status gameReader_load_players(Game *game, char *filename);
@@ -60,7 +60,7 @@ Status gameReader_load_players(Game *game, char *filename);
  * @date 24-03-2025
  * @author Álvaro Inigo
  * @param game a pointer to game
- * @param filename the name of the filename
+ * @param filename the name of the text file
  * @return Status OK of ERROR
  */
 Status gameReader_load_characters(Game *game, char *filename);
@@ -70,7 +70,7 @@ Status gameReader_load_characters(Game *game, char *filename);
  * @date 25-03-2025
  * @author Álvaro Inigo
  * @param game a pointer to game
- * @param filename the name of the filename
+ * @param filename the name of the text file
  * @return Status OK of ERROR
  */
 Status gameReader_load_links(Game *game, char *filename);

@@ -56,8 +56,7 @@ Status gameReader_load_spaces(Game *game, char *filename)
     return ERROR;
   }
   /**
-   * @brief reads the file and load each data individually.
-   *
+   * reads the file and loads each data individually.
    */
 
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
@@ -182,8 +181,7 @@ Status gameReader_load_objects(Game *game, char *filename)
     return ERROR;
   }
   /**
-   * @brief reads the file and load each data individually.
-   *
+   * reads the file and loads each data individually.
    */
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
@@ -250,8 +248,7 @@ Status gameReader_load_players(Game *game, char *filename)
     return ERROR;
   }
   /**
-   * @brief reads the file and load each data individually.
-   *
+   * reads the file and loads each data individually.
    */
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
@@ -329,8 +326,7 @@ Status gameReader_load_characters(Game *game, char *filename)
     return ERROR;
   }
   /**
-   * @brief reads the file and load each data individually.
-   *
+   * reads the file and loads each data individually.
    */
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
@@ -411,8 +407,7 @@ Status gameReader_load_links(Game *game, char *filename)
     return ERROR;
   }
   /**
-   * @brief reads the file and load each data individually.
-   *
+   * reads the file and loads each data individually.
    */
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
@@ -448,7 +443,10 @@ Status gameReader_load_links(Game *game, char *filename)
         link_set_destination_id(link, idDest);
         link_set_direction(link, direccion);
         link_set_is_open(link, open);
-        game_add_link(game, link);
+        if(!(game_add_link(game, link))){
+          link_destroy(link);
+          return ERROR;
+        }
       }
     }
   }

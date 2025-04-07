@@ -22,9 +22,9 @@
 #define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
 #define MAX_OBJECTS 10              /*!<The maximum ammount of objects present at the game*/
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
-#define MAX_LINKS MAX_SPACES * 4    /*!<The maximum amount of links present at the game*/
+#define MAX_LINKS (MAX_SPACES * 4)  /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
-#define MAX_PLAYERS 8               /*!<The number of players that will play at the same time*/
+#define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
 
 /**
  * @brief describes whether we want to access to the last, the second to last or the third to last command
@@ -72,7 +72,7 @@ Status game_create(Game **game);
  * @author Alvaro Inigo
  *
  * @param game a double pointer to the structure with the game's main information
- * @param filename
+ * @param filename name of the file where the game's information is saved
  * @return Status: if the function was completed succesfully
  */
 Status game_create_from_file(Game **game, char *filename);
@@ -104,7 +104,7 @@ Space *game_get_space(Game *game, Id id);
  * @brief returns the location of the player that is currently playing
  *
  * @date 27-01-2025
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (multiplayer)
  *
  * @param game a pointer to the structure with the game's main information
  * @return the id of the player's location
@@ -175,7 +175,7 @@ Status game_set_finished(Game *game, Bool finished);
  * @brief prints the players' location, the objects' location and prints the information regarding all the spaces in the game
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Matteo Artunedo
  *
  * @param game a pointer to the structure with the game's main information
  */
@@ -184,14 +184,14 @@ void game_print(Game *game);
  * @brief Gets a pointer to the player that is currently playing
  *
  * @date 12-02-2025
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (multiplayer)
  *
  * @param game a pointer to the strucuture.
  * @return a pointer to the player.
  */
 Player *game_get_current_player(Game *game);
 /**
- * @brief gets the object of the game(pointer) in a determined position
+ * @brief gets the object of the game(pointer) with a specified id 
  *
  * @date 12-02-2025
  * @author Alvaro Inigo
@@ -368,7 +368,7 @@ int game_get_n_characters(Game *game);
  * @date 08/03/25
  *@author Alvaro Inigo
  * @param game a pointer to the game
- * @param character_id the Id of the character we are loking for
+ * @param character_id the Id of the character we are looking for
  * @return Id the id of the space the character is located at.
  */
 Id game_get_character_location(Game *game, Id character_id);
@@ -438,7 +438,7 @@ necesaria por ahora para el modulo de game reader
 */
 
 /**
- * @brief adds a player to the game, as well as his command history
+ * @brief adds a player to the game, as well as their command history
  * @author Alvaro Inigo, Matteo Artunedo (command history)
  * @param game a pointer to the game
  * @param player a pointer to the new player

@@ -67,9 +67,6 @@ Id game_get_space_id_at(Game *game, int position);
  * @return pointer to InterfaceData
  */
 InterfaceData *game_interface_data_create();
-/**
-   Game interface implementation
-*/
 
 Status game_create(Game **game)
 {
@@ -286,9 +283,6 @@ Object *game_get_object_in_pos(Game *game, int pos)
     return NULL;
   return game->objects[pos];
 }
-/**
-   Implementation of private functions
-*/
 
 Id game_get_space_id_at(Game *game, int position)
 {
@@ -478,7 +472,6 @@ Character *game_get_character_from_name(Game *game, char *name)
 
 /*LINK RELATED FUNCTIONS*/
 
-/** NOTE: WHENEVER GAME_READER_LOAD_LINKS IS WRITTEN EXIT VALUE FOR THIS FUNCTION SHOULD BE CHECKED AS CORRECT FUNCTION ARGUMENTS ARE NOT SUFFICIENT FOR CORRECT EXIT*/
 Status game_add_link(Game *game, Link *link) 
 {
   Direction aux_dir = link_get_direction(link);

@@ -24,7 +24,7 @@ struct _Inventory {
   int max_objs;             /*!< max number of objects in the player's backpack */
 };
  
-  /** This function creates a new inventory with a given maximum number of objects  */
+
 Inventory* inventory_create(int max_objs) {
   Inventory* new_inventory = NULL;
 
@@ -52,8 +52,6 @@ Inventory* inventory_create(int max_objs) {
   return new_inventory;
 }
 
-/** This function destroys an inventory and frees the memory allocated for
- * the Inventory structure and its associated Set of objects  */
 Status inventory_destroy(Inventory* inventory) {
   if (!inventory) {
     return ERROR;
@@ -67,8 +65,7 @@ Status inventory_destroy(Inventory* inventory) {
   return OK;
 }
 
-/**This function returns a pointer to the set of objects contained in the 
- * inventory. If the inventory pointer is NULL, it returns NULL. */
+
 Set* inventory_get_objs(Inventory* inventory) {
   if (!inventory) {
     return NULL;
@@ -76,8 +73,7 @@ Set* inventory_get_objs(Inventory* inventory) {
   return inventory->objs;
 }
 
-/**This function returns the maximum number of objects that the inventory can
-* hold. If the inventory pointer is NULL, it returns -1. */
+
 int inventory_get_max_objs(Inventory* inventory) {
   if (!inventory) {
     return -1;  
@@ -85,8 +81,6 @@ int inventory_get_max_objs(Inventory* inventory) {
   return inventory->max_objs;
 }
 
-/** This function checks if the inventory contains a specific object by
-* using the set_belongs function to check for the presence of the object ID in the set */
 Bool inventory_contains(Inventory *inventory, Id object_id) {
   if (!inventory || !inventory->objs || object_id == NO_ID) {
     return FALSE;
@@ -95,9 +89,6 @@ Bool inventory_contains(Inventory *inventory, Id object_id) {
   return set_belongs(inventory->objs, object_id);
 }
 
-/*** This function sets the set of objects contained in the inventory. It updates
-* the inventory's set of objects to the given set. If either the inventory
-* pointer or the set pointer is NULL, it returns ERROR. */
 Status inventory_set_objs(Inventory* inventory, Set* objs) {
   if (!inventory || !objs) {
     return ERROR;
@@ -106,9 +97,7 @@ Status inventory_set_objs(Inventory* inventory, Set* objs) {
   return OK;
 }
 
-/**This function sets the maximum number of objects that the inventory can hold
-* to the value passed as argument. If the inventory pointer is NULL or if max_objs is
-* negative, it returns ERROR. */
+
 Status inventory_set_max_objs(Inventory* inventory, int max_objs) {
   if (!inventory || max_objs < 0) {
     return ERROR;
@@ -117,8 +106,7 @@ Status inventory_set_max_objs(Inventory* inventory, int max_objs) {
   return OK;
 }
 
-/**This function checks if the inventory has reached its maximum capacity by
-* using the set_get_num_elements function to get the number of elements in the set. */
+
 Bool inventory_is_full(Inventory* inventory) {
 
   int num_objects = 0;
@@ -134,8 +122,7 @@ Bool inventory_is_full(Inventory* inventory) {
   return num_objects >= inventory->max_objs;
 }
 
-/**This function checks if the inventory is empty by using the set_get_num_elements
-* function to get the number of elements in the set. */
+
 Bool inventory_is_empty(Inventory *inventory){
 
 
@@ -145,7 +132,7 @@ Bool inventory_is_empty(Inventory *inventory){
   return set_is_empty(inventory->objs);
 }
 
-/**This function returns the object ID at the specified position in the inventory. */
+
 Id inventory_get_object_id_at(Inventory *inventory, int position){
   if (inventory == NULL || position < 0 || position >= set_get_num_elements(inventory->objs)){
     return NO_ID;
@@ -154,7 +141,7 @@ Id inventory_get_object_id_at(Inventory *inventory, int position){
   return set_get_Id_in_pos(inventory->objs, position);
 }
 
-/**This function adds an object to the inventory if there is space available. */
+
 Status inventory_add_object_id(Inventory* inventory, Id obj_id) {
   if (inventory == NULL || obj_id == NO_ID) {
     return ERROR;
@@ -167,18 +154,17 @@ Status inventory_add_object_id(Inventory* inventory, Id obj_id) {
   return set_add(inventory->objs, obj_id);
 }
 
-/** This function removes an object from the inventory */
+
 Status inventory_del_object_id(Inventory* inventory, Id obj_id) {
   if (!inventory || obj_id == NO_ID) {
     return ERROR;
   }
 
-  /*set_del checks first if the object belogs to the set, and then removes it*/
+
   return set_del(inventory->objs, obj_id);
 }
 
-/**This function prints the details of the inventory, including the maximum
- * number of objects and the IDs of the objects currently in the inventory. */
+
 Status inventory_print(Inventory *inventory) {
 
   int i;
