@@ -149,7 +149,7 @@ Status game_destroy(Game *game)
     if (game->links[i])
       link_destroy(game->links[i]);
   }
-  for (i = 0; i < 2; i++)
+  for (i = 0; i < game->n_characters; i++)
   {
     if (game->characters[i])
       character_destroy(game->characters[i]);
@@ -158,17 +158,11 @@ Status game_destroy(Game *game)
     if(game->players[i]){
       player_destroy(game->players[i]);
     }
-  }
-
-  for (i = 0; i < game->n_players; i++)
-  {
     command_destroy(game->playerCmdHistory[i]->lastCmd);
     command_destroy(game->playerCmdHistory[i]->second_to_lastCmd);
     command_destroy(game->playerCmdHistory[i]->third_to_lastCmd);
     free(game->playerCmdHistory[i]);
   }
-
-
   free(game);
 
   return OK;
