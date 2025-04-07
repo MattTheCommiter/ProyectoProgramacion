@@ -95,9 +95,10 @@ void game_actions_attack(Game *game);
  * @param game a pointer to the game
  */
 void game_actions_inspect(Game *game, char *arg);
-/**
-   Game actions implementation
-*/
+
+
+
+/*Game actions implementation*/
 
 Status game_actions_update(Game *game, Command *command)
 {

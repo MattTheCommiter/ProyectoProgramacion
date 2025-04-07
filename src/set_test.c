@@ -2,7 +2,7 @@
  * @brief It tests set module
  * 
  * @file set_test.c
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, Guilherme Povedano 
  * @version 0.1 
  * @date 24-02-2025
  * @copyright GNU Public License

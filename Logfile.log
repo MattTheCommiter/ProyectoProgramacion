@@ -1,9 +1,12 @@
-Move east: ERROR
-Move west: ERROR
-Move south: OK
-Attack: ERROR
-Attack: OK
 Take seed: OK
-Move north: OK
+Move west: ERROR
 Inspect seed: OK
+Move s: OK
+Move s: OK
+Move r: ERROR
+Move r: ERROR
+Move v: ERROR
+Attack: OK
+Attack: OK
+Move w: ERROR
 Exit: OK

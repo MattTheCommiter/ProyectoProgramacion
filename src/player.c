@@ -2,7 +2,7 @@
  * @brief It implements the player module
  *
  * @file player.c
- * @author Matteo Artuñedo, AGL (modifications to include backpack)
+ * @author Matteo Artuñedo, Araceli Gutierrez, Alvaro Inigo, Guilherme Povedano 
  * @version 0
  * @date 22-03-2025
  * @copyright GNU Public License
