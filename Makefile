@@ -206,5 +206,50 @@ test_run:
 	@echo ">>>>>>Running player_test:"
 	./player_test
 
+character_test_runV:
+	@echo ">>>>>>Running character_test with Valgrind:"
+	valgrind --leak-check=full ./character_test
+
+space_test_runV:
+	@echo ">>>>>>Running space_test with Valgrind:"
+	valgrind --leak-check=full ./space_test
+
+set_test_runV:
+	@echo ">>>>>>Running set_test with Valgrind:"
+	valgrind --leak-check=full ./set_test
+
+inventory_test_runV:
+	@echo ">>>>>>Running inventory_test with Valgrind:"
+	valgrind --leak-check=full ./inventory_test
+
+link_test_runV:
+	@echo ">>>>>>Running link_test with Valgrind:"
+	valgrind --leak-check=full ./link_test
+
+object_test_runV:
+	@echo ">>>>>>Running object_test with Valgrind:"
+	valgrind --leak-check=full ./object_test
+
+player_test_run_V:
+	@echo ">>>>>>Running player_test with Valgrind:"
+	valgrind --leak-check=full ./player_test
+
+test_runV:
+	@echo ">>>>>>Running all tests with Valgrind:"
+	@echo ">>>>>>Running character_test with Valgrind:"
+	valgrind --leak-check=full ./character_test
+	@echo ">>>>>>Running set_test with Valgrind:"
+	valgrind --leak-check=full ./set_test
+	@echo ">>>>>>Running space_test with Valgrind:"
+	valgrind --leak-check=full ./space_test
+	@echo ">>>>>>Running inventory_test with Valgrind:"
+	valgrind --leak-check=full ./inventory_test
+	@echo ">>>>>>Running link_test with Valgrind:"
+	valgrind --leak-check=full ./link_test
+	@echo ">>>>>>Running object_test with Valgrind:"
+	valgrind --leak-check=full ./object_test
+	@echo ">>>>>>Running player_test with Valgrind:"
+	valgrind --leak-check=full ./player_test
+
 
 

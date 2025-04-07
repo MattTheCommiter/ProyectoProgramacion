@@ -115,7 +115,7 @@ Id graphic_engine_vertically_adjacent_square(Game *game, Id id_center, Direction
  * 
  * @param game pointer to the game
  * @param ge pointer to the graphic engine
- * @param pos position of thecommand (whether we want to print the last command, the second to last or the third to last)
+ * @param pos position of the command (whether we want to print the last command, the second to last or the third to last)
  * @param str the string to which the feedback will be copied
  */
 void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
@@ -625,13 +625,16 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
   /*Printing the message of the game, given after the command 'Chat'*/
-  if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == CHAT)
+  if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == CHAT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
   {
+    sprintf(str, "Character message:");
+    screen_area_puts(ge->descript, str);
+    
     sprintf(str, "  Message: %s", game_get_message(game));
     screen_area_puts(ge->descript, str);
   }
   /*Printing the description of the game, given after the command 'Inspect'*/
-  if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT)
+  if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT &&command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
   {
     sprintf(str, "Object description:");
     screen_area_puts(ge->descript, str);

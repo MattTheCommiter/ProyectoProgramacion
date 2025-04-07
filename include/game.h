@@ -318,7 +318,7 @@ Character *game_get_character_from_name(Game *game, char *name);
 Id game_get_objectId_from_name(Game *game, char *name);
 
 /**
- * @brief Gets the message in the game
+ * @brief Gets the message in the game for the current player
  * @date 04/03/25
  * @author Matteo Artunedo
  * @param game a pointer to game
@@ -327,7 +327,7 @@ Id game_get_objectId_from_name(Game *game, char *name);
 char *game_get_message(Game *game);
 
 /**
- * @brief Sets the message in the game
+ * @brief Sets the message in the game for the current player
  * @date 04/03/25
  * @author Matteo Artunedo
  * @param game a pointer to game
@@ -416,7 +416,7 @@ Id game_get_connection(Game *game, Id current_space, Direction link_direction);
 int game_get_n_links(Game *game);
 
 /**
- * @brief sets the description of an object in the game
+ * @brief sets the description of an object in the game for the current player
  * @date 24/03/25
  * @author Alvaro Inigo
  * @param game a pointer to the game
@@ -425,7 +425,7 @@ int game_get_n_links(Game *game);
  */
 Status game_set_description(Game *game, char *desc);
 /**
- * @brief Returns the description of an object in the game
+ * @brief Returns the description of an object in the game for the current player
  * @date 24/03/25
  * @author Alvaro Inigo
  * @param game a pointer to the game

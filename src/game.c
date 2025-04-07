@@ -17,13 +17,15 @@
 
 
 /**
- * @brief Private structure that saves the 3 last commands of a player
+ * @brief Private structure that saves the 3 last commands of a player and the messages and descriptions of object they chat with and inspect respectively
  * 
  */
 typedef struct _InterfaceData{
-  Command *lastCmd;           /*!<Pointer to the last command that have been saved*/
-  Command *second_to_lastCmd; /*!<Pointer to the second-to-last command that have been saved*/
-  Command *third_to_lastCmd;  /*!<Pointer to the third-to-last command that have been saved*/
+  Command *lastCmd;               /*!<Pointer to the last command that have been saved*/
+  Command *second_to_lastCmd;     /*!<Pointer to the second-to-last command that have been saved*/
+  Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
+  char message[MAX_MESSAGE];      /*!<String that has the message of the character the player last talked to*/
+  char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
 }InterfaceData;
 
 /**
@@ -44,9 +46,7 @@ struct _Game
   Link *links[MAX_LINKS];                       /*!<Array of links*/
   int n_links;                                  /*!<Number of links in the game*/
   Bool finished;                                /*!<Boolean that establishes whether the game has ended or not*/
-  char message[MAX_MESSAGE];                    /*!<String that has the message of the character showed in the game*/
-  char description[MAX_MESSAGE];                /*!<String that has the description of an object inspected in the game*/
-  InterfaceData *playerCmdHistory[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored*/
+  InterfaceData *playerGraphicInformation[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored as well as information related to displayed messages*/
 };
 /**
    Private functions
@@ -62,7 +62,7 @@ struct _Game
 Id game_get_space_id_at(Game *game, int position);
 
 /**
- * @brief Creates a pointer to an InterfaceData structure with all commands set to NO_CMD
+ * @brief Creates a pointer to an InterfaceData structure with all commands set to NO_CMD and all text set to empty
  * @author Matteo Artunedo
  * @return pointer to InterfaceData
  */
@@ -87,8 +87,6 @@ Status game_create(Game **game)
   (*game)->n_objects = 0;
   (*game)->n_links = 0;
   (*game)->finished = FALSE;
-  (*game)->message[0] = '\0';
-  (*game)->description[0] = '\0';
 
   return OK;
 }
@@ -155,10 +153,10 @@ Status game_destroy(Game *game)
     if(game->players[i]){
       player_destroy(game->players[i]);
     }
-    command_destroy(game->playerCmdHistory[i]->lastCmd);
-    command_destroy(game->playerCmdHistory[i]->second_to_lastCmd);
-    command_destroy(game->playerCmdHistory[i]->third_to_lastCmd);
-    free(game->playerCmdHistory[i]);
+    command_destroy(game->playerGraphicInformation[i]->lastCmd);
+    command_destroy(game->playerGraphicInformation[i]->second_to_lastCmd);
+    command_destroy(game->playerGraphicInformation[i]->third_to_lastCmd);
+    free(game->playerGraphicInformation[i]);
   }
   free(game);
 
@@ -407,7 +405,7 @@ char *game_get_message(Game *game)
   if (!game)
     return NULL;
 
-  return game->message;
+  return game->playerGraphicInformation[game->turn]->message;
 }
 
 Status game_set_message(Game *game, char *msg)
@@ -415,7 +413,7 @@ Status game_set_message(Game *game, char *msg)
   if (!game || !msg)
     return ERROR;
 
-  strcpy(game->message, msg);
+  strcpy(game->playerGraphicInformation[game->turn]->message, msg);
   return OK;
 }
 
@@ -556,7 +554,7 @@ Status game_set_description(Game *game, char *desc)
   if(!game || !desc){
     return ERROR;
   }
-  strcpy(game->description, desc);
+  strcpy(game->playerGraphicInformation[game->turn]->description, desc);
   return OK;
 }
 char *game_get_description(Game *game)
@@ -565,7 +563,7 @@ char *game_get_description(Game *game)
   {
     return NULL;
   }
-  return game->description;
+  return game->playerGraphicInformation[game->turn]->description;
 }
 
 Status game_add_player(Game *game, Player *player){
@@ -575,7 +573,7 @@ Status game_add_player(Game *game, Player *player){
   }
 
   game->players[game->n_players] = player;
-  game->playerCmdHistory[game->n_players] = game_interface_data_create();
+  game->playerGraphicInformation[game->n_players] = game_interface_data_create();
   game->n_players++;
   
   return OK;
@@ -604,19 +602,19 @@ Status game_delete_player(Game *game){
   if(!(player_destroy(game->players[game->turn]))){
     return ERROR;
   }
-  command_destroy(game->playerCmdHistory[game->turn]->lastCmd);
-  game->playerCmdHistory[game->turn]->lastCmd = NULL;
-  command_destroy(game->playerCmdHistory[game->turn]->second_to_lastCmd);
-  command_destroy(game->playerCmdHistory[game->turn]->third_to_lastCmd);
-  free(game->playerCmdHistory[game->turn]);
+  command_destroy(game->playerGraphicInformation[game->turn]->lastCmd);
+  game->playerGraphicInformation[game->turn]->lastCmd = NULL;
+  command_destroy(game->playerGraphicInformation[game->turn]->second_to_lastCmd);
+  command_destroy(game->playerGraphicInformation[game->turn]->third_to_lastCmd);
+  free(game->playerGraphicInformation[game->turn]);
   game->n_players--;
 
   for(i = game->turn; i<game->n_players; i++){
     game->players[i] = game->players[i+1];
-    game->playerCmdHistory[i] = game->playerCmdHistory[i+1];
+    game->playerGraphicInformation[i] = game->playerGraphicInformation[i+1];
   }
   game->players[game->n_players] = NULL;
-  game->playerCmdHistory[i] = NULL;
+  game->playerGraphicInformation[i] = NULL;
 
   return OK;
 }
@@ -638,31 +636,34 @@ InterfaceData *game_interface_data_create(){
   command_set_code(data->lastCmd, NO_CMD);
   command_set_code(data->second_to_lastCmd, NO_CMD);
   command_set_code(data->third_to_lastCmd, NO_CMD);
+
+  data->description[0] = '\0';
+  data->message[0] = '\0';
   return data;
 }
 
 Status game_interface_data_set_last_command(Game *game, Command *last_cmd){
   if(!game || !last_cmd) return ERROR;
-  command_destroy(game->playerCmdHistory[game->turn]->third_to_lastCmd);
-  game->playerCmdHistory[game->turn]->third_to_lastCmd = game->playerCmdHistory[game->turn]->second_to_lastCmd;
-  game->playerCmdHistory[game->turn]->second_to_lastCmd = game->playerCmdHistory[game->turn]->lastCmd;
-  game->playerCmdHistory[game->turn]->lastCmd = last_cmd;
+  command_destroy(game->playerGraphicInformation[game->turn]->third_to_lastCmd);
+  game->playerGraphicInformation[game->turn]->third_to_lastCmd = game->playerGraphicInformation[game->turn]->second_to_lastCmd;
+  game->playerGraphicInformation[game->turn]->second_to_lastCmd = game->playerGraphicInformation[game->turn]->lastCmd;
+  game->playerGraphicInformation[game->turn]->lastCmd = last_cmd;
 
   return OK;
 }
 
 Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos) {
   if (!game) return NULL;
-  if(!game->playerCmdHistory[game->turn]){
+  if(!game->playerGraphicInformation[game->turn]){
     return NULL;
   }
   switch(pos){
     case LAST:
-      return game->playerCmdHistory[game->turn]->lastCmd; 
+      return game->playerGraphicInformation[game->turn]->lastCmd; 
     case SECOND_TO_LAST:
-      return game->playerCmdHistory[game->turn]->second_to_lastCmd;
+      return game->playerGraphicInformation[game->turn]->second_to_lastCmd;
     case THIRD_TO_LAST:
-      return game->playerCmdHistory[game->turn]->third_to_lastCmd;
+      return game->playerGraphicInformation[game->turn]->third_to_lastCmd;
     default:
       return NULL;
   }
