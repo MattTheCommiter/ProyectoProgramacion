@@ -1,6 +1,6 @@
 /**
  * @brief creates a textual graphic engine for the game
- * @file graphic_engine.c
+ * @file gameReader.c
  * @author Alvaro Inigo
  * @version 0.2
  * @date 2025-03-014

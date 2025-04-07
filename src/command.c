@@ -24,9 +24,9 @@
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
 
 /**
- * @brief Command
+ * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
  *
- * This struct stores the code related to a command.
+ * 
  */
 struct _Command
 {

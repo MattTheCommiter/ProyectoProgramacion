@@ -15,17 +15,16 @@
 #include <string.h>
 
 /**
- * @brief Player
+ * @brief This struct stores all the information of a player: their id, name, location, backpack, graphical description and health
  * @author PPROG - Team 2101_D - Matteo Artunedo, AGL (modifications to include backpack)
  * @date 22-03-2025
- * This struct stores all the information of a player.
+ * 
  */
 struct _Player
 {
   Id id;                    /*!< Id number of the player, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the player */
   Id location;              /*!<Id of the   where the player is located*/
-  Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
   char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
   Inventory *backpack;      /*!< Backpack to carry multiple objects */

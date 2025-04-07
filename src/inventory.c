@@ -15,9 +15,9 @@
  #include <string.h>
  
 /**
-* @brief inventory.c
+* @brief This struct stores all the information of an inventory: the number of objects and the set that contains the objects
 *
-* This struct stores all the information of an inventory.
+* 
 */
 struct _Inventory {
   Set *objs;               /*!< Set of objects in the player's backpack */

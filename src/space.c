@@ -15,7 +15,7 @@
 #include <string.h>
 
 /**
- * @brief Space
+ * @brief This struct stores all the information of a space: its id, graphical description, objects, character, name, and whether it is discovered or not
  *
  * This struct stores all the information of a space.
  */

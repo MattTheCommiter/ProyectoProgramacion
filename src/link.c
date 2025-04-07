@@ -14,9 +14,9 @@
 #include <string.h>
 
 /**
- * @brief Link
+ * @brief This struct stores all the information relative to a link: its id, name, direction, whether its open or not and the id's of the spaces it connects
  * 
- * This struct stores all the information relative to a link
+ * 
 */
 struct _Link {
     Id link_id;                 /*!< Id of the link, it must be unique */
