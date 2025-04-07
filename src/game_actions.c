@@ -72,21 +72,6 @@ void game_actions_take(Game *game, char *arg);
 void game_actions_drop(Game *game, char *arg);
 
 /**
- * @brief Moves the player to the space on its left
- * @date 20-02-2025
- * @author Alvaro Inigo, Matteo Artunedo (changes to incoporate link functions)
- * @param game a pointer to the game
- */
-void game_actions_left(Game *game);
-/**
- * @brief Moves the player to the space on its right
- * @date 20-02-2025
- * @author Alvaro Inigo, Matteo Artunedo (changes to incoporate link functions)
- * @param game a pointer to the game
- */
-void game_actions_right(Game *game);
-
-/**
  * @brief chats with a character in the same space, assigning the character's message to the message parameter in game
  *
  * @date 04-03-2025
