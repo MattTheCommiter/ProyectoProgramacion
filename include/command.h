@@ -13,10 +13,11 @@
 
 #include "types.h"
 
-#define N_CMDT 2       /*<!Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 9       /*<!Number of commands that are possible*/
-#define MAX_CMD_ARG 20 /*<!Maximum number of characters in the argument parameter of the command*/
-#define NO_ARG NULL    /*<!the pointer defined for no argument*/
+#define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
+#define N_CMD 9       /*!< Number of commands that are possible*/
+#define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
+#define NO_ARG NULL    /*!< the pointer defined for no argument*/
+
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */
@@ -42,6 +43,9 @@ typedef enum
     INSPECT      /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
 } CommandCode;
 
+/**
+ * @brief Defines a new type for the Command structure.
+ */
 typedef struct _Command Command;
 
 /**
@@ -121,7 +125,7 @@ char *command_get_argument(Command *command);
  * @brief sets either the last command was successful or not.
  * @author Alvaro Inigo
  * @param command pointer to the command
- * @param Status lastcmd_succes OK or ERROR
+ * @param lastcmd_success status variable: OK or ERROR
  * @return Status, OK if everything went right or ERROR
  */
 Status command_set_lastcmd_success(Command *command, Status lastcmd_success);
