@@ -15,10 +15,14 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGTH 30 /*maximum length of commands written by user*/
-#define ARG_LENGTH 30 /*maximum length of object names*/
+#define CMD_LENGTH 30  /*!<maximum length of commands written by user*/
+#define ARG_LENGTH 30 /*!<maximum length of object names*/
 
+/**
+ * @brief Array mapping command strings to their descriptions.
+ */
 char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
+
 /**
  * @brief Command
  *
@@ -28,7 +32,7 @@ struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
   char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
-  Status lastcmd_Success;           /*Whether the last command was succesful or not*/
+  Status lastcmd_Success;           /*!< Whether the last command was succesful or not*/
 };
 
 Command *command_create()
