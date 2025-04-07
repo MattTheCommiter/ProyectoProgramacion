@@ -178,6 +178,14 @@ link_test_run:
 	@echo ">>>>>>Running link_test:"
 	./link_test
 
+object_test_run:
+	@echo ">>>>>>Running object_test:"
+	./object_test
+
+player_test_run:
+	@echo ">>>>>>Running player_test:"
+	./player_test
+
 test_run:
 	@echo ">>>>>>Running all tests:"
 	@echo ">>>>>>Running character_test:"
@@ -190,10 +198,10 @@ test_run:
 	./inventory_test
 	@echo ">>>>>>Running link_test:"
 	./link_test
-
-object_test_run:
+	@echo ">>>>>>Running object_test:"
 	./object_test
-
-player_test_run:
+	@echo ">>>>>>Running player_test:"
 	./player_test
+
+
 
