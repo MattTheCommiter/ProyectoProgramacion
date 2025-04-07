@@ -27,6 +27,13 @@
 #define RESET
 #endif
 
+/**
+ * @brief Prints the result of a test and updates test counters.
+ *
+ * This macro increments the test counter, evaluates the test result, updates the count of passed tests, and prints the test result.
+ *
+ * @param x The expression to evaluate as the test result.
+ */
 #define PRINT_TEST_RESULT(x) do{					\
     __test_counter++;							\
     __pass = (x);							\
@@ -36,6 +43,11 @@
 	   ((!__pass) ? KRED "NOT PASS" RESET : KGRN "PASS" RESET));	\
   } while (0)
 
+  /**
+ * @brief Prints the percentage of tests passed.
+ *
+ * This macro prints the percentage of tests passed based on the number of tests passed and the total number of tests.
+ */
 #define PRINT_PASSED_PERCENTAGE printf("Tests passed %d%%\n", ((__test_passed * 100) / __test_counter))
       
 static int __test_counter = 0;
