@@ -14,7 +14,7 @@
  #include <stdlib.h> 
  #include <string.h> 
  
- #define MAX_TESTS 32
+ #define MAX_TESTS 32   /*!<The total number of tests that can be run*/
  
  /** 
   * @brief Main function for INVENTORY unit tests. 

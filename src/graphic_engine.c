@@ -33,7 +33,7 @@
 #define TOP_HEIGHT 3              /*!<Height of the highest line of spaces in the map*/
 #define GDESC_INITIAL_POSITION 2  /*!<The position the first line of the graphic description of a space has in the total space square*/
 #define GDESC_FINAL_POSITION 7    /*!<The position the last line of the graphic description of a space has in the total space square*/
-#define MAX_STR 255               /*The maximum characters of a line*/
+#define MAX_STR 255               /*!<The maximum characters of a line*/
 
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
@@ -44,11 +44,11 @@
 struct _Graphic_engine
 {
   Area 
-  *map,       /*Map area of the graphic engine. Here we can see the players, objects, spaces, graphical descriptions, etc*/
-  *descript,  /*Description area of the graphic engine. Here the player can get info about the game such as object and character placement, his health, etc*/
-  *banner,    /*Title area in the graphic engine. Here we can see the title of the game and the player who is currently playing*/
-  *help,      /*Help area of the graphic engine. Here all of the possible commands a player can run are displayed*/
-  *feedback;  /*Feedback area in the graphic engine. Here the player can see the commands he has executed and if they were succesful*/
+  *map,       /*!<Map area of the graphic engine. Here we can see the players, objects, spaces, graphical descriptions, etc*/
+  *descript,  /*!<Description area of the graphic engine. Here the player can get info about the game such as object and character placement, his health, etc*/
+  *banner,    /*!<Title area in the graphic engine. Here we can see the title of the game and the player who is currently playing*/
+  *help,      /*!<Help area of the graphic engine. Here all of the possible commands a player can run are displayed*/
+  *feedback;  /*!<Feedback area in the graphic engine. Here the player can see the commands he has executed and if they were succesful*/
 };
 
 /**
@@ -104,7 +104,7 @@ Id graphic_engine_horizontally_adjacent_square(Game *game, Id id_player, Directi
  * @brief returns the id of the space that is at the vertically adjacent to id_center
  * @author Matteo Artunedo
  * @param game pointer to game
- * @param id_player id of the space where the player is located
+ * @param id_center id of the space where the player is located
  * @param d direction used to look for the adjacent square (N or S)
  * @return Id of the vertically adjacent space
  */

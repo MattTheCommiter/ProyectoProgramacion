@@ -20,7 +20,7 @@
 #include "command.h"
 #include "game.h"
 
-#define TIME_BETWEEN_TURNS 1  /*Ammount of seconds the game gives each player to visualize their action before changing the turn*/
+#define TIME_BETWEEN_TURNS 1  /*!< Ammount of seconds the game gives each player to visualize their action before changing the turn*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -43,7 +43,7 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name);
  *
  * @param game a pointer to the structure with the game's main information
  * @param gengine a pointer to the game's graphic engine
- * @param logfile a pointer to the log file
+ * @param log_file a pointer to the log file
  */
 void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file);
 
@@ -111,17 +111,8 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-/**
- * @brief initializes the game, calling the game_create_from_file function with the text file that has been passed as an argument
- * @author Profesores PPROG
- * @date 27-01-2025
- *
- * @param game a pointer to the structure with the game's main information
- * @param genginge a pointer to pointer of the structure where the game's graphic engine will run
- * @param file_name string with the name of the file where the game's information is located
- *
- * @return 1 if errors occur, and 0 if everything runs correctly
- */
+/**Yhis function initializes the game, calling the game_create_from_file function with the text file
+ * that has been passed as an argument. */
 int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
 {
   srand(time(NULL));
@@ -142,16 +133,7 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
   return 0;
 }
 
-/**
- * @brief this function runs the game and calls the necessary functions for this purpose
- *
- * @author Profesores PPROG
- * @date 27-01-2025
- *
- * @param game structure with the game's main information
- * @param gengine pointer to the structure with the game's graphic interface information
- * @param logfile a pointer to the log file
- */
+/**this function runs the game and calls the necessary functions for this purpose. */
 void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
   Command *last_cmd = NULL;
   CommandCode cmd_code;
@@ -215,15 +197,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
   while ((command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) != EXIT) && (game_get_finished(game) == FALSE));
 }
 
-/**
- * @brief destroys the game and cleans the textual graphic interface
- *
- * @author Profesores PPROG
- * @date 27-01-2025
- *
- * @param game structure with the game's main information
- * @param pointer to the structure whith the game's graphic interface information
- */
+/**destroys the game and cleans the textual graphic interface. */
 void game_loop_cleanup(Game *game, Graphic_engine *gengine)
 {
   game_destroy(game);

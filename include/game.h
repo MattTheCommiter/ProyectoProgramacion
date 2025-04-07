@@ -36,6 +36,10 @@ typedef enum {
     LAST            /*Indicates we are retreiving the last command the player introduced*/
 } CommandPosition;
 
+/**
+ * @brief specifices the type for the _Game structure 
+ * 
+ */
 typedef struct _Game Game;
 
 /**
@@ -327,7 +331,7 @@ char *game_get_message(Game *game);
  * @date 04/03/25
  * @author Matteo Artunedo
  * @param game a pointer to game
- * @param char a string with the new message
+ * @param msg a string with the new message
  * @return OK if the function is completed succesfully or ERROR if an error occurrs
  */
 Status game_set_message(Game *game, char *msg);
@@ -416,6 +420,7 @@ int game_get_n_links(Game *game);
  * @date 24/03/25
  * @author Alvaro Inigo
  * @param game a pointer to the game
+ * @param desc the new description of the object
  * @return Status OK or ERROR.
  */
 Status game_set_description(Game *game, char *desc);
@@ -479,7 +484,7 @@ Status game_delete_player(Game *game);
  * @author Matteo Artunedo
  *
  * @param game a pointer to the structure with the game's main information
- * @param command the new last_cmd
+ * @param last_cmd the new last_cmd
  * @return Status: if the function was completed succesfully
  */
 Status game_interface_data_set_last_command(Game *game, Command *last_cmd);
