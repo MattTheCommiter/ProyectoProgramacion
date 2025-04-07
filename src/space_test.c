@@ -2,7 +2,7 @@
  * @brief It tests space module
  *
  * @file space_test.c
- * @author Profesores Pprog
+ * @author Matteo Artunedo, Guilherme Povedano
  * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License

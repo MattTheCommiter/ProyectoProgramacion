@@ -2,7 +2,7 @@
  * @brief It defines common types for the whole project
  *
  * @file types.h
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, Alvaro Inigo, Guilherme Povedano
  * @version 0.1
  * @date 12-02-2025
  * @copyright GNU Public License

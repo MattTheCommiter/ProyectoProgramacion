@@ -2,7 +2,7 @@
  * @brief It defines the space module interface
  *
  * @file space.h
- * @author Profesores PPROG
+ * @author Matteo Artunedo, Alvaro Inigo, Araceli Gutierrez, Guilherme Povedano
  * @version 0
  * @date 27-01-2025
  * @copyright GNU Public License
@@ -14,13 +14,16 @@
 #include "types.h"
 #include "set.h"
 
-#define N_LINES_IN_GDESC 5              /*<!Number of lines in the graphic description of a space*/
-#define N_ROWS_IN_GDESC 9               /*<!Number of rows in the graphic description of a space*/
-#define N_TOTAL_LINES_IN_3_SQUARES 9    /*<!Number of lines in a sequence of 3 space squares placed horizontally*/
-#define N_TOTAL_ROWS_IN_3_SQUARES 59    /*<!Number of rows in a sequence of 3 space squares placed horizontally*/
-#define N_TOTAL_LINES_IN_SQUARE 9       /*<!Number of lines in one of the space squares*/
-#define N_TOTAL_ROWS_IN_SQUARE 17       /*<!Number of rows in one of the space squares*/
+#define N_LINES_IN_GDESC 5              /*!<Number of lines in the graphic description of a space*/
+#define N_ROWS_IN_GDESC 9               /*!<Number of rows in the graphic description of a space*/
+#define N_TOTAL_LINES_IN_3_SQUARES 9    /*!<Number of lines in a sequence of 3 space squares placed horizontally*/
+#define N_TOTAL_ROWS_IN_3_SQUARES 59    /*!<Number of rows in a sequence of 3 space squares placed horizontally*/
+#define N_TOTAL_LINES_IN_SQUARE 9       /*!<Number of lines in one of the space squares*/
+#define N_TOTAL_ROWS_IN_SQUARE 17       /*!<Number of rows in one of the space squares*/
 
+/** 
+ * @brief specifies the type for the _Space structure
+*/
 typedef struct _Space Space;
 
 /**
@@ -75,7 +78,7 @@ const char *space_get_name(Space *space);
  * @author Matteo Artunedo
  *
  * @param space a pointer to the space
- * @param object_iD an Id, specifying the Id of the new object.
+ * @param object_Id an Id, specifying the Id of the new object.
  * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_add_objectId(Space *space, Id object_Id);
