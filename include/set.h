@@ -8,15 +8,21 @@
  * @copyright GNU Public License
  */
 
- #ifndef SET_H
- #define SET_H
-
+#ifndef SET_H
+#define SET_H
 
 #include "types.h"
 
-#define MAX_ELEMENTS_IN_SET 30 /*<!Maximum elements that can be added to a set*/
+/**
+ * @brief Maximum number of elements that can be stored in a set.
+ */
+#define MAX_ELEMENTS_IN_SET 30
 
- typedef struct _Set Set;
+/**
+ * @brief Defines a new type for the Set structure.
+ */
+typedef struct _Set Set;
+
 /**
  * @brief creates an empty set
  *
@@ -88,7 +94,7 @@ Bool set_belongs(Set *s, Id elementId);
  * @date 27-02-2025
  * @author Matteo Artunedo
  *
- * @param s a pointer to the set 
+ * @param s a pointer to the set
  * @return TRUE if the set is empty and FALSE if it contains element(s)
  */
 Bool set_is_empty(Set *s);
@@ -99,7 +105,7 @@ Bool set_is_empty(Set *s);
  * @date 27-02-2025
  * @author Matteo Artunedo
  *
- * @param s a pointer to the set 
+ * @param s a pointer to the set
  * @return TRUE if the set is full and FALSE if it can contain more elements
  */
 Bool set_is_full(Set *s);
@@ -110,7 +116,7 @@ Bool set_is_full(Set *s);
  * @date 27-02-2025
  * @author Matteo Artunedo
  *
- * @param s a pointer to the set 
+ * @param s a pointer to the set
  * @return number of elements in set or -1 if error occurs
  */
 int set_get_num_elements(Set *s);
@@ -121,7 +127,7 @@ int set_get_num_elements(Set *s);
  * @date 27-02-2025
  * @author Matteo Artunedo
  *
- * @param s a pointer to the set 
+ * @param s a pointer to the set
  * @param pos position of the Id we want
  * @return Id of the element in position pos and -1 if the position is not valid or an error occurred
  */
@@ -129,17 +135,14 @@ Id set_get_Id_in_pos(Set *s, int pos);
 
 /**
  * @brief returns the position of a specific element in the set
- * 
+ *
  * @date 27-02-2025
  * @author Matteo Artunedo
- * 
+ *
  * @param s pointer to the set
  * @param elementId the Id we want to look for
  * @return the position of the element or -1 if an error occurrs
  */
 int set_get_pos_from_Id(Set *s, Id elementId);
-
-
-
 
 #endif

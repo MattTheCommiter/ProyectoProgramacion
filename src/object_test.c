@@ -2,18 +2,15 @@
  * @brief It tests object module
  *
  * @file object_test.c
- * @author TuNombre
+ * @author Alvaro Inigo
  * @version 1.0
  * @date 04-04-2025
  */
+#include "object_test.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "types.h"
-#include "test.h"
-#include "object_test.h"
-#include "object.h"
 
 #define MAX_TESTS 18 /*!<Defines the total ammount of test functions*/
 

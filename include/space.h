@@ -2,7 +2,7 @@
  * @brief It defines the space module interface
  *
  * @file space.h
- * @author Profesores PPROG
+ * @author Matteo Artunedo, Alvaro Inigo, Araceli Gutierrez, Guilherme Povedano
  * @version 0
  * @date 27-01-2025
  * @copyright GNU Public License
@@ -14,13 +14,16 @@
 #include "types.h"
 #include "set.h"
 
-#define N_LINES_IN_GDESC 5              /*<!Number of lines in the graphic description of a space*/
-#define N_ROWS_IN_GDESC 9               /*<!Number of rows in the graphic description of a space*/
-#define N_TOTAL_LINES_IN_3_SQUARES 9    /*<!Number of lines in a sequence of 3 space squares placed horizontally*/
-#define N_TOTAL_ROWS_IN_3_SQUARES 59    /*<!Number of rows in a sequence of 3 space squares placed horizontally*/
-#define N_TOTAL_LINES_IN_SQUARE 9       /*<!Number of lines in one of the space squares*/
-#define N_TOTAL_ROWS_IN_SQUARE 17       /*<!Number of rows in one of the space squares*/
+#define N_LINES_IN_GDESC 5           /*!<Number of lines in the graphic description of a space*/
+#define N_ROWS_IN_GDESC 9            /*!<Number of rows in the graphic description of a space*/
+#define N_TOTAL_LINES_IN_3_SQUARES 9 /*!<Number of lines in a sequence of 3 space squares placed horizontally*/
+#define N_TOTAL_ROWS_IN_3_SQUARES 59 /*!<Number of rows in a sequence of 3 space squares placed horizontally*/
+#define N_TOTAL_LINES_IN_SQUARE 9    /*!<Number of lines in one of the space squares*/
+#define N_TOTAL_ROWS_IN_SQUARE 17    /*!<Number of rows in one of the space squares*/
 
+/**
+ * @brief specifies the type for the _Space structure
+ */
 typedef struct _Space Space;
 
 /**
@@ -69,13 +72,12 @@ Status space_set_name(Space *space, char *name);
  */
 const char *space_get_name(Space *space);
 
-
 /**
  * @brief It adds an object's id to the set of objects
  * @author Matteo Artunedo
  *
  * @param space a pointer to the space
- * @param object_iD an Id, specifying the Id of the new object.
+ * @param object_Id an Id, specifying the Id of the new object.
  * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_add_objectId(Space *space, Id object_Id);
@@ -124,7 +126,6 @@ int space_get_num_of_objects(Space *space);
  */
 Status space_delete_object(Space *space, Id objectId);
 
-
 /**
  * @brief It prints the space information
  * @author Matteo Artunedo
@@ -170,11 +171,11 @@ char **space_get_gdesc(Space *space);
  * @param space_gdescription a double pointer to the incoming graphical description to set
  * @return OK, if everything goes well or ERROR if an error occurred
  */
-Status space_set_gdesc(Space *space, char**space_gdescription);
+Status space_set_gdesc(Space *space, char **space_gdescription);
 
 /**
  * @brief Gets the object Id located in position 'pos' of the array of Id in the set of objects in space
- * 
+ *
  * @author Matteo Artunedo
  * @param space a pointer to the space
  * @param pos int position in the array
@@ -184,23 +185,23 @@ Id space_get_object_id_in_pos(Space *space, int pos);
 
 /**
  * @brief sets whether a space has been discovered or not
- * 
+ *
  * @author Matteo Artunedo
  * @date 20-3-25
- * 
+ *
  * @param space a pointer to the space
  * @param discovered the new discovered state of the space (TRUE or FALSE)
- * 
+ *
  * @return OK, if everything goes well or ERROR if an error occurred
  */
 Status space_set_discovered(Space *space, Bool discovered);
 
 /**
  * @brief returns whether a space has been discovered or not
- * 
+ *
  * @author Matteo Artunedo
  * @date 20-03-25
- * 
+ *
  * @param space pointer to the space
  * @return Bool: whether the space has been discovered or not
  */

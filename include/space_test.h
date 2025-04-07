@@ -1,9 +1,9 @@
-/** 
+/**
  * @brief It declares the tests for the space module
- * 
+ *
  * @file space_test.h
- * @author Profesores Pprog
- * @version 0.0 
+ * @author Matteo Artunedo, Guilherme Povedano
+ * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License
  */
@@ -219,14 +219,14 @@ void test2_space_set_character();
 void test3_space_set_character();
 
 /**
- * @test Test checking if a null space's set of objects is full 
+ * @test Test checking if a null space's set of objects is full
  * @pre Space pointer is NULL
  * @post Output==TRUE
  */
 void test1_space_set_of_objects_is_full();
 
 /**
- * @test Test checking if a space with full of objects is full 
+ * @test Test checking if a space with full of objects is full
  * @pre Space pointer != NULL
  * @post Output==TRUE
  */
@@ -259,21 +259,21 @@ void test1_space_delete_object();
  * @post Output==ERROR
  */
 void test2_space_delete_object();
- 
+
 /**
  * @test Test deleting a NO_ID object from a created space
  * @pre Space pointer != NULL, object id NO_ID
  * @post Output==ERROR
  */
 void test3_space_delete_object();
- 
+
 /**
  * @test Test deleting an object not present in space
  * @pre Space pointer != NULL and object id 5 (not present in space)
  * @post Output==ERROR
  */
 void test4_space_delete_object();
- 
+
 /**
  * @test Test deleting object present in space
  * @pre Space pointer != NULL and object id 5 (the one present in space)

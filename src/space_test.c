@@ -2,7 +2,7 @@
  * @brief It tests space module
  *
  * @file space_test.c
- * @author Profesores Pprog
+ * @author Matteo Artunedo, Guilherme Povedano
  * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License
@@ -46,49 +46,92 @@ int main(int argc, char **argv)
     }
   }
 
-  if (all || test == 1) test1_space_create();
-  if (all || test == 2) test2_space_create();
-  if (all || test == 3) test1_space_set_name();
-  if (all || test == 4) test2_space_set_name();
-  if (all || test == 5) test3_space_set_name();
-  if (all || test == 6) test1_space_get_id();
-  if (all || test == 7) test2_space_get_id();
-  if (all || test == 8) test1_space_get_name();
-  if (all || test == 9) test2_space_get_name();
-  if (all || test == 10) test1_space_add_objectId();
-  if (all || test == 11) test2_space_add_objectId();
-  if (all || test == 12) test3_space_add_objectId();
-  if (all || test == 13) test1_space_object_belongs();
-  if (all || test == 14) test2_space_object_belongs();
-  if (all || test == 15) test3_space_object_belongs();
-  if (all || test == 16) test4_space_object_belongs();
-  if (all || test == 17) test5_space_object_belongs();
-  if (all || test == 18) test1_space_has_no_objects();
-  if (all || test == 19) test2_space_has_no_objects();
-  if (all || test == 20) test3_space_has_no_objects();
-  if (all || test == 21) test1_space_get_num_of_objects();
-  if (all || test == 22) test2_space_get_num_of_objects();
-  if (all || test == 23) test3_space_get_num_of_objects();
-  if (all || test == 24) test1_space_get_character();
-  if (all || test == 25) test2_space_get_character();
-  if (all || test == 26) test3_space_get_character();
-  if (all || test == 27) test1_space_set_character();
-  if (all || test == 28) test2_space_set_character();
-  if (all || test == 29) test3_space_set_character();
-  if (all || test == 30) test1_space_set_of_objects_is_full();
-  if (all || test == 31) test2_space_set_of_objects_is_full();
-  if (all || test == 32) test3_space_set_of_objects_is_full();
-  if (all || test == 33) test4_space_set_of_objects_is_full();
-  if (all || test == 34) test1_space_delete_object();
-  if (all || test == 35) test2_space_delete_object();
-  if (all || test == 36) test3_space_delete_object();
-  if (all || test == 37) test4_space_delete_object();
-  if (all || test == 38) test5_space_delete_object();
-  if (all || test == 39) test1_space_set_discovered();
-  if (all || test == 40) test2_space_set_discovered();
-  if (all || test == 41) test3_space_set_discovered();
-  if (all || test == 42) test1_space_get_discovered();
-  if (all || test == 43) test2_space_get_discovered();
+  if (all || test == 1)
+    test1_space_create();
+  if (all || test == 2)
+    test2_space_create();
+  if (all || test == 3)
+    test1_space_set_name();
+  if (all || test == 4)
+    test2_space_set_name();
+  if (all || test == 5)
+    test3_space_set_name();
+  if (all || test == 6)
+    test1_space_get_id();
+  if (all || test == 7)
+    test2_space_get_id();
+  if (all || test == 8)
+    test1_space_get_name();
+  if (all || test == 9)
+    test2_space_get_name();
+  if (all || test == 10)
+    test1_space_add_objectId();
+  if (all || test == 11)
+    test2_space_add_objectId();
+  if (all || test == 12)
+    test3_space_add_objectId();
+  if (all || test == 13)
+    test1_space_object_belongs();
+  if (all || test == 14)
+    test2_space_object_belongs();
+  if (all || test == 15)
+    test3_space_object_belongs();
+  if (all || test == 16)
+    test4_space_object_belongs();
+  if (all || test == 17)
+    test5_space_object_belongs();
+  if (all || test == 18)
+    test1_space_has_no_objects();
+  if (all || test == 19)
+    test2_space_has_no_objects();
+  if (all || test == 20)
+    test3_space_has_no_objects();
+  if (all || test == 21)
+    test1_space_get_num_of_objects();
+  if (all || test == 22)
+    test2_space_get_num_of_objects();
+  if (all || test == 23)
+    test3_space_get_num_of_objects();
+  if (all || test == 24)
+    test1_space_get_character();
+  if (all || test == 25)
+    test2_space_get_character();
+  if (all || test == 26)
+    test3_space_get_character();
+  if (all || test == 27)
+    test1_space_set_character();
+  if (all || test == 28)
+    test2_space_set_character();
+  if (all || test == 29)
+    test3_space_set_character();
+  if (all || test == 30)
+    test1_space_set_of_objects_is_full();
+  if (all || test == 31)
+    test2_space_set_of_objects_is_full();
+  if (all || test == 32)
+    test3_space_set_of_objects_is_full();
+  if (all || test == 33)
+    test4_space_set_of_objects_is_full();
+  if (all || test == 34)
+    test1_space_delete_object();
+  if (all || test == 35)
+    test2_space_delete_object();
+  if (all || test == 36)
+    test3_space_delete_object();
+  if (all || test == 37)
+    test4_space_delete_object();
+  if (all || test == 38)
+    test5_space_delete_object();
+  if (all || test == 39)
+    test1_space_set_discovered();
+  if (all || test == 40)
+    test2_space_set_discovered();
+  if (all || test == 41)
+    test3_space_set_discovered();
+  if (all || test == 42)
+    test1_space_get_discovered();
+  if (all || test == 43)
+    test2_space_get_discovered();
 
   PRINT_PASSED_PERCENTAGE;
 
