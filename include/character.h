@@ -16,12 +16,21 @@
 #define GDESCTAM 7    /*!<Maximum size of the graphic description*/
 #define MAXHEALTH 100 /*!<Maximum health a character can have*/
 
-typedef struct _Character Character;
 /**
- * @brief
+ * @brief Defines a new type for the Character structure.
+ *
+ * This typedef creates an alias for the struct _Character, allowing the use of Character instead of struct _Character.
+ */
+typedef struct _Character Character;
+
+/**
+ * @brief Creates a new character.
  * @author Alvaro Inigo
- * @param id to the new character
- * @return Character* a pointer to the new character
+ *
+ * This function allocates memory for a new Character structure and initializes its fields.
+ *
+ * @param id The identifier for the new character.
+ * @return A pointer to the new created Character structure, or NULL if memory allocation fails.
  */
 Character *character_create(Id id);
 
