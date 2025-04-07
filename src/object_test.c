@@ -2,7 +2,7 @@
  * @brief It tests object module
  *
  * @file object_test.c
- * @author TuNombre
+ * @author Alvaro Inigo
  * @version 1.0
  * @date 04-04-2025
  */
