@@ -1,6 +1,6 @@
 /**
  * @file character.h
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteeo Artunedo (following)
  * @brief Contains all the functions of the character domain.
  * @version 0.1
  * @date 2025-02-25
@@ -153,6 +153,20 @@ char *character_get_message(Character *c);
  */
 Status character_print(Character *cha);
 
+/**
+ * @brief sets the id of the player the character will be following
+ * 
+ * @param c pointer to the character
+ * @param follow_id id of the player they are going to be following from now on
+ * @return Status: OK or ERROR in case of NULL pointer to character
+ */
+Status character_set_following(Character *c, Id follow_id);
 
-
+/**
+ * @brief retrieves the id of the player the character is following
+ * 
+ * @param c pointer to the character
+ * @return Id of the player the character is following
+ */
+Id character_get_following(Character *c);
 #endif

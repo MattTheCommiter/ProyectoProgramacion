@@ -1,6 +1,6 @@
 /**
  * @file character.c
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Matteo Artunedo (following)
  * @brief definition of all the functions for the character module.
  * @version 0.1
  * @date 2025-02-25
@@ -27,6 +27,7 @@ struct _Character
     int health;              /*!<the health of the character, an integer*/
     Bool friendly;           /*!<A bool that sets wether the character is friendly or not*/
     char message[WORD_SIZE]; /*!<a string for the message that a character says*/
+    Id following;            /*!<Id of the player they are following*/
 };
 
 Character *character_create(Id id)
@@ -44,6 +45,7 @@ Character *character_create(Id id)
     newChar->health = NO_HP;
     newChar->friendly = FALSE;
     newChar->message[0] = '\0';
+    newChar->following = NO_ID;
 
     return newChar;
 }
@@ -163,8 +165,22 @@ Status character_print(Character *cha)
         fprintf(stdout, "\n--> The character is friendly");
     }
     fprintf(stdout, "\n---> The message: %s\n", cha->message);
+    fprintf(stdout, "\n---> The Id of the player they are following: %ld\n", cha->following);
 
     return OK;
+}
+
+Status character_set_following(Character *c, Id follow_id){
+    if(!c) return ERROR;
+
+    c->following = follow_id;
+    return OK;
+}
+
+Id character_get_following(Character *c){
+    if(!c) return NO_ID;
+
+    return c->following;
 }
 
 

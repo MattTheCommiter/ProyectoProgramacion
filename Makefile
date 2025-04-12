@@ -12,7 +12,7 @@ vpath %.h $(INCDIR)
 vpath %.c $(SRCDIR)
 vpath %.o $(OBJDIR)
 
-.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run object_test_run player_test_run docs clean_docs tests test_run
+.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run object_test_run player_test_run docs clean_docs tests test_run commands
 
 #make - compile game 
 all: juego_hormiga
@@ -251,5 +251,32 @@ test_runV:
 	@echo ">>>>>>Running player_test with Valgrind:"
 	valgrind --leak-check=full ./player_test
 
+commands:
+	@echo ">>>>>>The possible commands are:"
+	@echo ">>>>>>tests: creates an executable for each one of the tests"
+	@echo ">>>>>>run: Runs the game"
+	@echo ">>>>>>runV: Runs the game with valgrind"
+	@echo ">>>>>>runLog: Runs the game and logs the output to Logfile"
+	@echo ">>>>>>runLog_read1: Runs the game with input from game1.cmd and logs the output to Logfile"
+	@echo ">>>>>>runLog_read2: Runs the game with input from game2.cmd and logs the output to Logfile"
+	@echo ">>>>>>character_test_run: Runs the character_test executable"
+	@echo ">>>>>>space_test_run: Runs the space_test executable"
+	@echo ">>>>>>set_test_run: Runs the set_test executable"
+	@echo ">>>>>>inventory_test_run: Runs the inventory_test executable"
+	@echo ">>>>>>link_test_run: Runs the link_test executable"
+	@echo ">>>>>>object_test_run: Runs the object_test executable"
+	@echo ">>>>>>player_test_run: Runs the player_test executable"
+	@echo ">>>>>>test_run: Runs all test executables"
+	@echo ">>>>>>character_test_runV: Runs the character_test executable with Valgrind"
+	@echo ">>>>>>space_test_runV: Runs the space_test executable with Valgrind"
+	@echo ">>>>>>set_test_runV: Runs the set_test executable with Valgrind"
+	@echo ">>>>>>inventory_test_runV: Runs the inventory_test executable with Valgrind"
+	@echo ">>>>>>link_test_runV: Runs the link_test executable with Valgrind"
+	@echo ">>>>>>object_test_runV: Runs the object_test executable with Valgrind"
+	@echo ">>>>>>player_test_run_V: Runs the player_test executable with Valgrind"
+	@echo ">>>>>>test_runV: Runs all test executables with Valgrind"
+	@echo ">>>>>>docs: Generates documentation using Doxygen"
+	@echo ">>>>>>clean: Removes all object files and executables"
+	@echo ">>>>>>clean_docs: Cleans up documentation files and removes empty directories"
 
 

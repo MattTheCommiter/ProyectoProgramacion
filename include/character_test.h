@@ -225,4 +225,31 @@ void test02_character_get_message();
  */
 void test02_character_print();
 
+/**
+ * @brief test setting following atribute of a NULL character
+ * @pre NULL character
+ * @post ERROR returned
+ */
+void test01_character_set_following();
+
+/**
+ * @brief test setting following atribute of a valid character
+ * @pre valid character, valid Id '3'
+ * @post OK returned
+ */
+void test02_character_set_following();
+
+/**
+ * @brief test getting the following atribute of a NULL character
+ * @pre NULL pointer to character
+ * @post OK returned
+ */
+void test01_character_get_following();
+
+/**
+ * @brief test getting the following atribute of a created character
+ * @pre valid character with 5 as their 'following' Id value
+ * @post Id '5' returned
+ */
+void test02_character_get_following();
 #endif
