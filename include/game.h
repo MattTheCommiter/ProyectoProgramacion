@@ -497,4 +497,13 @@ Status game_interface_data_set_last_command(Game *game, Command *last_cmd);
  * @return pointer to the desired command
  */
 Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos);
+
+/**
+ * @brief moves all of the followers of a player to a new space
+ * 
+ * @param game pointer to the game
+ * @param new_space_id id of the space where the players will move to
+ * @return Status: OK or ERROR 
+ */
+Status game_move_followers(Game *game, Id new_space_id);
 #endif

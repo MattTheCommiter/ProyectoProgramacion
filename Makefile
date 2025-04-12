@@ -54,7 +54,7 @@ $(OBJDIR)/gameReader.o: gameReader.c gameReader.h types.h game.h command.h space
 $(OBJDIR)/object.o: object.c object.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: player.c player.h types.h space.h inventory.h set.h
+$(OBJDIR)/player.o: player.c player.h types.h space.h inventory.h set.h game.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/character.o: character.c character.h types.h 

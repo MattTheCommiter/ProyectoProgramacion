@@ -2,7 +2,7 @@
  * @brief It declares the tests for the space module
  *
  * @file space_test.h
- * @author Matteo Artunedo, Guilherme Povedano
+ * @author Matteo Artunedo
  * @version 0.0
  * @date 17-02-2025
  * @copyright GNU Public License
@@ -177,46 +177,88 @@ void test2_space_get_num_of_objects();
 void test3_space_get_num_of_objects();
 
 /**
- * @test Test getting id of character in null space
+ * @test Test getting character ID from a NULL space
  * @pre Space pointer == NULL
  * @post Output==NO_ID
  */
-void test1_space_get_character();
+void test1_space_get_character_in_pos();
 
 /**
- * @test Test getting id of character that is present in space
- * @pre Space pointer != NULL, character with id 10 present in space
+ * @test Test getting character ID from a space with a character
+ * @pre Space pointer != NULL, character with ID 10 added to space
  * @post Output==10
  */
-void test2_space_get_character();
+void test2_space_get_character_in_pos();
 
 /**
- * @test Test getting id of a space with no characters
- * @pre Space pointer != NULL, no characters added
+ * @test Test getting character ID from a space with no characters
+ * @pre Space pointer != NULL, no characters added to space
  * @post Output==NO_ID
  */
-void test3_space_get_character();
+void test3_space_get_character_in_pos();
 
 /**
- * @test Test setting id of character in null space
+ * @test Test getting character ID from an invalid position in a space
+ * @pre Space pointer != NULL, character with ID 10 added to space, position out of bounds
+ * @post Output==NO_ID
+ */
+void test4_space_get_character_in_pos();
+
+/**
+ * @test Test adding character to a NULL space
  * @pre Space pointer == NULL
  * @post Output==ERROR
  */
-void test1_space_set_character();
+void test1_space_add_character();
 
 /**
- * @test Test setting id of character in a valid space that already has a character
- * @pre Space pointer != NULL, character id 10
- * @post Output==ERROR
- */
-void test2_space_set_character();
-
-/**
- * @test Test setting id of character in a valid space with no characters
- * @pre Space pointer != NULL, character id 10
+ * @test Test adding a character to a valid space that already has the same character
+ * @pre Space pointer != NULL, character ID = 5 already added
  * @post Output==OK
  */
-void test3_space_set_character();
+void test2_space_add_character();
+
+/**
+ * @test Test adding a character to a valid space with no characters
+ * @pre Space pointer != NULL, character ID = 10
+ * @post Output==OK
+ */
+void test3_space_add_character();
+
+/**
+ * @test Test adding a character with NO_ID to a valid space
+ * @pre Space pointer != NULL, character ID = NO_ID
+ * @post Output==ERROR
+ */
+void test4_space_add_character();
+
+/**
+ * @test Test deleting character from a NULL space
+ * @pre Space pointer == NULL
+ * @post Output==ERROR
+ */
+void test1_space_delete_character();
+
+/**
+ * @test Test deleting a character from a valid space that contains said character
+ * @pre Space pointer != NULL which contains character with ID = 5, character ID = 5 to be deleted
+ * @post Output==OK
+ */
+void test2_space_delete_character();
+
+/**
+ * @test Test deleting a character from a valid space with no characters
+ * @pre Space pointer != NULL, character ID = 10
+ * @post Output==ERROR
+ */
+void test3_space_delete_character();
+
+/**
+ * @test Test deleting a character with NO_ID from a valid space
+ * @pre Space pointer != NULL, character ID = NO_ID
+ * @post Output==ERROR
+ */
+void test4_space_delete_character();
 
 /**
  * @test Test checking if a null space's set of objects is full
@@ -316,4 +358,24 @@ void test1_space_get_discovered();
  */
 void test2_space_get_discovered();
 
+/**
+ * @brief number of characters in NULL space
+ * @pre NULL pointer to space
+ * @post output == -1
+ */
+void test1_space_get_n_characters();
+
+/**
+ * @brief number of characters in a space with one character
+ * @pre pointer to space with 1 character
+ * @post output == 1
+ */
+void test2_space_get_n_characters();
+
+/**
+ * @brief number of characters in a space with no characters
+ * @pre pointer to space with no characters
+ * @post output == 0
+ */
+void test3_space_get_n_characters();
 #endif

@@ -137,22 +137,42 @@ Status space_delete_object(Space *space, Id objectId);
 Status space_print(Space *space);
 
 /**
- * @brief It gets the id of the character present in the space
+ * @brief It gets the id of the character in a certain position of the space
  * @author Matteo Artunedo
- *
+ * @date 12-04-2025
  * @param space a pointer to the space
+ * @param pos position the character holds in the set
  * @return the Id of the character in the space or NO_ID if the space pointer is NULL or the space has no character
  */
-Id space_get_character(Space *space);
+Id space_get_character_in_pos(Space *space, int pos);
 
 /**
- * @brief Sets the character of the space
- * @author Alvaro Inigo
+ * @brief Adds a character to the space
+ * @author Matteo Artunedo
+ * @date 12-04-2025
  * @param space a pointer to the space
  * @param characterId the Id of the character
  * @return Status Returns ERROR or OK.
  */
-Status space_set_character(Space *space, Id characterId);
+Status space_add_character(Space *space, Id characterId);
+
+/**
+ * @brief Deletes a character from the space
+ * @author Matteo Artunedo
+ * @date 12-04-2025
+ * @param space a pointer to the space
+ * @param characterId the Id of the character
+ * @return Status Returns ERROR or OK.
+ */
+Status space_delete_character(Space *space, Id characterId);
+
+/**
+ * @brief returns the number of characters in the space
+ * @author Matteo Artunedo
+ * @param space pointer to the space
+ * @return number of characters or -1 if the pointer to space is NULL
+ */
+int space_get_n_characters(Space *space);
 
 /**
  * @brief It gets the graphical description of the space

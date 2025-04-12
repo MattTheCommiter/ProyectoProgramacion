@@ -175,7 +175,7 @@ Status graphic_engine_set_arrows(Game *game, Id spaceId, char *north1, char *sou
 
 char **graphic_engine_create_space_square(Game *game, Id square_id)
 {
-  char **space_square = NULL, str[MAX_STR], blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      "; /*Quitar este número mágico*/
+  char **space_square = NULL, str[MAX_STR], blank_player_str[] = "   ", **gdesc, *player, object[N_TOTAL_ROWS_IN_SQUARE - FINAL_CHARACTER], character[GDESCTAM], blank_character_str[] = "      ";
   Space *space;
   Object *object_in_pos = NULL;
   Bool discovered=space_get_discovered(game_get_space(game, square_id));
@@ -221,13 +221,13 @@ char **graphic_engine_create_space_square(Game *game, Id square_id)
       player = blank_player_str;
     }
     /*Damos un valor al personaje del espacio si lo hay*/
-    if (space_get_character(space) == NO_ID || discovered == FALSE)
+    if (space_get_character_in_pos(space, 0) == NO_ID || discovered == FALSE)
     {
       strcpy(character, blank_character_str);
     }
     else
     {
-      strcpy(character, character_get_gdesc(game_get_character(game, space_get_character(space))));
+      strcpy(character, character_get_gdesc(game_get_character(game, space_get_character_in_pos(space, 0))));
     }
 
 
@@ -495,10 +495,10 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID;
+  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, character_following;
 
   char **created_line = NULL;
-  char str[MAX_STR], *object_name = NULL, *character_gdesc = NULL, north_arrow1 = ' ', south_arrow1 = ' ', north_arrow2 = ' ', south_arrow2 = ' ', north_arrow3 = ' ', south_arrow3 = ' ';
+  char str[MAX_STR], *object_name = NULL, *character_gdesc = NULL, *character_name = NULL, north_arrow1 = ' ', south_arrow1 = ' ', north_arrow2 = ' ', south_arrow2 = ' ', north_arrow3 = ' ', south_arrow3 = ' ';
   int i, character_hp;
 
   /* Paint the in the map area */
@@ -599,12 +599,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   for (i = 0; i < game_get_n_characters(game); i++)
   {
     character_gdesc = character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
+    character_name = character_get_name(game_get_character(game, game_get_character_id_at(game, i)));
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
+    character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
+
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, "  %s location:%d (%d)", character_gdesc, (int)character_loc, character_hp);
+      sprintf(str, "%s (%s) location:%d health: %d following: %ld", character_gdesc, character_name, (int)character_loc, character_hp, character_following);
     }else{
-      sprintf(str, "  %s location:? (%d)", character_gdesc, character_hp);
+      sprintf(str, "%s (?)", character_gdesc);
     }
     screen_area_puts(ge->descript, str);
   }
@@ -651,7 +654,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat or c, attack or a, inspect 'arg' or i 'arg'");
+  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat 'arg' or c 'arg', attack 'arg' or at 'arg', inspect 'arg' or i 'arg', recruit 'arg' or r 'arg, abandon 'arg' or ab 'arg'");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */

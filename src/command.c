@@ -15,13 +15,13 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGTH 30  /*!<maximum length of commands written by user*/
-#define ARG_LENGTH 30 /*!<maximum length of object names*/
+#define CMD_LENGTH 50  /*!<maximum length of commands written by user*/
+#define ARG_LENGTH 50 /*!<maximum length of object names*/
 
 /**
  * @brief Array mapping command strings to their descriptions.
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"a", "Attack"}, {"i", "Inspect"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}};
 
 /**
  * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
@@ -118,7 +118,7 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK)
     {
       token = strtok(NULL, "\r\n");
 

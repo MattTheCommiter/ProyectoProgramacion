@@ -24,7 +24,7 @@ struct _Space
   Id id;                    /*!< Id number of the space, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the space */
   Set *objects;             /*!< The set of objects present at the space */
-  Id character;             /*!< The Id of the character present at the space */
+  Set *characters;           /*!< Set of the character present in the space */
   char **gdesc;             /*!< The graphic description of the space */
   Bool discovered;          /*!< Boolean that describes if the space has been discovered by the players or not*/
 };
@@ -47,7 +47,7 @@ Space *space_create(Id id)
   newSpace->id = id;
   newSpace->name[0] = '\0';
   newSpace->objects = set_create();
-  newSpace->character = NO_ID;
+  newSpace->characters = set_create();
   newSpace->discovered = FALSE;
 
   if (!(newSpace->gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
@@ -82,6 +82,7 @@ Status space_destroy(Space *space)
     free(space->gdesc);
   }
   set_destroy(space->objects);
+  set_destroy(space->characters);
   free(space);
   return OK;
 }
@@ -202,28 +203,33 @@ Status space_print(Space *space)
 
 /*CHARACTER RELATED FUNCTIONS*/
 
-Id space_get_character(Space *space)
+Id space_get_character_in_pos(Space *space, int pos)
 {
   if (!space)
     return NO_ID;
-  return space->character;
+  return set_get_Id_in_pos(space->characters, pos);
 }
 
-Status space_set_character(Space *space, Id characterId)
+Status space_add_character(Space *space, Id characterId)
 {
-  if (!space)
+  if (!space || characterId == NO_ID)
     return ERROR;
-  if (space->character == NO_ID)
-  {
-    space->character = characterId;
-  }
-  else
-  {
-    return ERROR;
-  }
-
-  return OK;
+  return set_add(space->characters, characterId);
 }
+
+Status space_delete_character(Space *space, Id characterId)
+{
+  if (!space || characterId == NO_ID)
+    return ERROR;
+  return set_del(space->characters, characterId);
+}
+
+int space_get_n_characters(Space *space){
+  if(!space) return -1;
+
+  return set_get_num_elements(space->characters);
+}
+
 /*CHARACTER RELATED FUNCTIONS*/
 
 /*GDESC RELATED FUNCTIONS*/

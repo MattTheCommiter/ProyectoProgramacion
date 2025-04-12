@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 34   /*!< Maximum number of tests */
+#define MAX_TESTS 38   /*!< Maximum number of tests */
 
 /**
  * @brief Main function for SPACE unit tests.
@@ -114,6 +114,14 @@ int main(int argc, char **argv)
         test01_character_get_following();
     if (all || test == 34)
         test02_character_get_following();
+    if (all || test == 35)
+        test01_character_set_location();
+    if (all || test == 36)
+        test02_character_set_location();
+    if (all || test == 37)
+        test01_character_get_location();
+    if (all || test == 38)
+        test02_character_get_location();
 
 
     PRINT_PASSED_PERCENTAGE;
@@ -344,5 +352,30 @@ void test02_character_get_following(){
     c = character_create(10);
     character_set_following(c, 5);
     PRINT_TEST_RESULT(character_get_following(c) == 5);
+    character_destroy(c);
+}
+
+void test01_character_set_location(){
+    Character *c = NULL;
+    PRINT_TEST_RESULT(character_set_location(c, 3) == ERROR);
+}
+
+void test02_character_set_location(){
+    Character *c = NULL;
+    c = character_create(10);
+    PRINT_TEST_RESULT(character_set_location(c, 3) == OK);
+    character_destroy(c);
+}
+
+void test01_character_get_location(){
+    Character *c = NULL;
+    PRINT_TEST_RESULT(character_get_location(c) == NO_ID);
+}
+
+void test02_character_get_location(){
+    Character *c = NULL;
+    c = character_create(10);
+    character_set_location(c, 5);
+    PRINT_TEST_RESULT(character_get_location(c) == 5);
     character_destroy(c);
 }

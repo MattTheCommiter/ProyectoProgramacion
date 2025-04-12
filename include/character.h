@@ -155,7 +155,8 @@ Status character_print(Character *cha);
 
 /**
  * @brief sets the id of the player the character will be following
- * 
+ * @author Matteo Artunedo
+ * @date 12-04-2025
  * @param c pointer to the character
  * @param follow_id id of the player they are going to be following from now on
  * @return Status: OK or ERROR in case of NULL pointer to character
@@ -164,9 +165,29 @@ Status character_set_following(Character *c, Id follow_id);
 
 /**
  * @brief retrieves the id of the player the character is following
- * 
+ * @author Matteo Artunedo
+ * @date 12-04-2025
  * @param c pointer to the character
  * @return Id of the player the character is following
  */
 Id character_get_following(Character *c);
+
+/**
+ * @brief sets the location of the character
+ * @author Matteo Artunedo
+ * @date 12-04-2025
+ * @param c pointer to the character
+ * @param location_id new location of the character
+ * @return Status: OK or ERROR
+ */
+Status character_set_location(Character *c, Id location_id);
+
+/**
+ * @brief gets the location of a character
+ * @author Matteo Artunedo
+ * @date 12-04-2025
+ * @param c pointer to the character
+ * @return Id of the character's location
+ */
+Id character_get_location(Character *c);
 #endif

@@ -78,25 +78,44 @@ void game_actions_drop(Game *game, char *arg);
  * @author Matteo Artunedo
  *
  * @param game a pointer to the structure with the game's main information
+ * @param arg name of the character the player is going to chat with
  */
-void game_actions_chat(Game *game);
+void game_actions_chat(Game *game, char *arg);
 /**
  * @brief Attack, both the player or a non friendly character at the same space loses health, if the character dies, it cannot be attacked anymore.
  * @date 25-02-2025
- * @author Alvaro Inigo
+ * @author Matteo Artunedo
  * @param game a pointer to the game
+ * @param arg name of the character the player is going to attack
  */
-void game_actions_attack(Game *game);
+void game_actions_attack(Game *game, char *arg);
 
 /**
  * @brief The command that allows the player to inspect an object
  * @date 25-02-2025
  * @author Alvaro Inigo
  * @param game a pointer to the game
+ * @param arg name of the object they are going to inspect
  */
 void game_actions_inspect(Game *game, char *arg);
 
+/**
+ * @brief Command that allows the player to recruit a character to have them on their team
+ * @author Matteo Artunedo
+ * @date 12-04-2025
+ * @param game pointer to the game
+ * @param arg name of the character they are going to recruit
+ */
+void game_actions_recruit(Game *game, char *arg);
 
+/**
+ * @brief Command that allows the player to abandon a character to have them on their team
+ * @author Matteo Artunedo
+ * @date 12-04-2025
+ * @param game pointer to the game
+ * @param arg name of the character they are going to abandon
+ */
+void game_actions_abandon(Game *game, char *arg);
 
 /*Game actions implementation*/
 
@@ -127,16 +146,22 @@ Status game_actions_update(Game *game, Command *command)
     game_actions_take(game, command_get_argument(command));
     break;
   case CHAT:
-    game_actions_chat(game);
+    game_actions_chat(game, command_get_argument(command));
     break;
   case DROP:
     game_actions_drop(game, command_get_argument(command));
     break;
   case ATTACK:
-    game_actions_attack(game);
+    game_actions_attack(game, command_get_argument(command));
     break;
   case INSPECT:
     game_actions_inspect(game, command_get_argument(command));
+    break;
+  case RECRUIT:
+    game_actions_recruit(game, command_get_argument(command));
+    break;
+  case ABANDON:
+    game_actions_abandon(game, command_get_argument(command));
     break;
   default:
     break;
@@ -198,6 +223,7 @@ void game_actions_move(Game *game, char *arg)
   next_space_id = game_get_connection(game, current_id, direction);
   if(next_space_id != NO_ID)
   {
+    game_move_followers(game, next_space_id);
     game_set_current_player_location(game, next_space_id);
     space_set_discovered(game_get_space(game, next_space_id), TRUE);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
@@ -312,65 +338,96 @@ void game_actions_drop(Game *game, char *arg)
   return;
 }
 
-void game_actions_chat(Game *game)
+void game_actions_chat(Game *game, char *arg)
 {
   if (!game)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  if (!character_get_friendly(game_get_character(game, space_get_character(game_get_space(game, game_get_current_player_location(game))))))
+  if (!character_get_friendly(game_get_character_from_name(game, arg)))
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
-  game_set_message(game, character_get_message(game_get_character(game, space_get_character(game_get_space(game, game_get_current_player_location(game))))));
+  game_set_message(game, character_get_message(game_get_character_from_name(game, arg)));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
 }
 
-void game_actions_attack(Game *game)
+void game_actions_attack(Game *game, char *arg)
 {
-  /*Generate a random number, it determinates who loses health*/
-  int num;
-  Character *cha = NULL;
-  Id cha_Id = NO_ID;
+  int num, i, attacked_ally;
+  Character *enemy = NULL, *character=NULL;
+  Id characterId;
+  Space *player_space=NULL;
+  Set *followers=NULL;
   num = rand() % 10;
+  
+  /*Error control*/
   if (!game)
   {
     return;
   }
-  /*first we get the character at the space*/
-  cha_Id = space_get_character(game_get_space(game, game_get_current_player_location(game)));
-  if (cha_Id == NO_ID)
+  enemy = game_get_character_from_name(game, arg);
+  if(enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) == 0)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  cha = game_get_character(game, cha_Id);
-  if (cha == NULL)
+
+
+  player_space = game_get_space(game, game_get_current_player_location(game));
+  if(player_space == NULL)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  /*We check if the character is friendly or not, if its friendly , we cannot attack him*/
-  if (character_get_friendly(cha) == TRUE || character_get_health(cha) == 0)
-  {
+
+
+
+  /*Once we have checked the conditions are valid, we gather all of the player's allies in a set*/
+  if(!(followers = set_create())){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  /*Depending on the number genered, character of player lose health*/
+
+  /*The player counts as a follower of themselves*/
+  set_add(followers, player_get_id(game_get_current_player(game)));
+
+  /*We add the rest of the followers in the space to the set*/
+  for(i=0;i<space_get_n_characters(player_space);i++){
+    characterId = space_get_character_in_pos(player_space, i);
+    if(character_get_following(game_get_character(game, characterId)) == player_get_id(game_get_current_player(game))){
+      set_add(followers, characterId);
+    }
+  }
+
+  /*Depending on the number genered, either the enemy loses health or the player's team is damaged*/
   if (num <= ATTACK_CHANCE)
   {
-    player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - ENEMY_DAMAGE);
+    /*We generate a random number to determine who will receive damage from the enemy*/
+    attacked_ally = rand() % (set_get_num_elements(followers));
+    /*If the number is 0, it is the player who receives damage*/
+    if(attacked_ally == 0){
+      player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - ENEMY_DAMAGE);
+    }
+    /*If the number is higher the 1, one of the allies receives damage*/
+    else
+    {
+      character = game_get_character(game, set_get_Id_in_pos(followers, attacked_ally));
+      character_set_health(character, character_get_health(character) - ENEMY_DAMAGE);
+    }
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   else
   {
-    character_set_health(cha, character_get_health(cha) - PLAYER_DAMAGE);
+    
+    character_set_health(enemy, character_get_health(enemy) - (PLAYER_DAMAGE * set_get_num_elements(followers)));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
+  set_destroy(followers);
   return;
 }
 
@@ -417,6 +474,47 @@ void game_actions_inspect(Game *game, char *arg)
   }
 
   game_set_description(game, object_get_description(game_get_object(game, objectId)));
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+}
+
+void game_actions_recruit(Game *game, char *arg){
+  if(!game || !arg){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*In case the character is not friendly or it is already recruited, it cannot be recruited*/
+  if(character_get_friendly(game_get_character_from_name(game, arg)) == FALSE || character_get_following(game_get_character_from_name(game, arg)) != NO_ID){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if(!character_set_following(game_get_character_from_name(game, arg), player_get_id(game_get_current_player(game)))){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+}
+
+void game_actions_abandon(Game *game, char *arg){
+  if(!game || !arg){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if(character_get_following(game_get_character_from_name(game, arg)) != player_get_id(game_get_current_player(game))){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if(!character_set_following(game_get_character_from_name(game, arg), NO_ID)){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
 }

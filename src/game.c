@@ -41,7 +41,7 @@ struct _Game
   int turn;                                     /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];                    /*!<Array of Spaces*/
   int n_spaces;                                 /*!<Number of spaces in the game*/
-  Character *characters[MAX_CHARACTERS];        /*!<Number of spaces in the game*/
+  Character *characters[MAX_CHARACTERS];        /*!<Array of characters in the game*/
   int n_characters;                             /*!<Number of characters in the game*/
   Link *links[MAX_LINKS];                       /*!<Array of links*/
   int n_links;                                  /*!<Number of links in the game*/
@@ -440,11 +440,10 @@ Id game_get_character_location(Game *game, Id character_id)
   int i;
   if (!game)
     return NO_ID;
-  for (i = 0; i < game->n_spaces; i++)
+  for (i = 0; i < game->n_characters; i++)
   {
-    if (space_get_character(game_get_space(game, game_get_space_id_at(game, i))) == character_id)
-    {
-      return game_get_space_id_at(game, i);
+    if(character_get_id(game->characters[i]) == character_id){
+      return character_get_location(game->characters[i]);
     }
   }
   return NO_ID;
@@ -467,7 +466,31 @@ Character *game_get_character_from_name(Game *game, char *name)
   return NULL;
 }
 
+Status game_move_followers(Game *game, Id new_space_id){
+  int i;
+  Space *current_space=NULL, *new_space=NULL;
+  Character *ch=NULL;
 
+  if(!game || new_space_id == NO_ID){
+    return ERROR;
+  }
+
+  new_space = game_get_space(game, new_space_id);
+  if(!new_space) return ERROR;
+
+  current_space = game_get_space(game, game_get_current_player_location(game));
+
+  for(i=0;i<space_get_n_characters(current_space);i++){
+    ch = game_get_character(game, space_get_character_in_pos(current_space, i));
+    if(character_get_following(ch) == player_get_id(game_get_current_player(game))){
+      character_set_location(ch, new_space_id);
+      space_delete_character(current_space, character_get_id(ch));
+      space_add_character(new_space, character_get_id(ch));
+    }
+  }
+
+  return OK;
+}
 /*LINK RELATED FUNCTIONS*/
 
 Status game_add_link(Game *game, Link *link) 
@@ -557,6 +580,7 @@ Status game_set_description(Game *game, char *desc)
   strcpy(game->playerGraphicInformation[game->turn]->description, desc);
   return OK;
 }
+
 char *game_get_description(Game *game)
 {
   if(!game)

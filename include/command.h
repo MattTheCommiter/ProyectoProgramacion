@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 9       /*!< Number of commands that are possible*/
+#define N_CMD 11       /*!< Number of commands that are possible*/
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
@@ -40,7 +40,9 @@ typedef enum
     TAKE,        /*!<Assigs 4 to the keyword "TAKE", which represents taking the an object*/
     CHAT,        /*!<Assigs 5 to the keyword "CHAT", which will be used in command-related functions*/
     ATTACK,      /*!<Assigs 6 to the keyword "ATTACK", which will be used in command-related functions*/
-    INSPECT      /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
+    INSPECT,     /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
+    RECRUIT,     /*!<Assigs 8 to the keyword "RECRUIT", which will be used in command-related functions*/
+    ABANDON      /*!<Assigs 9 to the keyword "ABANDON", which will be used in command-related functions*/
 } CommandCode;
 
 /**

@@ -28,6 +28,7 @@ struct _Character
     Bool friendly;           /*!<A bool that sets wether the character is friendly or not*/
     char message[WORD_SIZE]; /*!<a string for the message that a character says*/
     Id following;            /*!<Id of the player they are following*/
+    Id location;             /*Id of the location of the character*/
 };
 
 Character *character_create(Id id)
@@ -183,4 +184,15 @@ Id character_get_following(Character *c){
     return c->following;
 }
 
+Status character_set_location(Character *c, Id location_id) {
+    if (!c) return ERROR;
 
+    c->location = location_id;
+    return OK;
+}
+
+Id character_get_location(Character *c) {
+    if (!c) return NO_ID;
+
+    return c->location;
+}

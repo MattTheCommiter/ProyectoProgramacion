@@ -363,7 +363,8 @@ Status gameReader_load_characters(Game *game, char *filename)
       { /*Sets the information related to the character and adds it to the game*/
         character_set_name(character, name);
         character_set_gdesc(character, gdesc);
-        space_set_character(game_get_space(game, spaceId), id);
+        space_add_character(game_get_space(game, spaceId), id);
+        character_set_location(character, spaceId);
         character_set_health(character, hp);
         character_set_message(character, message);
         character_set_friendly(character, friendliness);

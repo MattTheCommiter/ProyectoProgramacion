@@ -28,7 +28,7 @@ struct _Player
   Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
   char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
-  Inventory *backpack;                /*!< Backpack to carry multiple objects */
+  Inventory *backpack;      /*!< Backpack to carry multiple objects */
 };
 
 /**This function creates a new player with the given ID and initializes its fields. */
