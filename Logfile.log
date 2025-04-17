@@ -1,1 +1,12 @@
+Take seed: OK
+Move west: ERROR
+Inspect seed: ERROR
+Move s: OK
+Move s: OK
+Move r: ERROR
+Move r: ERROR
+Move v: ERROR
+Unknown: OK
+Unknown: OK
+Move w: ERROR
 Exit: OK
