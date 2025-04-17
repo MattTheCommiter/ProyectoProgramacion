@@ -216,10 +216,7 @@ void game_actions_move(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  if(game_connection_is_open(game, current_id, direction) ==  FALSE){
-    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-    return;
-  }
+  
   next_space_id = game_get_connection(game, current_id, direction);
   if(next_space_id != NO_ID)
   {
@@ -371,7 +368,7 @@ void game_actions_attack(Game *game, char *arg)
     return;
   }
   enemy = game_get_character_from_name(game, arg);
-  if(enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) == 0)
+  if(enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -428,6 +425,11 @@ void game_actions_attack(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   set_destroy(followers);
+  if(character_get_health(enemy) > 0){
+    game_playMusic(game, FIGHT);
+  }else{
+    game_playMusic(game, CHILL);
+  }
   return;
 }
 

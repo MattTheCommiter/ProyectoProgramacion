@@ -15,38 +15,43 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 /**
  * @brief Private structure that saves the 3 last commands of a player and the messages and descriptions of object they chat with and inspect respectively
- * 
+ *
  */
-typedef struct _InterfaceData{
-  Command *lastCmd;               /*!<Pointer to the last command that have been saved*/
-  Command *second_to_lastCmd;     /*!<Pointer to the second-to-last command that have been saved*/
-  Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
-  char message[MAX_MESSAGE];      /*!<String that has the message of the character the player last talked to*/
-  char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
-}InterfaceData;
+typedef struct _InterfaceData
+{
+  Command *lastCmd;              /*!<Pointer to the last command that have been saved*/
+  Command *second_to_lastCmd;    /*!<Pointer to the second-to-last command that have been saved*/
+  Command *third_to_lastCmd;     /*!<Pointer to the third-to-last command that have been saved*/
+  char message[MAX_MESSAGE];     /*!<String that has the message of the character the player last talked to*/
+  char description[MAX_MESSAGE]; /*!<String that has the description of the object the player last inspected in the game*/
+} InterfaceData;
 
 /**
  * @brief Structure where all the game's main information is stored (players, objects, links, spaces...)
- * 
+ *
  */
 struct _Game
 {
-  Object *objects[MAX_OBJECTS];                 /*!<Pointer array to the objects that are present in the game*/
-  int n_objects;                                /*!<Number of objects in the game*/
-  Player *players[MAX_PLAYERS];                 /*!<Array of the different players in the game*/
-  int n_players;                                /*!<Number of players in the game*/
-  int turn;                                     /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
-  Space *spaces[MAX_SPACES];                    /*!<Array of Spaces*/
-  int n_spaces;                                 /*!<Number of spaces in the game*/
-  Character *characters[MAX_CHARACTERS];        /*!<Array of characters in the game*/
-  int n_characters;                             /*!<Number of characters in the game*/
-  Link *links[MAX_LINKS];                       /*!<Array of links*/
-  int n_links;                                  /*!<Number of links in the game*/
-  Bool finished;                                /*!<Boolean that establishes whether the game has ended or not*/
+  Object *objects[MAX_OBJECTS];                         /*!<Pointer array to the objects that are present in the game*/
+  int n_objects;                                        /*!<Number of objects in the game*/
+  Player *players[MAX_PLAYERS];                         /*!<Array of the different players in the game*/
+  int n_players;                                        /*!<Number of players in the game*/
+  int turn;                                             /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
+  Space *spaces[MAX_SPACES];                            /*!<Array of Spaces*/
+  int n_spaces;                                         /*!<Number of spaces in the game*/
+  Character *characters[MAX_CHARACTERS];                /*!<Array of characters in the game*/
+  int n_characters;                                     /*!<Number of characters in the game*/
+  Link *links[MAX_LINKS];                               /*!<Array of links*/
+  int n_links;                                          /*!<Number of links in the game*/
+  Bool finished;                                        /*!<Boolean that establishes whether the game has ended or not*/
   InterfaceData *playerGraphicInformation[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored as well as information related to displayed messages*/
+  Mix_Music *music_tracks[MAX_SONGS];                   /*!<Array of pointers to the music tracks that are loaded in the game*/
+  Track Current_song;                                   /*!<The song that is currently playing in the game*/
 };
 /**
    Private functions
@@ -68,6 +73,17 @@ Id game_get_space_id_at(Game *game, int position);
  */
 InterfaceData *game_interface_data_create();
 
+/**
+ * @brief Loads all the track songs needed in the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status Ok or ERROR.
+ */
+Status game_loadMusic(Game *game);
+
+
+
+
 Status game_create(Game **game)
 {
   int i;
@@ -87,7 +103,31 @@ Status game_create(Game **game)
   (*game)->n_objects = 0;
   (*game)->n_links = 0;
   (*game)->finished = FALSE;
+  (*game)->Current_song = NO_SONG;
 
+  /*Initialize SDL*/
+  if (SDL_Init(SDL_INIT_AUDIO) < 0)
+  {
+    game_destroy(*game);
+    return ERROR;
+  }
+
+  /* Initialize SDL_mixer to play mp3*/
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+  {
+    SDL_Quit();
+    game_destroy(*game);
+    return ERROR;
+  }
+
+  /*Now we load the songs that we want to play*/
+  if(game_loadMusic(*game) == ERROR){
+    game_destroy(*game);
+    Mix_CloseAudio();
+    SDL_Quit();
+    return ERROR;
+  }
+  
   return OK;
 }
 
@@ -106,19 +146,18 @@ Status game_create_from_file(Game **game, char *filename)
   {
     return ERROR;
   }
-  if(gameReader_load_players((*game), filename) == ERROR)
+  if (gameReader_load_players((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  if(gameReader_load_characters((*game), filename) == ERROR)
+  if (gameReader_load_characters((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  if(gameReader_load_links((*game), filename) == ERROR)
+  if (gameReader_load_links((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  
 
   return OK;
 }
@@ -149,8 +188,10 @@ Status game_destroy(Game *game)
     if (game->characters[i])
       character_destroy(game->characters[i]);
   }
-  for(i = 0;i < game->n_players; i++){
-    if(game->players[i]){
+  for (i = 0; i < game->n_players; i++)
+  {
+    if (game->players[i])
+    {
       player_destroy(game->players[i]);
     }
     command_destroy(game->playerGraphicInformation[i]->lastCmd);
@@ -158,6 +199,17 @@ Status game_destroy(Game *game)
     command_destroy(game->playerGraphicInformation[i]->third_to_lastCmd);
     free(game->playerGraphicInformation[i]);
   }
+
+
+/*We make sure to clean the music tracks*/
+for (i = 0; i < MAX_SONGS; i++) {
+  if (game->music_tracks[i]) {
+      Mix_FreeMusic(game->music_tracks[i]);
+  }
+}
+  Mix_CloseAudio();
+  SDL_Quit();
+
   free(game);
 
   return OK;
@@ -253,7 +305,7 @@ void game_print(Game *game)
   }
 
   fprintf(stdout, "=> Links:\n");
-  for (i = 0 ; i < game->n_links ; i++) 
+  for (i = 0; i < game->n_links; i++)
   {
     link_print(game->links[i]);
   }
@@ -262,9 +314,10 @@ void game_print(Game *game)
   {
     object_print(game->objects[i]);
   }
-  for(i=0;i < game->n_players; i++){
+  for (i = 0; i < game->n_players; i++)
+  {
     player_print(game_get_current_player(game));
-    game->turn = (game ->turn + 1)%(game->n_players);
+    game->turn = (game->turn + 1) % (game->n_players);
   }
 }
 
@@ -442,7 +495,8 @@ Id game_get_character_location(Game *game, Id character_id)
     return NO_ID;
   for (i = 0; i < game->n_characters; i++)
   {
-    if(character_get_id(game->characters[i]) == character_id){
+    if (character_get_id(game->characters[i]) == character_id)
+    {
       return character_get_location(game->characters[i]);
     }
   }
@@ -466,23 +520,28 @@ Character *game_get_character_from_name(Game *game, char *name)
   return NULL;
 }
 
-Status game_move_followers(Game *game, Id new_space_id){
+Status game_move_followers(Game *game, Id new_space_id)
+{
   int i;
-  Space *current_space=NULL, *new_space=NULL;
-  Character *ch=NULL;
+  Space *current_space = NULL, *new_space = NULL;
+  Character *ch = NULL;
 
-  if(!game || new_space_id == NO_ID){
+  if (!game || new_space_id == NO_ID)
+  {
     return ERROR;
   }
 
   new_space = game_get_space(game, new_space_id);
-  if(!new_space) return ERROR;
+  if (!new_space)
+    return ERROR;
 
   current_space = game_get_space(game, game_get_current_player_location(game));
 
-  for(i=0;i<space_get_n_characters(current_space);i++){
+  for (i = 0; i < space_get_n_characters(current_space); i++)
+  {
     ch = game_get_character(game, space_get_character_in_pos(current_space, i));
-    if(character_get_following(ch) == player_get_id(game_get_current_player(game))){
+    if (character_get_following(ch) == player_get_id(game_get_current_player(game)))
+    {
       character_set_location(ch, new_space_id);
       space_delete_character(current_space, character_get_id(ch));
       space_add_character(new_space, character_get_id(ch));
@@ -493,7 +552,7 @@ Status game_move_followers(Game *game, Id new_space_id){
 }
 /*LINK RELATED FUNCTIONS*/
 
-Status game_add_link(Game *game, Link *link) 
+Status game_add_link(Game *game, Link *link)
 {
   Direction aux_dir = link_get_direction(link);
   Id aux_id = link_get_origin_id(link);
@@ -562,9 +621,9 @@ Bool game_connection_is_open(Game *game, Id current_space, Direction link_direct
   return FALSE;
 }
 
-int game_get_n_links(Game *game) 
+int game_get_n_links(Game *game)
 {
-  if (!game) 
+  if (!game)
     return -1;
 
   return game->n_links;
@@ -574,7 +633,8 @@ int game_get_n_links(Game *game)
 Status game_set_description(Game *game, char *desc)
 {
 
-  if(!game || !desc){
+  if (!game || !desc)
+  {
     return ERROR;
   }
   strcpy(game->playerGraphicInformation[game->turn]->description, desc);
@@ -583,15 +643,16 @@ Status game_set_description(Game *game, char *desc)
 
 char *game_get_description(Game *game)
 {
-  if(!game)
+  if (!game)
   {
     return NULL;
   }
   return game->playerGraphicInformation[game->turn]->description;
 }
 
-Status game_add_player(Game *game, Player *player){
-  if(!game || !player)
+Status game_add_player(Game *game, Player *player)
+{
+  if (!game || !player)
   {
     return ERROR;
   }
@@ -599,31 +660,38 @@ Status game_add_player(Game *game, Player *player){
   game->players[game->n_players] = player;
   game->playerGraphicInformation[game->n_players] = game_interface_data_create();
   game->n_players++;
-  
+
   return OK;
 }
 
-void game_next_turn(Game *game){
-  game->turn= (game->turn + 1)%(game->n_players);
+void game_next_turn(Game *game)
+{
+  game->turn = (game->turn + 1) % (game->n_players);
 }
 
-int game_get_turn(Game *game){
-  if(!game){
+int game_get_turn(Game *game)
+{
+  if (!game)
+  {
     return -1;
   }
   return game->turn;
 }
 
-int game_get_n_players(Game *game){
+int game_get_n_players(Game *game)
+{
   return game->n_players;
 }
 
-Status game_delete_player(Game *game){
+Status game_delete_player(Game *game)
+{
   int i;
 
-  if (!game) return ERROR;
+  if (!game)
+    return ERROR;
 
-  if(!(player_destroy(game->players[game->turn]))){
+  if (!(player_destroy(game->players[game->turn])))
+  {
     return ERROR;
   }
   command_destroy(game->playerGraphicInformation[game->turn]->lastCmd);
@@ -633,9 +701,10 @@ Status game_delete_player(Game *game){
   free(game->playerGraphicInformation[game->turn]);
   game->n_players--;
 
-  for(i = game->turn; i<game->n_players; i++){
-    game->players[i] = game->players[i+1];
-    game->playerGraphicInformation[i] = game->playerGraphicInformation[i+1];
+  for (i = game->turn; i < game->n_players; i++)
+  {
+    game->players[i] = game->players[i + 1];
+    game->playerGraphicInformation[i] = game->playerGraphicInformation[i + 1];
   }
   game->players[game->n_players] = NULL;
   game->playerGraphicInformation[i] = NULL;
@@ -643,17 +712,20 @@ Status game_delete_player(Game *game){
   return OK;
 }
 
-InterfaceData *game_interface_data_create(){
-  InterfaceData *data=NULL;
+InterfaceData *game_interface_data_create()
+{
+  InterfaceData *data = NULL;
 
   data = (InterfaceData *)malloc(sizeof(InterfaceData));
-  if(!data){
+  if (!data)
+  {
     return NULL;
   }
   data->lastCmd = command_create();
   data->second_to_lastCmd = command_create();
   data->third_to_lastCmd = command_create();
-  if (!data->lastCmd || !data->second_to_lastCmd || !data->third_to_lastCmd) {
+  if (!data->lastCmd || !data->second_to_lastCmd || !data->third_to_lastCmd)
+  {
     free(data);
     return NULL;
   }
@@ -666,8 +738,10 @@ InterfaceData *game_interface_data_create(){
   return data;
 }
 
-Status game_interface_data_set_last_command(Game *game, Command *last_cmd){
-  if(!game || !last_cmd) return ERROR;
+Status game_interface_data_set_last_command(Game *game, Command *last_cmd)
+{
+  if (!game || !last_cmd)
+    return ERROR;
   command_destroy(game->playerGraphicInformation[game->turn]->third_to_lastCmd);
   game->playerGraphicInformation[game->turn]->third_to_lastCmd = game->playerGraphicInformation[game->turn]->second_to_lastCmd;
   game->playerGraphicInformation[game->turn]->second_to_lastCmd = game->playerGraphicInformation[game->turn]->lastCmd;
@@ -676,19 +750,57 @@ Status game_interface_data_set_last_command(Game *game, Command *last_cmd){
   return OK;
 }
 
-Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos) {
-  if (!game) return NULL;
-  if(!game->playerGraphicInformation[game->turn]){
+Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos)
+{
+  if (!game)
+    return NULL;
+  if (!game->playerGraphicInformation[game->turn])
+  {
     return NULL;
   }
-  switch(pos){
-    case LAST:
-      return game->playerGraphicInformation[game->turn]->lastCmd; 
-    case SECOND_TO_LAST:
-      return game->playerGraphicInformation[game->turn]->second_to_lastCmd;
-    case THIRD_TO_LAST:
-      return game->playerGraphicInformation[game->turn]->third_to_lastCmd;
-    default:
-      return NULL;
+  switch (pos)
+  {
+  case LAST:
+    return game->playerGraphicInformation[game->turn]->lastCmd;
+  case SECOND_TO_LAST:
+    return game->playerGraphicInformation[game->turn]->second_to_lastCmd;
+  case THIRD_TO_LAST:
+    return game->playerGraphicInformation[game->turn]->third_to_lastCmd;
+  default:
+    return NULL;
   }
+}
+
+
+
+Status game_loadMusic(Game *game){
+  if(!game) return ERROR;
+
+  game->music_tracks[0] = Mix_LoadMUS("chill.mp3");
+  if(game->music_tracks[0] == NULL){
+    return ERROR;
+  }
+
+  game->music_tracks[1] = Mix_LoadMUS("fight.mp3");
+  if(game->music_tracks[1] == NULL){
+    return ERROR;
+  }
+  return OK;
+}
+
+Status game_playMusic(Game *game, Track song){
+  if(!game || song >= MAX_SONGS){
+    return ERROR;
+  }
+  if(song == game->Current_song){
+    return OK;
+  }
+
+  Mix_HaltMusic();
+  if(Mix_PlayMusic(game->music_tracks[song], -1) == -1){
+    return ERROR;
+  }
+  game->Current_song = song;
+  return OK;
+ 
 }

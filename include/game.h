@@ -1,10 +1,9 @@
 /**
  * @brief It defines the game interface
- *
  * @file game.h
- * @author Profesores PPROG
+ * @author Matteo Artuñed, Alvaro Inigo, Guilherme Povedano.
  * @version 0
- * @date 27-01-2025
+ * @date 14-04-2025
  * @copyright GNU Public License
  */
 
@@ -25,7 +24,7 @@
 #define MAX_LINKS (MAX_SPACES * 4)  /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
 #define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
-
+#define MAX_SONGS 2                 /*!<The maximum ammout of songs that can be played in the game*/
 /**
  * @brief describes whether we want to access to the last, the second to last or the third to last command
  * 
@@ -36,6 +35,11 @@ typedef enum {
     LAST            /*Indicates we are retreiving the last command the player introduced*/
 } CommandPosition;
 
+typedef enum {
+    NO_SONG = -1,
+    CHILL,
+    FIGHT
+}Track;
 /**
  * @brief specifices the type for the _Game structure 
  * 
@@ -500,10 +504,19 @@ Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos);
 
 /**
  * @brief moves all of the followers of a player to a new space
- * 
+ * @author Matteo Artunedo
  * @param game pointer to the game
  * @param new_space_id id of the space where the players will move to
  * @return Status: OK or ERROR 
  */
 Status game_move_followers(Game *game, Id new_space_id);
+
+/**
+ * @brief Changes the current music track we are playing to play the next song we want to play.
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param song the number in the enumeration of tracks for the song we want to play. 
+ * @return Status 
+ */
+Status game_playMusic(Game *game, Track song);
 #endif

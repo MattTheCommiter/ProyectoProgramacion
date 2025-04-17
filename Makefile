@@ -6,6 +6,9 @@ INCDIR=./include
 DOCDIR=./doc
 INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
+SDL_CFLAGS=$(shell sdl2-config --cflags)
+SDL_LIBS=$(shell sdl2-config --libs) -lSDL2_mixer
+CFLAGS += $(SDL_CFLAGS)
 TESTS=character_test set_test space_test link_test inventory_test object_test player_test
 EXE=juego_hormiga $(TESTS)
 vpath %.h $(INCDIR)
@@ -25,7 +28,7 @@ general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
 juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
-	gcc -g -o $@ $^ $(CLIBS)
+	gcc -g -o $@ $^ $(CLIBS) $(SDL_LIBS)
 
 
 

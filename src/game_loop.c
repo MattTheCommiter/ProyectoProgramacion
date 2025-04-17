@@ -130,6 +130,15 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
     return 1;
   }
 
+  /*we start the music*/
+
+  if(game_playMusic(*game, CHILL) == ERROR){
+    fprintf(stderr, "Error while playing the game music.\n");
+    game_destroy((*game));
+    graphic_engine_destroy(*gengine);
+    return 1;
+  }
+
   return 0;
 }
 
