@@ -9,7 +9,7 @@
  */
 
 #include "game.h"
-#include "gameReader.h"
+#include "gameManagement.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -68,6 +68,9 @@ Id game_get_space_id_at(Game *game, int position);
  */
 InterfaceData *game_interface_data_create();
 
+
+/*End of private functions*/
+
 Status game_create(Game **game)
 {
   int i;
@@ -98,23 +101,23 @@ Status game_create_from_file(Game **game, char *filename)
     return ERROR;
   }
 
-  if (gameReader_load_spaces((*game), filename) == ERROR)
+  if (gameManagement_load_spaces((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  if (gameReader_load_objects((*game), filename) == ERROR)
+  if (gameManagement_load_objects((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  if(gameReader_load_players((*game), filename) == ERROR)
+  if(gameManagement_load_players((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  if(gameReader_load_characters((*game), filename) == ERROR)
+  if(gameManagement_load_characters((*game), filename) == ERROR)
   {
     return ERROR;
   }
-  if(gameReader_load_links((*game), filename) == ERROR)
+  if(gameManagement_load_links((*game), filename) == ERROR)
   {
     return ERROR;
   }
@@ -183,6 +186,17 @@ Space *game_get_space(Game *game, Id id)
   return NULL;
 }
 
+int game_get_n_spaces(Game *game){
+  if(!game) return 0;
+  return game->n_spaces;
+
+}
+Space *game_get_space_in_pos(Game *game, int pos){
+  if(!game || pos >= game->n_spaces || pos < 0) return NULL;
+  
+  return game->spaces[pos];
+}
+
 Id game_get_current_player_location(Game *game)
 {
   return player_get_location(game->players[game->turn]);
@@ -199,6 +213,14 @@ Status game_set_current_player_location(Game *game, Id id)
 
   return OK;
 }
+
+
+Player *game_get_player_in_pos(Game *game, int pos){
+  if(!game || pos >= game->n_players || pos < 0) return NULL;
+
+  return game->players[pos];
+}
+
 
 Id game_get_object_location(Game *game, Id objectId)
 {
@@ -366,6 +388,12 @@ Id game_get_character_id_at(Game *game, int position)
   }
 
   return character_get_id(game->characters[position]);
+}
+
+Character *game_get_character_in_pos(Game *game, int pos){
+  if(!game || pos >= game->n_characters || pos < 0) return NULL;
+  return game->characters[pos];
+
 }
 
 Character *game_get_character(Game *game, Id id)
@@ -570,6 +598,10 @@ int game_get_n_links(Game *game)
   return game->n_links;
 }
 
+Link *game_get_link_in_pos(Game *game, int pos){
+  if(!game || pos >= game->n_links || pos < 0) return NULL;
+  return game->links[pos];
+}
 /*END OF LINK RELATED FUNCTIONS*/
 Status game_set_description(Game *game, char *desc)
 {
@@ -612,6 +644,12 @@ int game_get_turn(Game *game){
     return -1;
   }
   return game->turn;
+}
+
+Status game_set_turn(Game *game, int turn){
+  if(!game || turn >= game->n_players || turn < 0) return ERROR;
+  game->turn = turn;
+  return OK;
 }
 
 int game_get_n_players(Game *game){
@@ -691,4 +729,54 @@ Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos) {
     default:
       return NULL;
   }
+}
+
+Command *game_interface_in_pos_get_lastCmd(Game *game, int pos){
+  if(!game || pos>=game->n_players || pos < 0) return NULL;
+
+  return game->playerGraphicInformation[pos]->lastCmd;
+}
+
+Command *game_interface_in_pos_get_second_to_last_Cmd(Game *game, int pos){
+  if(!game || pos>=game->n_players || pos < 0) return NULL;
+  
+  return game->playerGraphicInformation[pos]->second_to_lastCmd;
+}
+
+
+Command *game_interface_in_pos_get_third_to_last_Cmd(Game *game, int pos){
+  if(!game || pos>=game->n_players || pos < 0) return NULL;
+  
+  return game->playerGraphicInformation[pos]->third_to_lastCmd;
+}
+
+
+char *game_interface_in_pos_get_message(Game *game, int pos){
+  if(!game || pos>=game->n_players || pos < 0) return NULL;
+  
+  return game->playerGraphicInformation[pos]->message;
+}
+
+
+char *game_interface_in_pos_get_description(Game *game, int pos){
+  if(!game || pos>=game->n_players || pos < 0) return NULL;
+  
+  return game->playerGraphicInformation[pos]->description;
+}
+
+Status game_locate_new_interface_in_pos(Game *game, int pos, Command *lastCmd, Command *second_to_lastCmd, Command *third_to_lastCmd, char *message, char *description){
+  InterfaceData *new_interface = NULL;
+
+  if(!game || pos >= game->n_players || pos < 0 || !lastCmd || !second_to_lastCmd || !third_to_lastCmd || !message || !description) return ERROR;
+
+  new_interface = game_interface_data_create();
+  if(!new_interface) return ERROR;
+
+  new_interface->lastCmd = lastCmd;
+  new_interface->second_to_lastCmd = second_to_lastCmd;
+  new_interface->third_to_lastCmd = third_to_lastCmd;
+
+  game->playerGraphicInformation[pos] = new_interface;
+  return OK;
+
 }

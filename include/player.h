@@ -210,4 +210,12 @@ char *player_get_gdesc(Player *player);
  * @return Bool TRUE if it belongs to the inventory or FALSE
  */
 Bool player_object_is_in_backpack(Player *player, Id objectId);
+
+/**
+ * @brief Returns the inventory of the player.
+ * @author Alvaro Inigo
+ * @param player 
+ * @return Inventory* 
+ */
+Inventory *player_get_inventory(Player *player);
 #endif

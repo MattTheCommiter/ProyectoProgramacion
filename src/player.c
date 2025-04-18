@@ -268,3 +268,8 @@ Bool player_object_is_in_backpack(Player *player, Id objectId){
   }
   return inventory_contains(player->backpack, objectId);
 }
+
+Inventory *player_get_inventory(Player *player){
+  if(!player) return NULL;
+  return player->backpack;
+}

@@ -164,7 +164,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
       cmd_status = command_get_lastcmd_success(last_cmd);
 
       /*Log the command (and the argument in some cases) and its result*/
-      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP || cmd_code == MOVE){
+      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP || cmd_code == MOVE || cmd_code == ATTACK || cmd_code == CHAT || cmd_code == ABANDON || cmd_code == RECRUIT){
         fprintf(log_file, "%s %s: %s\n", cmd_name, cmd_arg, cmd_status == OK ? "OK" : "ERROR");
       }else{
         fprintf(log_file, "%s: %s\n", cmd_name, cmd_status == OK ? "OK" : "ERROR");
