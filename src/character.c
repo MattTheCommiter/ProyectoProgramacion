@@ -21,14 +21,15 @@
  */
 struct _Character
 {
-    Id id;                   /*!<Id of the character*/
-    char name[WORD_SIZE];    /*!<a string that contains the name of the character*/
-    char gdesc[GDESCTAM];    /*!<a string that contains the graphic description of the character*/
-    int health;              /*!<the health of the character, an integer*/
-    Bool friendly;           /*!<A bool that sets wether the character is friendly or not*/
-    char message[WORD_SIZE]; /*!<a string for the message that a character says*/
-    Id following;            /*!<Id of the player they are following*/
-    Id location;             /*Id of the location of the character*/
+    Id id;                      /*!<Id of the character*/
+    char name[WORD_SIZE];       /*!<a string that contains the name of the character*/
+    char gdesc[GDESCTAM];       /*!<a string that contains the graphic description of the character*/
+    char dead_gdesc[GDESCTAM];  /*!<a string that contains the graphic description of the character*/
+    int health;                 /*!<the health of the character, an integer*/
+    Bool friendly;              /*!<A bool that sets wether the character is friendly or not*/
+    char message[WORD_SIZE];    /*!<a string for the message that a character says*/
+    Id following;               /*!<Id of the player they are following*/
+    Id location;                /*Id of the location of the character*/
 };
 
 Character *character_create(Id id)
@@ -84,6 +85,14 @@ Status character_set_gdesc(Character *c, char *desc)
     return OK;
 }
 
+Status character_set_dead_gdesc(Character *c, char *desc)
+{
+    if (!c)
+        return ERROR;
+    strcpy(c->dead_gdesc, desc);
+    return OK;
+}
+
 Status character_set_health(Character *c, int hp)
 {
     if (!c)
@@ -127,6 +136,13 @@ char *character_get_gdesc(Character *c)
     if (!c)
         return NULL;
     return c->gdesc;
+}
+
+char *character_get_dead_gdesc(Character *c)
+{
+    if (!c)
+        return NULL;
+    return c->dead_gdesc;
 }
 
 int character_get_health(Character *c)

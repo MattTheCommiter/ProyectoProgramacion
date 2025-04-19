@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 38   /*!< Maximum number of tests */
+#define MAX_TESTS 42   /*!< Maximum number of tests */
 
 /**
  * @brief Main function for SPACE unit tests.
@@ -122,6 +122,14 @@ int main(int argc, char **argv)
         test01_character_get_location();
     if (all || test == 38)
         test02_character_get_location();
+    if (all || test == 39)
+        test01_character_set_dead_gdesc();
+    if (all || test == 40)
+        test02_character_set_dead_gdesc();
+    if (all || test == 41)
+        test01_character_get_dead_gdesc();
+    if (all || test == 42)
+        test02_character_get_dead_gdesc();
 
 
     PRINT_PASSED_PERCENTAGE;
@@ -160,6 +168,13 @@ void test01_character_set_gdesc()
 {
     Character *c = character_create(1);
     PRINT_TEST_RESULT(character_set_gdesc(c, "@") == OK && strcmp(character_get_gdesc(c), "@") == 0);
+    character_destroy(c);
+}
+
+void test01_character_set_dead_gdesc()
+{
+    Character *c = character_create(1);
+    PRINT_TEST_RESULT(character_set_dead_gdesc(c, "@") == OK && strcmp(character_get_gdesc(c), "@") == 0);
     character_destroy(c);
 }
 
@@ -204,6 +219,14 @@ void test01_character_get_gdesc()
     Character *c = character_create(1);
     character_set_gdesc(c, "*");
     PRINT_TEST_RESULT(strcmp(character_get_gdesc(c), "*") == 0);
+    character_destroy(c);
+}
+
+void test01_character_get_dead_gdesc()
+{
+    Character *c = character_create(1);
+    character_set_dead_gdesc(c, "*");
+    PRINT_TEST_RESULT(strcmp(character_get_dead_gdesc(c), "*") == 0);
     character_destroy(c);
 }
 
@@ -270,6 +293,12 @@ void test02_character_set_gdesc()
     PRINT_TEST_RESULT(character_set_gdesc(c, "@") == ERROR);
 }
 
+void test02_character_set_dead_gdesc()
+{
+    Character *c = NULL;
+    PRINT_TEST_RESULT(character_set_dead_gdesc(c, "@") == ERROR);
+}
+
 void test02_character_set_health()
 {
     Character *c = NULL;
@@ -304,6 +333,12 @@ void test02_character_get_gdesc()
 {
     Character *c = NULL;
     PRINT_TEST_RESULT(character_get_gdesc(c) == NULL);
+}
+
+void test02_character_get_dead_gdesc()
+{
+    Character *c = NULL;
+    PRINT_TEST_RESULT(character_get_dead_gdesc(c) == NULL);
 }
 
 void test02_character_get_health()

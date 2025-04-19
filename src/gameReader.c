@@ -307,6 +307,7 @@ Status gameReader_load_characters(Game *game, char *filename)
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char gdesc[GDESCTAM] = "";
+  char dead_gdesc[GDESCTAM] = "";
   char message[WORD_SIZE] = "";
   char *toks = NULL;
   Id id = NO_ID, spaceId = NO_ID;
@@ -336,8 +337,14 @@ Status gameReader_load_characters(Game *game, char *filename)
       id = atol(toks);
       toks = strtok(NULL, "|\r\n"); 
       strcpy(name, toks);
+      /*We read the gdesc of the character*/
       toks = strtok(NULL, "|\r\n");
       strcpy(gdesc,toks);
+      /*We read the dead gdesc of the character*/
+      toks = strtok(NULL, "|\r\n");
+      strcpy(dead_gdesc,toks);
+
+      /*Additiona information*/
       toks = strtok(NULL, "|\r\n");
       spaceId = atol(toks);
       toks = strtok(NULL, "|\r\n");
@@ -363,6 +370,7 @@ Status gameReader_load_characters(Game *game, char *filename)
       { /*Sets the information related to the character and adds it to the game*/
         character_set_name(character, name);
         character_set_gdesc(character, gdesc);
+        character_set_dead_gdesc(character, dead_gdesc);
         space_add_character(game_get_space(game, spaceId), id);
         character_set_location(character, spaceId);
         character_set_health(character, hp);

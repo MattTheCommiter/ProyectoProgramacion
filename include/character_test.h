@@ -51,6 +51,13 @@ void test01_character_set_name();
 void test01_character_set_gdesc();
 
 /**
+ * @test Test setting dead character graphic description
+ * @pre Non NULL character, valid gdesc
+ * @post Character graphic description is correctly updated
+ */
+void test01_character_set_dead_gdesc();
+
+/**
  * @test Test setting character health
  * @pre Non NULL character, valid health value
  * @post Character health is correctly updated
@@ -91,6 +98,13 @@ void test01_character_get_name();
  * @post Correct character gdesc is returned
  */
 void test01_character_get_gdesc();
+
+/**
+ * @test Test getting character graphic description
+ * @pre Non NULL character with set gdesc
+ * @post Correct character gdesc is returned
+ */
+void test01_character_get_dead_gdesc();
 
 /**
  * @test Test getting character health
@@ -156,6 +170,13 @@ void test02_character_set_name();
 void test02_character_set_gdesc();
 
 /**
+ * @test Test setting dead character graphic description with NULL character
+ * @pre NULL character, valid gdesc
+ * @post ERROR returned
+ */
+void test02_character_set_dead_gdesc();
+
+/**
  * @test Test setting character health with NULL character
  * @pre NULL character, valid health value
  * @post ERROR returned
@@ -196,6 +217,13 @@ void test02_character_get_name();
  * @post NULL returned
  */
 void test02_character_get_gdesc();
+
+/**
+ * @test Test getting dead character graphic description with NULL character
+ * @pre NULL character
+ * @post NULL returned
+ */
+void test02_character_get_dead_gdesc();
 
 /**
  * @test Test getting character health with NULL character

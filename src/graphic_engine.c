@@ -227,7 +227,12 @@ char **graphic_engine_create_space_square(Game *game, Id square_id)
     }
     else
     {
-      strcpy(character, character_get_gdesc(game_get_character(game, space_get_character_in_pos(space, 0))));
+      if(character_get_health(game_get_character(game, space_get_character_in_pos(space, 0))) > 0){
+        strcpy(character, character_get_gdesc(game_get_character(game, space_get_character_in_pos(space, 0))));
+      }
+      else{
+        strcpy(character, character_get_dead_gdesc(game_get_character(game, space_get_character_in_pos(space, 0))));
+      }
     }
 
 
@@ -518,14 +523,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       /*Probamos a llega al sur desde caminos alternativos*/
       id_south = graphic_engine_vertically_adjacent_square(game, id_act, S);
     }
-
-    /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
-    
-    if (character_get_health(game_get_character_from_name(game, "spider")) <= 0)
-    {
-      character_set_gdesc(game_get_character_from_name(game, "spider"), "\\/xx\\/");
-    }
-    /*fin del cambio grafico para la araña muerta*/
 
     /*Imprimimos la primera línea de espacios */
     created_line = graphic_engine_create_line_of_spaces(game, id_north, id_act, TOP_HEIGHT);
