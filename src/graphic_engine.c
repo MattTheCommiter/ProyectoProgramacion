@@ -521,7 +521,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     /*araña muerta se imprime del reves, no es necesario pero mejora la experiencia de juego*/
     
-    if (character_get_health(game_get_character_from_name(game, "spider")) == 0)
+    if (character_get_health(game_get_character_from_name(game, "spider")) <= 0)
     {
       character_set_gdesc(game_get_character_from_name(game, "spider"), "\\/xx\\/");
     }
