@@ -87,6 +87,14 @@ Status space_destroy(Space *space)
   return OK;
 }
 
+Status space_set_id(Space *space, Id id){
+  if(!space || id == NO_ID) return ERROR;
+
+  space->id = id;
+  return OK;
+
+}
+
 Id space_get_id(Space *space)
 {
   if (space == NULL)

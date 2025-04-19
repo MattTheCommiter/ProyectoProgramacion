@@ -45,6 +45,15 @@ Space *space_create(Id id);
 Status space_destroy(Space *space);
 
 /**
+ * @brief sets the id of the space
+ * @author Alvaro Inigo
+ * @param space a pointer to the space
+ * @param id the new Id
+ * @return Status OK of ERROR
+ */
+Status space_set_id(Space *space, Id id);
+
+/**
  * @brief It gets the id of a space
  * @author Profesores PPROG
  *

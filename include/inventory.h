@@ -44,6 +44,7 @@ Status inventory_destroy(Inventory* inventory);
 */
 Set* inventory_get_objs(Inventory* inventory);
 
+
 /**
 * @brief Gets the maximum number of objects that the inventory can hold.
 * @author PPROG Team 2101_D - AGL

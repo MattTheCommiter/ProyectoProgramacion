@@ -611,19 +611,28 @@ char *game_interface_in_pos_get_message(Game *game, int pos);
  */
 char *game_interface_in_pos_get_description(Game *game, int pos);
 
+Status game_interface_in_pos_set_message(Game *game, int pos, char *desc);
+
 /**
- * @brief creates a new interface, sets all the information and locates it in the turn given.
+ * @brief sets the message of an interface in a given turn
  * @author Alvaro Inigo
- * 
  * @param game a pointer to the game
- * @param pos the position of the new interface in the playerdata array of game
- * @param lastCmd the las command of the interface
- * @param second_to_lastCmd the second to last command in the interface
- * @param third_to_lastCmd the thirst to last command in the interface
- * @param message the message of the interface
- * @param description the description of the interface
- * @return Status: OK or ERROR 
+ * @param pos the position of the interface in the game array
+ * @param desc the new message
+ * @return Status  OK or ERROR
  */
-Status game_locate_new_interface_in_pos(Game *game, int pos, Command *lastCmd, Command *second_to_lastCmd, Command *third_to_lastCmd, char *message, char *description);
+Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
+
+/**
+ * @brief sets the description of an interface in a given turn
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface in the game array
+ * @param desc the new desciption
+ * @return Status OK or ERROR
+ */
+Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
+
+
 
 #endif

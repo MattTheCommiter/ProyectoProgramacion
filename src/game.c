@@ -89,6 +89,7 @@ Status game_create(Game **game)
   (*game)->n_characters = 0;
   (*game)->n_objects = 0;
   (*game)->n_links = 0;
+  (*game)->n_players = 0;
   (*game)->finished = FALSE;
 
   return OK;
@@ -699,8 +700,8 @@ InterfaceData *game_interface_data_create(){
   command_set_code(data->second_to_lastCmd, NO_CMD);
   command_set_code(data->third_to_lastCmd, NO_CMD);
 
-  data->description[0] = '\0';
-  data->message[0] = '\0';
+  data->description[0] = ' ';
+  data->message[0] = ' ';
   return data;
 }
 
@@ -764,19 +765,17 @@ char *game_interface_in_pos_get_description(Game *game, int pos){
   return game->playerGraphicInformation[pos]->description;
 }
 
-Status game_locate_new_interface_in_pos(Game *game, int pos, Command *lastCmd, Command *second_to_lastCmd, Command *third_to_lastCmd, char *message, char *description){
-  InterfaceData *new_interface = NULL;
+Status game_interface_in_pos_set_message(Game *game, int pos, char *message){
+  if(!game || pos>=game->n_players || pos < 0) return ERROR;
+  strcpy(game->playerGraphicInformation[pos]->message, message);
+  return OK;
 
-  if(!game || pos >= game->n_players || pos < 0 || !lastCmd || !second_to_lastCmd || !third_to_lastCmd || !message || !description) return ERROR;
+}
 
-  new_interface = game_interface_data_create();
-  if(!new_interface) return ERROR;
 
-  new_interface->lastCmd = lastCmd;
-  new_interface->second_to_lastCmd = second_to_lastCmd;
-  new_interface->third_to_lastCmd = third_to_lastCmd;
-
-  game->playerGraphicInformation[pos] = new_interface;
+Status game_interface_in_pos_set_description(Game *game, int pos, char *desc){
+  if(!game || pos>=game->n_players || pos < 0) return ERROR;
+  strcpy(game->playerGraphicInformation[pos]->description, desc);
   return OK;
 
 }

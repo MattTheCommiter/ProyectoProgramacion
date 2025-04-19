@@ -80,6 +80,6 @@
 
  Status gameManagement_save(Game *game, char *filename);
 
- Status gameManagement_load(Game *game, char *filename);
+ Status gameManagement_load(Game **game, char *filename);
  
  #endif

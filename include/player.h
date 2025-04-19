@@ -218,4 +218,13 @@ Bool player_object_is_in_backpack(Player *player, Id objectId);
  * @return Inventory* 
  */
 Inventory *player_get_inventory(Player *player);
+
+/**
+ * @brief Sets the max ammount of objects in the inventory of the player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player 
+ * @param max new max ammount of objects
+ * @return Status OK or ERROR
+ */
+Status player_set_max_objs(Player *player, int max);
 #endif

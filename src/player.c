@@ -273,3 +273,8 @@ Inventory *player_get_inventory(Player *player){
   if(!player) return NULL;
   return player->backpack;
 }
+
+Status player_set_max_objs(Player *player, int max){
+  if(!player || max < 0) return ERROR;
+  return inventory_set_max_objs(player->backpack, max);
+}

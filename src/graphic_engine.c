@@ -654,7 +654,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat 'arg' or c 'arg', attack 'arg' or at 'arg', inspect 'arg' or i 'arg', recruit 'arg' or r 'arg, abandon 'arg' or ab 'arg'");
+  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat 'arg' or c 'arg', attack 'arg' or at 'arg', inspect 'arg' or i 'arg', recruit 'arg' or r 'arg', abandon 'arg' or ab 'arg', s 'arg' or Save 'arg', l 'arg' or Load 'arg'");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
