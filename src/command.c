@@ -2,7 +2,7 @@
  * @brief It implements the command interpreter
  *
  * @file command.c
- * @author Matteo Artunedo, Alvaro Inigo
+ * @author Matteo Artunedo, Alvaro Inigo, Araceli Gutiérrez (modifications to include command USE)
  * @version 0
  * @date 11-02-2025
  * @copyright GNU Public License
@@ -18,10 +18,21 @@
 #define CMD_LENGTH 50  /*!<maximum length of commands written by user*/
 #define ARG_LENGTH 50 /*!<maximum length of object names*/
 
+
+
+/**
+ * @brief Static variable to store the optional argument for the USE command.
+ *
+ * This variable retains its value between calls to the command_get_user_input function
+ * and is used to store the optional argument provided with the USE command.
+ */
+static char optional_arg[ARG_LENGTH] = "";
+
+
 /**
  * @brief Array mapping command strings to their descriptions.
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"u", "Use"}};
 
 /**
  * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
@@ -118,15 +129,25 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == USE)
     {
       token = strtok(NULL, "\r\n");
 
       if (!token)
       {
         command_set_argument(command, NO_ARG);
+        optional_arg[0] = '\0';
       }else{
         command_set_argument(command, token);
+        if (cmd == USE){
+          token = strtok(NULL, "\r\n");
+          if (token){
+            strcpy(optional_arg, token);
+          }
+          else{
+            optional_arg[0] = '\0';
+          }
+        }
       }
     }
     else
@@ -161,6 +182,12 @@ Status command_set_argument(Command *command, char *argument_desc)
   strcpy(command->arg_description, argument_desc);
 
   return OK;
+}
+
+
+char *command_get_optional_argument()
+{
+  return optional_arg;
 }
 
 Status command_set_lastcmd_success(Command *command, Status lastcmd_success){

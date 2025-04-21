@@ -492,6 +492,49 @@ Status game_move_followers(Game *game, Id new_space_id){
 
   return OK;
 }
+
+/**
+This function searches through the array of objects in the game and returns
+ * the object that matches the given name. It is used in game_actions_use
+ */
+Object* game_get_object_from_name(Game *game, char *object_name) {
+
+  int i =0;
+
+  if (game == NULL || object_name == NULL) {
+    return NULL; 
+  }
+  
+  for (i = 0; i < game->n_objects; i++) {
+    if (strcmp(object_get_name(game->objects[i]), object_name) == 0) {
+      return game->objects[i]; 
+    }
+  }
+  return NULL; 
+}
+
+/**This function searches for the specified object in the game's object array
+ * and removes it. The number of objects in the game is then decreased */
+Bool game_remove_object(Game *game, Object *object) {
+
+  int i = 0;
+
+  if (game == NULL || object == NULL) {
+    return FALSE; 
+  }
+  
+  for (i = 0; i < game->n_objects; i++) {
+    if (game->objects[i] == object) {
+      /*Replace the object with the last object in the array*/
+      game->objects[i] = game->objects[game->n_objects - 1];
+      game->objects[game->n_objects - 1] = NULL; 
+      game->n_objects--; 
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
 /*LINK RELATED FUNCTIONS*/
 
 Status game_add_link(Game *game, Link *link) 
