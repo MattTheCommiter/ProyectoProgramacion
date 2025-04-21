@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 42 /*!<Defines the total ammount of test functions*/
+#define MAX_TESTS 46 /*!<Defines the total ammount of test functions*/
 
 /**
  * @brief Main function for PLAYER unit tests.
@@ -131,6 +131,15 @@ int main(int argc, char **argv)
         test2_player_get_health();
     if (all || test == 42)
         test3_player_get_health();
+
+    if (all || test == 43)
+        test1_player_get_inventory();
+    if (all || test == 44)
+        test2_player_get_inventory();
+    if (all || test == 45)
+        test1_player_set_max_objs();
+    if (all || test == 46)
+        test2_player_set_max_objs();
 
     PRINT_PASSED_PERCENTAGE;
 
@@ -591,4 +600,36 @@ void test3_player_get_health()
         PRINT_TEST_RESULT(player_get_health(player) == 5); /*Assuming default health is 5*/
         player_destroy(player);
     }
+}
+
+/**This test checks if the player_get_inventory functions correctly when there is no player passed */
+void test1_player_get_inventory(){
+    Player *player = NULL;
+    PRINT_TEST_RESULT(player_get_inventory(player) == NULL);
+}
+
+/**tests if player get inventory works fine when returning the inventory */
+void test2_player_get_inventory(){
+    Player *player = NULL;
+    player = player_create(1,1);
+    player_add_object_to_backpack(player, 5);
+    PRINT_TEST_RESULT(inventory_contains(player_get_inventory(player), 5) == TRUE);
+    player_destroy(player);
+}
+
+/**this test checks if it works when NULL pointer is passed */
+void test1_player_set_max_objs(){
+    Player *player = NULL;
+    PRINT_TEST_RESULT(player_set_max_objs(player, 2) == ERROR);
+}
+
+/**this test checks if the functions actually sets the max ammount of objects */
+
+void test2_player_set_max_objs(){
+    Player *player = NULL;
+    player = player_create(1,1);
+    player_set_max_objs(player, 3);
+    PRINT_TEST_RESULT(inventory_get_max_objs(player_get_inventory(player)) == 3);
+    player_destroy(player);
+
 }
