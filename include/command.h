@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 11       /*!< Number of commands that are possible*/
+#define N_CMD 12       /*!< Number of commands that are possible*/
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
@@ -42,7 +42,8 @@ typedef enum
     ATTACK,      /*!<Assigs 6 to the keyword "ATTACK", which will be used in command-related functions*/
     INSPECT,     /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
     RECRUIT,     /*!<Assigs 8 to the keyword "RECRUIT", which will be used in command-related functions*/
-    ABANDON      /*!<Assigs 9 to the keyword "ABANDON", which will be used in command-related functions*/
+    ABANDON,      /*!<Assigs 9 to the keyword "ABANDON", which will be used in command-related functions*/
+    USE          /*!<Assigs 10 to the keyword "USE", which will be used in command-related functions*/
 } CommandCode;
 
 /**
@@ -140,4 +141,18 @@ Status command_set_lastcmd_success(Command *command, Status lastcmd_success);
  * @return Status code, OK or ERROR
  */
 Status command_get_lastcmd_success(Command *command);
+
+/**
+ * @brief gets the optional argument for the USE command.
+ * @author Araceli Gutiérrez
+ *
+ * This function returns the optional argument that is provided
+ * with the USE command. If no optional argument is given,
+ * it returns an empty string.
+ *
+ * @return A pointer to the optional argument string.
+ */
+char *command_get_optional_argument();
+
+
 #endif
