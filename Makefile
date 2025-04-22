@@ -1,4 +1,5 @@
-CFLAGS=-Wall -ansi -pedantic -g
+CFLAGS=-Wall -ansi -pedantic -g 
+#CFLAGS=-Wall -ansi -pedantic -g -DMUSIC
 SRCDIR=./src
 OBJDIR=./obj
 LIBDIR=./lib

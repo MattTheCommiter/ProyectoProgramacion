@@ -833,6 +833,7 @@ Status game_playMusic(Game *game, Track song)
 Status game_destroyMusic(Game *game)
 {
   #ifdef MUSIC
+  int i;
   if (!game)
     return ERROR;
 
