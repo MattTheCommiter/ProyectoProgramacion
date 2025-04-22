@@ -200,6 +200,12 @@ void game_actions_move(Game *game, char *arg)
   if(!strcasecmp(arg, "WEST") || !strcasecmp(arg, "W")){
     direction = W;
   }
+    if(!strcasecmp(arg, "UP") || !strcasecmp(arg, "U")){
+    direction = U;
+  }
+  if(!strcasecmp(arg, "DOWN") || !strcasecmp(arg, "D")){
+    direction = D;
+  }
   if(direction == UNKNOWN_DIR){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;

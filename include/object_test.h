@@ -144,8 +144,123 @@ void test2_object_set_description();
  */
 void test2_object_get_description();
 
+/**
+ * @test Test object_set_health with valid input
+ * @pre A valid object is created
+ * @post The function returns OK
+ */
+void test1_object_set_health();
 
+/**
+ * @test Test object_set_health with NULL object
+ * @pre The object is NULL
+ * @post The function returns ERROR
+ */
+void test2_object_set_health();
 
+/**
+ * @test Test object_get_health after setting it
+ * @pre A valid object is created and health is set
+ * @post The returned health matches the one set
+ */
+void test1_object_get_health();
 
+/**
+ * @test Test object_get_health with NULL object
+ * @pre The object is NULL
+ * @post The function returns NO_ID
+ */
+void test2_object_get_health();
+
+/**
+ * @test Test object_set_open with valid input
+ * @pre A valid object is created
+ * @post The function returns OK
+ */
+void test1_object_set_open();
+
+/**
+ * @test Test object_set_open with NULL object
+ * @pre The object is NULL
+ * @post The function returns ERROR
+ */
+void test2_object_set_open();
+
+/**
+ * @test Test object_get_open after setting it
+ * @pre A valid object is created and an open ID is set
+ * @post The returned open ID matches the one set
+ */
+void test1_object_get_open();
+
+/**
+ * @test Test object_get_open with NULL object
+ * @pre The object is NULL
+ * @post The function returns NO_ID
+ */
+void test2_object_get_open();
+
+/**
+ * @test Test object_set_dependency with valid input
+ * @pre A valid object is created
+ * @post The function returns OK
+ */
+void test1_object_set_dependency();
+
+/**
+ * @test Test object_set_dependency with NULL object
+ * @pre The object is NULL
+ * @post The function returns ERROR
+ */
+void test2_object_set_dependency();
+
+/**
+ * @test Test object_get_dependency after setting it
+ * @pre A valid object is created and a dependency is set
+ * @post The returned dependency matches the one set
+ */
+void test1_object_get_dependency();
+
+/**
+ * @test Test object_get_dependency with NULL object
+ * @pre The object is NULL
+ * @post The function returns NO_ID
+ */
+void test2_object_get_dependency();
+
+/**
+ * @test Test object_set_movable with valid input
+ * @pre A valid object is created
+ * @post The function returns OK
+ */
+void test1_object_set_movable();
+
+/**
+ * @test Test object_set_movable with NULL object
+ * @pre The object is NULL
+ * @post The function returns ERROR
+ */
+void test2_object_set_movable();
+
+/**
+ * @test Test object_set_movable with invalid boolean value
+ * @pre A valid object is created and an invalid value is passed
+ * @post The function returns ERROR
+ */
+void test3_object_set_movable();
+
+/**
+ * @test Test object_get_movable after setting it
+ * @pre A valid object is created and movable is set to TRUE
+ * @post The returned value is TRUE
+ */
+void test1_object_get_movable();
+
+/**
+ * @test Test object_get_movable with NULL object
+ * @pre The object is NULL
+ * @post The function returns NO_ID
+ */
+void test2_object_get_movable();
 
 #endif

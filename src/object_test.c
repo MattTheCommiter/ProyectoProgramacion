@@ -2,7 +2,7 @@
  * @brief It tests object module
  *
  * @file object_test.c
- * @author Alvaro Inigo
+ * @author Alvaro Inigo, Guilherme Povedano
  * @version 1.0
  * @date 04-04-2025
  */
@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 18 /*!<Defines the total ammount of test functions*/
+#define MAX_TESTS 35 /*!<Defines the total ammount of test functions*/
 
 /**
  * @brief in the main function all tests can be executated
@@ -60,7 +60,6 @@ int main(int argc, char **argv)
         test1_object_set_description();
     if (all || test == 9)
         test1_object_get_description();
-
     if (all || test == 10)
         test2_object_create();
     if (all || test == 11)
@@ -79,6 +78,40 @@ int main(int argc, char **argv)
         test2_object_set_description();
     if (all || test == 18)
         test2_object_get_description();
+    if (all || test == 19)
+        test1_object_set_health();
+    if (all || test == 20)
+        test2_object_set_health();
+    if (all || test == 21)
+        test1_object_get_health();
+    if (all || test == 22)
+        test2_object_get_health();
+    if (all || test == 23)
+        test1_object_set_open();
+    if (all || test == 24)
+        test2_object_set_open();
+    if (all || test == 25)
+        test1_object_get_open();
+    if (all || test == 26)
+        test2_object_get_open();
+    if (all || test == 27)
+        test1_object_set_dependency();
+    if (all || test == 28)
+        test2_object_set_dependency();
+    if (all || test == 29)
+        test1_object_get_dependency();
+    if (all || test == 30)
+        test2_object_get_dependency();
+    if (all || test == 31)
+        test1_object_set_movable();
+    if (all || test == 32)
+        test2_object_set_movable();
+    if (all || test == 33)
+        test3_object_set_movable();
+    if (all || test == 34)
+        test1_object_get_movable();
+    if (all || test == 35)
+        test2_object_get_movable();
 
     PRINT_PASSED_PERCENTAGE;
 
@@ -201,4 +234,111 @@ void test2_object_set_description()
 void test2_object_get_description()
 {
     PRINT_TEST_RESULT(object_get_description(NULL) == NULL);
+}
+
+void test1_object_set_health()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_health(o, 100) == OK);
+    object_destroy(o);
+}
+
+void test2_object_set_health()
+{
+    PRINT_TEST_RESULT(object_set_health(NULL, 100) == ERROR);
+}
+
+void test1_object_get_health()
+{
+    Object *o = object_create(1);
+    object_set_health(o, 75);
+    PRINT_TEST_RESULT(object_get_health(o) == 75);
+    object_destroy(o);
+}
+
+void test2_object_get_health()
+{
+    PRINT_TEST_RESULT(object_get_health(NULL) == NO_ID);
+}
+
+void test1_object_set_open()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_open(o, 42) == OK);
+    object_destroy(o);
+}
+
+void test2_object_set_open()
+{
+    PRINT_TEST_RESULT(object_set_open(NULL, 42) == ERROR);
+}
+
+void test1_object_get_open()
+{
+    Object *o = object_create(1);
+    object_set_open(o, 99);
+    PRINT_TEST_RESULT(object_get_open(o) == 99);
+    object_destroy(o);
+}
+
+void test2_object_get_open()
+{
+    PRINT_TEST_RESULT(object_get_open(NULL) == NO_ID);
+}
+
+void test1_object_set_dependency()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_dependency(o, 10) == OK);
+    object_destroy(o);
+}
+
+void test2_object_set_dependency()
+{
+    PRINT_TEST_RESULT(object_set_dependency(NULL, 10) == ERROR);
+}
+
+void test1_object_get_dependency()
+{
+    Object *o = object_create(1);
+    object_set_dependency(o, 20);
+    PRINT_TEST_RESULT(object_get_dependency(o) == 20);
+    object_destroy(o);
+}
+
+void test2_object_get_dependency()
+{
+    PRINT_TEST_RESULT(object_get_dependency(NULL) == NO_ID);
+}
+
+void test1_object_set_movable()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_movable(o, TRUE) == OK);
+    object_destroy(o);
+}
+
+void test2_object_set_movable()
+{
+    PRINT_TEST_RESULT(object_set_movable(NULL, TRUE) == ERROR);
+}
+
+void test3_object_set_movable()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_movable(o, 3) == ERROR); // Invalid Bool
+    object_destroy(o);
+}
+
+void test1_object_get_movable()
+{
+    Object *o = object_create(1);
+    object_set_movable(o, TRUE);
+    PRINT_TEST_RESULT(object_get_movable(o) == TRUE);
+    object_destroy(o);
+}
+
+void test2_object_get_movable()
+{
+    PRINT_TEST_RESULT(object_get_movable(NULL) == NO_ID);
 }
