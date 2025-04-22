@@ -15,8 +15,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef MUSIC
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#endif
 
 /**
  * @brief Private structure that saves the 3 last commands of a player and the messages and descriptions of object they chat with and inspect respectively
@@ -50,8 +52,10 @@ struct _Game
   int n_links;                                          /*!<Number of links in the game*/
   Bool finished;                                        /*!<Boolean that establishes whether the game has ended or not*/
   InterfaceData *playerGraphicInformation[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored as well as information related to displayed messages*/
+  #ifdef MUSIC
   Mix_Music *music_tracks[MAX_SONGS];                   /*!<Array of pointers to the music tracks that are loaded in the game*/
   Track Current_song;                                   /*!<The song that is currently playing in the game*/
+  #endif
 };
 /**
    Private functions
@@ -81,8 +85,22 @@ InterfaceData *game_interface_data_create();
  */
 Status game_loadMusic(Game *game);
 
+/**
+ * @brief changes between diferent music tracks in the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param track the position of the music to be played
+ * @return Status OK or ERROR
+ */
+Status game_playMusic(Game *game, Track track);
 
-
+/**
+ * @brief Destroys and frees all the music related memory
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status OK or ERROR
+ */
+Status game_destroyMusic(Game *game);
 
 Status game_create(Game **game)
 {
@@ -103,6 +121,8 @@ Status game_create(Game **game)
   (*game)->n_objects = 0;
   (*game)->n_links = 0;
   (*game)->finished = FALSE;
+
+  #ifdef MUSIC
   (*game)->Current_song = NO_SONG;
 
   /*Initialize SDL*/
@@ -121,13 +141,16 @@ Status game_create(Game **game)
   }
 
   /*Now we load the songs that we want to play*/
-  if(game_loadMusic(*game) == ERROR){
+  
+  if (game_loadMusic(*game) == ERROR)
+  {
     game_destroy(*game);
     Mix_CloseAudio();
     SDL_Quit();
     return ERROR;
   }
-  
+  #endif
+
   return OK;
 }
 
@@ -200,15 +223,8 @@ Status game_destroy(Game *game)
     free(game->playerGraphicInformation[i]);
   }
 
-
-/*We make sure to clean the music tracks*/
-for (i = 0; i < MAX_SONGS; i++) {
-  if (game->music_tracks[i]) {
-      Mix_FreeMusic(game->music_tracks[i]);
-  }
-}
-  Mix_CloseAudio();
-  SDL_Quit();
+  /*We make sure to clean the music tracks*/
+  game_destroyMusic(game);
 
   free(game);
 
@@ -771,36 +787,67 @@ Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos)
   }
 }
 
-
-
-Status game_loadMusic(Game *game){
-  if(!game) return ERROR;
+Status game_loadMusic(Game *game)
+{
+#ifdef MUSIC
+  if (!game)
+    return ERROR;
 
   game->music_tracks[0] = Mix_LoadMUS("chill.mp3");
-  if(game->music_tracks[0] == NULL){
+  if (game->music_tracks[0] == NULL)
+  {
     return ERROR;
   }
 
   game->music_tracks[1] = Mix_LoadMUS("fight.mp3");
-  if(game->music_tracks[1] == NULL){
+  if (game->music_tracks[1] == NULL)
+  {
     return ERROR;
   }
+#endif
   return OK;
 }
 
-Status game_playMusic(Game *game, Track song){
-  if(!game || song >= MAX_SONGS){
+Status game_playMusic(Game *game, Track song)
+{
+  #ifdef MUSIC
+  if (!game || song >= MAX_SONGS)
+  {
     return ERROR;
   }
-  if(song == game->Current_song){
+  if (song == game->Current_song)
+  {
     return OK;
   }
 
   Mix_HaltMusic();
-  if(Mix_PlayMusic(game->music_tracks[song], -1) == -1){
+  if (Mix_PlayMusic(game->music_tracks[song], -1) == -1)
+  {
     return ERROR;
   }
   game->Current_song = song;
+  #endif
   return OK;
- 
+}
+
+Status game_destroyMusic(Game *game)
+{
+  #ifdef MUSIC
+  if (!game)
+    return ERROR;
+
+  for (i = 0; i < MAX_SONGS; i++)
+  {
+    if (game->music_tracks[i])
+    {
+      Mix_FreeMusic(game->music_tracks[i]);
+    }
+  }
+
+  Mix_CloseAudio();
+  SDL_Quit();
+
+  
+  #endif
+  return OK;
 }

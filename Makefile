@@ -27,7 +27,7 @@ tests: $(TESTS)
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
+juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o
 	gcc -g -o $@ $^ $(CLIBS) $(SDL_LIBS)
 
 
@@ -162,7 +162,7 @@ runLog_read2:
 	./juego_hormiga anthill.dat -l Logfile < game2.cmd
 
 runV:
-	valgrind --leak-check=full ./juego_hormiga anthill.dat
+	valgrind --leak-check=full --show-leak-kinds=all ./juego_hormiga anthill.dat
 
 character_test_run:
 	@echo ">>>>>>Running character_test:"
