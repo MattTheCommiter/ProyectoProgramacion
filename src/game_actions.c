@@ -414,6 +414,9 @@ void game_actions_attack(Game *game, char *arg)
     {
       character = game_get_character(game, set_get_Id_in_pos(followers, attacked_ally));
       character_set_health(character, character_get_health(character) - ENEMY_DAMAGE);
+      if(character_get_health(character) <= 0){
+        character_set_following(character, NO_ID);
+      }
     }
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
