@@ -25,7 +25,6 @@ struct _Player
   Id id;                    /*!< Id number of the player, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the player */
   Id location;              /*!<Id of the   where the player is located*/
-  Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
   char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
   Inventory *backpack;      /*!< Backpack to carry multiple objects */

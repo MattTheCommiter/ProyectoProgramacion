@@ -2,21 +2,21 @@
 #o:2|Grain|11|Well, just a grain|
 #o:3|Crumb|122|Well, just a crumb|
 #o:4|Leaf|11|Well, just a leaf|
-#p:1|ant|mO^|122|4|3|-1|
-#p:2|worm|ooO|122|5|3|-1|
-#p:3|beatle|^O^|125|5|3|-1|
-#t:2
-#s:11| Entry|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|
-#s:121|Corridor1|   ___  _|-/   \_/ |     o o |mo'_ OoBo|_ _ /^\_`|
-#s:122|Corridor2|   _v_v_ |_/```--_ |   o  oo |mo" _ Oo |(--/ \--)|
-#s:123|Corridor3|    V    |  \(")/  |  _(.)_  |o/(_-_)\o|o o\_/o o|
-#s:124|Corridor4|         |         |         |         |         |
-#s:13|Pantry|         |         |         |         |         |
-#s:125|Corridor5|         |         |         |         |         |
-#s:126|Corridor6|         |         |         |         |         |
-#s:127|Corridor7|         |         |         |         |         |
-#s:14|Hole|         |         |         |         |         |
-#c:2|spider|/\oo/\|121|4|0|I won't talk to you!|0|
+#p:1|ant|mO^|121|5|3|-1|
+#p:2|worm|ooO|121|5|3|-1|
+#p:3|beatle|^O^|121|5|3|-1|
+#t:1
+#s:11| Entry|1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|
+#s:121|Corridor1|1|   ___  _|-/   \_/ |     o o |mo'_ OoBo|_ _ /^\_`|
+#s:122|Corridor2|1|   _v_v_ |_/```--_ |   o  oo |mo" _ Oo |(--/ \--)|
+#s:123|Corridor3|0|    V    |  \(")/  |  _(.)_  |o/(_-_)\o|o o\_/o o|
+#s:124|Corridor4|0|         |         |         |         |         |
+#s:13|Pantry|0|         |         |         |         |         |
+#s:125|Corridor5|0|         |         |         |         |         |
+#s:126|Corridor6|0|         |         |         |         |         |
+#s:127|Corridor7|0|         |         |         |         |         |
+#s:14|Hole|0|         |         |         |         |         |
+#c:2|spider|/\oo/\|121|5|0|I won't talk to you!|0|
 #c:3|ant friend|   ^0m|122|5|1|Hey ant friend!|0|
 #c:4|mystery bug|   *zp|123|5|1|This place is beautiful!|0|
 #l:1|Entry1|11|121|2|1|
@@ -38,6 +38,6 @@
 #l:17|Hall4toHall3|124|123|1|1|
 #l:18|Hall4toPantry|124|13|2|1|
 #l:19|PantrytoHall4|13|124|1|1|
-#i:0|Move/s/OK|Attack/spider/OK|Attack/spider/OK| | |
-#i:1|Chat/ant friend/OK|Move/s/OK|Unknown/OK|Hey ant friend!| |
-#i:2|Save/save.dat/OK|Move/e/OK|Chat/ant friend/OK|Hey ant friend!| |
+#i:0|Move/n/OK|Move/s/OK|Move/s/OK| | |
+#i:1|Save/save.dat/OK|Move/e/ERROR|Move/s/OK| | |
+#i:2|Move/e/ERROR|Move/s/OK|No command/OK| | |

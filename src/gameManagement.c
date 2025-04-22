@@ -98,6 +98,8 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   Id id;
   Space *space = NULL;
   Status status = OK;
+  int discovered;
+  Bool discover;
 
   if (!filename || !game)
   {
@@ -136,6 +138,9 @@ Status gameManagement_load_spaces(Game *game, char *filename)
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
+      toks = strtok(NULL, "|");
+      discovered = atoi(toks);
+
 
       /*Si hay una descripción gráfica, la leemos y la copiamos a nuetra matriz read_gdesc*/
       if ((toks = strtok(NULL, "|\n\r")) != NULL)
@@ -204,6 +209,8 @@ Status gameManagement_load_spaces(Game *game, char *filename)
         space_set_name(space, name);
         game_add_space(game, space);
         space_set_gdesc(space, read_gdesc);
+        discover = discovered == 1? TRUE:FALSE;
+        space_set_discovered(space, discover);
       }
       else
       {
@@ -644,7 +651,7 @@ Status gameManagement_save_spaces(Game *game, FILE *saving_file)
 
     space = game_get_space_in_pos(game, i);
     gdesc = space_get_gdesc(space);
-    fprintf(saving_file, "#s:%ld|%s|%s|%s|%s|%s|%s|\n", space_get_id(space), space_get_name(space), gdesc[0], gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
+    fprintf(saving_file, "#s:%ld|%s|%d|%s|%s|%s|%s|%s|\n", space_get_id(space), space_get_name(space),space_get_discovered(space) == TRUE? 1:0, gdesc[0], gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
   }
 
   return OK;
