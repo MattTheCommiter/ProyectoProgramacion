@@ -70,6 +70,15 @@ Status character_set_name(Character *c, char *name);
 Status character_set_gdesc(Character *c, char *desc);
 
 /**
+ * @brief Sets a new graphic description for the character when they are dead.
+ * @author Alvaro Inigo
+ * @param c a pointer to character
+ * @param desc the graphic description when they are dead
+ * @return Status Ok if everything went fine or ERROR
+ */
+Status character_set_dead_gdesc(Character *c, char *desc);
+
+/**
  * @brief Sets the health of the character
  * @author Alvaro Inigo
  * @param c a pointer to the character
@@ -120,6 +129,14 @@ char *character_get_name(Character *c);
  * @return char* the graphic description of the character
  */
 char *character_get_gdesc(Character *c);
+
+/**
+ * @brief Gets the graphic description of character when they are dead
+ * @author Alvaro Inigo
+ * @param c a pointer to character
+ * @return char* the graphic description of the character when they are dead
+ */
+char *character_get_dead_gdesc(Character *c);
 
 /**
  * @brief gets the health of the caracter

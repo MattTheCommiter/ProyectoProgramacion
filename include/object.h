@@ -98,4 +98,81 @@ Status object_set_description(Object *object, char *desc);
  * @return char * the description
  */
 char *object_get_description(Object *object);
+
+/**
+ * @brief Sets the health given or taken away by an object
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object the object whose data will be modified 
+ * @param health health to be added or taken by the object 
+ * @return  OK if everything went well or ERROR 
+*/
+Status object_set_health(Object *object, int health);
+
+/**
+ * @brief Sets the id of the link the object can open 
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object object pointer that will be modified 
+ * @param link id of the link that can be opened using the object 
+ * @return  OK if everything went well or ERROR 
+*/
+Status object_set_open(Object *object, Id link);
+
+/**
+ * @brief Sets the id of the object that depends on this one to be picked up
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object object pointer that will be modified
+ * @param dep the id of the object that depends on this 
+ * @return  OK if everything went well or ERROR 
+*/
+Status object_set_dependency(Object *object, Id dep);
+
+/**
+ * @brief Sets whether an object is movable or not 
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object the object whose data is modified
+ * @param movable whether the object is movable or not 
+ * @return  OK if everything went well or ERROR 
+*/
+Status object_set_movable(Object *object, Bool movable);
+
+/**
+ * @brief Fetches the id of the object that depends on this one to be picked up
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object the object whose data is fetched
+ * @return The Id of the object's dependency, NO_ID in case of failure
+*/
+Id object_get_dependency(Object *object);
+
+/**
+ * @brief Fetches whether an object is movable
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object the object whose data is fetched
+ * @return TRUE/FALSE for whether object is movable   
+*/
+Bool object_get_movable(Object *object);
+
+/**
+ * @brief Fetches the id of the link that can be opened using this object 
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object the object whose data is fetched
+ * @return The id of the link an object opens, NO_ID in case of failure 
+*/
+Id object_get_open(Object *object);
+
+/**
+ * @brief Fetches the amount of health given or taken by the object
+ * @date 15-04-25
+ * @author Guilherme Povedano
+ * @param object the object whose data is fetched
+ * @return The object's health field, or 0 in case of error
+*/
+int object_get_health(Object *object);
+
 #endif

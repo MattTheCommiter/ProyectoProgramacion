@@ -187,6 +187,12 @@ void link_print(Link *l) {
         case 4: 
             fprintf(stdout, "--->Link direction: WEST.\n");
             break;
+        case 5: 
+            fprintf(stdout, "--->Link direction: UP.\n");
+            break;
+        case 6: 
+            fprintf(stdout, "--->Link direction: DOWN.\n");
+            break;
         default:
             fprintf(stdout, "--->Link direction not defined.\n");
             break;

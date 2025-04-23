@@ -225,6 +225,12 @@ void game_actions_move(Game *game, char *arg)
   if(!strcasecmp(arg, "WEST") || !strcasecmp(arg, "W")){
     direction = W;
   }
+    if(!strcasecmp(arg, "UP") || !strcasecmp(arg, "U")){
+    direction = U;
+  }
+  if(!strcasecmp(arg, "DOWN") || !strcasecmp(arg, "D")){
+    direction = D;
+  }
   if(direction == UNKNOWN_DIR){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -237,10 +243,6 @@ void game_actions_move(Game *game, char *arg)
     return;
   }
 
-  if(game_connection_is_open(game, current_id, direction) ==  FALSE){
-    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-    return;
-  }
   if(game_connection_is_open(game, current_id, direction) ==  FALSE){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -396,7 +398,7 @@ void game_actions_attack(Game *game, char *arg)
     return;
   }
   enemy = game_get_character_from_name(game, arg);
-  if(enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) == 0)
+  if(enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -443,6 +445,9 @@ void game_actions_attack(Game *game, char *arg)
     {
       character = game_get_character(game, set_get_Id_in_pos(followers, attacked_ally));
       character_set_health(character, character_get_health(character) - ENEMY_DAMAGE);
+      if(character_get_health(character) <= 0){
+        character_set_following(character, NO_ID);
+      }
     }
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }

@@ -515,6 +515,7 @@ Status game_move_followers(Game *game, Id new_space_id){
       character_set_location(ch, new_space_id);
       space_delete_character(current_space, character_get_id(ch));
       space_add_character(new_space, character_get_id(ch));
+      i--;
     }
   }
 

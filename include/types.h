@@ -47,7 +47,9 @@ typedef enum
     N,           /*!<Assigns value 1 to the keyword "N", which will be used in space-related functions*/
     S,           /*!<Assigns value 2 to the keyword "S", which will be used in space-related functions*/
     E,           /*!<Assigns value 3 to the keyword "E", which will be used in space-related functions*/
-    W            /*!<Assigns value 4 to the keyword "W", which will be used in space-related functions*/
+    W,           /*!<Assigns value 4 to the keyword "W", which will be used in space-related functions*/
+    U,           /*!<Assigns value 5 to the keyword "U", which will be used in space-related functions*/
+    D            /*!<Assigns value 6 to the keyword "D", which will be used in space-related functions*/
 } Direction;
 
 #endif
