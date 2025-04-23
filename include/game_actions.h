@@ -12,6 +12,7 @@
 #define GAME_ACTIONS_H
 
 #include "command.h"
+#include "gameManagement.h"
 #include "game.h"
 #include "types.h"
 #include "space.h"
@@ -46,6 +47,6 @@
  * @param cmd the newest command
  * @return Status : whether function was completed succesfully
  */
-Status game_actions_update(Game *game, Command *cmd);
+Status game_actions_update(Game **game, Command *cmd);
 
 #endif

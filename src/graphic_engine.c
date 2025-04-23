@@ -651,7 +651,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat 'arg' or c 'arg', attack 'arg' or at 'arg', inspect 'arg' or i 'arg', recruit 'arg' or r 'arg, abandon 'arg' or ab 'arg'");
+  sprintf(str, "move 'dir' or m 'dir', exit or e, take 'arg' or t 'arg', drop 'arg' or d 'arg', chat 'arg' or c 'arg', attack 'arg' or at 'arg', inspect 'arg' or i 'arg', recruit 'arg' or r 'arg', abandon 'arg' or ab 'arg', s 'arg' or Save 'arg', l 'arg' or Load 'arg'");
   screen_area_puts(ge->help, str);
 
   /* Paint in the feedback area */
@@ -694,11 +694,11 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
   cmd_succ = command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, pos));
   if (cmd_succ == ERROR)
   {
-    sprintf(str, " %s (%s) : ERROR", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
+    sprintf(str, " %s (%s) : ERROR (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
   else
   {
-    sprintf(str, " %s (%s) : OK", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
+    sprintf(str, " %s (%s) : OK (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
 
   return;
