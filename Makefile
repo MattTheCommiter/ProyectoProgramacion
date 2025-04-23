@@ -24,13 +24,13 @@ tests: $(TESTS)
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameReader.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
+juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
 	gcc -g -o $@ $^ $(CLIBS)
 
 
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
-$(OBJDIR)/game.o: game.c game.h command.h types.h space.h player.h object.h gameReader.h link.h
+$(OBJDIR)/game.o: game.c game.h command.h types.h space.h player.h object.h gameManagement.h link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/game_loop.o: game_loop.c command.h types.h game.h space.h player.h object.h game_actions.h graphic_engine.h
@@ -42,13 +42,13 @@ $(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h t
 $(OBJDIR)/command.o: command.c command.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h character.h
+$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h character.h gameManagement.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/gameReader.o: gameReader.c gameReader.h types.h game.h command.h space.h player.h object.h link.h
+$(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h command.h space.h player.h object.h link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/object.o: object.c object.h types.h

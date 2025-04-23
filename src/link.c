@@ -53,6 +53,11 @@ void link_destroy(Link *l) {
     if (l) free(l);
 }
 
+Status link_set_id(Link *link, Id id){
+    if(!link || id == NO_ID) return ERROR;
+    link->link_id = id;
+    return OK;
+}
 Status link_set_name(Link *l, char *name) {
     if (!l || !name) return ERROR;
 

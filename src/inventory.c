@@ -74,6 +74,8 @@ Set* inventory_get_objs(Inventory* inventory) {
 }
 
 
+
+
 int inventory_get_max_objs(Inventory* inventory) {
   if (!inventory) {
     return -1;  
@@ -96,6 +98,7 @@ Status inventory_set_objs(Inventory* inventory, Set* objs) {
   inventory->objs = objs;
   return OK;
 }
+
 
 
 Status inventory_set_max_objs(Inventory* inventory, int max_objs) {

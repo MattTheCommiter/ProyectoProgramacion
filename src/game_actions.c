@@ -117,51 +117,76 @@ void game_actions_recruit(Game *game, char *arg);
  */
 void game_actions_abandon(Game *game, char *arg);
 
+/**
+ * @brief saves the current game in the file with the name given in the arg
+ * @author Alvaro Inigo
+ * @date 18/04/25
+ * @param game a pointer to the game
+ * @param arg the name of the saving file
+ */
+void game_actions_save(Game *game, char *arg);
+
+
+/**
+ * @brief loads the game of the file with the name given in the arg
+ * @author Alvaro Inigo
+ * @date 18/04/25
+ * @param game a double pointer to the game
+ * @param arg the name of the loading file
+ */
+void game_actions_load(Game **game, char *arg);
+
 /*Game actions implementation*/
 
-Status game_actions_update(Game *game, Command *command)
+Status game_actions_update(Game **game, Command *command)
 {
   CommandCode cmd;
 
-  game_interface_data_set_last_command(game, command);
+  game_interface_data_set_last_command(*game, command);
 
   cmd = command_get_code(command);
 
   switch (cmd)
   {
   case UNKNOWN:
-    game_actions_unknown(game);
+    game_actions_unknown(*game);
     break;
 
   case EXIT:
-    game_actions_exit(game);
+    game_actions_exit(*game);
     break;
 
   case MOVE:
-    game_actions_move(game, command_get_argument(command));
+    game_actions_move(*game, command_get_argument(command));
     break;
 
     break;
   case TAKE:
-    game_actions_take(game, command_get_argument(command));
+    game_actions_take(*game, command_get_argument(command));
     break;
   case CHAT:
-    game_actions_chat(game, command_get_argument(command));
+    game_actions_chat(*game, command_get_argument(command));
     break;
   case DROP:
-    game_actions_drop(game, command_get_argument(command));
+    game_actions_drop(*game, command_get_argument(command));
     break;
   case ATTACK:
-    game_actions_attack(game, command_get_argument(command));
+    game_actions_attack(*game, command_get_argument(command));
     break;
   case INSPECT:
-    game_actions_inspect(game, command_get_argument(command));
+    game_actions_inspect(*game, command_get_argument(command));
     break;
   case RECRUIT:
-    game_actions_recruit(game, command_get_argument(command));
+    game_actions_recruit(*game, command_get_argument(command));
     break;
   case ABANDON:
-    game_actions_abandon(game, command_get_argument(command));
+    game_actions_abandon(*game, command_get_argument(command));
+    break;
+  case SAVE:
+    game_actions_save(*game, command_get_argument(command));
+    break;
+  case LOAD:
+    game_actions_load(game, command_get_argument(command));
     break;
   default:
     break;
@@ -521,5 +546,37 @@ void game_actions_abandon(Game *game, char *arg){
   }
 
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+}
+
+void game_actions_save(Game *game, char *arg){
+  if(!game || !arg){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if(gameManagement_save(game, arg) == ERROR){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+
+}
+
+void game_actions_load(Game **game, char *arg){
+  if(!game || !(*game) || !arg){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
+    return;
+  }
+
+  if(gameManagement_load(game, arg) == ERROR){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
+    return;
+  }else{
+    game_set_turn(*game, game_get_turn(*game) - 1);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), OK);
+  }
+
   return;
 }
