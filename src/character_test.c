@@ -174,7 +174,7 @@ void test01_character_set_gdesc()
 void test01_character_set_dead_gdesc()
 {
     Character *c = character_create(1);
-    PRINT_TEST_RESULT(character_set_dead_gdesc(c, "@") == OK && strcmp(character_get_gdesc(c), "@") == 0);
+    PRINT_TEST_RESULT(character_set_dead_gdesc(c, "@") == OK && strcmp(character_get_dead_gdesc(c), "@") == 0);
     character_destroy(c);
 }
 
