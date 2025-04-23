@@ -697,11 +697,11 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
   cmd_succ = command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, pos));
   if (cmd_succ == ERROR)
   {
-    sprintf(str, " %s (%s) : ERROR", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
+    sprintf(str, " %s (%s) : ERROR (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
   else
   {
-    sprintf(str, " %s (%s) : OK", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS]);
+    sprintf(str, " %s (%s) : OK (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
 
   return;
