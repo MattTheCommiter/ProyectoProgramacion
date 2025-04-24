@@ -515,24 +515,25 @@ Object* game_get_object_from_name(Game *game, char *object_name) {
 
 /**This function searches for the specified object in the game's object array
  * and removes it. The number of objects in the game is then decreased */
-Bool game_remove_object(Game *game, Object *object) {
+Status game_remove_object(Game *game, Object *object) {
 
   int i = 0;
 
   if (game == NULL || object == NULL) {
-    return FALSE; 
+    return ERROR; 
   }
   
   for (i = 0; i < game->n_objects; i++) {
     if (game->objects[i] == object) {
       /*Replace the object with the last object in the array*/
+      object_destroy(game->objects[i]);
       game->objects[i] = game->objects[game->n_objects - 1];
       game->objects[game->n_objects - 1] = NULL; 
       game->n_objects--; 
-      return TRUE;
+      return OK;
     }
   }
-  return FALSE;
+  return ERROR;
 }
 
 /*LINK RELATED FUNCTIONS*/

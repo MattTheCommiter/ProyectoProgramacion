@@ -531,8 +531,8 @@ Object* game_get_object_from_name(Game *game, char *object_name);
  *
  * @param game Pointer to the Game structure.
  * @param object Pointer to the Object to be removed.
- * @return Bool indicating whether the removal was successful (TRUE) or not (FALSE).
+ * @return Status indicating whether the removal was successful (OK) or not (ERROR).
  */
-Bool game_remove_object(Game *game, Object *object);
+Status game_remove_object(Game *game, Object *object);
 
 #endif
