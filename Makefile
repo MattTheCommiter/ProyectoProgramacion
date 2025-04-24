@@ -42,7 +42,7 @@ $(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h t
 $(OBJDIR)/command.o: command.c command.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h character.h gameManagement.h
+$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h character.h gameManagement.h graphic_engine.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/space.o: space.c space.h types.h set.h

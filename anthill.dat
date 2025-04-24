@@ -16,8 +16,11 @@
 
 
 #p:1|ant|mO^|11|5|3|
+#team:
 #p:2|worm|ooO|11|5|3|
+#team:
 #p:3|beatle|^O^|11|5|3|
+#team:
 
 #c:2|spider|/\oo/\|\/xx\/|121|5|0|I won't talk to you!|-1|
 #c:3|ant friend|   ^0m|   x__|122|5|1|Hey ant friend!|-1|

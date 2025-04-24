@@ -80,7 +80,22 @@ Status gameManagement_save_links(Game *game, FILE *saving_file);
  */
 Status gameManagement_save_interface(Game *game, FILE *saving_file);
 
+/**
+ * @brief loads the turn of the game when calling to load function
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param filename the name of the file to load the turn
+ * @return Status OK or ERROR
+ */
 Status gameManagement_load_turn(Game *game, char *filename);
+
+/**
+ * @brief loads the interface and all the commands used in a saved game.
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param filename the name of the file to read
+ * @return Status OK or ERROR
+ */
 Status gameManagement_load_interface(Game *game, char *filename);
 
 
@@ -304,7 +319,7 @@ Status gameManagement_load_players(Game *game, char *filename)
   char name[WORD_SIZE] = "";
   char gdesc[GDESCTAM] = "";
   char *toks = NULL;
-  Id id = NO_ID, spaceId = NO_ID, objectId = NO_ID;
+  Id id = NO_ID, spaceId = NO_ID, objectId = NO_ID, teammateId = NO_ID;
   Player *player = NULL;
   Status status = OK;
   int hp = 0;
@@ -359,10 +374,20 @@ Status gameManagement_load_players(Game *game, char *filename)
         player_set_location(player, spaceId);
         space_set_discovered(game_get_space(game, spaceId), TRUE);
         player_set_health(player, hp);
-        while((toks = strtok(NULL, "|/\n\r"))){
+        while((toks = strtok(NULL, "|\n\r"))){
           objectId = atol(toks);
           player_add_object_to_backpack(player, objectId);
         }
+        /*
+        fgets(line, WORD_SIZE, file);
+        if(strncmp("#team:", line, 6) == 0){
+          while((toks = strtok(line + 3, "|\n\r"))){
+            teammateId = atol(toks);
+            set_add(player_get_team(player), teammateId);
+          }
+        }
+          */
+
         game_add_player(game, player);
       }
     }
@@ -623,10 +648,17 @@ Status gameManagement_save_players(Game *game, FILE *saving_file)
   {
     player = game_get_player_in_pos(game, i);
     fprintf(saving_file, "#p:%ld|%s|%s|%ld|%d|%d|", player_get_id(player), player_get_name(player), player_get_gdesc(player), player_get_location(player), player_get_health(player), inventory_get_max_objs(player_get_inventory(player)));
-    for(j = 0; j < player_get_num_objects_in_backpack(player) - 1; j++){
-      fprintf(saving_file, "%ld/", player_get_backpack_object_id_at(player, j));
+   
+    for(j = 0; j < player_get_num_objects_in_backpack(player); j++){
+      fprintf(saving_file, "%ld|", player_get_backpack_object_id_at(player, j));
     }
-    fprintf(saving_file, "%ld|\n", player_get_backpack_object_id_at(player, j));
+    fprintf(saving_file, "\n");
+
+    fprintf(saving_file, "#team:");
+    for(j = 0; j < set_get_num_elements(player_get_team(player)); j++){
+      fprintf(saving_file, "%ld|", set_get_Id_in_pos(player_get_team(player),j));
+    }
+    fprintf(saving_file, "\n");
   }
 
   return OK;
@@ -744,7 +776,7 @@ Status gameManagement_save_interface(Game *game, FILE *saving_file)
       fprintf(saving_file, "%s/%s|", third_to_lastName, command_get_lastcmd_success(third_to_last) == OK ? "OK" : "ERROR");
     }
 
-    fprintf(saving_file, "%s|%s|\n", game_interface_in_pos_get_message(game, i), game_interface_in_pos_get_description(game, i));
+    fprintf(saving_file, "%s|%s|%d|\n", game_interface_in_pos_get_message(game, i), game_interface_in_pos_get_description(game, i), game_get_show_message_in_pos(game, i) == TRUE? 1:0);
   }
 
   return OK;
@@ -792,6 +824,7 @@ Status gameManagement_load_interface(Game *game, char *filename)
   Command *lastCmd = NULL, *second_to_lastCmd = NULL, *third_to_lastCmd = NULL;
   CommandCode cmdCode;
   Status success;
+  Bool show;
 
   if (!game || !filename)
     return ERROR;
@@ -938,6 +971,11 @@ Status gameManagement_load_interface(Game *game, char *filename)
       token = strtok(NULL, "/|\r\n");
 
       game_interface_in_pos_set_description(game, pos, token);
+
+      token = strtok(NULL, "/|\r\n");
+      show = atol(token) == 1? TRUE : FALSE;
+
+      game_set_show_message_in_pos(game, pos, show);
     }
   }
 

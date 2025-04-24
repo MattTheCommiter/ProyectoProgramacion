@@ -26,6 +26,7 @@ typedef struct _InterfaceData{
   Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
   char message[MAX_MESSAGE];      /*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
+  Bool show_message;                                    /*!<Stablishes if the message of the game must be shown*/
 }InterfaceData;
 
 /**
@@ -34,18 +35,18 @@ typedef struct _InterfaceData{
  */
 struct _Game
 {
-  Object *objects[MAX_OBJECTS];                 /*!<Pointer array to the objects that are present in the game*/
-  int n_objects;                                /*!<Number of objects in the game*/
-  Player *players[MAX_PLAYERS];                 /*!<Array of the different players in the game*/
-  int n_players;                                /*!<Number of players in the game*/
-  int turn;                                     /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
-  Space *spaces[MAX_SPACES];                    /*!<Array of Spaces*/
-  int n_spaces;                                 /*!<Number of spaces in the game*/
-  Character *characters[MAX_CHARACTERS];        /*!<Array of characters in the game*/
-  int n_characters;                             /*!<Number of characters in the game*/
-  Link *links[MAX_LINKS];                       /*!<Array of links*/
-  int n_links;                                  /*!<Number of links in the game*/
-  Bool finished;                                /*!<Boolean that establishes whether the game has ended or not*/
+  Object *objects[MAX_OBJECTS];                         /*!<Pointer array to the objects that are present in the game*/
+  int n_objects;                                        /*!<Number of objects in the game*/
+  Player *players[MAX_PLAYERS];                         /*!<Array of the different players in the game*/
+  int n_players;                                        /*!<Number of players in the game*/
+  int turn;                                             /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
+  Space *spaces[MAX_SPACES];                            /*!<Array of Spaces*/
+  int n_spaces;                                         /*!<Number of spaces in the game*/
+  Character *characters[MAX_CHARACTERS];                /*!<Array of characters in the game*/
+  int n_characters;                                     /*!<Number of characters in the game*/
+  Link *links[MAX_LINKS];                               /*!<Array of links*/
+  int n_links;                                          /*!<Number of links in the game*/
+  Bool finished;                                        /*!<Boolean that establishes whether the game has ended or not*/
   InterfaceData *playerGraphicInformation[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored as well as information related to displayed messages*/
 };
 /**
@@ -222,6 +223,17 @@ Player *game_get_player_in_pos(Game *game, int pos){
   return game->players[pos];
 }
 
+Player *game_get_player_from_name(Game *game, char *name){
+  int i;
+  if(!game || !name) return NULL;
+  for(i = 0; i < game->n_players; i++){
+    if(!strcmp(name, player_get_name(game->players[i]))){
+      return game->players[i];
+    }
+  }
+  return NULL;
+
+}
 
 Id game_get_object_location(Game *game, Id objectId)
 {
@@ -703,6 +715,7 @@ InterfaceData *game_interface_data_create(){
 
   data->description[0] = ' ';
   data->message[0] = ' ';
+  data->show_message = FALSE;
   return data;
 }
 
@@ -767,6 +780,7 @@ char *game_interface_in_pos_get_description(Game *game, int pos){
 }
 
 Status game_interface_in_pos_set_message(Game *game, int pos, char *message){
+
   if(!game || pos>=game->n_players || pos < 0) return ERROR;
   strcpy(game->playerGraphicInformation[pos]->message, message);
   return OK;
@@ -780,3 +794,27 @@ Status game_interface_in_pos_set_description(Game *game, int pos, char *desc){
   return OK;
 
 }
+
+Bool game_get_show_message(Game *game){
+  if(!game) return FALSE;
+  return game->playerGraphicInformation[game->turn]->show_message;
+}
+
+Status game_set_show_message(Game *game, Bool bool){
+  if(!game) return ERROR;
+  game->playerGraphicInformation[game->turn]->show_message = bool;
+  return OK;
+}
+
+
+Bool game_get_show_message_in_pos(Game *game, int pos){
+  if(!game || pos < 0 || pos >= game->n_players) return FALSE;
+  return game->playerGraphicInformation[pos]->show_message;
+}
+
+Status game_set_show_message_in_pos(Game *game, Bool bool, int pos){
+  if(!game || pos >= game->n_players) return ERROR;
+  game->playerGraphicInformation[pos]->show_message = bool;
+  return OK;
+}
+

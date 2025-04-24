@@ -610,7 +610,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
   /*We print the player, its location , health and then the object in the inventory*/
 
-  sprintf(str, "Player : %d (%d)", (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
+  sprintf(str, "Player(%s) : %d (%d)",player_get_name(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
   screen_area_puts(ge->descript, str);
@@ -625,11 +625,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     }
   }
   /*Printing the message of the game, given after the command 'Chat'*/
-  if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == CHAT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
+  if (game_get_show_message(game))
   {
-    sprintf(str, "Character message:");
-    screen_area_puts(ge->descript, str);
-    
     sprintf(str, "  Message: %s", game_get_message(game));
     screen_area_puts(ge->descript, str);
   }

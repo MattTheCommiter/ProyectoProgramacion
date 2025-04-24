@@ -136,9 +136,18 @@ void game_actions_save(Game *game, char *arg);
  */
 void game_actions_load(Game **game, char *arg);
 
+/**
+ * @brief allows a player to team with another player
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param arg the name of the player to join the team
+ */
+void game_actions_team(Game *game, char *arg, Graphic_engine *gengine);
+
+
 /*Game actions implementation*/
 
-Status game_actions_update(Game **game, Command *command)
+Status game_actions_update(Game **game, Command *command, Graphic_engine *gengine)
 {
   CommandCode cmd;
 
@@ -188,6 +197,8 @@ Status game_actions_update(Game **game, Command *command)
   case LOAD:
     game_actions_load(game, command_get_argument(command));
     break;
+  case TEAM:
+    game_actions_team(*game, command_get_argument(command), gengine);
   default:
     break;
   }
@@ -377,7 +388,7 @@ void game_actions_chat(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-
+  game_set_show_message(game, TRUE);
   game_set_message(game, character_get_message(game_get_character_from_name(game, arg)));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
@@ -579,4 +590,63 @@ void game_actions_load(Game **game, char *arg){
   }
 
   return;
+}
+
+
+void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
+  Player *teammate = NULL;
+  int i, turn, current_turn;
+  Bool show;
+  char previous_message[MAX_MESSAGE], message[MAX_MESSAGE];
+  Bool acceptance;
+
+  if(!game || !arg) return;
+
+  /*We found the player whose name is the argument given*/
+  teammate = game_get_player_from_name(game, arg);
+  if (teammate == NULL){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+  /*We found the turn corresponding to the new teammate*/
+
+  for(i = 0; i < game_get_n_players(game); i++){
+    if(game_get_player_in_pos(game, i) == teammate){
+      turn = i;
+      break;
+    }
+  }
+  current_turn = game_get_turn(game);
+
+  game_set_turn(game, turn);
+  /*copy the previous values for the last command used*/
+  strcpy(previous_message, game_get_message(game));
+  show = game_get_show_message(game);
+
+  sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
+
+  game_set_message(game, message);
+  game_set_show_message(game, TRUE);
+
+  graphic_engine_paint_game(gengine, game);
+  acceptance = command_get_confirmation();
+
+  /*set the values back */
+  game_set_message(game, previous_message);
+  game_set_show_message(game, show);
+  /*get back to the turn*/
+  game_set_turn(game, current_turn);
+
+  if(acceptance == FALSE){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }else{
+    set_add(player_get_team(game_get_current_player(game)), player_get_id(teammate));
+    set_add(player_get_team(teammate), player_get_id(game_get_current_player(game)));
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    return;
+  }
+
+
+  
 }

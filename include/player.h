@@ -227,4 +227,12 @@ Inventory *player_get_inventory(Player *player);
  * @return Status OK or ERROR
  */
 Status player_set_max_objs(Player *player, int max);
+
+/**
+ * @brief returns the Set of players that are in the same team as the player
+ * @author Alvaro Inigo
+ * @param player a pointer to player
+ * @return Set* the pointer to the set of the team
+ */
+Set *player_get_team(Player *player);
 #endif

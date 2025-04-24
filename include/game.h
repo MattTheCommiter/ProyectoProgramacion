@@ -529,6 +529,15 @@ Status game_set_turn(Game *game, int turn);
 int game_get_n_players(Game *game);
 
 /**
+ * @brief returns the player of the game with a specific name
+ * @author Alvar Inigo
+ * @param game a pointer to the game
+ * @param name the name of the player
+ * @return Player* a pointer to the player whose name is given as argument
+ */
+Player *game_get_player_from_name(Game *game, char *name);
+
+/**
  * @brief it deletes a player from the array of players as well as his command history, freeing the allocated memory and reorganizing the arrays
  * @author Matteo Artunedo
  * @param game pointer to the game
@@ -633,6 +642,40 @@ Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
  */
 Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
 
+/**
+ * @brief returns if the message of the game must be shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Bool TRUE if it must be shown of FALSE otherwise
+ */
+Bool game_get_show_message(Game *game);
 
+/**
+ * @brief sets if the message must be shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param bool TRUE or FALSE
+ * @return Status OK or ERROR if an error happened
+ */
+Status game_set_show_message(Game *game, Bool bool);
+
+/**
+ * @brief gets if the message of the player in the turn pos must have its message shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the turn of the player
+ * @return Bool TRUE or FALSE if the message must or not be shown
+ */
+Bool game_get_show_message_in_pos(Game *game, int pos);
+
+/**
+ * @brief sets if the message of the player in the turn pos must have its message shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param bool the bool to set
+ * @param pos the turn of the player
+ * @return Bool TRUE or FALSE if the message must or not be shown
+ */
+Status game_set_show_message_in_pos(Game *game, Bool bool, int pos);
 
 #endif
