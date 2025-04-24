@@ -354,6 +354,7 @@ void game_actions_drop(Game *game, char *arg)
       i--;
     }
   }
+  /*if the object is not found , return and set error as command status*/
   if (found == FALSE)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -362,13 +363,15 @@ void game_actions_drop(Game *game, char *arg)
 
   /* Check if the object has dependencies.
   Iterate through the player's backpack to check if any object depends on the object being dropped.
-  If a dependent object is found, the function returns an error. */
+  If a dependent object is found, the function drops all the objects dependant to the object dropped. */
   for (i = 0; i < player_get_num_objects_in_backpack(player); i++) {
+
     dependentObjectId = player_get_backpack_object_id_at(player, i);
     dependentObject = game_get_object(game, dependentObjectId);
-    if (object_get_dependency(dependentObject) == objectId) {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
+
+    if (object_get_dependency(dependentObject) == objectId){
+      player_remove_object_from_backpack(player, dependentObjectId);
+      space_add_objectId(game_get_space(game,game_get_current_player_location(game)), dependentObjectId);
     }
   }
   
