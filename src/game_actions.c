@@ -612,4 +612,5 @@ void game_actions_use(Game *game, char *object_name) {
   if(!game_remove_object(game, object)){
     return;
   }
+  return;
 }
