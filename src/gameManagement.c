@@ -383,7 +383,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
-  char gdesc[GDESCTAM] = "";
+  char gdesc[GDESCTAM] = "", dead_gdesc[GDESCTAM] = "";
   char message[WORD_SIZE] = "";
   char *toks = NULL;
   Id id = NO_ID, spaceId = NO_ID, following = NO_ID;
@@ -416,6 +416,8 @@ Status gameManagement_load_characters(Game *game, char *filename)
       toks = strtok(NULL, "|\r\n");
       strcpy(gdesc, toks);
       toks = strtok(NULL, "|\r\n");
+      strcpy(dead_gdesc, toks);
+      toks = strtok(NULL, "|\r\n");
       spaceId = atol(toks);
       toks = strtok(NULL, "|\r\n");
       hp = atoi(toks);
@@ -442,6 +444,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
       { /*Sets the information related to the character and adds it to the game*/
         character_set_name(character, name);
         character_set_gdesc(character, gdesc);
+        character_set_dead_gdesc(character, dead_gdesc);
         space_add_character(game_get_space(game, spaceId), id);
         character_set_location(character, spaceId);
         character_set_health(character, hp);
@@ -666,7 +669,7 @@ Status gameManagement_save_characters(Game *game, FILE *saving_file)
   for (i = 0; i < game_get_n_characters(game); i++)
   {
     character = game_get_character_in_pos(game, i);
-    fprintf(saving_file, "#c:%ld|%s|%s|%ld|%d|%d|%s|%ld|\n", character_get_id(character), character_get_name(character), character_get_gdesc(character), character_get_location(character), character_get_health(character), character_get_friendly(character), character_get_message(character), character_get_following(character));
+    fprintf(saving_file, "#c:%ld|%s|%s|%s|%ld|%d|%d|%s|%ld|\n", character_get_id(character), character_get_name(character), character_get_gdesc(character), character_get_dead_gdesc(character), character_get_location(character), character_get_health(character), character_get_friendly(character), character_get_message(character), character_get_following(character));
   }
 
   return OK;
