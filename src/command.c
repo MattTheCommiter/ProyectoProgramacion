@@ -15,23 +15,24 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGTH 50  /*!<maximum length of commands written by user*/
+#define CMD_LENGTH 50 /*!<maximum length of commands written by user*/
 #define ARG_LENGTH 50 /*!<maximum length of object names*/
 
 /**
  * @brief Array mapping command strings to their descriptions.
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"u", "Use"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}};
 
 /**
  * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
  *
- * 
+ *
  */
 struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
   char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
+  char argument2[WORD_SIZE];        /*!< Second argument (optional in USE command) */
   Status lastcmd_Success;           /*!< Whether the last command was succesful or not*/
 };
 
@@ -48,6 +49,7 @@ Command *command_create()
   /* Initialization of an empty command*/
   newCommand->code = NO_CMD;
   newCommand->arg_description[0] = '\0';
+  newCommand->argument2[0] = '\0';
   newCommand->lastcmd_Success = OK;
   return newCommand;
 }
@@ -118,21 +120,51 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == SAVE || cmd == LOAD || cmd == TEAM)
-    {
-      token = strtok(NULL, "\r\n");
 
-      if (!token)
+    /* first argument for all commands */
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == SAVE || cmd == LOAD || cmd == TEAM || cmd == USE)
+    {
+      token = strtok(NULL, " \r\n");
+      if (token)
+      {
+        command_set_argument(command, token);
+      }
+      else
       {
         command_set_argument(command, NO_ARG);
-      }else{
-        command_set_argument(command, token);
       }
     }
     else
     {
       command_set_argument(command, NO_ARG);
     }
+
+    /* second argument specifically for the USE command */
+    if (cmd == USE)
+    {
+      token = strtok(NULL, " \r\n");
+      if (token && !strcasecmp(token, "over"))
+      {
+        token = strtok(NULL, "\r\n");
+        if (token)
+        {
+          command_set_argument2(command, token);
+        }
+        else
+        {
+          command_set_argument2(command, NO_ARG);
+        }
+      }
+      else
+      {
+        command_set_argument2(command, NO_ARG);
+      }
+    }
+    else
+    {
+      command_set_argument2(command, NO_ARG);
+    }
+
     return command_set_code(command, cmd);
   }
   else
@@ -163,8 +195,32 @@ Status command_set_argument(Command *command, char *argument_desc)
   return OK;
 }
 
-Status command_set_lastcmd_success(Command *command, Status lastcmd_success){
-  if(!command)
+char *command_get_argument2(Command *command)
+{
+  if (!command)
+  {
+    return NO_ARG;
+  }
+  return command->argument2;
+}
+
+Status command_set_argument2(Command *command, char *argument_desc)
+{
+  if (!command)
+    return ERROR;
+  if (argument_desc == NO_ARG)
+  {
+    command->argument2[0] = '\0';
+    return OK;
+  }
+  strcpy(command->argument2, argument_desc);
+
+  return OK;
+}
+
+Status command_set_lastcmd_success(Command *command, Status lastcmd_success)
+{
+  if (!command)
   {
     return ERROR;
   }
@@ -172,21 +228,25 @@ Status command_set_lastcmd_success(Command *command, Status lastcmd_success){
   return OK;
 }
 
-Status command_get_lastcmd_success(Command *command){
-  if(!command)
+Status command_get_lastcmd_success(Command *command)
+{
+  if (!command)
   {
     return ERROR;
   }
   return command->lastcmd_Success;
 }
 
-Bool command_get_confirmation(){
+Bool command_get_confirmation()
+{
   char input[CMD_LENGTH];
-  while(!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")));
+  while (!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")))
+    ;
 
-  if(!strcasecmp(input, "N\n")) return FALSE;
-  if(!strcasecmp(input, "Y\n")) return TRUE;
+  if (!strcasecmp(input, "N\n"))
+    return FALSE;
+  if (!strcasecmp(input, "Y\n"))
+    return TRUE;
 
-  
   return FALSE;
 }
