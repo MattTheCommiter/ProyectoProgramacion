@@ -28,7 +28,7 @@ struct _Player
   int health;               /*!< Hp points of the player*/
   char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
   Inventory *backpack;      /*!< Backpack to carry multiple objects */
-  Set *team;                /*!< The set that contains the Id of the player on the same team*/
+  Id team;                  /*!< The id of the team that contains the player*/
 };
 
 /**This function creates a new player with the given ID and initializes its fields. */
@@ -51,7 +51,7 @@ Player *player_create(Id id, int inventory_size){
   newPlayer->backpack = inventory_create(inventory_size); /* Initialize backpack with BACKPACK_CAPACITY objects */
   newPlayer->health = 5;
   newPlayer->Gdesc[0] = '\0';
-  newPlayer->team = set_create();
+  newPlayer->team = id;
 
   return newPlayer;
 }
@@ -61,7 +61,7 @@ Status player_destroy(Player *player){
   if (!player){
     return ERROR;
   }
-  set_destroy(player->team);
+
   inventory_destroy(player->backpack); /* Destroy the backpack */
   free(player);
   return OK;
@@ -281,7 +281,13 @@ Status player_set_max_objs(Player *player, int max){
 }
 
 
-Set *player_get_team(Player *player){
-  if(!player) return NULL;
+Id player_get_team(Player *player){
+  if(!player) return NO_ID;
   return player->team;
+}
+
+Status player_set_team(Player *player, Id team){
+  if(!player || team == NO_ID) return ERROR;
+  player->team = team;
+  return OK;
 }

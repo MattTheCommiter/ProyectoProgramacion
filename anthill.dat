@@ -9,18 +9,16 @@
 #s:127|Corridor7|0|
 #s:14|Hole|0|
 
-#o:1|Seed|11|Well, just a seed|
-#o:2|Grain|11|Well, just a grain|
-#o:3|Crumb|122|Well, just a crumb|
-#o:4|Leaf|11|Well, just a leaf|
+#o:1|Seed|11|Well, just a seed|1|-1|-1|-1|
+#o:2|Grain|11|Well, just a grain|1|-1|-1|-1|
+#o:3|Crumb|122|Well, just a crumb|1|-1|-1|-1|
+#o:4|Leaf|11|Well, just a leaf|1|-1|-1|-1|
 
 
 #p:1|ant|mO^|11|5|3|
-#team:
 #p:2|worm|ooO|11|5|3|
-#team:
 #p:3|beatle|^O^|11|5|3|
-#team:
+
 
 #c:2|spider|/\oo/\|\/xx\/|121|5|0|I won't talk to you!|-1|
 #c:3|ant friend|   ^0m|   x__|122|5|1|Hey ant friend!|-1|

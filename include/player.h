@@ -229,10 +229,19 @@ Inventory *player_get_inventory(Player *player);
 Status player_set_max_objs(Player *player, int max);
 
 /**
- * @brief returns the Set of players that are in the same team as the player
+ * @brief returns the id of players team
  * @author Alvaro Inigo
  * @param player a pointer to player
- * @return Set* the pointer to the set of the team
+ * @return Id the id of the team
  */
-Set *player_get_team(Player *player);
+Id player_get_team(Player *player);
+
+/**
+ * @brief sets the team of the player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @param team the Id of the team
+ * @return Status Ok or ERROR
+ */
+Status player_set_team(Player *player, Id team);
 #endif

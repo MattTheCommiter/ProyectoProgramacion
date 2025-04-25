@@ -255,9 +255,10 @@ Status gameManagement_load_objects(Game *game, char *filename)
   char name[WORD_SIZE] = "";
   char description[WORD_SIZE] = "";
   char *toks = NULL;
-  Id id = NO_ID, spaceId = NO_ID;
+  Id id = NO_ID, spaceId = NO_ID, dependency = NO_ID, open = NO_ID;
   Object *object = NULL;
   Status status = OK;
+  int movable = 1, health = 0;
 
   if (!filename || !game)
   {
@@ -276,6 +277,7 @@ Status gameManagement_load_objects(Game *game, char *filename)
   {
     if (strncmp("#o:", line, 3) == 0)
     {
+      /*#o:1|Seed|11|Well, just a seed|1|-1|-1|-1|*/
       toks = strtok(line + 3, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
@@ -284,9 +286,18 @@ Status gameManagement_load_objects(Game *game, char *filename)
       spaceId = atol(toks);
       toks = strtok(NULL, "|\n\r");
       strcpy(description, toks);
+      toks = strtok(NULL, "|\n\r");
+      movable = atoi(toks);
+      toks = strtok(NULL, "|\n\r");
+      health = atoi(toks);
+      toks = strtok(NULL, "|\n\r");
+      dependency = atol(toks);
+      toks = strtok(NULL, "|\n\r");
+      open = atol(toks);
+      
 
 #ifdef DEBUG
-      printf("Leido: %ld|%s|%ld\n", id, name, spaceId);
+      printf("Leido: %ld|%s|%ld|%s|%d|%d|%ld|%ld|\n", id, name, spaceId,description,movable, health, dependency, open);
 #endif
       /*
        * It creates the space with the data that has been read
@@ -296,6 +307,10 @@ Status gameManagement_load_objects(Game *game, char *filename)
       { /*Sets the information related to the object and adds it to the game*/
         object_set_name(object, name);
         object_set_description(object, description);
+        object_set_movable(object, movable == 1? TRUE:FALSE);
+        object_set_health(object, health);
+        object_set_dependency(object, dependency);
+        object_set_open(object, open);
         space_add_objectId(game_get_space(game, spaceId), id);
         game_add_object(game, object);
       }
@@ -319,7 +334,7 @@ Status gameManagement_load_players(Game *game, char *filename)
   char name[WORD_SIZE] = "";
   char gdesc[GDESCTAM] = "";
   char *toks = NULL;
-  Id id = NO_ID, spaceId = NO_ID, objectId = NO_ID, teammateId = NO_ID;
+  Id id = NO_ID, spaceId = NO_ID, objectId = NO_ID, teamId = NO_ID;
   Player *player = NULL;
   Status status = OK;
   int hp = 0;
@@ -354,13 +369,14 @@ Status gameManagement_load_players(Game *game, char *filename)
       hp = atoi(toks);
       toks = strtok(NULL, "|\n\r");
       inventory_size = atoi(toks);
-      
+      toks = strtok(NULL, "|\n\r");
+      if(toks) teamId = atol(toks);
 
 /*
 #p: id|name|GDESC|idSpace|HP|INVENTORY|
 */
 #ifdef DEBUG
-      printf("Leido: %ld|%s|%s|%ld|%d|%d|\n", id, name, gdesc, spaceId, hp, inventory_size);
+      printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, inventory_size, teamId);
 #endif
 
       /*
@@ -378,15 +394,9 @@ Status gameManagement_load_players(Game *game, char *filename)
           objectId = atol(toks);
           player_add_object_to_backpack(player, objectId);
         }
-        /*
-        fgets(line, WORD_SIZE, file);
-        if(strncmp("#team:", line, 6) == 0){
-          while((toks = strtok(line + 3, "|\n\r"))){
-            teammateId = atol(toks);
-            set_add(player_get_team(player), teammateId);
-          }
-        }
-          */
+        if(teamId != NO_ID) player_set_team(player, teamId);;
+        
+          
 
         game_add_player(game, player);
       }
@@ -631,7 +641,7 @@ Status gameManagement_save_objects(Game *game, FILE *saving_file)
   for (i = 0; i < game_get_n_objects(game); i++)
   {
     object = game_get_object_in_pos(game, i);
-    fprintf(saving_file, "#o:%ld|%s|%ld|%s|\n", object_get_id(object), object_get_name(object), game_get_object_location(game, object_get_id(object)), object_get_description(object));
+    fprintf(saving_file, "#o:%ld|%s|%ld|%s|%d|%d|%ld|%ld|\n", object_get_id(object), object_get_name(object), game_get_object_location(game, object_get_id(object)), object_get_description(object), object_get_movable(object) == TRUE? 1:0, object_get_health(object), object_get_dependency(object), object_get_open(object));
   }
 
   return OK;
@@ -647,17 +657,12 @@ Status gameManagement_save_players(Game *game, FILE *saving_file)
   for (i = 0; i < game_get_n_players(game); i++)
   {
     player = game_get_player_in_pos(game, i);
-    fprintf(saving_file, "#p:%ld|%s|%s|%ld|%d|%d|", player_get_id(player), player_get_name(player), player_get_gdesc(player), player_get_location(player), player_get_health(player), inventory_get_max_objs(player_get_inventory(player)));
+    fprintf(saving_file, "#p:%ld|%s|%s|%ld|%d|%d|%ld|",player_get_id(player), player_get_name(player), player_get_gdesc(player), player_get_location(player), player_get_health(player), inventory_get_max_objs(player_get_inventory(player)), player_get_team(player));
    
     for(j = 0; j < player_get_num_objects_in_backpack(player); j++){
       fprintf(saving_file, "%ld|", player_get_backpack_object_id_at(player, j));
     }
     fprintf(saving_file, "\n");
-
-    fprintf(saving_file, "#team:");
-    for(j = 0; j < set_get_num_elements(player_get_team(player)); j++){
-      fprintf(saving_file, "%ld|", set_get_Id_in_pos(player_get_team(player),j));
-    }
     fprintf(saving_file, "\n");
   }
 
