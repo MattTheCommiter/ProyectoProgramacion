@@ -144,6 +144,16 @@ void game_actions_load(Game **game, char *arg);
  */
 void game_actions_team(Game *game, char *arg, Graphic_engine *gengine);
 
+/**
+ * @brief Executes the USE command in the game.
+ * @author Araceli Gutiérrez
+ * @param game Pointer to the Game structure.
+ * @param object_name Name of the object to be used.
+ * @param character_name Name of the character to which apply the object's effect (optional).
+ */
+void game_actions_use(Game *game, char *object_name, char *character_name);
+
+
 
 /*Game actions implementation*/
 
@@ -199,6 +209,9 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     break;
   case TEAM:
     game_actions_team(*game, command_get_argument(command), gengine);
+  case USE:
+    game_actions_use(*game, command_get_argument(command), command_get_argument2(command));
+    break;
   default:
     break;
   }
@@ -277,6 +290,7 @@ void game_actions_take(Game *game, char *arg)
   Id objectId = NO_ID;
   int i;
   Bool found = FALSE;
+  Object *object = NULL;
 
   /*If the arguments (pointers) are NULL or the bacpack of the current player is full, nothing happens*/
   if (!game || arg == NO_ARG || player_backpack_is_full(game_get_current_player(game)))
@@ -300,8 +314,24 @@ void game_actions_take(Game *game, char *arg)
     return;
   }
 
-  /*Now, that we have found the object with the name, we get its Id*/
+  /*Now, that we have found the object with the name, we get its Id
+  and its pointer*/
   objectId = game_get_object_id_at(game, i);
+  object = game_get_object_in_pos(game, i);
+
+  /* Check if the object is movable */
+  if (object_get_movable(object) == FALSE)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* Check if the object has a dependency and if the dependent object is in the player's backpack */
+  if (object_get_dependency(object) != NO_ID && !player_backpack_contains(game_get_current_player(game), object_get_dependency(object)))
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
 
   if (game_get_object_location(game, objectId) == NO_ID)
   {
@@ -331,6 +361,9 @@ void game_actions_drop(Game *game, char *arg)
   int i;
   Bool found = FALSE;
   Player *player = NULL;
+  Id dependentObjectId = NO_ID;
+  Object *dependentObject = NULL;
+
   /* If the arguments (pointers) are NULL, nothing happens */
   if (!game || arg == NO_ARG)
   {
@@ -344,11 +377,10 @@ void game_actions_drop(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  /* Find the object with the given name in the game */
+  /* Find the object with the given name in the player's backpack  */
   player = game_get_current_player(game);
   for (i = 0; i < player_get_num_objects_in_backpack(player) && found == FALSE; i++)
   {
-
     objectId = player_get_backpack_object_id_at(player, i);
     if (strcasecmp(arg, object_get_name(game_get_object(game, objectId))) == 0)
     {
@@ -362,10 +394,24 @@ void game_actions_drop(Game *game, char *arg)
     return;
   }
 
-  /* We add the object to the space where the player is located */
+  /* Check if the object has dependencies.
+  Iterate through the player's backpack to check if any object depends on the object being dropped.
+  If a dependent object is found, the function returns an error. */
+  for (i = 0; i < player_get_num_objects_in_backpack(player); i++)
+  {
+    dependentObjectId = player_get_backpack_object_id_at(player, i);
+    dependentObject = game_get_object(game, dependentObjectId);
+    if (object_get_dependency(dependentObject) == objectId)
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+
+  /* Add the object to the space where the player is located */
   if (space_add_objectId(game_get_space(game, game_get_current_player_location(game)), objectId) == OK)
   {
-    /* We remove the object from the player's backpack */
+    /* Remove the object from the player's backpack */
     player_remove_object_from_backpack(game_get_current_player(game), objectId);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
@@ -641,11 +687,73 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }else{
-    player_set_team(teammate, player_get_id(game_get_current_player(game)));
+    set_add(player_get_team(game_get_current_player(game)), player_get_id(teammate));
+    set_add(player_get_team(teammate), player_get_id(game_get_current_player(game)));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
     return;
   }
 
+}
 
-  
+
+void game_actions_use(Game *game, char *object_name, char *character_name)
+{
+
+  Object *object = NULL;
+  Character *character = NULL;
+
+  if (game == NULL || object_name == NULL)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*Find the object by its name*/
+  object = game_get_object_from_name(game, object_name);
+  if (!object)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*Check if the object can be used (health is not 0)*/
+  if (object_get_health(object) == 0)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*If an optional character name is given, update the character's health*/
+  if (character_name && character_name[0] != '\0')
+  {
+    character = game_get_character_from_name(game, character_name);
+    if (character == NULL || character_get_friendly(character) == FALSE)
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if (character_set_health(character, character_get_health(character) + object_get_health(object)) == ERROR)
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+  else
+  {
+    /*If there is no character's name passed, update player's health*/
+    if (player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) + object_get_health(object)) == ERROR)
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+
+  /*Remove the object from the game after use*/
+  if (!game_remove_object(game, object))
+  {
+    printf("Failed to remove object: %s\n", object_name); /*debug print*/
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
 }
