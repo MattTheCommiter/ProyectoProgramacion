@@ -210,7 +210,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     game_actions_team(*game, command_get_argument(command), gengine);
     break;
   case OPEN:
-    game_actions_open(game, command_get_argument(command));
+    game_actions_open(*game, command_get_argument(command));
     break;
   default:
     break;
@@ -641,7 +641,7 @@ void game_actions_open(Game *game, char *arg) {
   /*in case function has not been exited, return with ERROR*/
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;
-  }
+}
 
 void game_actions_save(Game *game, char *arg){
   if(!game || !arg){
