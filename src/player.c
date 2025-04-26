@@ -25,10 +25,10 @@ struct _Player
   Id id;                    /*!< Id number of the player, it must be unique */
   char name[WORD_SIZE + 1]; /*!< Name of the player */
   Id location;              /*!<Id of the   where the player is located*/
-  Id object;                /*!< The Id of the object the player is carrying */
   int health;               /*!< Hp points of the player*/
   char Gdesc[GDESCTAM];     /*!< The graphic description of the player*/
   Inventory *backpack;      /*!< Backpack to carry multiple objects */
+  Id team;                  /*!< The id of the team that contains the player*/
 };
 
 /**This function creates a new player with the given ID and initializes its fields. */
@@ -51,6 +51,7 @@ Player *player_create(Id id, int inventory_size){
   newPlayer->backpack = inventory_create(inventory_size); /* Initialize backpack with BACKPACK_CAPACITY objects */
   newPlayer->health = 5;
   newPlayer->Gdesc[0] = '\0';
+  newPlayer->team = id;
 
   return newPlayer;
 }
@@ -267,4 +268,26 @@ Bool player_object_is_in_backpack(Player *player, Id objectId){
     return FALSE;
   }
   return inventory_contains(player->backpack, objectId);
+}
+
+Inventory *player_get_inventory(Player *player){
+  if(!player) return NULL;
+  return player->backpack;
+}
+
+Status player_set_max_objs(Player *player, int max){
+  if(!player || max < 0) return ERROR;
+  return inventory_set_max_objs(player->backpack, max);
+}
+
+
+Id player_get_team(Player *player){
+  if(!player) return NO_ID;
+  return player->team;
+}
+
+Status player_set_team(Player *player, Id team){
+  if(!player || team == NO_ID) return ERROR;
+  player->team = team;
+  return OK;
 }

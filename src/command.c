@@ -21,7 +21,7 @@
 /**
  * @brief Array mapping command strings to their descriptions.
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"z", "Turn"}};
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}, {"o", "Open"}, {"tu", "turn"}};
 
 /**
  * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
@@ -118,7 +118,7 @@ Status command_get_user_input(Command *command)
         i++;
       }
     }
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == SAVE || cmd == LOAD || cmd == TEAM || cmd == OPEN)
     {
       token = strtok(NULL, "\r\n");
 
@@ -178,4 +178,15 @@ Status command_get_lastcmd_success(Command *command){
     return ERROR;
   }
   return command->lastcmd_Success;
+}
+
+Bool command_get_confirmation(){
+  char input[CMD_LENGTH];
+  while(!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")));
+
+  if(!strcasecmp(input, "N\n")) return FALSE;
+  if(!strcasecmp(input, "Y\n")) return TRUE;
+
+  
+  return FALSE;
 }

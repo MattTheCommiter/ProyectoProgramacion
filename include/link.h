@@ -33,6 +33,14 @@ Link *link_create(Id link_id);
 void link_destroy(Link *l);
 
 /**
+ * @brief sets the id of the link
+ * @author Alvaro Inigo
+ * @param link the link wohse Id wants to be set
+ * @param id the new id
+ * @return Status OK or ERROR
+ */
+Status link_set_id(Link *link, Id id);
+/**
  * @brief Sets the name filed in a given link structure
  * @author Guilherme Povedano 
  * @date 20-03-2025

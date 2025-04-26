@@ -312,6 +312,36 @@ void test3_player_get_health();
 
 
 
+/**
+ * @brief inventory of a NULL pointer to player
+ * @pre NULL pointer
+ * @post NULL
+ */
+void test1_player_get_inventory();
+
+/**
+ * @brief gets right the inventory, the same object belongs to it
+ * @pre player with a specific object
+ * @post the object belongs to its inventory
+ */
+void test2_player_get_inventory();
+
+
+/**
+ * @brief set max objects in the inventory of a NULL pointer
+ * @pre a NULL pointer
+ * @post ERROR
+ */
+void test1_player_set_max_objs();
+
+
+/**
+ * @brief sets a number as maximun objects
+ * @pre pointer to a player with 3 elements
+ * @post TRUE
+ */
+void test2_player_set_max_objs();
+
 
 
 

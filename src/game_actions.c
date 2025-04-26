@@ -2,7 +2,7 @@
  * @brief It implements the game update through user actions
  *
  * @file game_actions.c
- * @author Matteo Artuñedo,Alvaro Inigo, AGL (modifications for updating Player to include a backpack)
+ * @author Matteo Artuñedo,Alvaro Inigo, AGL, Guilherme Povedano 
  * @version 0.1
  * @date 22-03-2025
  * @copyright GNU Public License
@@ -118,6 +118,43 @@ void game_actions_recruit(Game *game, char *arg);
 void game_actions_abandon(Game *game, char *arg);
 
 /**
+ * @brief Command that allows the player to open links with objects in their backpack
+ * @author Guilherme Povedano 
+ * @date 25-04-25
+ * @param game pointer to the game
+ * @param arg name of the character they are going to recruit
+*/
+void game_actions_open(Game *game, char *arg);
+
+/**
+ * @brief saves the current game in the file with the name given in the arg
+ * @author Alvaro Inigo
+ * @date 18/04/25
+ * @param game a pointer to the game
+ * @param arg the name of the saving file
+ */
+void game_actions_save(Game *game, char *arg);
+
+
+/**
+ * @brief loads the game of the file with the name given in the arg
+ * @author Alvaro Inigo
+ * @date 18/04/25
+ * @param game a double pointer to the game
+ * @param arg the name of the loading file
+ */
+void game_actions_load(Game **game, char *arg);
+
+/**
+ * @brief allows a player to team with another player
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param arg the name of the player to join the team
+ */
+void game_actions_team(Game *game, char *arg, Graphic_engine *gengine);
+
+
+/**
  * @brief Command that allows the player to change the turn to the next player
  * @author Matteo Artunedo
  * @date 23-04-2025
@@ -127,49 +164,61 @@ void game_actions_turn(Game *game);
 
 /*Game actions implementation*/
 
-Status game_actions_update(Game *game, Command *command)
+Status game_actions_update(Game **game, Command *command, Graphic_engine *gengine)
 {
   CommandCode cmd;
 
-  game_interface_data_set_last_command(game, command);
+  game_interface_data_set_last_command(*game, command);
 
   cmd = command_get_code(command);
 
   switch (cmd)
   {
   case UNKNOWN:
-    game_actions_unknown(game);
+    game_actions_unknown(*game);
     break;
 
   case EXIT:
-    game_actions_exit(game);
+    game_actions_exit(*game);
     break;
 
   case MOVE:
-    game_actions_move(game, command_get_argument(command));
+    game_actions_move(*game, command_get_argument(command));
     break;
 
     break;
   case TAKE:
-    game_actions_take(game, command_get_argument(command));
+    game_actions_take(*game, command_get_argument(command));
     break;
   case CHAT:
-    game_actions_chat(game, command_get_argument(command));
+    game_actions_chat(*game, command_get_argument(command));
     break;
   case DROP:
-    game_actions_drop(game, command_get_argument(command));
+    game_actions_drop(*game, command_get_argument(command));
     break;
   case ATTACK:
-    game_actions_attack(game, command_get_argument(command));
+    game_actions_attack(*game, command_get_argument(command));
     break;
   case INSPECT:
-    game_actions_inspect(game, command_get_argument(command));
+    game_actions_inspect(*game, command_get_argument(command));
     break;
   case RECRUIT:
-    game_actions_recruit(game, command_get_argument(command));
+    game_actions_recruit(*game, command_get_argument(command));
     break;
   case ABANDON:
-    game_actions_abandon(game, command_get_argument(command));
+    game_actions_abandon(*game, command_get_argument(command));
+    break;
+  case SAVE:
+    game_actions_save(*game, command_get_argument(command));
+    break;
+  case LOAD:
+    game_actions_load(game, command_get_argument(command));
+    break;
+  case TEAM:
+    game_actions_team(*game, command_get_argument(command), gengine);
+    break;
+  case OPEN:
+    game_actions_open(*game, command_get_argument(command));
     break;
   case TURN:
     game_actions_turn(game);
@@ -363,7 +412,7 @@ void game_actions_chat(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-
+  game_set_show_message(game, TRUE);
   game_set_message(game, character_get_message(game_get_character_from_name(game, arg)));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
@@ -533,6 +582,163 @@ void game_actions_abandon(Game *game, char *arg){
 
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
+}
+
+void game_actions_open(Game *game, char *arg) {
+  char *second_arg = NULL;
+  long name_length = 0;
+  int i = 0;
+  Object *o = NULL;
+  Link *l = NULL;
+  Id origin_id;
+
+  /*argument validation*/
+  if (!game || !arg) {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if (strstr(arg, OPEN_ARG) != NULL) {
+    second_arg = strstr(arg, OPEN_ARG) + strlen(OPEN_ARG);
+  } else {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  origin_id = game_get_current_player_location(game);
+  name_length = strlen(arg) - strlen(strstr(arg, OPEN_ARG));
+
+  /*find the corresponding link*/
+  for (i = 0 ; i < game_get_n_links(game) ; i++) {
+    l = game_get_link(game, game_get_link_id_at(game, i));
+
+    /*check if link name matches first argument in the command*/ 
+    if (strncasecmp(link_get_name(l), arg, name_length) == 0) break;
+  }
+
+  /* check if link corresponds to current space, or if exit condition for loop was not found */
+  if (link_get_origin_id(l) != origin_id || i == game_get_n_links(game)) {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*look for object in backpàck */
+  for (i = 0 ; i < player_get_num_objects_in_backpack(game_get_current_player(game)) ; i++) {
+    o = game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i));
+
+    /*check if it is the correct object*/
+    if (strcasecmp(object_get_name(o), second_arg) == 0 ) {
+
+      /* check if object opens link*/
+      if (object_get_open(o) != link_get_id(l)) {
+        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+        return;
+      }
+
+      /*check if player has the object dependency in case it exists*/
+      if (object_get_dependency(o) != NO_ID && player_backpack_contains(game_get_current_player(game), object_get_dependency(o)) == FALSE) {
+        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+        return;
+      }
+
+      /* open link and remove object from backpack */
+      link_set_is_open(l, TRUE);
+      player_remove_object_from_backpack(game_get_current_player(game), object_get_id(o));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+      return;
+    }
+  }
+
+  /*in case function has not been exited, return with ERROR*/
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+  return;
+}
+
+void game_actions_save(Game *game, char *arg){
+  if(!game || !arg){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if(gameManagement_save(game, arg) == ERROR){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+
+}
+
+void game_actions_load(Game **game, char *arg){
+  if(!game || !(*game) || !arg){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
+    return;
+  }
+
+  if(gameManagement_load(game, arg) == ERROR){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
+    return;
+  }else{
+    game_set_turn(*game, game_get_turn(*game) - 1);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), OK);
+  }
+
+  return;
+}
+
+
+void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
+  Player *teammate = NULL;
+  int i, turn, current_turn;
+  Bool show;
+  char previous_message[MAX_MESSAGE], message[MAX_MESSAGE];
+  Bool acceptance;
+
+  if(!game || !arg) return;
+
+  /*We found the player whose name is the argument given*/
+  teammate = game_get_player_from_name(game, arg);
+  if (teammate == NULL){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+  /*We found the turn corresponding to the new teammate*/
+
+  for(i = 0; i < game_get_n_players(game); i++){
+    if(game_get_player_in_pos(game, i) == teammate){
+      turn = i;
+      break;
+    }
+  }
+  current_turn = game_get_turn(game);
+
+  game_set_turn(game, turn);
+  /*copy the previous values for the last command used*/
+  strcpy(previous_message, game_get_message(game));
+  show = game_get_show_message(game);
+
+  sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
+
+  game_set_message(game, message);
+  game_set_show_message(game, TRUE);
+
+  graphic_engine_paint_game(gengine, game);
+  acceptance = command_get_confirmation();
+
+  /*set the values back */
+  game_set_message(game, previous_message);
+  game_set_show_message(game, show);
+  /*get back to the turn*/
+  game_set_turn(game, current_turn);
+
+  if(acceptance == FALSE){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }else{
+    player_set_team(teammate, player_get_id(game_get_current_player(game)));
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    return;
+  }
 }
 
 void game_actions_turn(Game *game){

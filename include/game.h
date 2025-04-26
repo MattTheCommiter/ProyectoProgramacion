@@ -99,6 +99,23 @@ Status game_destroy(Game *game);
  * @return a pointer to the desired space
  */
 Space *game_get_space(Game *game, Id id);
+/**
+ * @brief gets the number of spaces in the game
+ * @date 18-04-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return int the number of spaces in the game
+ */
+int game_get_n_spaces(Game *game);
+/**
+ * @brief gets the space located in the position of the array of spaces of game
+ * @date 18-04-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game 
+ * @param pos the position of the space wanted
+ * @return Space* the space
+ */
+Space *game_get_space_in_pos(Game *game, int pos);
 
 /**
  * @brief returns the location of the player that is currently playing
@@ -147,6 +164,16 @@ Id game_get_object_location(Game *game, Id objectId);
  * @return Status
  */
 Status game_set_object_location(Game *game, Id id, Id objectId);
+
+/**
+ * @brief Gets the player of the game in a determinate position asked.
+ * @date 18-04-2025
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos int, the position of the player wanted
+ * @return Player* a pointer to the player
+ */
+Player *game_get_player_in_pos(Game *game, int pos);
 
 /**
  * @brief returns a boolean value that describes if the game has finished or not
@@ -236,6 +263,18 @@ Status game_add_character(Game *game, Character *character);
  * @param position the position in the array of objects of the object we want to get the Id
  * @return Id the id of the character
  */
+
+
+ /**
+  * @brief returns the character in the position pos of the array of characters in game
+  * @date 18/04/25
+  * @author Alvaro Inigo
+  * @param game a pointer to the game
+  * @param pos the position of the character in the array
+  * @return Character* the wanted character
+  */
+Character *game_get_character_in_pos(Game *game, int pos);
+
 Id game_get_character_id_at(Game *game, int position);
 
 /**
@@ -373,6 +412,24 @@ int game_get_n_characters(Game *game);
  */
 Id game_get_character_location(Game *game, Id character_id);
 
+/**
+ * @brief gets the id of a link in a given position in the links array
+ * @author Guilherme Povedano 
+ * @date 25-04-2025
+ * @param game pointer to game that stores the data 
+ * @param position position int in the array that will be retrieved
+*/
+Id game_get_link_id_at(Game *game, long position);
+
+/**
+ * @brief given a game pointer and a link id, fetches the associated link structure
+ * @author Guilherme Povedano 
+ * @date 25-04-25
+ * @param game pointer to game that stores the data 
+ * @param id id of the link to be retrieved 
+ */
+Link *game_get_link(Game *game, Id id);
+
 
 /**
  * @brief adds a given link to the array of links in the game structure [Time: O(n)]
@@ -414,6 +471,16 @@ Id game_get_connection(Game *game, Id current_space, Direction link_direction);
  * @return the number of links in a game, or -1 in case of error
 */
 int game_get_n_links(Game *game);
+
+/**
+ * @brief returns the link in the position asked of the array of links in game
+ * @date 18/04/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the link wanted
+ * @return Link* the link wanted
+ */
+Link *game_get_link_in_pos(Game *game, int pos);
 
 /**
  * @brief sets the description of an object in the game for the current player
@@ -462,6 +529,15 @@ void game_next_turn(Game *game);
  */
 int game_get_turn(Game *game);
 
+
+/**
+ * @brief Sets the turn of the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param turn the turn we want to set
+ * @return Status OK or ERROR
+ */
+Status game_set_turn(Game *game, int turn);
 /**
  * @brief returns the number of players in the game
  * @author Matteo Artunedo
@@ -469,6 +545,15 @@ int game_get_turn(Game *game);
  * @return the number of players
  */
 int game_get_n_players(Game *game);
+
+/**
+ * @brief returns the player of the game with a specific name
+ * @author Alvar Inigo
+ * @param game a pointer to the game
+ * @param name the name of the player
+ * @return Player* a pointer to the player whose name is given as argument
+ */
+Player *game_get_player_from_name(Game *game, char *name);
 
 /**
  * @brief it deletes a player from the array of players as well as his command history, freeing the allocated memory and reorganizing the arrays
@@ -506,4 +591,109 @@ Command *game_interface_data_get_cmd_in_pos(Game *game, CommandPosition pos);
  * @return Status: OK or ERROR 
  */
 Status game_move_followers(Game *game, Id new_space_id);
+
+
+/**
+ * @brief gets the lastCmd of an interfaceData given its position
+ * @author Alvaro Inigo
+ * @param interface a pointer to the interface
+ * @param pos the position of the interface wanted
+ * @return Command the lastCMD
+ */
+Command *game_interface_in_pos_get_lastCmd(Game *game, int pos);
+
+/**
+ * @brief gets the second to last Cmd of an interfaceData given its position
+ * @author Alvaro Inigo
+ * @param interface a pointer to the interface
+ * @param pos the position of the interface wanted
+ * @return Command the second to last CMD
+ */
+Command *game_interface_in_pos_get_second_to_last_Cmd(Game *game, int pos);
+
+/**
+ * @brief gets the third to last Cmd of an interfaceData given its position
+ * @author Alvaro Inigo
+ * @param interface a pointer to the interface
+ * @param pos the position of the interface wanted
+ * @return Command the third to last CMD
+ */
+Command *game_interface_in_pos_get_third_to_last_Cmd(Game *game, int pos);
+
+/**
+ * @brief gets the message of an interfaceData given its position
+ * @author Alvaro Inigo
+ * @param interface a pointer to the interface
+ * @param pos the position of the interface wanted
+ * @return char* the message
+ */
+char *game_interface_in_pos_get_message(Game *game, int pos);
+
+/**
+ * @brief gets the description of an interfaceData given its position
+ * @author Alvaro Inigo
+ * @param interface a pointer to the interface
+ * @param pos the position of the interface wanted
+ * @return char* the description
+ */
+char *game_interface_in_pos_get_description(Game *game, int pos);
+
+Status game_interface_in_pos_set_message(Game *game, int pos, char *desc);
+
+/**
+ * @brief sets the message of an interface in a given turn
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface in the game array
+ * @param desc the new message
+ * @return Status  OK or ERROR
+ */
+Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
+
+/**
+ * @brief sets the description of an interface in a given turn
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface in the game array
+ * @param desc the new desciption
+ * @return Status OK or ERROR
+ */
+Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
+
+/**
+ * @brief returns if the message of the game must be shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Bool TRUE if it must be shown of FALSE otherwise
+ */
+Bool game_get_show_message(Game *game);
+
+/**
+ * @brief sets if the message must be shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param bool TRUE or FALSE
+ * @return Status OK or ERROR if an error happened
+ */
+Status game_set_show_message(Game *game, Bool bool);
+
+/**
+ * @brief gets if the message of the player in the turn pos must have its message shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the turn of the player
+ * @return Bool TRUE or FALSE if the message must or not be shown
+ */
+Bool game_get_show_message_in_pos(Game *game, int pos);
+
+/**
+ * @brief sets if the message of the player in the turn pos must have its message shown
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param bool the bool to set
+ * @param pos the turn of the player
+ * @return Bool TRUE or FALSE if the message must or not be shown
+ */
+Status game_set_show_message_in_pos(Game *game, Bool bool, int pos);
+
 #endif
