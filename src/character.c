@@ -79,7 +79,7 @@ Status character_set_name(Character *c, char *name)
 
 Status character_set_gdesc(Character *c, char *desc)
 {
-    if (!c)
+    if (!c || !desc)
         return ERROR;
     strcpy(c->gdesc, desc);
     return OK;
@@ -87,7 +87,7 @@ Status character_set_gdesc(Character *c, char *desc)
 
 Status character_set_dead_gdesc(Character *c, char *desc)
 {
-    if (!c)
+    if (!c || !desc)
         return ERROR;
     strcpy(c->dead_gdesc, desc);
     return OK;

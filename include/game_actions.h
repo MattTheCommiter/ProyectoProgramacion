@@ -12,12 +12,14 @@
 #define GAME_ACTIONS_H
 
 #include "command.h"
+#include "gameManagement.h"
 #include "game.h"
 #include "types.h"
 #include "space.h"
 #include "character.h"
 #include "player.h"
 #include "object.h"
+#include "graphic_engine.h"
 
 /**
  * @brief The amount of health a character loses when attacked by a player.
@@ -47,6 +49,6 @@
  * @param cmd the newest command
  * @return Status : whether function was completed succesfully
  */
-Status game_actions_update(Game *game, Command *cmd);
+Status game_actions_update(Game **game, Command *cmd, Graphic_engine *gengine);
 
 #endif

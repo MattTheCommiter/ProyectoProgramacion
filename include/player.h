@@ -210,4 +210,38 @@ char *player_get_gdesc(Player *player);
  * @return Bool TRUE if it belongs to the inventory or FALSE
  */
 Bool player_object_is_in_backpack(Player *player, Id objectId);
+
+/**
+ * @brief Returns the inventory of the player.
+ * @author Alvaro Inigo
+ * @param player 
+ * @return Inventory* 
+ */
+Inventory *player_get_inventory(Player *player);
+
+/**
+ * @brief Sets the max ammount of objects in the inventory of the player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player 
+ * @param max new max ammount of objects
+ * @return Status OK or ERROR
+ */
+Status player_set_max_objs(Player *player, int max);
+
+/**
+ * @brief returns the id of players team
+ * @author Alvaro Inigo
+ * @param player a pointer to player
+ * @return Id the id of the team
+ */
+Id player_get_team(Player *player);
+
+/**
+ * @brief sets the team of the player
+ * @author Alvaro Inigo
+ * @param player a pointer to the player
+ * @param team the Id of the team
+ * @return Status Ok or ERROR
+ */
+Status player_set_team(Player *player, Id team);
 #endif

@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 12       /*!< Number of commands that are possible*/
+#define N_CMD 15       /*!< Number of commands that are possible*/
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
@@ -43,7 +43,10 @@ typedef enum
     INSPECT,     /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
     RECRUIT,     /*!<Assigs 8 to the keyword "RECRUIT", which will be used in command-related functions*/
     ABANDON,     /*!<Assigs 9 to the keyword "ABANDON", which will be used in command-related functions*/
-    OPEN          /*!<Assigns 10 to the keyword "OPEN", which will be used in command-related functions*/
+    SAVE,        /*!<Assigs 10 to the keyword "SAVE", which will be used in command-related functions*/
+    LOAD,        /*!<Assigs 11 to the keyword "LOAD", which will be used in command-related functions*/
+    TEAM,         /*!<Assigs 12 to the keyword "TEAM", which will be used in command-related functions*/
+    OPEN         /*!<Assigns 13 to the keyword "OPEN", which will be used in command-related functions*/
 } CommandCode;
 
 /**
@@ -141,4 +144,11 @@ Status command_set_lastcmd_success(Command *command, Status lastcmd_success);
  * @return Status code, OK or ERROR
  */
 Status command_get_lastcmd_success(Command *command);
+
+/**
+ * @brief gets if the user wants to say YES or NO
+ * @author Alvaro Inigo
+ * @return Bool TRUE if player says YES, FALSE otherwise
+ */
+Bool command_get_confirmation();
 #endif
