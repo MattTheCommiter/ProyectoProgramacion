@@ -36,6 +36,7 @@
  */
 #define ATTACK_CHANCE 4
 
+#define OPEN_ARG " with "
 /**
  * @brief Updates the game's last_cmd to the newest command, calling the action functions (which are private) depending on the command
  *

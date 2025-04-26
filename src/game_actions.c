@@ -2,7 +2,7 @@
  * @brief It implements the game update through user actions
  *
  * @file game_actions.c
- * @author Matteo Artuñedo,Alvaro Inigo, AGL (modifications for updating Player to include a backpack)
+ * @author Matteo Artuñedo,Alvaro Inigo, AGL, Guilherme Povedano 
  * @version 0.1
  * @date 22-03-2025
  * @copyright GNU Public License
@@ -117,6 +117,14 @@ void game_actions_recruit(Game *game, char *arg);
  */
 void game_actions_abandon(Game *game, char *arg);
 
+/**
+ * @brief Command that allows the player to open links with objects in their backpack
+ * @author Guilherme Povedano 
+ * @date 25-04-25
+ * @param game pointer to the game
+ * @param arg name of the character they are going to recruit
+*/
+void game_actions_open(Game *game, char *arg);
 /*Game actions implementation*/
 
 Status game_actions_update(Game *game, Command *command)
@@ -162,6 +170,9 @@ Status game_actions_update(Game *game, Command *command)
     break;
   case ABANDON:
     game_actions_abandon(game, command_get_argument(command));
+    break;
+  case OPEN:
+    game_actions_open(game, command_get_argument(command));
     break;
   default:
     break;
@@ -518,5 +529,75 @@ void game_actions_abandon(Game *game, char *arg){
   }
 
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+}
+
+void game_actions_open(Game *game, char *arg) {
+  char *second_arg = NULL;
+  long name_length = 0;
+  int i = 0;
+  Object *o = NULL;
+  Link *l = NULL;
+  Id origin_id;
+
+  /*argument validation*/
+  if (!game || !arg) {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  if (strstr(arg, OPEN_ARG) != NULL) {
+    second_arg = strstr(arg, OPEN_ARG) + strlen(OPEN_ARG);
+  } else {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  origin_id = game_get_current_player_location(game);
+  name_length = strlen(arg) - strlen(strstr(arg, OPEN_ARG));
+
+  /*find the corresponding link*/
+  for (i = 0 ; i < game_get_n_links(game) ; i++) {
+    l = game_get_link(game, game_get_link_id_at(game, i));
+
+    /*check if link name matches first argument in the command*/ 
+    if (strncasecmp(link_get_name(l), arg, name_length) == 0) break;
+  }
+
+  /* check if link corresponds to current space, or if exit condition for loop was not found */
+  if (link_get_origin_id(l) != origin_id || i == game_get_n_links(game)) {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*look for object in backpàck */
+  for (i = 0 ; i < player_get_num_objects_in_backpack(game_get_current_player(game)) ; i++) {
+    o = game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i));
+
+    /*check if it is the correct object*/
+    if (strcasecmp(object_get_name(o), second_arg) == 0 ) {
+
+      /* check if object opens link*/
+      if (object_get_open(o) != link_get_id(l)) {
+        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+        return;
+      }
+
+      /*check if player has the object dependency in case it exists*/
+      if (object_get_dependency(o) != NO_ID && player_backpack_contains(game_get_current_player(game), object_get_dependency(o)) == FALSE) {
+        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+        return;
+      }
+
+      /* open link and remove object from backpack */
+      link_set_is_open(l, TRUE);
+      player_remove_object_from_backpack(game_get_current_player(game), object_get_id(o));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+      return;
+    }
+  }
+
+  /*in case function has not been exited, return with ERROR*/
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;
 }

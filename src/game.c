@@ -513,6 +513,27 @@ Status game_add_link(Game *game, Link *link)
   return OK;
 }
 
+Id game_get_link_id_at(Game *game, long position) {
+  long i = 0;
+
+  if (!game || position < 0) return NO_ID;
+
+  return link_get_id(game->links[i]);
+}
+
+
+Link *game_get_link(Game *game, Id id) {
+  int i = 0;
+  
+  if (!game || id == NO_ID) return NULL;
+
+  for (i = 0 ; i < game->n_links ; i++) {
+    if (link_get_id(game->links[i]) == id) return game->links[i];
+  }
+
+  return NULL;
+}
+
 Id game_get_connection(Game *game, Id current_space, Direction link_direction)
 {
   int i;

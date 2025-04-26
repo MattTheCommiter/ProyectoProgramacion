@@ -373,6 +373,24 @@ int game_get_n_characters(Game *game);
  */
 Id game_get_character_location(Game *game, Id character_id);
 
+/**
+ * @brief gets the id of a link in a given position in the links array
+ * @author Guilherme Povedano 
+ * @date 25-04-2025
+ * @param game pointer to game that stores the data 
+ * @param position position int in the array that will be retrieved
+*/
+Id game_get_link_id_at(Game *game, long position);
+
+/**
+ * @brief given a game pointer and a link id, fetches the associated link structure
+ * @author Guilherme Povedano 
+ * @date 25-04-25
+ * @param game pointer to game that stores the data 
+ * @param id id of the link to be retrieved 
+ */
+Link *game_get_link(Game *game, Id id);
+
 
 /**
  * @brief adds a given link to the array of links in the game structure [Time: O(n)]
