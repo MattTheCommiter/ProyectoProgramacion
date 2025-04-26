@@ -1,4 +1,4 @@
-CFLAGS=-Wall -ansi -pedantic -g
+CFLAGS=-Wno-newline-eof -Wno-strict-prototypes -Wall -ansi -pedantic -g
 SRCDIR=./src
 OBJDIR=./obj
 LIBDIR=./lib
@@ -12,7 +12,7 @@ vpath %.h $(INCDIR)
 vpath %.c $(SRCDIR)
 vpath %.o $(OBJDIR)
 
-.PHONY: all clean run runV set_test_run character_test_run space_test_run inventory_test_run link_test_run object_test_run player_test_run docs clean_docs tests test_run commands
+.PHONY: all general tests clean run runV runLog runLog_read1 runLog_read2 set_test_run character_test_run space_test_run inventory_test_run link_test_run object_test_run player_test_run set_test_runV character_test_runV space_test_runV inventory_test_runV link_test_runV object_test_runV player_test_runV docs clean_docs tests test_run commands
 
 #make - compile game 
 all: juego_hormiga
@@ -30,31 +30,40 @@ juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(
 
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
-$(OBJDIR)/game.o: game.c game.h command.h types.h space.h player.h object.h gameManagement.h link.h
+$(OBJDIR)/game.o: game.c game.h command.h types.h space.h set.h character.h \
+  player.h inventroy.h object.h gameManagement.h link.h 
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_loop.o: game_loop.c command.h types.h game.h space.h player.h object.h game_actions.h graphic_engine.h
+$(OBJDIR)/game_loop.o: src/game_loop.c include/graphic_engine.h include/game.h \
+  command.h types.h space.h set.h player.h character.h inventory.h object.h link.h libscreen.h 
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-$(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h game.h command.h types.h space.h player.h object.h libscreen.h
+$(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h \
+  game.h command.h types.h space.h \
+  set.h player.h character.h inventory.h \
+  object.h link.h libscreen.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/command.o: command.c command.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h game.h space.h player.h object.h character.h gameManagement.h graphic_engine.h
+$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h \
+  gameManagement.h game.h space.h set.h player.h character.h inventory.h object.h \
+  link.h graphic_engine.h libscreen.h 
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h command.h space.h player.h object.h link.h
+$(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h \
+  command.h space.h set.h player.h object.h link.h \
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/object.o: object.c object.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: player.c player.h types.h space.h inventory.h set.h game.h
+$(OBJDIR)/player.o: player.c player.h types.h set.h \
+  character.h inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/character.o: character.c character.h types.h 
@@ -63,35 +72,44 @@ $(OBJDIR)/character.o: character.c character.h types.h
 $(OBJDIR)/set.o: set.c set.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/inventory.o: inventory.c inventory.h types.h
+$(OBJDIR)/inventory.o: inventory.c inventory.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/libscreen.o: libscreen.c libscreen.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/link.o: link.c link.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 
-
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
-$(OBJDIR)/set_test.o: set_test.c set.h types.h set_test.h test.h
+$(OBJDIR)/set_test.o: set_test.c set_test.h set.h \
+  types.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/character_test.o: character_test.c character.h types.h character_test.h test.h
+$(OBJDIR)/character_test.o: character_test.c character_test.h \
+  test.h character.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/space_test.o: space_test.c space.h types.h space_test.h test.h
+$(OBJDIR)/space_test.o: space_test.c space_test.h space.h \
+  types.h set.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/inventory_test.o: inventory_test.c inventory.h set.h types.h inventory_test.h test.h
+$(OBJDIR)/inventory_test.o: inventory_test.c inventory_test.h \
+  set.h types.h inventory.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/link_test.o: link_test.c link_test.h types.h link.h test.h
+$(OBJDIR)/link_test.o: link_test.c link_test.h link.h \
+  types.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/object_test.o: $(SRCDIR)/object_test.c $(INCDIR)/object_test.h $(INCDIR)/types.h $(INCDIR)/link.h $(INCDIR)/test.h
+$(OBJDIR)/object_test.o: object_test.c object_test.h types.h \
+  test.h object.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player_test.o: $(SRCDIR)/player_test.c $(INCDIR)/player_test.h $(INCDIR)/player.h $(INCDIR)/set.h $(INCDIR)/types.h $(INCDIR)/inventory.h $(INCDIR)/test.h  $(INCDIR)/space.h $(INCDIR)/character.h
+$(OBJDIR)/player_test.o: player_test.c player_test.h \
+  inventory.h types.h set.h test.h \
+  player.h character.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 ###################################################### TEST EXECUTABLES ######################################################
 #Set test related 
