@@ -14,7 +14,7 @@
 #include "types.h"
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 14       /*!< Number of commands that are possible*/
+#define N_CMD 15       /*!< Number of commands that are possible*/
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
@@ -45,7 +45,8 @@ typedef enum
     ABANDON,     /*!<Assigs 9 to the keyword "ABANDON", which will be used in command-related functions*/
     SAVE,        /*!<Assigs 10 to the keyword "SAVE", which will be used in command-related functions*/
     LOAD,        /*!<Assigs 11 to the keyword "LOAD", which will be used in command-related functions*/
-    TEAM         /*!<Assigs 12 to the keyword "TEAM", which will be used in command-related functions*/
+    TEAM,         /*!<Assigs 12 to the keyword "TEAM", which will be used in command-related functions*/
+    USE         /*!<Assigs 13 to the keyword "USE", which will be used in command-related functions*/
 } CommandCode;
 
 /**
@@ -125,6 +126,25 @@ Status command_set_argument(Command *command, char *arg);
  */
 char *command_get_argument(Command *command);
 
+/**
+ * @brief Gets the second argument of a command.
+ * @author Araceli Gutiérrez
+ *
+ * @param command Pointer to the Command structure.
+ * @return char* The second argument of the command, or NO_ARG if the command is NULL.
+ */
+char *command_get_argument2(Command *command);
+
+
+/**
+ * @brief Sets the second argument (optional) for a command.
+ * @author Araceli Gutiérrez
+ *
+ * @param command Pointer to the Command structure.
+ * @param argument_desc The description of the second argument to be set.
+ * @return Status OK if the argument is set successfully, ERROR if the command is NULL.
+ */
+Status command_set_argument2(Command *command, char *argument_desc);
 
 /**
  * @brief sets either the last command was successful or not.
