@@ -100,22 +100,27 @@ Status game_create_from_file(Game **game, char *filename)
 
   if (gameReader_load_spaces((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load spaces");
     return ERROR;
   }
   if (gameReader_load_objects((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load objects");
     return ERROR;
   }
   if(gameReader_load_players((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load players");
     return ERROR;
   }
   if(gameReader_load_characters((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load characters");
     return ERROR;
   }
   if(gameReader_load_links((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load links");
     return ERROR;
   }
   

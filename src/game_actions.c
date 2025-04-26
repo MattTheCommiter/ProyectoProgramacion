@@ -117,6 +117,14 @@ void game_actions_recruit(Game *game, char *arg);
  */
 void game_actions_abandon(Game *game, char *arg);
 
+/**
+ * @brief Command that allows the player to change the turn to the next player
+ * @author Matteo Artunedo
+ * @date 23-04-2025
+ * @param game pointer to the game
+ */
+void game_actions_turn(Game *game);
+
 /*Game actions implementation*/
 
 Status game_actions_update(Game *game, Command *command)
@@ -162,6 +170,9 @@ Status game_actions_update(Game *game, Command *command)
     break;
   case ABANDON:
     game_actions_abandon(game, command_get_argument(command));
+    break;
+  case TURN:
+    game_actions_turn(game);
     break;
   default:
     break;
@@ -522,4 +533,10 @@ void game_actions_abandon(Game *game, char *arg){
 
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
+}
+
+void game_actions_turn(Game *game){
+  if(!game) return;
+
+  game_next_turn(game);
 }

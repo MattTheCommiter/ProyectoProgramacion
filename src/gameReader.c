@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#define DEBUG
 
 Status gameReader_load_spaces(Game *game, char *filename)
 {
@@ -31,15 +31,18 @@ Status gameReader_load_spaces(Game *game, char *filename)
 
   if (!filename || !game)
   {
+    printf("No game or filename provided");
     return ERROR;
   }
 
   if (!(read_gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
   {
+    printf("Could not allocate memory");
     return ERROR;
   }
   if (!(read_gdesc[0] = (char *)calloc(N_LINES_IN_GDESC * (N_ROWS_IN_GDESC + 1), sizeof(char))))
   {
+    printf("Could not allocate memory");
     free(read_gdesc);
     return ERROR;
   }
@@ -53,6 +56,7 @@ Status gameReader_load_spaces(Game *game, char *filename)
   file = fopen(filename, "r");
   if (file == NULL)
   {
+    printf("Could not open file");
     return ERROR;
   }
   /**
@@ -126,7 +130,7 @@ Status gameReader_load_spaces(Game *game, char *filename)
       }
 
 #ifdef DEBUG
-      printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
+      printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name);
 #endif
       /*
        * It creates the space with the data that has been read
@@ -140,6 +144,7 @@ Status gameReader_load_spaces(Game *game, char *filename)
       }
       else
       {
+        printf("Space not created");
         fclose(file);
         free(read_gdesc[0]);
         free(read_gdesc);

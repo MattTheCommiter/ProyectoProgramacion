@@ -172,12 +172,12 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
     }
 
     /*We determine whether the player has chosen to exit the game or not*/
-    if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) != EXIT){
+    /*if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) != EXIT){*/
       /*If there are multiple players or the last player standing dies, we print the game again and introduce a timer for the player to be able to view the newly printed graphic engine, which shows the effects of their action (updated location, health bar, backpack, etc)*/
-      if(game_get_n_players(game) > 1 || player_get_health(game_get_current_player(game)) == 0){
+      /*if(game_get_n_players(game) > 1 || player_get_health(game_get_current_player(game)) == 0){
         graphic_engine_paint_game(gengine, game);
         sleep(TIME_BETWEEN_TURNS);
-      }
+      }*/
 
       /*We check whether the player has died as a result of his last action*/
       if(player_get_health(game_get_current_player(game)) == 0){
@@ -190,8 +190,7 @@ void game_loop_run(Game *game, Graphic_engine *gengine, FILE *log_file){
           game_set_finished(game, TRUE);
         }
       }
-      game_next_turn(game);
-    }
+    /*}*/
     
   }
   while ((command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) != EXIT) && (game_get_finished(game) == FALSE));
