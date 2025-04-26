@@ -186,7 +186,6 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     game_actions_move(*game, command_get_argument(command));
     break;
 
-    break;
   case TAKE:
     game_actions_take(*game, command_get_argument(command));
     break;

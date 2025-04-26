@@ -1,0 +1,32 @@
+#s:11|FrontalPatio|         |         |         |         |         |
+#s:12|Corridor1|         |         |         |         |         |
+#s:13|Corridor2|         |         |         |         |         |
+#s:14|LivingRoom|         |         |         |         |         |
+#s:15|Backyard|         |         |         |         |         |
+#s:21|Pantry|         |         |         |         |         |
+#s:22|Hall|         |         |         |         |         |
+#s:23|Corridor3|         |         |         |         |         |
+#s:24|Bedroom|         |         |         |         |         |
+#s:25|Bathroom|         |         |         |         |         |
+#s:40|Extra|         |         |         |         |         |
+
+#o:1|Batteries|11|Well, just a seed|
+#o:2|Lantern|11|Well, just a grain|
+#o:3|Generator|15|Well, just a crumb|
+
+#p:1|Alice| A |11|5|3|
+#p:2|Bob| B |11|5|3|
+
+#c:1|EvilToy|/\oo/\|\/xx\/|40|10|0|You shall not pass!|
+#c:2|Dinosaur|/\oo/\|\/xx\/|23|5|0|Help me!|
+
+#l:1112|EntryToCorridor1|11|12|1|1|
+#l:1211|Corridor1ToEntry|12|11|2|1|
+#l:1213|Corridor1ToCorridor2|12|13|1|1|
+#l:1312|Corridor2ToCorridor1|13|12|2|1|
+#l:1314|Corridor2ToLivingRoom|13|14|3|1|
+#l:1413|LivingRoomToCorridor2|14|13|4|1|
+#l:1415|LivingRoomToBackyard|14|15|1|1|
+#l:1514|BackyardtoLivingRoom|15|14|2|1|
+#l:1421|LivingRoomToHall|14|21|5|0|
+#l:2114|LivingRoomToHall|21|14|6|1|
