@@ -220,7 +220,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     game_actions_open(*game, command_get_argument(command));
     break;
   case TURN:
-    game_actions_turn(game);
+    game_actions_turn(*game);
     break;
   default:
     break;
