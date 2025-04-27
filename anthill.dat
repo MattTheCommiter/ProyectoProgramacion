@@ -9,15 +9,14 @@
 #s:127|Corridor7|0|
 #s:14|Hole|0|
 
-#o:1|Seed|11|Well, just a seed|1|-1|-1|-1|
-#o:2|Grain|11|Well, just a grain|1|-1|-1|-1|
-#o:3|Crumb|122|Well, just a crumb|1|-1|-1|-1|
-#o:4|Leaf|11|Well, just a leaf|1|-1|-1|-1|
+#o:1|Seed|11|Well, just a seed|1|0|-1|-1|
+#o:2|Grain|11|Well, just a grain|1|0|-1|-1|
+#o:3|Crumb|122|Well, just a crumb|1|0|-1|-1|
+#o:4|Potion|11|Heals you|1|5|-1|-1|
 
 
 #p:1|ant|mO^|11|5|3|
-#p:2|worm|ooO|11|5|3|
-#p:3|beatle|^O^|11|5|3|
+
 
 
 #c:2|spider|/\oo/\|\/xx\/|121|5|0|I won't talk to you!|-1|

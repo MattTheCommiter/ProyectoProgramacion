@@ -704,6 +704,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
 
   if (game == NULL || object_name == NULL)
   {
+    printf("NO nombre de objeto");
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -712,6 +713,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   object = game_get_object_from_name(game, object_name);
   if (!object)
   {
+    printf("No objeto encontrado por el nombre");
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -719,6 +721,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   /*Check if the object can be used (health is not 0)*/
   if (object_get_health(object) == 0)
   {
+    printf("El objeto tiene 0 de vida");
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -729,6 +732,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
     character = game_get_character_from_name(game, character_name);
     if (character == NULL || character_get_friendly(character) == FALSE)
     {
+      printf("El character da error");
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
@@ -743,12 +747,14 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
     /*If there is no character's name passed, update player's health*/
     if (player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) + object_get_health(object)) == ERROR)
     {
+      printf("error en la suma de vida");
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
   }
 
   /*Remove the object from the game after use*/
+  player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object));
   if (!game_remove_object(game, object))
   {
     printf("Failed to remove object: %s\n", object_name); /*debug print*/
