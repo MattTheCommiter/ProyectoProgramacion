@@ -734,7 +734,7 @@ void game_actions_load(Game **game, char *arg){
 
 void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
   Player *teammate = NULL;
-  int i, turn, current_turn;
+  int i, turn = 0, current_turn; /*initialized turn to remove warnings - theoretically if there are no player in the game this could create issues in this function, but come on*/
   Bool show;
   char previous_message[MAX_MESSAGE], message[MAX_MESSAGE];
   Bool acceptance;

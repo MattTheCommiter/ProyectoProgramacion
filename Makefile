@@ -1,4 +1,4 @@
-CFLAGS=-Wno-newline-eof -Wno-strict-prototypes -Wall -ansi -pedantic -g
+CFLAGS=-Wall -ansi -pedantic -g
 SRCDIR=./src
 OBJDIR=./obj
 LIBDIR=./lib
