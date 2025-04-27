@@ -12,12 +12,12 @@
 #o:1|Seed|11|Well, just a seed|1|0|-1|-1|
 #o:2|Grain|11|Well, just a grain|1|0|-1|-1|
 #o:3|Crumb|122|Well, just a crumb|1|0|-1|-1|
-#o:4|Leaf|11|Well, just a leaf|1|0|-1|-1|
+#o:4|Potion|11|Heals you|1|5|-1|-1|
+
 
 
 #p:1|ant|mO^|11|5|3|
-#p:2|worm|ooO|11|5|3|
-#p:3|beatle|^O^|11|5|3|
+
 
 
 #c:2|spider|/\oo/\|\/xx\/|121|5|0|-1|I won't talk to you!|
@@ -44,6 +44,3 @@
 #l:17|Hall4toHall3|124|123|1|1|
 #l:18|Hall4toPantry|124|13|2|1|
 #l:19|PantrytoHall4|13|124|1|1|
-
-
-

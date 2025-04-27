@@ -696,4 +696,32 @@ Bool game_get_show_message_in_pos(Game *game, int pos);
  */
 Status game_set_show_message_in_pos(Game *game, Bool bool, int pos);
 
+/**
+ * @brief Finds an object from the game by its name.
+ * @author Araceli Gutiérrez
+ *
+ * This function searches through the array of objects in the game and returns
+ * the object that matches the given name. If no object with the specified name
+ * is found, the function returns NULL.
+ *
+ * @param game Pointer to the Game structure.
+ * @param object_name The name of the object to search for.
+ * @return Pointer to the Object if found, otherwise NULL.
+ */
+Object* game_get_object_from_name(Game *game, char *object_name);
+
+/**
+ * @brief Removes an object from the game.
+ * @author Araceli Gutiérrez
+ *
+ * This function searches for the specified object in the game's object array
+ * and removes it by replacing it with the last object in the array.
+ * The number of objects in the game is then decreased.
+ *
+ * @param game Pointer to the Game structure.
+ * @param object Pointer to the Object to be removed.
+ * @return Bool indicating whether the removal was successful (TRUE) or not (FALSE).
+ */
+Bool game_remove_object(Game *game, Object *object);
+
 #endif
