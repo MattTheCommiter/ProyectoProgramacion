@@ -152,8 +152,6 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
     last_cmd = command_create();
     /*We paint the game for the player whose turn it currently is*/
     graphic_engine_paint_game(gengine, *game);
-    /*reset if we want the game to show the message*/
-    game_set_show_message(*game, FALSE);
     /*We read the player's command and add it to their command history*/
     command_get_user_input(last_cmd);
     game_actions_update(game, last_cmd, gengine);

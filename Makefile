@@ -31,7 +31,7 @@ juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
 $(OBJDIR)/game.o: game.c game.h command.h types.h space.h set.h character.h \
-  player.h inventroy.h object.h gameManagement.h link.h 
+  player.h inventory.h object.h gameManagement.h link.h 
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/game_loop.o: src/game_loop.c include/graphic_engine.h include/game.h \
@@ -56,7 +56,7 @@ $(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h \
-  command.h space.h set.h player.h object.h link.h \
+  command.h space.h set.h player.h object.h link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/object.o: object.c object.h types.h

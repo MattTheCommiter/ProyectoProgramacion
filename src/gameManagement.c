@@ -314,10 +314,11 @@ Status gameManagement_load_objects(Game *game, char *filename)
         space_add_objectId(game_get_space(game, spaceId), id);
         game_add_object(game, object);
       }
+      if(object == NULL) return ERROR;
     }
   }
 
-  if (ferror(file) || object == NULL)
+  if (ferror(file))
   {
     status = ERROR;
   }
@@ -459,8 +460,6 @@ Status gameManagement_load_characters(Game *game, char *filename)
       toks = strtok(NULL, "|\r\n");
       friendliness = atoi(toks);
       toks = strtok(NULL, "|\r");
-      strcpy(message, toks);
-      toks = strtok(NULL, "|\r");
       following = atol(toks);
 
       /*
@@ -468,7 +467,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
       */
 
 #ifdef DEBUG
-      printf("Leido: %ld|%s|%s|%ld|%d|%d|%s|%ld|\n", id, name, gdesc, spaceId, hp, friendliness, message, following);
+      printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, friendliness, following);
 #endif
 
       /*
@@ -483,9 +482,12 @@ Status gameManagement_load_characters(Game *game, char *filename)
         space_add_character(game_get_space(game, spaceId), id);
         character_set_location(character, spaceId);
         character_set_health(character, hp);
-        character_set_message(character, message);
         character_set_friendly(character, friendliness);
         character_set_following(character, following);
+        while((toks = strtok(NULL, "|\n\r"))){
+          strcpy(message, toks);
+          character_add_message(character, message);
+        }
         game_add_character(game, character);
       }
     }
@@ -663,7 +665,6 @@ Status gameManagement_save_players(Game *game, FILE *saving_file)
       fprintf(saving_file, "%ld|", player_get_backpack_object_id_at(player, j));
     }
     fprintf(saving_file, "\n");
-    fprintf(saving_file, "\n");
   }
 
   return OK;
@@ -698,7 +699,7 @@ Status gameManagement_save_spaces(Game *game, FILE *saving_file)
 }
 Status gameManagement_save_characters(Game *game, FILE *saving_file)
 {
-  int i;
+  int i,j;
   Character *character = NULL;
   if (!game || !saving_file)
     return ERROR;
@@ -706,7 +707,11 @@ Status gameManagement_save_characters(Game *game, FILE *saving_file)
   for (i = 0; i < game_get_n_characters(game); i++)
   {
     character = game_get_character_in_pos(game, i);
-    fprintf(saving_file, "#c:%ld|%s|%s|%s|%ld|%d|%d|%s|%ld|\n", character_get_id(character), character_get_name(character), character_get_gdesc(character), character_get_dead_gdesc(character), character_get_location(character), character_get_health(character), character_get_friendly(character), character_get_message(character), character_get_following(character));
+    fprintf(saving_file, "#c:%ld|%s|%s|%s|%ld|%d|%d|%ld|", character_get_id(character), character_get_name(character), character_get_gdesc(character), character_get_dead_gdesc(character), character_get_location(character), character_get_health(character), character_get_friendly(character), character_get_following(character));
+    for(j = 0; j < character_get_n_messages(character); j ++){
+      fprintf(saving_file, "%s|",character_get_message_in_pos(character, j));
+    }
+    fprintf(saving_file,"\n");
   }
 
   return OK;

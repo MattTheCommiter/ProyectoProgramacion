@@ -26,7 +26,7 @@ typedef struct _InterfaceData{
   Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
   char message[MAX_MESSAGE];      /*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
-  Bool show_message;                                    /*!<Stablishes if the message of the game must be shown*/
+  Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
 }InterfaceData;
 
 /**
@@ -741,6 +741,8 @@ InterfaceData *game_interface_data_create(){
 
   data->description[0] = ' ';
   data->message[0] = ' ';
+  data->description[1] = '\0';
+  data->message[1] = '\0';
   data->show_message = FALSE;
   return data;
 }
