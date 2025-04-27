@@ -20,15 +20,16 @@
  * @brief Private structure that saves the 3 last commands of a player and the messages and descriptions of object they chat with and inspect respectively
  *
  */
-typedef struct _InterfaceData
-{
-  Command *lastCmd;              /*!<Pointer to the last command that have been saved*/
-  Command *second_to_lastCmd;    /*!<Pointer to the second-to-last command that have been saved*/
-  Command *third_to_lastCmd;     /*!<Pointer to the third-to-last command that have been saved*/
-  char message[MAX_MESSAGE];     /*!<String that has the message of the character the player last talked to*/
-  char description[MAX_MESSAGE]; /*!<String that has the description of the object the player last inspected in the game*/
-  Bool show_message;             /*!<Stablishes if the message of the game must be shown*/
-} InterfaceData;
+
+typedef struct _InterfaceData{
+  Command *lastCmd;               /*!<Pointer to the last command that have been saved*/
+  Command *second_to_lastCmd;     /*!<Pointer to the second-to-last command that have been saved*/
+  Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
+  char message[MAX_MESSAGE];      /*!<String that has the message of the character the player last talked to*/
+  char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
+  Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
+}InterfaceData;
+
 
 /**
  * @brief Structure where all the game's main information is stored (players, objects, links, spaces...)
@@ -105,22 +106,27 @@ Status game_create_from_file(Game **game, char *filename)
 
   if (gameManagement_load_spaces((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load spaces");
     return ERROR;
   }
   if (gameManagement_load_objects((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load objects");
     return ERROR;
   }
   if (gameManagement_load_players((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load players");
     return ERROR;
   }
   if (gameManagement_load_characters((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load characters");
     return ERROR;
   }
   if (gameManagement_load_links((*game), filename) == ERROR)
   {
+    fprintf(stdout, "Could not load links");
     return ERROR;
   }
 
@@ -650,6 +656,27 @@ Status game_add_link(Game *game, Link *link)
   return OK;
 }
 
+Id game_get_link_id_at(Game *game, long position) {
+  long i = 0;
+
+  if (!game || position < 0) return NO_ID;
+
+  return link_get_id(game->links[i]);
+}
+
+
+Link *game_get_link(Game *game, Id id) {
+  int i = 0;
+  
+  if (!game || id == NO_ID) return NULL;
+
+  for (i = 0 ; i < game->n_links ; i++) {
+    if (link_get_id(game->links[i]) == id) return game->links[i];
+  }
+
+  return NULL;
+}
+
 Id game_get_connection(Game *game, Id current_space, Direction link_direction)
 {
   int i;
@@ -828,6 +855,8 @@ InterfaceData *game_interface_data_create()
 
   data->description[0] = ' ';
   data->message[0] = ' ';
+  data->description[1] = '\0';
+  data->message[1] = '\0';
   data->show_message = FALSE;
   return data;
 }

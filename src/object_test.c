@@ -258,7 +258,7 @@ void test1_object_get_health()
 
 void test2_object_get_health()
 {
-    PRINT_TEST_RESULT(object_get_health(NULL) == NO_ID);
+    PRINT_TEST_RESULT(object_get_health(NULL) == -1);
 }
 
 void test1_object_set_open()
@@ -326,7 +326,7 @@ void test2_object_set_movable()
 void test3_object_set_movable()
 {
     Object *o = object_create(1);
-    PRINT_TEST_RESULT(object_set_movable(o, 3) == ERROR); // Invalid Bool
+    PRINT_TEST_RESULT(object_set_movable(o, 3) == ERROR);
     object_destroy(o);
 }
 

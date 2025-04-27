@@ -14,7 +14,9 @@
 #include "types.h"
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 15       /*!< Number of commands that are possible*/
+
+#define N_CMD 17       /*!< Number of commands that are possible*/
+
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
@@ -32,21 +34,25 @@ typedef enum
  */
 typedef enum
 {
-    NO_CMD = -1, /*!<Assigs -1 to the keyword "NO_CMD", which will be used in command-related functions*/
-    UNKNOWN,     /*!<Assigs 0 to the keyword "UNKNOWN", which will be used in command-related functions*/
-    EXIT,        /*!<Assigs 1 to the keyword "EXIT", which will be used in command-related functions*/
-    MOVE,        /*!<Assigs 2 to the keyword "NEXT", which will be used in command-related functions*/
-    DROP,        /*!<Assigs 3 to the keyword "DROP", which will be used in command-related functions*/
-    TAKE,        /*!<Assigs 4 to the keyword "TAKE", which represents taking the an object*/
-    CHAT,        /*!<Assigs 5 to the keyword "CHAT", which will be used in command-related functions*/
-    ATTACK,      /*!<Assigs 6 to the keyword "ATTACK", which will be used in command-related functions*/
-    INSPECT,     /*!<Assigs 7 to the keyword "INSPECT", which will be used in command-related functions*/
-    RECRUIT,     /*!<Assigs 8 to the keyword "RECRUIT", which will be used in command-related functions*/
-    ABANDON,     /*!<Assigs 9 to the keyword "ABANDON", which will be used in command-related functions*/
-    SAVE,        /*!<Assigs 10 to the keyword "SAVE", which will be used in command-related functions*/
-    LOAD,        /*!<Assigs 11 to the keyword "LOAD", which will be used in command-related functions*/
-    TEAM,         /*!<Assigs 12 to the keyword "TEAM", which will be used in command-related functions*/
-    USE         /*!<Assigs 13 to the keyword "USE", which will be used in command-related functions*/
+
+    NO_CMD = -1, /*!<Assigns -1 to the keyword "NO_CMD", which will be used in command-related functions*/
+    UNKNOWN,     /*!<Assigns 0 to the keyword "UNKNOWN", which will be used in command-related functions*/
+    EXIT,        /*!<Assigns 1 to the keyword "EXIT", which will be used in command-related functions*/
+    MOVE,        /*!<Assigns 2 to the keyword "NEXT", which will be used in command-related functions*/
+    DROP,        /*!<Assigns 3 to the keyword "DROP", which will be used in command-related functions*/
+    TAKE,        /*!<Assigns 4 to the keyword "TAKE", which represents taking the an object*/
+    CHAT,        /*!<Assigns 5 to the keyword "CHAT", which will be used in command-related functions*/
+    ATTACK,      /*!<Assigns 6 to the keyword "ATTACK", which will be used in command-related functions*/
+    INSPECT,     /*!<Assigns 7 to the keyword "INSPECT", which will be used in command-related functions*/
+    RECRUIT,     /*!<Assigns 8 to the keyword "RECRUIT", which will be used in command-related functions*/
+    ABANDON,     /*!<Assigns 9 to the keyword "ABANDON", which will be used in command-related functions*/
+    SAVE,        /*!<Assigns 10 to the keyword "SAVE", which will be used in command-related functions*/
+    LOAD,        /*!<Assigns 11 to the keyword "LOAD", which will be used in command-related functions*/
+    TEAM,        /*!<Assigns 12 to the keyword "TEAM", which will be used in command-related functions*/
+    OPEN,        /*!<Assigns 13 to the keyword "OPEN", which will be used in command-related functions*/
+    USE,         /*!<Assigs 14 to the keyword "USE", which will be used in command-related functions*/
+    TURN         /*!<Assigns 15 to the keyword "TURN", which will be used to change the turns of the players*/
+
 } CommandCode;
 
 /**

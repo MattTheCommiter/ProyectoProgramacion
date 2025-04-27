@@ -21,7 +21,9 @@
 /**
  * @brief Array mapping command strings to their descriptions.
  */
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}, {"u", "Use"}};
+
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}, {"o", "Open"}, {"u", "Use"}, {"tu", "turn"}};
+
 
 /**
  * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
@@ -121,8 +123,9 @@ Status command_get_user_input(Command *command)
       }
     }
 
+
     /* first argument for all commands */
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == SAVE || cmd == LOAD || cmd == TEAM || cmd == USE)
+    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == SAVE || cmd == LOAD || cmd == TEAM ||cmd == OPEN || cmd == USE)
     {
       token = strtok(NULL, " \r\n");
       if (token)

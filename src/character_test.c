@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 42   /*!< Maximum number of tests */
+#define MAX_TESTS 48 /*!< Maximum number of tests */
 
 /**
  * @brief Main function for SPACE unit tests.
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     if (argc < 2)
     {
-        printf("Running all test for module Space:\n");
+        printf("Running all test for module Character:\n");
     }
     else
     {
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     if (all || test == 7)
         test01_character_set_friendly();
     if (all || test == 8)
-        test01_character_set_message();
+        test01_character_add_message();
     if (all || test == 9)
         test01_character_get_id();
     if (all || test == 10)
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     if (all || test == 13)
         test01_character_get_friendly();
     if (all || test == 14)
-        test01_character_get_message();
+        test01_character_get_message_in_pos();
     if (all || test == 15)
         test01_character_print();
 
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     if (all || test == 22)
         test02_character_set_friendly();
     if (all || test == 23)
-        test02_character_set_message();
+        test02_character_add_message();
     if (all || test == 24)
         test02_character_get_id();
     if (all || test == 25)
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     if (all || test == 28)
         test02_character_get_friendly();
     if (all || test == 29)
-        test02_character_get_message();
+        test02_character_get_message_in_pos();
     if (all || test == 30)
         test02_character_print();
     if (all || test == 31)
@@ -130,7 +130,18 @@ int main(int argc, char **argv)
         test01_character_get_dead_gdesc();
     if (all || test == 42)
         test02_character_get_dead_gdesc();
-
+    if (all || test == 43)
+        test02_character_get_n_messages();
+    if (all || test == 44)
+        test02_character_get_n_messages();
+    if (all || test == 45)
+        test01_character_get_message_turn();
+    if (all || test == 46)
+        test02_character_get_message_turn();
+    if (all || test == 47)
+        test01_character_chat();
+    if (all || test == 48)
+        test02_character_chat();
 
     PRINT_PASSED_PERCENTAGE;
 
@@ -192,10 +203,10 @@ void test01_character_set_friendly()
     character_destroy(c);
 }
 
-void test01_character_set_message()
+void test01_character_add_message()
 {
     Character *c = character_create(1);
-    PRINT_TEST_RESULT(character_set_message(c, "Hello") == OK && strcmp(character_get_message(c), "Hello") == 0);
+    PRINT_TEST_RESULT(character_add_message(c, "Hello") == OK);
     character_destroy(c);
 }
 
@@ -246,11 +257,12 @@ void test01_character_get_friendly()
     character_destroy(c);
 }
 
-void test01_character_get_message()
+void test01_character_get_message_in_pos()
 {
     Character *c = character_create(1);
-    character_set_message(c, "Attack!");
-    PRINT_TEST_RESULT(strcmp(character_get_message(c), "Attack!") == 0);
+    character_add_message(c, "Attack!");
+    character_add_message(c, "Hello!");
+    PRINT_TEST_RESULT(strcmp(character_get_message_in_pos(c, 1), "Hello!") == 0);
     character_destroy(c);
 }
 
@@ -260,7 +272,6 @@ void test01_character_print()
     PRINT_TEST_RESULT(character_print(c) == OK);
     character_destroy(c);
 }
-
 
 void test02_character_create()
 {
@@ -311,10 +322,10 @@ void test02_character_set_friendly()
     PRINT_TEST_RESULT(character_set_friendly(c, TRUE) == ERROR);
 }
 
-void test02_character_set_message()
+void test02_character_add_message()
 {
     Character *c = NULL;
-    PRINT_TEST_RESULT(character_set_message(c, "Hello") == ERROR);
+    PRINT_TEST_RESULT(character_add_message(c, "Hello") == ERROR);
 }
 
 void test02_character_get_id()
@@ -353,10 +364,10 @@ void test02_character_get_friendly()
     PRINT_TEST_RESULT(character_get_friendly(c) == FALSE);
 }
 
-void test02_character_get_message()
+void test02_character_get_message_in_pos()
 {
     Character *c = NULL;
-    PRINT_TEST_RESULT(character_get_message(c) == NULL);
+    PRINT_TEST_RESULT(character_get_message_in_pos(c, 0) == NULL);
 }
 
 void test02_character_print()
@@ -365,24 +376,28 @@ void test02_character_print()
     PRINT_TEST_RESULT(character_print(c) == ERROR);
 }
 
-void test01_character_set_following(){
+void test01_character_set_following()
+{
     Character *c = NULL;
     PRINT_TEST_RESULT(character_set_following(c, 3) == ERROR);
 }
 
-void test02_character_set_following(){
+void test02_character_set_following()
+{
     Character *c = NULL;
     c = character_create(10);
     PRINT_TEST_RESULT(character_set_following(c, 3) == OK);
     character_destroy(c);
 }
 
-void test01_character_get_following(){
+void test01_character_get_following()
+{
     Character *c = NULL;
     PRINT_TEST_RESULT(character_get_following(c) == NO_ID);
 }
 
-void test02_character_get_following(){
+void test02_character_get_following()
+{
     Character *c = NULL;
     c = character_create(10);
     character_set_following(c, 5);
@@ -390,27 +405,82 @@ void test02_character_get_following(){
     character_destroy(c);
 }
 
-void test01_character_set_location(){
+void test01_character_set_location()
+{
     Character *c = NULL;
     PRINT_TEST_RESULT(character_set_location(c, 3) == ERROR);
 }
 
-void test02_character_set_location(){
+void test02_character_set_location()
+{
     Character *c = NULL;
     c = character_create(10);
     PRINT_TEST_RESULT(character_set_location(c, 3) == OK);
     character_destroy(c);
 }
 
-void test01_character_get_location(){
+void test01_character_get_location()
+{
     Character *c = NULL;
     PRINT_TEST_RESULT(character_get_location(c) == NO_ID);
 }
 
-void test02_character_get_location(){
+void test02_character_get_location()
+{
     Character *c = NULL;
     c = character_create(10);
     character_set_location(c, 5);
     PRINT_TEST_RESULT(character_get_location(c) == 5);
     character_destroy(c);
+}
+
+void test01_character_get_n_messages()
+{
+    Character *character = NULL;
+    PRINT_TEST_RESULT(character_get_n_messages(character) == -1);
+}
+
+void test02_character_get_n_messages()
+{
+    Character *character = NULL;
+    character = character_create(10);
+    character_add_message(character, "hola");
+    character_add_message(character, "hello");
+    PRINT_TEST_RESULT(character_get_n_messages(character) == 2);
+    character_destroy(character);
+}
+
+void test01_character_get_message_turn()
+{
+    Character *character = NULL;
+    PRINT_TEST_RESULT(character_get_message_turn(character) == -1);
+}
+
+void test02_character_get_message_turn()
+{
+    Character *character = NULL;
+    character = character_create(10);
+    PRINT_TEST_RESULT(character_get_message_turn(character) == 0);
+    character_destroy(character);
+}
+
+void test01_character_chat()
+{
+    Character *character = NULL;
+    PRINT_TEST_RESULT(character_chat(character) == NULL);
+}
+
+/**
+ * @brief tests chatting with a valid and created character
+ * @pre a valid pointer to character
+ * @post char* the messages of the character
+ */
+void test02_character_chat()
+{
+    Character *character = NULL;
+    character = character_create(10);
+    character_add_message(character, "hola");
+    character_add_message(character, "hello");
+    PRINT_TEST_RESULT(strcmp(character_chat(character), "hola") == 0 && strcmp(character_chat(character), "hello") == 0 && strcmp(character_chat(character), "hola") == 0);
+    character_destroy(character);
 }
