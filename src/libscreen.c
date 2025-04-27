@@ -3,16 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+/*This line makes the compiler ignore all possible warnings that may arise with the flag -Wpedantic*/
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 /* Global variables */
-int ROWS=23;
-int COLUMNS=80;
+int ROWS=23;        /*!<Number of total rows in the game's screen*/
+int COLUMNS=80;     /*!<Number of total rows in the game's screen*/
 
-#define TOTAL_DATA (ROWS * COLUMNS) + 1
-#define BG_CHAR '~'
-#define FG_CHAR ' '
+#define TOTAL_DATA (ROWS * COLUMNS) + 1   /*!<Total */
+#define BG_CHAR '~' /*!<Character that we have decided will be equivalent to painting the background with a certain color*/
+#define FG_CHAR ' ' /*!<Character that we have decided will be equivalent to a determined color when printing the screen (foreground)*/
 #define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x))
 
 
@@ -44,6 +44,7 @@ void screen_init(int rows, int columns){
   __data = (char *) malloc(sizeof(char) * TOTAL_DATA);
 
   if (__data){
+    /*The memset function is used to fill memory (__data) with a determined value (BG_CHAR)*/
     memset(__data, (int) BG_CHAR, TOTAL_DATA); /*Fill the background*/
     *(__data + TOTAL_DATA - 1) = '\0';         /*NULL-terminated string*/
   }
@@ -66,15 +67,17 @@ void screen_paint(Frame_color color){
     /*It works fine if the terminal window has the right size*/
 
     puts("\033[2J"); /*Clear the terminal*/
+    /*We go through the __dat variable with pointer arythmetic, adding the number of columns in each iteration*/
     for (src=__data; src < (__data + TOTAL_DATA - 1); src+=COLUMNS){
       memcpy(dest, src, COLUMNS);
       /* printf("%s\n", dest); */
+      /*We print each character in the column individually*/
       for (i=0; i<COLUMNS; i++){
-	if (dest[i] == BG_CHAR){
-	  printf("%s%c\033[0m", frame_color_to_string(color), dest[i]); /* fg:blue(34);bg:blue(44) */
-	}else{
-	  printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
-	}
+        if (dest[i] == BG_CHAR){
+          printf("%s%c\033[0m", frame_color_to_string(color), dest[i]); /* fg:blue(34);bg:blue(44) */
+        }else{
+          printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
+        }
       }
       printf("\n");
     }
