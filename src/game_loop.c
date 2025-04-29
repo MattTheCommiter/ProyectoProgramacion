@@ -130,7 +130,7 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
     game_destroy((*game));
     return 1;
   }
-
+  game_set_current_cinematic(*game, INTRODUCTION);
   return 0;
 }
 

@@ -53,6 +53,9 @@ struct _Game
   Bool lights_on;                                       /*!<Boolean that determines if the lights in the house that appears in the game are turned on or off*/
   Cinematics current_cinematic;                         /*!<Value that describes if a cinematic has to be played currently*/
   Cinematics_text *cinematics_text[N_CINEMATICS];       /*!<Array of pointers to the structures that contain the text of each cinematic*/
+  Mission_Code current_mission;                         /*!<The current mission at the game*/
+  Mission *missions[MAX_MISSIONS];                      /*!<The array of missions in the game*/
+  int n_missions;                                       /*!<The number of missions in the game*/
 };
 /**
    Private functions
@@ -101,11 +104,14 @@ Status game_create(Game **game)
   for(i=0;i<N_CINEMATICS;i++){
     (*game)->cinematics_text[i] = cinematics_text_create();
   }
+  (*game)->current_mission = NO_MISSION;
+  (*game)->n_missions = 0;
   return OK;
 }
 
 Status game_create_from_file(Game **game, char *filename)
 {
+
   if (game_create(game) == ERROR)
   {
     return ERROR;
@@ -141,7 +147,11 @@ Status game_create_from_file(Game **game, char *filename)
     fprintf(stdout, "Could not load cinematics");
     return ERROR;
   }
-  
+  if(gameManagement_load_missions((*game), filename) == ERROR)
+  {
+    fprintf(stdout, "Could not load cinematics");
+    return ERROR;
+  }
 
   return OK;
 }
@@ -185,6 +195,10 @@ Status game_destroy(Game *game)
   }
   for(i=0;i<N_CINEMATICS;i++){
     cinematics_text_destroy(game->cinematics_text[i]);
+  }
+
+  for(i = 0; i < game->n_missions ; i++){
+    mission_destroy(game->missions[i]);
   }
   free(game);
 
@@ -1022,4 +1036,43 @@ Cinematics game_get_current_cinematic(Game *game){
 Cinematics_text *game_get_current_cinematic_text(Game *game){
   if(!game) return NULL;
   return game->cinematics_text[game->current_cinematic];
+}
+
+Cinematics_text *game_get_cinematic_text_in_pos(Game *game, int pos){
+  if(!game || pos < 0 || pos >= N_CINEMATICS) return NULL;
+  return game->cinematics_text[pos];
+}
+
+int game_get_n_missions(Game *game){
+  if(!game) return ERROR;
+  return game->n_missions;
+}
+
+Mission *game_get_mission_in_pos(Game *game, int pos){
+  if(!game || pos < 0 || pos >= game->n_missions) return NULL;
+  return game->missions[pos];
+}
+
+Mission_Code game_get_current_mission_code(Game *game){
+  if(!game) return NO_MISSION;
+  return game->current_mission;
+}
+
+Mission *game_get_current_mission(Game *game){
+  if(!game) return ERROR;
+  if(game->current_mission == NO_MISSION) return NULL;
+  return game->missions[game->current_mission];
+}
+
+Status game_set_current_mission(Game *game, Mission_Code mission){
+  if(!game || mission >= game->n_missions) return ERROR;
+  game->current_mission = mission;
+  return OK;
+}
+
+Status game_add_mission(Game *game, Mission *mission){
+  if(!game || !mission || game->n_missions >= MAX_MISSIONS) return ERROR;
+  game->missions[game->n_missions] = mission;
+  game->n_missions++;
+  return OK;
 }

@@ -19,6 +19,7 @@
 #include "character.h"
 #include "link.h"
 #include "cinematics.h"
+#include "mission.h"
 
 #define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
 #define MAX_OBJECTS 10              /*!<The maximum ammount of objects present at the game*/
@@ -26,6 +27,7 @@
 #define MAX_LINKS (MAX_SPACES * 4)  /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
 #define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
+#define MAX_MISSIONS 5              /*!<The maximum ammount of missions that can be in the game*/
 
 /**
  * @brief describes whether we want to access to the last, the second to last or the third to last command
@@ -788,6 +790,7 @@ Status game_set_current_cinematic(Game *game, Cinematics current_cinematic);
  */
 Cinematics game_get_current_cinematic(Game *game);
 
+
 /**
  * @brief Gets a pointer to the Cinematics_text structure which stores the text of the current cinematic
  * @author Matteo Artunedo
@@ -795,4 +798,65 @@ Cinematics game_get_current_cinematic(Game *game);
  * @return pointer to the structure that stores the cinematic's dialogues
  */
 Cinematics_text *game_get_current_cinematic_text(Game *game);
+
+/**
+ * @brief gets the cinematicc text in the position wanted of the array in game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the cinematic wanted
+ * @return Cinematics_text* the cinematic text selectioned
+ */
+Cinematics_text *game_get_cinematic_text_in_pos(Game *game, int pos);
+
+/**
+ * @brief gets the number of missions in the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return int the number of missions in the game
+ */
+int game_get_n_missions(Game *game);
+
+/**
+ * @brief Gets the mission in position pos of the array of missions in game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the mission to look for
+ * @return Mission* a pointer to the mission
+ */
+Mission *game_get_mission_in_pos(Game *game, int pos);
+
+
+/**
+ * @brief gets the current mission code of the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Mission_Code the code of the current mission
+ */
+Mission_Code game_get_current_mission_code(Game *game);
+
+/**
+ * @brief gets the current mission of the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Mission* the current mission playing
+ */
+Mission *game_get_current_mission(Game *game);
+
+/**
+ * @brief sets the current mission of the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param mission the mission to be set
+ * @return Status OK or ERROR
+ */
+Status game_set_current_mission(Game *game, Mission_Code mission);
+
+/**
+ * @brief adds a new mission in the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param mission a pointer to the new mission
+ * @return Status OK or ERROR
+ */
+Status game_add_mission(Game *game, Mission *mission);
 #endif
