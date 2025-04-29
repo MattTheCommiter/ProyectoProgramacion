@@ -1,0 +1,43 @@
+#o:1|Seed|11|Well, just a seed|1|0|-1|-1|
+#o:2|Grain|11|Well, just a grain|1|0|-1|-1|
+#o:3|Crumb|122|Well, just a crumb|1|0|-1|-1|
+#o:4|Leaf|11|Well, just a leaf|1|0|-1|-1|
+#p:1|ant|mO^|11|5|3|1|
+#p:2|worm|ooO|11|5|3|2|
+#p:3|beatle|^O^|11|5|3|3|
+#t:0
+#s:11| Entry|1|   -     |\ \_ _ _ |\   mo'\_|\ @  _   | \__/ \__|
+#s:121|Corridor1|0|   ___  _|-/   \_/ |     o o |mo'_ OoBo|_ _ /^\_`|
+#s:122|Corridor2|0|   _v_v_ |_/```--_ |   o  oo |mo" _ Oo |(--/ \--)|
+#s:123|Corridor3|0|    V    |  \(")/  |  _(.)_  |o/(_-_)\o|o o\_/o o|
+#s:124|Corridor4|0|         |         |         |         |         |
+#s:13|Pantry|0|         |         |         |         |         |
+#s:125|Corridor5|0|         |         |         |         |         |
+#s:126|Corridor6|0|         |         |         |         |         |
+#s:127|Corridor7|0|         |         |         |         |         |
+#s:14|Hole|0|         |         |         |         |         |
+#c:2|spider|/\oo/\|\/xx\/|121|5|0|-1|I won't talk to you!|
+#c:3|ant friend|   ^0m|   x__|122|5|1|-1|Hey ant friend!|
+#c:4|mystery bug|   *zp|   x__|123|5|1|-1|This place is beautiful!|
+#l:1|Entry1|11|121|2|1|
+#l:2|Entry2|121|11|1|1|
+#l:3|Hall1toHall2|121|122|2|1|
+#l:4|Hall2toHall1|122|121|1|1|
+#l:5|Hall2toHall5|122|125|3|1|
+#l:6|Hall5toHall2|125|122|4|1|
+#l:7|Hall5toHall6|125|126|3|1|
+#l:8|Hall6toHall5|126|125|4|1|
+#l:9|Hall6toHall7|126|127|3|1|
+#l:10|Hall7toHall6|127|126|4|1|
+#l:11|Hall7toHole|127|14|3|1|
+#l:12|HoletoHall7|14|127|4|1|
+#l:13|HoletoPantry|14|13|2|1|
+#l:14|Hall2toHall3|122|123|2|1|
+#l:15|Hall3toHall2|123|122|1|1|
+#l:16|Hall3toHall4|123|124|2|0|
+#l:17|Hall4toHall3|124|123|1|1|
+#l:18|Hall4toPantry|124|13|2|1|
+#l:19|PantrytoHall4|13|124|1|1|
+#i:0|Save/save.txt/OK|No command/OK|No command/OK| | |0|
+#i:1|No command/OK|No command/OK|No command/OK| | |0|
+#i:2|No command/OK|No command/OK|No command/OK| | |0|

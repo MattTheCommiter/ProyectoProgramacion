@@ -612,7 +612,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
 
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, "%s (%s) location:%d health: %d following: %ld", character_gdesc, character_name, (int)character_loc, character_hp, character_following);
+      sprintf(str, "%s (%s) location:%d health: %d following: %ld", character_gdesc, character_name, (int)character_loc, character_hp >= 0? character_hp:0, character_following);
     }else{
       sprintf(str, "%s (?)", character_gdesc);
     }

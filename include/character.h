@@ -13,8 +13,9 @@
 
 #include "types.h"
 
-#define GDESCTAM 7    /*!<Maximum size of the graphic description*/
-#define MAXHEALTH 100 /*!<Maximum health a character can have*/
+#define GDESCTAM 7          /*!<Maximum size of the graphic description*/
+#define MAXHEALTH 100       /*!<Maximum health a character can have*/
+#define MAX_MESSAGES 15    /*!<Maximum number of messages a character can say*/
 
 /**
  * @brief Defines a new type for the Character structure.
@@ -97,13 +98,13 @@ Status character_set_health(Character *c, int hp);
 Status character_set_friendly(Character *c, Bool behave);
 
 /**
- * @brief Sets the message of the character
+ * @brief Adds a message to the character
  * @author Alvaro Inigo
  * @param c a pointer to the character
  * @param message the new message, a pointer to char
  * @return Status Ok if everything went fine or ERROR
  */
-Status character_set_message(Character *c, char *message);
+Status character_add_message(Character *c, char *message);
 
 /**
  * @brief gets the id of the character
@@ -155,12 +156,13 @@ int character_get_health(Character *c);
 Bool character_get_friendly(Character *c);
 
 /**
- * @brief Gets the message of the character
+ * @brief Gets the message of the character in the position nedeed
  * @author Alvaro Inigo
  * @param c a pointer to character
- * @return char* the message of the character.
+ * @param pos the position of the message
+ * @return char* the message of the character int position pos.
  */
-char *character_get_message(Character *c);
+char *character_get_message_in_pos(Character *c, int pos);
 
 /**
  * @brief Prints the character through screen
@@ -207,4 +209,30 @@ Status character_set_location(Character *c, Id location_id);
  * @return Id of the character's location
  */
 Id character_get_location(Character *c);
+
+/**
+ * @brief gets the number of messages of a character
+ * @author Alvaro Inigo
+ * @param character a pointer to the character
+ * @return int the number of messages the character has
+ */
+int character_get_n_messages(Character *character);
+
+
+/**
+ * @brief gets the message turn of the character
+ * @author Alvaro Inigo
+ * @param character a pointer to the character
+ * @return int -1 if error or the turn of the next message to say
+ */
+int character_get_message_turn(Character *character);
+
+/**
+ * @brief returns the message of the character and sets the turn to the next one
+ * @author Alvaro Inigo
+ * @param character a pointer to the character
+ * @return char* the message to say
+ */
+
+char *character_chat(Character *character);
 #endif

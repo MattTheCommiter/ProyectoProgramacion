@@ -1,24 +1,49 @@
-#s:11|FrontalPatio|0|
-#s:12|Corridor1|0|
-#s:13|Corridor2|0|
-#s:14|LivingRoom|0|
-#s:15|Backyard|0|
-#s:21|Pantry|0|
-#s:22|Hall|0|
-#s:23|Corridor3|0|
-#s:24|Bedroom|0|
-#s:25|Bathroom|0|
-#s:40|Extra|0|
 
-#o:1|Batteries|11|Well, just a seed|1|-1|-1|-1|
-#o:2|Lantern|11|Well, just a grain|1|-1|-1|-1|
-#o:3|Generator|15|Well, just a crumb|1|-1|-1|-1|
+@@@@@ General Spaces at the game@@@@@
 
-#p:1|Alice| A |11|5|3|
-#p:2|Bob| B |11|5|3|
+#s:11|FrontalPatio|0|         |         |         |         |         |
+#s:12|Corridor1|0|         |         |         |         |         |
+#s:13|Corridor2|0|         |         |         |         |         |
+#s:14|LivingRoom|0|         |         |         |         |         |
+#s:15|Backyard|0|         |         |         |         |         |
+#s:16|storage room|0|         |         |         |         |         |
+#s:21|Hall1|0|         |         |         |         |         |
+#s:22|Hall2|0|         |         |         |         |         |
+#s:23|Corridor3|0|         |         |         |         |         |
+#s:24|Bedroom1|0|         |         |         |         |         |
+#s:25|Bathroom|0|         |         |         |         |         |
+#s:40|Extra|0|         |         |         |         |         |
 
-#c:1|EvilToy|/\oo/\|\/xx\/|40|10|0|You shall not pass!|
-#c:2|Dinosaur|/\oo/\|\/xx\/|23|5|0|Help me!|
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+@@@@@ General Objects at the game @@@@@
+
+#o:1|Batteries|-1|Small batteries, could power up a lantern|1|0|-1|-1|
+#o:2|Lantern|-1|A lantern that can light up a room|1|0|-1|-1|
+#o:3|Old Generator|15|This generator seems old, but could work if repaired|1|0|-1|-1|
+#o:4|rusty wrench|16|a rusty but useful tool that could repair something|1|0|-1|-1|
+#o:5|rusty tool box|16|a rusty box with tools inside|0|0|-1|-1|
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+@@@@@ Players at the game @@@@@
+
+#p:1|Alice| A |11|5|3|Just like the old times!|Bob... stop crying|Bob, What could grandma have up there?|Why am I so pretty, bob?|
+#p:2|Bob| B |11|5|3|Alice... Im scared...|Why did I come to help you...|Damn, this house is scary|
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+@@@@@ General Characters present at the game @@@@@
+
+#c:1|EvilToy|/\oo/\|\/xx\/|40|10|0|You shall not pass!|-1|
+#c:2|Dinosaur|/\oo/\|\/xx\/|23|5|0|Help me!|-1|
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+@@@@@ General links at the game @@@@@
 
 #l:1112|EntryToCorridor1|11|12|1|1|
 #l:1211|Corridor1ToEntry|12|11|2|1|
@@ -28,12 +53,57 @@
 #l:1413|LivingRoomToCorridor2|14|13|4|1|
 #l:1415|LivingRoomToBackyard|14|15|1|1|
 #l:1514|BackyardtoLivingRoom|15|14|2|1|
+#l:1516|BackyardtoStorage|15|16|4|1|
+#l:1615|StoragetoBackyard|16|15|3|1|
 #l:1421|LivingRoomToHall|14|21|5|0|
 #l:2114|LivingRoomToHall|21|14|6|1|
+#l:2114|LivingRoomToHall|21|14|6|0|
 
+@@@@@ Text of the cinematics @@@@@
 #cin:1| Bob: this is very scary!
 #cin:1| Alice: calm down Bob, there's nothing to worry about
 #cin:1| Bob: if that were really the case then mum and dad wouldn't have told us this is a bad idea.
 #cin:1| Alice: you know how they are, always overreacting. All we have to do is find what grandma told us she left here.
 #cin:1| Bob: what if she didn't leave anything here? You know how sick she was in her last days...
 #cin:1| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+@@@@@ General missions at the game @@@@@
+
+#mi:1|Team with your brother|
+#mt:1|Alice, lets work together, shall we?|
+
+
+#mi:2|Turn on the lantern|Give the batteries to your sister|Look for a way to turn on the light of the house|Inspect the generator|
+#mt:2|Alice, its so dark, turn on the lantern please|Alice, you should turn on the lights of the house, im scared|
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+@@@@@ ALICE'S FLASHBACK @@@@@
+
+
+#o:101|Generator|16|A generator to light the house|1|0|-1|-1|
+#o:102|wrench|160|a useful weapon that could repair something|1|0|-1|-1|
+#o:103|tool box|16|a tool box with tools inside|0|0|-1|-1|
+
+
+#s:130|Corridor2|0|         |         |         |         |         |
+#s:140|LivingRoom|0|         |         |         |         |         |
+#s:150|Backyard|0|         |         |         |         |         |
+#s:160|storage room|0|         |         |         |         |         |
+
+
+#l:130140|Corridor2ToLivingRoom|130|140|3|1|
+#l:140130|LivingRoomToCorridor2|140|130|4|1|
+#l:140150|LivingRoomToBackyard|140|150|1|1|
+#l:150140|BackyardtoLivingRoom|150|140|2|1|
+#l:150160|LivingRoomToHall|150|160|4|1|
+#l:160150|LivingRoomToHall|150|160|3|1|
+
+#mi:101|Go to the storage room|Open(use) the tool box|Return to the backyard with the wrench|Turn the generator on|
+#mt:101|Hey Alice, come help me with the generator!|Just go grab the wrench from the storage room|You were fast! Now use it on the generator|voila! thank's Alice's|
+#c:3|Father|  F   |  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

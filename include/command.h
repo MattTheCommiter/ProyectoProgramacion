@@ -14,7 +14,9 @@
 #include "types.h"
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
-#define N_CMD 16       /*!< Number of commands that are possible*/
+
+#define N_CMD 17       /*!< Number of commands that are possible*/
+
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
@@ -32,6 +34,7 @@ typedef enum
  */
 typedef enum
 {
+
     NO_CMD = -1, /*!<Assigns -1 to the keyword "NO_CMD", which will be used in command-related functions*/
     UNKNOWN,     /*!<Assigns 0 to the keyword "UNKNOWN", which will be used in command-related functions*/
     EXIT,        /*!<Assigns 1 to the keyword "EXIT", which will be used in command-related functions*/
@@ -47,7 +50,9 @@ typedef enum
     LOAD,        /*!<Assigns 11 to the keyword "LOAD", which will be used in command-related functions*/
     TEAM,        /*!<Assigns 12 to the keyword "TEAM", which will be used in command-related functions*/
     OPEN,        /*!<Assigns 13 to the keyword "OPEN", which will be used in command-related functions*/
-    TURN         /*!<Assigns 14 to the keyword "TURN", which will be used to change the turns of the players*/
+    USE,         /*!<Assigs 14 to the keyword "USE", which will be used in command-related functions*/
+    TURN         /*!<Assigns 15 to the keyword "TURN", which will be used to change the turns of the players*/
+
 } CommandCode;
 
 /**
@@ -127,6 +132,25 @@ Status command_set_argument(Command *command, char *arg);
  */
 char *command_get_argument(Command *command);
 
+/**
+ * @brief Gets the second argument of a command.
+ * @author Araceli Gutiérrez
+ *
+ * @param command Pointer to the Command structure.
+ * @return char* The second argument of the command, or NO_ARG if the command is NULL.
+ */
+char *command_get_argument2(Command *command);
+
+
+/**
+ * @brief Sets the second argument (optional) for a command.
+ * @author Araceli Gutiérrez
+ *
+ * @param command Pointer to the Command structure.
+ * @param argument_desc The description of the second argument to be set.
+ * @return Status OK if the argument is set successfully, ERROR if the command is NULL.
+ */
+Status command_set_argument2(Command *command, char *argument_desc);
 
 /**
  * @brief sets either the last command was successful or not.

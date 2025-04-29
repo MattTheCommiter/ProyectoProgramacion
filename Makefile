@@ -56,7 +56,7 @@ $(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h \
-  command.h space.h set.h player.h object.h link.h 
+  command.h space.h set.h player.h object.h link.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/object.o: object.c object.h types.h

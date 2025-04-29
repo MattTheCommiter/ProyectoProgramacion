@@ -171,7 +171,7 @@ Id object_get_open(Object *object);
  * @date 15-04-25
  * @author Guilherme Povedano
  * @param object the object whose data is fetched
- * @return The object's health field, or 0 in case of error
+ * @return The object's health field, or -1 in case of error
 */
 int object_get_health(Object *object);
 

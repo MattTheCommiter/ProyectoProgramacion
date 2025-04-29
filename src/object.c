@@ -46,7 +46,7 @@ Object *object_create(Id id)
     newObject->name[0] = '\0';
     newObject->description[0] = '\0';
     newObject->movable = FALSE;
-    newObject->health = 0;
+    newObject->health = NO_HP;
     newObject->open = NO_ID;
     newObject->dependency = NO_ID;
 
@@ -213,7 +213,7 @@ Id object_get_open(Object *object) {
 }
 
 int object_get_health(Object *object) {
-    if (!object) return 0;
+    if (!object) return -1;
 
     return object->health;
 }

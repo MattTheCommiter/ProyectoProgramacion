@@ -76,7 +76,7 @@ void test01_character_set_friendly();
  * @pre Non NULL character, valid message
  * @post Character message is correctly updated
  */
-void test01_character_set_message();
+void test01_character_add_message();
 
 /**
  * @test Test getting character ID
@@ -125,7 +125,7 @@ void test01_character_get_friendly();
  * @pre Non NULL character with set message
  * @post Correct character message is returned
  */
-void test01_character_get_message();
+void test01_character_get_message_in_pos();
 
 /**
  * @test Test printing character
@@ -195,7 +195,7 @@ void test02_character_set_friendly();
  * @pre NULL character, valid message
  * @post ERROR returned
  */
-void test02_character_set_message();
+void test02_character_add_message();
 
 /**
  * @test Test getting character ID with NULL character
@@ -244,7 +244,7 @@ void test02_character_get_friendly();
  * @pre NULL character
  * @post NULL returned
  */
-void test02_character_get_message();
+void test02_character_get_message_in_pos();
 
 /**
  * @test Test printing NULL character
@@ -308,4 +308,49 @@ void test01_character_get_location();
  * @post Id '5' returned
  */
 void test02_character_get_location();
+
+/**
+ * @brief test getting the number of messsages of a NULL character
+ * @pre Null pointer to character
+ * @post int -1 returned
+ */
+void test01_character_get_n_messages();
+
+/**
+ * @brief test getting the number of messsages of a valid and created character
+ * @pre pointer to a created character with 2 messages
+ * @post int 2 returnes
+ */
+void test02_character_get_n_messages();
+
+
+/**
+ * @brief test getting a NULL pointer of character
+ * @pre a NULL pointer to the character
+ * @post int -1
+ */
+void test01_character_get_message_turn();
+
+
+/**
+ * @brief tests getting the message of a character created
+ * @pre a valid character
+ * @post int 0
+ */
+void test02_character_get_message_turn();
+
+
+/**
+ * @brief test chatting with a NULL character
+ * @pre NULL pointer to character
+ * @post char * NULL
+ */
+void test01_character_chat();
+
+/**
+ * @brief tests chatting with a valid and created character
+ * @pre a valid pointer to character
+ * @post char* the messages of the character
+ */
+void test02_character_chat();
 #endif
