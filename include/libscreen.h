@@ -10,6 +10,7 @@
 
 #ifndef LIBSCREEN_H
 #define LIBSCREEN_H
+#include "types.h"
 
 /**
  * @brief Definition of Area type for the _Area structure
@@ -46,12 +47,14 @@ void screen_destroy();
 
 /**
  * @brief It paints in the terminal the actual screen composition
- * @author Profesores PPROG
+ * @author Matteo Artunedo
  *
+ * @param color color that will be used for the background areas
+ * @param lights_on boolean value that describes if the lights in the game are turned on or off
  * This function should be called when some updates
  *  in the screen want to be shown.
  */
-void screen_paint(Frame_color color);
+void screen_paint(Frame_color color, Bool lights_on);
 
 /**
  * @brief It creates a new area inside a screen

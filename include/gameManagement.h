@@ -17,6 +17,7 @@
  #include "character.h"
  #include "object.h"
  #include "link.h"
+ #include "cinematics.h"
 
  
  /*declaration of public functions*/
@@ -76,10 +77,17 @@
   */
  Status gameManagement_load_links(Game *game, char *filename);
 
-
+ /**
+  * @brief Creates the cinematics given the data file from a specific format
+  * @author Matteo Artunedo
+  * @date 28-04-2025
+  * @param game a pointer to the game
+  * @param filename the name of the text file
+  * @return Status OK or ERROR
+  */
+ Status gameManagement_load_cinematics(Game *game, char *filename);
 
  Status gameManagement_save(Game *game, char *filename);
 
  Status gameManagement_load(Game **game, char *filename);
- 
  #endif

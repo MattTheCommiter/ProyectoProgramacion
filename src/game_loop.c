@@ -21,6 +21,7 @@
 #include "game.h"
 
 #define TIME_BETWEEN_TURNS 1  /*!< Ammount of seconds the game gives each player to visualize their action before changing the turn*/
+#define TIME_BETWEEN_CINEMATICS 4  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -141,6 +142,7 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
   char *cmd_arg = NULL;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   Status cmd_status;
+  int i;
 
   if (!gengine){
     return;
@@ -150,6 +152,20 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
   {
     /*We create a new command which will be added  in the command history of the player currently playing*/
     last_cmd = command_create();
+
+    /*We play the cinematic if it corresponds to do so*/
+    if(game_get_current_cinematic(*game) != NO_CINEMATIC){
+      game_set_show_message(*game, TRUE);
+      for(i=0;i<cinematics_get_n_lines(game_get_current_cinematic_text(*game));i++){
+        game_set_message(*game, cinematics_get_line(game_get_current_cinematic_text(*game), i));
+        graphic_engine_paint_game(gengine, *game);
+        sleep(TIME_BETWEEN_CINEMATICS);
+      }
+      game_set_current_cinematic(*game, NO_CINEMATIC);
+      game_set_show_message(*game, FALSE);
+    }
+
+
     /*We paint the game for the player whose turn it currently is*/
     graphic_engine_paint_game(gengine, *game);
     /*We read the player's command and add it to their command history*/

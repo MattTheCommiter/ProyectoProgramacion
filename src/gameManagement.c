@@ -581,6 +581,58 @@ Status gameManagement_load_links(Game *game, char *filename)
   return status;
 }
 
+Status gameManagement_load_cinematics(Game *game, char *filename)
+{
+  FILE *file = NULL;
+  Status status = OK;
+  char line[DIALOGUE_LINE_LENGTH] = "";
+  char *toks = NULL;
+  int i, start_len;
+
+
+  if (!filename || !game)
+  {
+    return ERROR;
+  }
+
+  file = fopen(filename, "r");
+  if (file == NULL)
+  {
+    return ERROR;
+  }
+  /**
+   * reads the file and loads each data individually.
+   */
+  start_len = (int)strlen("#cin:");
+  while (fgets(line, DIALOGUE_LINE_LENGTH, file)) /*Reads all the lines in the text file and saves the provided information*/
+  {
+    if (strncmp("#cin:", line, start_len) == 0)
+    {
+      toks = strtok(line + start_len, "|\r\n");
+      i = atol(toks);
+      toks = strtok(NULL, "\r\n");
+      game_set_current_cinematic(game, i-1);
+      printf("\nDialogue line for cinematic %d: %s", i, toks);
+      cinematics_text_add_line(game_get_current_cinematic_text(game), toks);
+
+#ifdef DEBUG
+      printf("Leido: %ld|%s|%ld|%ld|%d|%d|\n", id, name, idOrigin, idDest, direccion, open);
+#endif
+      
+
+    }
+  }
+
+  if (ferror(file))
+  {
+    status = ERROR;
+  }
+
+  fclose(file);
+
+  return status;
+}
+
 Status gameManagement_save(Game *game, char *filename)
 {
   FILE *save = NULL;

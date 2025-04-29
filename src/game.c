@@ -25,7 +25,7 @@ typedef struct _InterfaceData{
   Command *lastCmd;               /*!<Pointer to the last command that have been saved*/
   Command *second_to_lastCmd;     /*!<Pointer to the second-to-last command that have been saved*/
   Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
-  char message[MAX_MESSAGE];      /*!<String that has the message of the character the player last talked to*/
+  char message[DIALOGUE_LINE_LENGTH];/*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
   Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
 }InterfaceData;
@@ -50,6 +50,9 @@ struct _Game
   int n_links;                                          /*!<Number of links in the game*/
   Bool finished;                                        /*!<Boolean that establishes whether the game has ended or not*/
   InterfaceData *playerGraphicInformation[MAX_PLAYERS]; /*!<Array of pointers to InterfaceData for each player, where the command history of the player is strored as well as information related to displayed messages*/
+  Bool lights_on;                                       /*!<Boolean that determines if the lights in the house that appears in the game are turned on or off*/
+  Cinematics current_cinematic;                         /*!<Value that describes if a cinematic has to be played currently*/
+  Cinematics_text *cinematics_text[N_CINEMATICS];       /*!<Array of pointers to the structures that contain the text of each cinematic*/
 };
 /**
    Private functions
@@ -93,7 +96,11 @@ Status game_create(Game **game)
   (*game)->n_links = 0;
   (*game)->n_players = 0;
   (*game)->finished = FALSE;
-
+  (*game)->lights_on = FALSE;
+  (*game)->current_cinematic = INTRODUCTION;
+  for(i=0;i<N_CINEMATICS;i++){
+    (*game)->cinematics_text[i] = cinematics_text_create();
+  }
   return OK;
 }
 
@@ -129,6 +136,12 @@ Status game_create_from_file(Game **game, char *filename)
     fprintf(stdout, "Could not load links");
     return ERROR;
   }
+  if(gameManagement_load_cinematics((*game), filename) == ERROR)
+  {
+    fprintf(stdout, "Could not load cinematics");
+    return ERROR;
+  }
+  
 
   return OK;
 }
@@ -169,6 +182,9 @@ Status game_destroy(Game *game)
     command_destroy(game->playerGraphicInformation[i]->second_to_lastCmd);
     command_destroy(game->playerGraphicInformation[i]->third_to_lastCmd);
     free(game->playerGraphicInformation[i]);
+  }
+  for(i=0;i<N_CINEMATICS;i++){
+    cinematics_text_destroy(game->cinematics_text[i]);
   }
   free(game);
 
@@ -979,4 +995,31 @@ Status game_set_show_message_in_pos(Game *game, Bool bool, int pos)
     return ERROR;
   game->playerGraphicInformation[pos]->show_message = bool;
   return OK;
+}
+
+Status game_set_lights_on(Game *game, Bool lights_on){
+  if(!game) return ERROR;
+  game->lights_on = lights_on;
+  return OK;
+}
+
+Bool game_get_lights_on(Game *game){
+  if(!game) return FALSE;
+  return game->lights_on;
+}
+
+Status game_set_current_cinematic(Game *game, Cinematics current_cinematic){
+  if(!game) return ERROR;
+  game->current_cinematic = current_cinematic;
+  return OK;
+}
+
+Cinematics game_get_current_cinematic(Game *game){
+  if(!game) return FALSE;
+  return game->current_cinematic;
+}
+
+Cinematics_text *game_get_current_cinematic_text(Game *game){
+  if(!game) return NULL;
+  return game->cinematics_text[game->current_cinematic];
 }

@@ -56,7 +56,16 @@
 #l:1516|BackyardtoStorage|15|16|4|1|
 #l:1615|StoragetoBackyard|16|15|3|1|
 #l:1421|LivingRoomToHall|14|21|5|0|
+#l:2114|LivingRoomToHall|21|14|6|1|
 #l:2114|LivingRoomToHall|21|14|6|0|
+
+@@@@@ Text of the cinematics @@@@@
+#cin:1| Bob: this is very scary!
+#cin:1| Alice: calm down Bob, there's nothing to worry about
+#cin:1| Bob: if that were really the case then mum and dad wouldn't have told us this is a bad idea.
+#cin:1| Alice: you know how they are, always overreacting. All we have to do is find what grandma told us she left here.
+#cin:1| Bob: what if she didn't leave anything here? You know how sick she was in her last days...
+#cin:1| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

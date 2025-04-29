@@ -24,18 +24,18 @@ tests: $(TESTS)
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o 
-	gcc -g -o $@ $^ $(CLIBS)
+juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o $(OBJDIR)/libscreen.o $(OBJDIR)/cinematics.o
+	gcc -g -o $@ $^
 
 
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
 $(OBJDIR)/game.o: game.c game.h command.h types.h space.h set.h character.h \
-  player.h inventory.h object.h gameManagement.h link.h 
+  player.h inventory.h object.h gameManagement.h link.h cinematics.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/game_loop.o: src/game_loop.c include/graphic_engine.h include/game.h \
-  command.h types.h space.h set.h player.h character.h inventory.h object.h link.h libscreen.h 
+  command.h types.h space.h set.h player.h character.h inventory.h object.h link.h libscreen.h cinematics.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h \
@@ -75,12 +75,14 @@ $(OBJDIR)/set.o: set.c set.h types.h
 $(OBJDIR)/inventory.o: inventory.c inventory.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/libscreen.o: libscreen.c libscreen.h
+$(OBJDIR)/libscreen.o: libscreen.c libscreen.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/link.o: link.c link.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
+$(OBJDIR)/cinematics.o: cinematics.c cinematics.h types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
 $(OBJDIR)/set_test.o: set_test.c set_test.h set.h \

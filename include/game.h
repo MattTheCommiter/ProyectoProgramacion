@@ -18,6 +18,7 @@
 #include "object.h"
 #include "character.h"
 #include "link.h"
+#include "cinematics.h"
 
 #define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
 #define MAX_OBJECTS 10              /*!<The maximum ammount of objects present at the game*/
@@ -724,4 +725,74 @@ Object* game_get_object_from_name(Game *game, char *object_name);
  */
 Bool game_remove_object(Game *game, Object *object);
 
+/**
+ * @brief Finds an object from the game by its name.
+ * @author Araceli Gutiérrez
+ *
+ * This function searches through the array of objects in the game and returns
+ * the object that matches the given name. If no object with the specified name
+ * is found, the function returns NULL.
+ *
+ * @param game Pointer to the Game structure.
+ * @param object_name The name of the object to search for.
+ * @return Pointer to the Object if found, otherwise NULL.
+ */
+Object* game_get_object_from_name(Game *game, char *object_name);
+
+/**
+ * @brief Removes an object from the game.
+ * @author Araceli Gutiérrez
+ *
+ * This function searches for the specified object in the game's object array
+ * and removes it by replacing it with the last object in the array.
+ * The number of objects in the game is then decreased.
+ *
+ * @param game Pointer to the Game structure.
+ * @param object Pointer to the Object to be removed.
+ * @return Bool indicating whether the removal was successful (TRUE) or not (FALSE).
+ */
+Bool game_remove_object(Game *game, Object *object);
+
+/**
+ * @brief sets the lights_on component of game, which determines how the rooms are shown
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @param lights_on boolean value that determines whether the lights are on or off
+ * @return Status Ok or ERROR
+ */
+Status game_set_lights_on(Game *game, Bool lights_on);
+
+/**
+ * @brief gets the lights_on value of game
+ * @author Matteo Artunedo
+ * @param game pointer to game
+ * @return Bool: TRUE or FALSE depending on whether the lights are turned on or not
+ */
+Bool game_get_lights_on(Game *game);
+
+
+/**
+ * @brief sets the current_cinematic component of game, which determines if a cinematic has to be played and which one
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @param current_cinematic boolean value that determines if a cinematic has to be played and which one
+ * @return Status Ok or ERROR
+ */
+Status game_set_current_cinematic(Game *game, Cinematics current_cinematic);
+
+/**
+ * @brief gets the current_cinematic value of game, which belongs to the public Cinematics enumeration
+ * @author Matteo Artunedo
+ * @param game pointer to game
+ * @return the cinematic that has to be played or NO_CINEMATIC
+ */
+Cinematics game_get_current_cinematic(Game *game);
+
+/**
+ * @brief Gets a pointer to the Cinematics_text structure which stores the text of the current cinematic
+ * @author Matteo Artunedo
+ * @param game pointer to the game
+ * @return pointer to the structure that stores the cinematic's dialogues
+ */
+Cinematics_text *game_get_current_cinematic_text(Game *game);
 #endif
