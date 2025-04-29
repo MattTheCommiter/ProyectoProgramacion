@@ -1,18 +1,18 @@
-#s:11|FrontalPatio|         |         |         |         |         |
-#s:12|Corridor1|         |         |         |         |         |
-#s:13|Corridor2|         |         |         |         |         |
-#s:14|LivingRoom|         |         |         |         |         |
-#s:15|Backyard|         |         |         |         |         |
-#s:21|Pantry|         |         |         |         |         |
-#s:22|Hall|         |         |         |         |         |
-#s:23|Corridor3|         |         |         |         |         |
-#s:24|Bedroom|         |         |         |         |         |
-#s:25|Bathroom|         |         |         |         |         |
-#s:40|Extra|         |         |         |         |         |
+#s:11|FrontalPatio|0|
+#s:12|Corridor1|0|
+#s:13|Corridor2|0|
+#s:14|LivingRoom|0|
+#s:15|Backyard|0|
+#s:21|Pantry|0|
+#s:22|Hall|0|
+#s:23|Corridor3|0|
+#s:24|Bedroom|0|
+#s:25|Bathroom|0|
+#s:40|Extra|0|
 
-#o:1|Batteries|11|Well, just a seed|
-#o:2|Lantern|11|Well, just a grain|
-#o:3|Generator|15|Well, just a crumb|
+#o:1|Batteries|11|Well, just a seed|1|-1|-1|-1|
+#o:2|Lantern|11|Well, just a grain|1|-1|-1|-1|
+#o:3|Generator|15|Well, just a crumb|1|-1|-1|-1|
 
 #p:1|Alice| A |11|5|3|
 #p:2|Bob| B |11|5|3|
@@ -30,3 +30,10 @@
 #l:1514|BackyardtoLivingRoom|15|14|2|1|
 #l:1421|LivingRoomToHall|14|21|5|0|
 #l:2114|LivingRoomToHall|21|14|6|1|
+
+#cin:1| Bob: this is very scary!
+#cin:1| Alice: calm down Bob, there's nothing to worry about
+#cin:1| Bob: if that were really the case then mum and dad wouldn't have told us this is a bad idea.
+#cin:1| Alice: you know how they are, always overreacting. All we have to do is find what grandma told us she left here.
+#cin:1| Bob: what if she didn't leave anything here? You know how sick she was in her last days...
+#cin:1| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.

@@ -18,10 +18,11 @@
  * @brief Constant values used for the creation of the game's graphic interface
  * 
  */
-#define WIDTH_MAP 60              /*!<Width of the map in the graphic interface*/
+#define WIDTH_MAP 100              /*!<Width of the map in the graphic interface*/
+#define WIDTH_DIALOGUE 60           /*!<Width of the dialogue boc in the graphic interface*/
 #define WIDTH_DES 29              /*!<Width of the description box in the graphic interface*/
 #define WIDTH_BAN 23              /*!<Width of the banner in the graphic interface*/
-#define HEIGHT_MAP 29             /*!<Height of the map in the graphic interface*/
+#define HEIGHT_MAP 30             /*!<Height of the map in the graphic interface*/
 #define HEIGHT_BAN 1              /*!<Height of the banner in the graphic interface*/
 #define HEIGHT_HLP 2              /*!<Height of the help box in the graphic interface*/
 #define HEIGHT_FDB 3              /*!<Height of the feedback box in the graphic interface*/
@@ -46,6 +47,7 @@ struct _Graphic_engine
   Area 
   *map,       /*!<Map area of the graphic engine. Here we can see the players, objects, spaces, graphical descriptions, etc*/
   *descript,  /*!<Description area of the graphic engine. Here the player can get info about the game such as object and character placement, his health, etc*/
+  *dialogue,  /*!<Dialog area of the graphic engine. Here the player can read the conversations between characters*/
   *banner,    /*!<Title area in the graphic engine. Here we can see the title of the game and the player who is currently playing*/
   *help,      /*!<Help area of the graphic engine. Here all of the possible commands a player can run are displayed*/
   *feedback;  /*!<Feedback area in the graphic engine. Here the player can see the commands he has executed and if they were succesful*/
@@ -467,15 +469,16 @@ Graphic_engine *graphic_engine_create()
     return ge;
   }
 
-  screen_init(HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + HEIGHT_FDB + 4, WIDTH_MAP + WIDTH_DES + 3);
+  screen_init(HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + HEIGHT_FDB + 4, WIDTH_MAP + WIDTH_DES + 4 + WIDTH_DIALOGUE);
   ge = (Graphic_engine *)malloc(sizeof(Graphic_engine));
   if (ge == NULL)
   {
     return NULL;
   }
   /*Initializes all of the components of the game's graphic interface*/
-  ge->map = screen_area_init(1, 1, WIDTH_MAP, HEIGHT_MAP);
-  ge->descript = screen_area_init(WIDTH_MAP + 2, 1, WIDTH_DES, HEIGHT_MAP);
+  ge->map = screen_area_init(WIDTH_DIALOGUE + 2, 1, WIDTH_MAP, HEIGHT_MAP);
+  ge->descript = screen_area_init(WIDTH_MAP + WIDTH_DIALOGUE + 3, 1, WIDTH_DES, HEIGHT_MAP);
+  ge->dialogue = screen_area_init(1, 1, WIDTH_DIALOGUE, HEIGHT_MAP);
   ge->banner = screen_area_init((int)((WIDTH_MAP + WIDTH_DES + 1 - WIDTH_BAN) / 2), HEIGHT_MAP + 2, WIDTH_BAN, HEIGHT_BAN);
   ge->help = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + 2, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_HLP);
   ge->feedback = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + 3, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_FDB);
@@ -490,6 +493,7 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
   screen_area_destroy(ge->map);
   screen_area_destroy(ge->descript);
+  screen_area_destroy(ge->dialogue);
   screen_area_destroy(ge->banner);
   screen_area_destroy(ge->help);
   screen_area_destroy(ge->feedback);
@@ -508,6 +512,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
+  if(game_get_show_message(game) == TRUE){
+    screen_area_puts(ge->dialogue, game_get_message(game));
+  }else{
+    screen_area_clear(ge->dialogue);
+  }
+
   if ((id_act = game_get_current_player_location(game)) != NO_ID)
   {
     id_north = game_get_connection(game, id_act, N);
@@ -624,12 +634,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       screen_area_puts(ge->descript, str);
     }
   }
-  /*Printing the message of the game, given after the command 'Chat'*/
-  if (game_get_show_message(game))
-  {
-    sprintf(str, "  Message: %s", game_get_message(game));
-    screen_area_puts(ge->descript, str);
-  }
   /*Printing the description of the game, given after the command 'Inspect'*/
   if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT &&command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
   {
@@ -676,7 +680,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /* Dump to the terminal */
-  screen_paint((game_get_turn(game)));
+  screen_paint((game_get_turn(game)), game_get_lights_on(game));
   printf("prompt:> ");
 }
 

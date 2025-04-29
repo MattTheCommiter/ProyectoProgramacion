@@ -3,25 +3,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+/*This line makes the compiler ignore all the possible warnings that may arise with the flag -Wpedantic*/
 #pragma GCC diagnostic ignored "-Wpedantic"
 
 /* Global variables */
-int ROWS=23;
-int COLUMNS=80;
+int ROWS=23;    /*!<Number of total rows in the game's screen*/
+int COLUMNS=80; /*!<Number of total columns in the game's screen*/
 
-#define TOTAL_DATA (ROWS * COLUMNS) + 1
-#define BG_CHAR '~'
-#define FG_CHAR ' '
-#define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x))
+#define TOTAL_DATA (ROWS * COLUMNS) + 1 /*!<Total ammount of characters in the screen with extra space for NULL termination*/
+#define BG_CHAR '~'   /*!<Value which corresponds to painting the background*/
+#define FG_CHAR ' '   /*!<Value which corresponds to painting the foreground*/
+#define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x)) /*Macro function that returns a determined position (x,y) with respects to a certain cursor (d, which is usually a pointer to the data that we want to access)*/
 
-
+/**
+ * @brief structure that saves all of the information related to the area
+ * 
+ */
 struct _Area{
-  int x, y, width, height;
-  char *cursor;
+  int x;        /*!<X position of the area in the screen*/
+  int y;        /*!<Y position of the area in the screen*/
+  int width;    /*!<Width of the area in the screen*/
+  int height;   /*!<Height of the area in the screen*/
+  char *cursor; /*!<Pointer to where the area information starts*/
 };
 
-
+/*!<Global variable that stores all of the Area information*/
 char *__data;
 
 
@@ -44,6 +50,7 @@ void screen_init(int rows, int columns){
   __data = (char *) malloc(sizeof(char) * TOTAL_DATA);
 
   if (__data){
+    /*The memset function is used to fill memory (__data in this case) with a determined value (BG_CHAR)*/
     memset(__data, (int) BG_CHAR, TOTAL_DATA); /*Fill the background*/
     *(__data + TOTAL_DATA - 1) = '\0';         /*NULL-terminated string*/
   }
@@ -54,7 +61,7 @@ void screen_destroy(){
     free(__data);
 }
 
-void screen_paint(Frame_color color){
+void screen_paint(Frame_color color, Bool lights_on){
   char *src = NULL;
   char dest[COLUMNS + 1];
   int i=0;
@@ -66,15 +73,19 @@ void screen_paint(Frame_color color){
     /*It works fine if the terminal window has the right size*/
 
     puts("\033[2J"); /*Clear the terminal*/
+    /*We go through the __data variable with pointer arythmetic, adding the number of columns in each iteration*/
     for (src=__data; src < (__data + TOTAL_DATA - 1); src+=COLUMNS){
       memcpy(dest, src, COLUMNS);
       /* printf("%s\n", dest); */
+      /*We print each character in the column individually*/
       for (i=0; i<COLUMNS; i++){
-	if (dest[i] == BG_CHAR){
-	  printf("%s%c\033[0m", frame_color_to_string(color), dest[i]); /* fg:blue(34);bg:blue(44) */
-	}else{
-	  printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
-	}
+        if (dest[i] == BG_CHAR){
+          printf("%s%c\033[0m", frame_color_to_string(color), dest[i]); /* fg:blue(34);bg:blue(44) */
+        }else if(lights_on){
+          printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
+        }else{
+          printf("\033[0;37;40m%c\033[0m", dest[i]); /* fg white(37);bg:black(40)*/
+        }
       }
       printf("\n");
     }
@@ -110,7 +121,7 @@ char *frame_color_to_string(Frame_color color){
     break;
 
   default:
-    break;
+    return NULL;
   }
 }
 
@@ -120,10 +131,11 @@ char *frame_color_to_string(Frame_color color){
 Area* screen_area_init(int x, int y, int width, int height){
   int i = 0;
   Area* area = NULL;
-
+  /*We assign all of the values given as arguments simultaneously, placing the cursosr in the x,y position with respects to the __data pointer*/
   if ( (area  = (Area*) malloc (sizeof(struct _Area))) ){
     *area = (struct _Area) {x, y, width, height, ACCESS(__data, x, y)};
 
+    /*We fill each row with the FG_CHAR character*/
     for (i=0; i < area->height; i++)
       memset(ACCESS(area->cursor, 0, i), (int) FG_CHAR, (size_t) area->width);
   }
@@ -146,7 +158,7 @@ void screen_area_clear(Area* area){
       memset(ACCESS(area->cursor, 0, i), (int) FG_CHAR, (size_t) area->width);
   }
 }
-
+/*Places the cursor of an area in the starting position of said area*/
 void screen_area_reset_cursor(Area* area){
   if (area)
     area->cursor = ACCESS(__data, area->x, area->y);
@@ -168,13 +180,13 @@ void screen_area_puts(Area* area, char *str){
     area->cursor += COLUMNS;
   }
 }
-
+/*Checks if the cursor has exceded the size of the area*/
 int screen_area_cursor_is_out_of_bounds(Area* area){
   return area->cursor > ACCESS(__data,
 			       area->x + area->width,
 			       area->y + area->height - 1);
 }
-
+/*Copies each line to the one before it*/
 void screen_area_scroll_up(Area* area){
   for(area->cursor = ACCESS(__data, area->x, area->y);
       area->cursor < ACCESS(__data, area->x + area->width, area->y + area->height - 2);
