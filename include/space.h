@@ -14,12 +14,8 @@
 #include "types.h"
 #include "set.h"
 
-#define N_LINES_IN_GDESC 5           /*!<Number of lines in the graphic description of a space*/
-#define N_ROWS_IN_GDESC 9            /*!<Number of rows in the graphic description of a space*/
-#define N_TOTAL_LINES_IN_3_SQUARES 9 /*!<Number of lines in a sequence of 3 space squares placed horizontally*/
-#define N_TOTAL_ROWS_IN_3_SQUARES 59 /*!<Number of rows in a sequence of 3 space squares placed horizontally*/
-#define N_TOTAL_LINES_IN_SQUARE 9    /*!<Number of lines in one of the space squares*/
-#define N_TOTAL_ROWS_IN_SQUARE 17    /*!<Number of rows in one of the space squares*/
+#define N_TOTAL_ROWS_IN_SQUARE 57    /*!<Number of lines in one of the space squares*/
+#define N_TOTAL_COLUMNS_IN_SQUARE 152/*!<Number of rows in one of the space squares*/
 
 /**
  * @brief specifies the type for the _Space structure

@@ -41,7 +41,7 @@ struct _Game
   int n_objects;                                        /*!<Number of objects in the game*/
   Player *players[MAX_PLAYERS];                         /*!<Array of the different players in the game*/
   int n_players;                                        /*!<Number of players in the game*/
-  int turn;                                             /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
+  TurnByPlayer turn;                                    /*!<Enumeration value that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];                            /*!<Array of Spaces*/
   int n_spaces;                                         /*!<Number of spaces in the game*/
   Character *characters[MAX_CHARACTERS];                /*!<Array of characters in the game*/
@@ -797,7 +797,7 @@ void game_next_turn(Game *game)
   game->turn = (game->turn + 1) % (game->n_players);
 }
 
-int game_get_turn(Game *game)
+TurnByPlayer game_get_turn(Game *game)
 {
   if (!game)
   {
@@ -806,7 +806,7 @@ int game_get_turn(Game *game)
   return game->turn;
 }
 
-Status game_set_turn(Game *game, int turn)
+Status game_set_turn(Game *game, TurnByPlayer turn)
 {
   if (!game || turn >= game->n_players || turn < 0)
     return ERROR;

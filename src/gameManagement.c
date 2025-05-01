@@ -121,18 +121,18 @@ Status gameManagement_load_spaces(Game *game, char *filename)
     return ERROR;
   }
 
-  if (!(read_gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
+  if (!(read_gdesc = (char **)calloc(N_TOTAL_ROWS_IN_SQUARE, sizeof(char *))))
   {
     return ERROR;
   }
-  if (!(read_gdesc[0] = (char *)calloc(N_LINES_IN_GDESC * (N_ROWS_IN_GDESC + 1), sizeof(char))))
+  if (!(read_gdesc[0] = (char *)calloc(N_TOTAL_ROWS_IN_SQUARE * (N_TOTAL_COLUMNS_IN_SQUARE), sizeof(char))))
   {
     free(read_gdesc);
     return ERROR;
   }
-  for (i = 1; i < 5; i++)
+  for (i = 1; i < N_TOTAL_ROWS_IN_SQUARE; i++)
   {
-    read_gdesc[i] = read_gdesc[0] + (N_ROWS_IN_GDESC + 1) * i;
+    read_gdesc[i] = read_gdesc[0] + (N_TOTAL_COLUMNS_IN_SQUARE) * i;
   }
 
   file = fopen(filename, "r");
@@ -156,61 +156,13 @@ Status gameManagement_load_spaces(Game *game, char *filename)
       toks = strtok(NULL, "|");
       discovered = atoi(toks);
 
-
-      /*Si hay una descripción gráfica, la leemos y la copiamos a nuetra matriz read_gdesc*/
-      if ((toks = strtok(NULL, "|\n\r")) != NULL)
-      {
-        strcpy(read_gdesc[0], toks);
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[1], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[2], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[3], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[4], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
+      
+      for(i=0;i<N_TOTAL_ROWS_IN_SQUARE;i++){
+        fgets(line, WORD_SIZE, file);
+        strncpy(read_gdesc[i], line, N_TOTAL_COLUMNS_IN_SQUARE - 1);
+        read_gdesc[N_TOTAL_COLUMNS_IN_SQUARE- 1] = '\0'; 
       }
-      else
-      {
-        /*Si no hay una descripción gráfica, copiamos espacios en blanco a la descripción del espacio*/
-        strcpy(read_gdesc[0], "         ");
-        strcpy(read_gdesc[1], "         ");
-        strcpy(read_gdesc[2], "         ");
-        strcpy(read_gdesc[3], "         ");
-        strcpy(read_gdesc[4], "         ");
-      }
+      
 
 #ifdef DEBUG
       printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
@@ -612,7 +564,6 @@ Status gameManagement_load_cinematics(Game *game, char *filename)
       i = atol(toks);
       toks = strtok(NULL, "\r\n");
       game_set_current_cinematic(game, i-1);
-      printf("\nDialogue line for cinematic %d: %s", i, toks);
       cinematics_text_add_line(game_get_current_cinematic_text(game), toks);
 
 #ifdef DEBUG

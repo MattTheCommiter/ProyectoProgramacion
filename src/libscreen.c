@@ -99,10 +99,10 @@ char *frame_color_to_string(Frame_color color){
     return "\033[0;30;40m";
     break;
     case RED:
-    return "\033[0;34;41m";
+    return "\033[0;31;41m";
     break;
     case GREEN:
-    return "\033[0;34;42m";
+    return "\033[0;32;42m";
     break;
     case YELLOW:
     return "\033[0;34;43m";

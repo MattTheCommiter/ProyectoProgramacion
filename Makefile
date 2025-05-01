@@ -167,19 +167,19 @@ docs:
 
 #Various run commmands
 run:
-	./juego_hormiga anthill.dat
+	./juego_hormiga house.dat
 
 runLog:
-	./juego_hormiga anthill.dat -l Logfile
+	./juego_hormiga house.dat -l Logfile
 
 runLog_read1:
-	./juego_hormiga anthill.dat -l Logfile < game1.cmd
+	./juego_hormiga house.dat -l Logfile < game1.cmd
 
 runLog_read2:
-	./juego_hormiga anthill.dat -l Logfile < game2.cmd
+	./juego_hormiga house.dat -l Logfile < game2.cmd
 
 runV:
-	valgrind --leak-check=full ./juego_hormiga anthill.dat
+	valgrind --leak-check=full ./juego_hormiga house.dat
 
 character_test_run:
 	@echo ">>>>>>Running character_test:"
@@ -221,9 +221,9 @@ test_run:
 	./inventory_test
 	@echo ">>>>>>Running link_test:"
 	./link_test
-	@echo ">>>>>>Running object_test:"
+	@echo ">>>>>>Running object_test:"                                                      
 	./object_test
-	@echo ">>>>>>Running player_test:"
+	@echo ">>>>>>Running player_test:"                            
 	./player_test
 
 character_test_runV:

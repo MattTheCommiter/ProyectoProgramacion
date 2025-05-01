@@ -28,6 +28,15 @@
 #define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
 
 /**
+ * @brief This enumeration matches the numerical value of the turn with the player it corresponds to
+ * 
+ */
+typedef enum {
+  ALICE_TURN,   /*!<Assigns value '0* to Alice's turn*/
+  BOB_TURN      /*!<Assigns value '0* to Bob's turn*/
+} TurnByPlayer;
+
+/**
  * @brief describes whether we want to access to the last, the second to last or the third to last command
  * 
  */
@@ -528,7 +537,7 @@ void game_next_turn(Game *game);
  * @param game pointer to the game
  * @return current turn
  */
-int game_get_turn(Game *game);
+TurnByPlayer game_get_turn(Game *game);
 
 
 /**
@@ -538,7 +547,7 @@ int game_get_turn(Game *game);
  * @param turn the turn we want to set
  * @return Status OK or ERROR
  */
-Status game_set_turn(Game *game, int turn);
+Status game_set_turn(Game *game, TurnByPlayer turn);
 /**
  * @brief returns the number of players in the game
  * @author Matteo Artunedo
