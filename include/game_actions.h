@@ -2,7 +2,7 @@
  * @brief It defines the game update interface
  *
  * @file game_actions.h
- * @author Matteo Artunedo
+ * @author Matteo Artunedo, and all members of Team D have modified functions in game_actions.c
  * @version 0.2
  * @date 15-03-2025
  * @copyright GNU Public License
@@ -43,7 +43,7 @@
  * @brief Updates the game's last_cmd to the newest command, calling the action functions (which are private) depending on the command
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Profesores; All members of Team D have modified this function to include different commands
  *
  * @param game a pointer to the structure with the game's main information
  * @param cmd the newest command

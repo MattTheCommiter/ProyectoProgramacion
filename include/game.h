@@ -2,7 +2,7 @@
  * @brief It defines the game interface
  *
  * @file game.h
- * @author Profesores PPROG
+ * @author Profesores PPROG, Álvaro Iñigo, Matteo Artuñedo, Guilherme Povedano, Araceli Gutiérrez
  * @version 0
  * @date 27-01-2025
  * @copyright GNU Public License
@@ -662,6 +662,33 @@ Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
  * @return Status OK or ERROR
  */
 Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
+
+
+/**
+ * @brief Gets the command counter for the current player.
+ * @author Araceli Gutiérrez
+ *
+ * @param game Pointer to the Game structure.
+ * @return int The current command counter value.
+ */
+int game_get_command_counter(Game *game);
+
+/**
+ * @brief Sets the command counter for the current player.
+ * @author Araceli Gutiérrez
+ *
+ * @param game Pointer to the Game structure.
+ * @param counter The new command counter value.
+ */
+void game_set_command_counter(Game *game, int counter);
+
+/**
+ * @brief Increments the command counter for the current player.
+ * @author Araceli Gutiérrez
+ *
+ * @param game Pointer to the Game structure.
+ */
+void game_increment_command_counter(Game *game);
 
 /**
  * @brief returns if the message of the game must be shown
