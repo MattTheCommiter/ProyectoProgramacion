@@ -15,11 +15,14 @@
 
 #define N_CMDT 2       /*!< Number of ways the user can type each command (non-case sensitive)*/
 
-#define N_CMD 17       /*!< Number of commands that are possible*/
+#define N_CMD 18       /*!< Number of commands that are possible*/
 
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
+#define USE_ARG " over "
+#define OPEN_ARG " with "
+#define GIVE_ARG " to "
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */
@@ -51,8 +54,8 @@ typedef enum
     TEAM,        /*!<Assigns 12 to the keyword "TEAM", which will be used in command-related functions*/
     OPEN,        /*!<Assigns 13 to the keyword "OPEN", which will be used in command-related functions*/
     USE,         /*!<Assigs 14 to the keyword "USE", which will be used in command-related functions*/
-    TURN         /*!<Assigns 15 to the keyword "TURN", which will be used to change the turns of the players*/
-
+    TURN,         /*!<Assigns 15 to the keyword "TURN", which will be used to change the turns of the players*/
+    GIVE         /*!<Assigns 16 to the keyword "GIVE", which will be used to change the turns of the players*/
 } CommandCode;
 
 /**
@@ -108,7 +111,7 @@ CommandCode command_get_code(Command *command);
  * @brief reads the user's input and changes the command to the one entered
  *
  * @date 27-01-2025
- * @author Profesores
+ * @author Guilherme Povedano (re-write)
  *
  * @param command pointer to the command structure
  * @return Status: calls to the command_set_code function to change the code to the one entered by the user

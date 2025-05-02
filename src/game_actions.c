@@ -2,7 +2,7 @@
  * @brief It implements the game update through user actions
  *
  * @file game_actions.c
- * @author Matteo Artuñedo,Alvaro Inigo, AGL, Guilherme Povedano 
+ * @author Matteo Artuñedo,Alvaro Inigo, AGL, Guilherme Povedano
  * @version 0.1
  * @date 22-03-2025
  * @copyright GNU Public License
@@ -48,7 +48,6 @@ void game_actions_exit(Game *game);
  * @param game a pointer to the structure with the game's main information
  */
 void game_actions_move(Game *game, char *arg);
-
 
 /**
  * @brief takes the object in the space
@@ -119,12 +118,12 @@ void game_actions_abandon(Game *game, char *arg);
 
 /**
  * @brief Command that allows the player to open links with objects in their backpack
- * @author Guilherme Povedano 
+ * @author Guilherme Povedano
  * @date 25-04-25
  * @param game pointer to the game
  * @param arg name of the character they are going to recruit
-*/
-void game_actions_open(Game *game, char *arg);
+ */
+void game_actions_open(Game *game, char *link_name, char *object_name);
 
 /**
  * @brief saves the current game in the file with the name given in the arg
@@ -134,7 +133,6 @@ void game_actions_open(Game *game, char *arg);
  * @param arg the name of the saving file
  */
 void game_actions_save(Game *game, char *arg);
-
 
 /**
  * @brief loads the game of the file with the name given in the arg
@@ -161,8 +159,6 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine);
  * @param character_name Name of the character to which apply the object's effect (optional).
  */
 void game_actions_use(Game *game, char *object_name, char *character_name);
-
-
 
 /**
  * @brief Command that allows the player to change the turn to the next player
@@ -229,7 +225,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     game_actions_use(*game, command_get_argument(command), command_get_argument2(command));
     break;
   case OPEN:
-    game_actions_open(*game, command_get_argument(command));
+    game_actions_open(*game, command_get_argument(command), command_get_argument2(command));
     break;
   case TURN:
     game_actions_turn(*game);
@@ -262,29 +258,36 @@ void game_actions_move(Game *game, char *arg)
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
 
-  if(!strcasecmp(arg, "NORTH") || !strcasecmp(arg, "N")){
+  if (!strcasecmp(arg, "NORTH") || !strcasecmp(arg, "N"))
+  {
     direction = N;
   }
-  if(!strcasecmp(arg, "SOUTH") || !strcasecmp(arg, "S")){
+  if (!strcasecmp(arg, "SOUTH") || !strcasecmp(arg, "S"))
+  {
     direction = S;
   }
-  if(!strcasecmp(arg, "EAST") || !strcasecmp(arg, "E")){
+  if (!strcasecmp(arg, "EAST") || !strcasecmp(arg, "E"))
+  {
     direction = E;
   }
-  if(!strcasecmp(arg, "WEST") || !strcasecmp(arg, "W")){
+  if (!strcasecmp(arg, "WEST") || !strcasecmp(arg, "W"))
+  {
     direction = W;
   }
-    if(!strcasecmp(arg, "UP") || !strcasecmp(arg, "U")){
+  if (!strcasecmp(arg, "UP") || !strcasecmp(arg, "U"))
+  {
     direction = U;
   }
-  if(!strcasecmp(arg, "DOWN") || !strcasecmp(arg, "D")){
+  if (!strcasecmp(arg, "DOWN") || !strcasecmp(arg, "D"))
+  {
     direction = D;
   }
-  if(direction == UNKNOWN_DIR){
+  if (direction == UNKNOWN_DIR)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  
+
   current_id = game_get_current_player_location(game);
   if (current_id == NO_ID)
   {
@@ -292,12 +295,13 @@ void game_actions_move(Game *game, char *arg)
     return;
   }
 
-  if(game_connection_is_open(game, current_id, direction) ==  FALSE){
+  if (game_connection_is_open(game, current_id, direction) == FALSE)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   next_space_id = game_get_connection(game, current_id, direction);
-  if(next_space_id != NO_ID)
+  if (next_space_id != NO_ID)
   {
     game_move_followers(game, next_space_id);
     game_set_current_player_location(game, next_space_id);
@@ -308,7 +312,6 @@ void game_actions_move(Game *game, char *arg)
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;
 }
-
 
 void game_actions_take(Game *game, char *arg)
 {
@@ -469,26 +472,29 @@ void game_actions_chat(Game *game, char *arg)
   }
   */
   cha = game_get_character_from_name(game, arg);
-  if(cha != NULL){
+  if (cha != NULL)
+  {
     game_set_show_message(game, TRUE);
     game_set_message(game, character_chat(cha));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
-  }else{
+  }
+  else
+  {
     /*reset if we want the game to show the message*/
     game_set_show_message(game, FALSE);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   }
-  
+
   return;
 }
 
 void game_actions_attack(Game *game, char *arg)
 {
   int num, i, attacked_ally, teammates = 0, team;
-  Character *enemy = NULL, *character=NULL;
+  Character *enemy = NULL, *character = NULL;
   Id characterId;
-  Space *player_space=NULL;
-  Set *followers=NULL;
+  Space *player_space = NULL;
+  Set *followers = NULL;
   num = rand() % 10;
 
   /*reset if we want the game to show the message*/
@@ -500,24 +506,22 @@ void game_actions_attack(Game *game, char *arg)
     return;
   }
   enemy = game_get_character_from_name(game, arg);
-  if(enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
+  if (enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-
 
   player_space = game_get_space(game, game_get_current_player_location(game));
-  if(player_space == NULL)
+  if (player_space == NULL)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
-
-
   /*Once we have checked the conditions are valid, we gather all of the player's allies in a set*/
-  if(!(followers = set_create())){
+  if (!(followers = set_create()))
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -526,9 +530,11 @@ void game_actions_attack(Game *game, char *arg)
   set_add(followers, player_get_id(game_get_current_player(game)));
 
   /*We add the rest of the followers in the space to the set*/
-  for(i=0;i<space_get_n_characters(player_space);i++){
+  for (i = 0; i < space_get_n_characters(player_space); i++)
+  {
     characterId = space_get_character_in_pos(player_space, i);
-    if(character_get_following(game_get_character(game, characterId)) == player_get_id(game_get_current_player(game))){
+    if (character_get_following(game_get_character(game, characterId)) == player_get_id(game_get_current_player(game)))
+    {
       set_add(followers, characterId);
     }
   }
@@ -539,7 +545,8 @@ void game_actions_attack(Game *game, char *arg)
     /*We generate a random number to determine who will receive damage from the enemy*/
     attacked_ally = rand() % (set_get_num_elements(followers));
     /*If the number is 0, it is the player who receives damage*/
-    if(attacked_ally == 0){
+    if (attacked_ally == 0)
+    {
       player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - ENEMY_DAMAGE);
     }
     /*If the number is higher the 1, one of the allies receives damage*/
@@ -547,7 +554,8 @@ void game_actions_attack(Game *game, char *arg)
     {
       character = game_get_character(game, set_get_Id_in_pos(followers, attacked_ally));
       character_set_health(character, character_get_health(character) - ENEMY_DAMAGE);
-      if(character_get_health(character) <= 0){
+      if (character_get_health(character) <= 0)
+      {
         character_set_following(character, NO_ID);
       }
     }
@@ -557,13 +565,16 @@ void game_actions_attack(Game *game, char *arg)
   {
     team = player_get_team(game_get_current_player(game));
     /* We look for teammates at the same space, this number will multiply the damage done to the character*/
-    for(i = 0; i < game_get_n_players(game); i++){
-      if(player_get_team(game_get_player_in_pos(game, i)) == team && player_get_location(game_get_player_in_pos(game, i)) == space_get_id(player_space)){
-        teammates ++;
+    for (i = 0; i < game_get_n_players(game); i++)
+    {
+      if (player_get_team(game_get_player_in_pos(game, i)) == team && player_get_location(game_get_player_in_pos(game, i)) == space_get_id(player_space))
+      {
+        teammates++;
       }
     }
     /*if there are teammates attacking with the player, we show that there was a team attack*/
-    if(teammates > 1){
+    if (teammates > 1)
+    {
       game_set_show_message(game, TRUE);
       game_set_message(game, "TEAM ATTACK!");
     }
@@ -624,9 +635,11 @@ void game_actions_inspect(Game *game, char *arg)
   return;
 }
 
-void game_actions_recruit(Game *game, char *arg){
+void game_actions_recruit(Game *game, char *arg)
+{
   char message[MAX_MESSAGE];
-  if(!game || !arg){
+  if (!game || !arg)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -634,12 +647,14 @@ void game_actions_recruit(Game *game, char *arg){
   game_set_show_message(game, FALSE);
 
   /*In case the character is not friendly or it is already recruited, it cannot be recruited*/
-  if(character_get_friendly(game_get_character_from_name(game, arg)) == FALSE || character_get_following(game_get_character_from_name(game, arg)) != NO_ID){
+  if (character_get_friendly(game_get_character_from_name(game, arg)) == FALSE || character_get_following(game_get_character_from_name(game, arg)) != NO_ID)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
-  if(!character_set_following(game_get_character_from_name(game, arg), player_get_id(game_get_current_player(game)))){
+  if (!character_set_following(game_get_character_from_name(game, arg), player_get_id(game_get_current_player(game))))
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -650,20 +665,24 @@ void game_actions_recruit(Game *game, char *arg){
   return;
 }
 
-void game_actions_abandon(Game *game, char *arg){
-  if(!game || !arg){
+void game_actions_abandon(Game *game, char *arg)
+{
+  if (!game || !arg)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
 
-  if(character_get_following(game_get_character_from_name(game, arg)) != player_get_id(game_get_current_player(game))){
+  if (character_get_following(game_get_character_from_name(game, arg)) != player_get_id(game_get_current_player(game)))
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
-  if(!character_set_following(game_get_character_from_name(game, arg), NO_ID)){
+  if (!character_set_following(game_get_character_from_name(game, arg), NO_ID))
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -672,7 +691,8 @@ void game_actions_abandon(Game *game, char *arg){
   return;
 }
 
-void game_actions_open(Game *game, char *arg) {
+void game_actions_open(Game *game, char *link_name, char *object_name)
+{
   char *second_arg = NULL;
   long name_length = 0;
   int i = 0;
@@ -681,62 +701,52 @@ void game_actions_open(Game *game, char *arg) {
   Id origin_id;
 
   /*argument validation*/
-  if (!game || !arg) {
+  if (!game || !link_name || !object_name)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
 
-  if (strstr(arg, OPEN_ARG) != NULL) {
-    second_arg = strstr(arg, OPEN_ARG) + strlen(OPEN_ARG);
-  } else {
-    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-    return;
-  }
-
   origin_id = game_get_current_player_location(game);
-  name_length = strlen(arg) - strlen(strstr(arg, OPEN_ARG));
 
   /*find the corresponding link*/
-  for (i = 0 ; i < game_get_n_links(game) ; i++) {
-    l = game_get_link(game, game_get_link_id_at(game, i));
+  for (i = 0; i < game_get_n_links(game); i++)
+  {
+    l = game_get_link_in_pos(game, i);
 
-    /*check if link name matches first argument in the command*/ 
-    if (strncasecmp(link_get_name(l), arg, name_length) == 0) break;
-  }
-
-  /* check if link corresponds to current space, or if exit condition for loop was not found */
-  if (link_get_origin_id(l) != origin_id || i == game_get_n_links(game)) {
-    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-    return;
+    /*check if link name matches first argument in the command*/
+    if (strcasecmp(link_get_name(l), link_name) == 0)
+      break;
   }
 
   /*look for object in backpàck */
-  for (i = 0 ; i < player_get_num_objects_in_backpack(game_get_current_player(game)) ; i++) {
+  for (i = 0; i < player_get_num_objects_in_backpack(game_get_current_player(game)); i++)
+  {
     o = game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i));
 
-    /*check if it is the correct object*/
-    if (strcasecmp(object_get_name(o), second_arg) == 0 ) {
+    if (strcasecmp(object_get_name(o), object_name) != 0)
+    {
+      continue;
+    }
 
-      /* check if object opens link*/
-      if (object_get_open(o) != link_get_id(l)) {
-        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-        return;
-      }
-
-      /*check if player has the object dependency in case it exists*/
-      if (object_get_dependency(o) != NO_ID && player_backpack_contains(game_get_current_player(game), object_get_dependency(o)) == FALSE) {
-        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-        return;
-      }
-
-      /* open link and remove object from backpack */
-      link_set_is_open(l, TRUE);
-      player_remove_object_from_backpack(game_get_current_player(game), object_get_id(o));
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    if (object_get_open(o) != link_get_id(l))
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
+
+    if (object_get_dependency(o) != NO_ID && player_backpack_contains(game_get_current_player(game), object_get_dependency(o)) == FALSE)
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+
+    link_set_is_open(l, TRUE);
+    player_remove_object_from_backpack(game_get_current_player(game), object_get_id(o));
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    return;
   }
 
   /*in case function has not been exited, return with ERROR*/
@@ -744,31 +754,38 @@ void game_actions_open(Game *game, char *arg) {
   return;
 }
 
-void game_actions_save(Game *game, char *arg){
-  if(!game || !arg){
+void game_actions_save(Game *game, char *arg)
+{
+  if (!game || !arg)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
 
-  if(gameManagement_save(game, arg) == ERROR){
+  if (gameManagement_save(game, arg) == ERROR)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
-
 }
 
-void game_actions_load(Game **game, char *arg){
-  if(!game || !(*game) || !arg){
+void game_actions_load(Game **game, char *arg)
+{
+  if (!game || !(*game) || !arg)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
     return;
   }
 
-  if(gameManagement_load(game, arg) == ERROR){
+  if (gameManagement_load(game, arg) == ERROR)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
     return;
-  }else{
+  }
+  else
+  {
     game_set_turn(*game, game_get_turn(*game) - 1);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), OK);
   }
@@ -776,29 +793,33 @@ void game_actions_load(Game **game, char *arg){
   return;
 }
 
-
-void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
+void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
+{
   Player *teammate = NULL;
   int i, turn = 0, current_turn; /*initialized turn to remove warnings - theoretically if there are no player in the game this could create issues in this function, but come on*/
   Bool show;
   char previous_message[MAX_MESSAGE], message[MAX_MESSAGE];
   Bool acceptance;
 
-  if(!game || !arg) return;
+  if (!game || !arg)
+    return;
 
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
 
   /*We found the player whose name is the argument given*/
   teammate = game_get_player_from_name(game, arg);
-  if (teammate == NULL){
+  if (teammate == NULL)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
   /*We found the turn corresponding to the new teammate*/
 
-  for(i = 0; i < game_get_n_players(game); i++){
-    if(game_get_player_in_pos(game, i) == teammate){
+  for (i = 0; i < game_get_n_players(game); i++)
+  {
+    if (game_get_player_in_pos(game, i) == teammate)
+    {
       turn = i;
       break;
     }
@@ -824,18 +845,23 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
   /*get back to the turn*/
   game_set_turn(game, current_turn);
 
-  if(acceptance == FALSE){
+  if (acceptance == FALSE)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
-  }else{
+  }
+  else
+  {
     player_set_team(teammate, player_get_id(game_get_current_player(game)));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
     return;
   }
 }
 
-void game_actions_turn(Game *game){
-  if(!game) return;
+void game_actions_turn(Game *game)
+{
+  if (!game)
+    return;
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
 
@@ -843,7 +869,6 @@ void game_actions_turn(Game *game){
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
 }
-
 
 void game_actions_use(Game *game, char *object_name, char *character_name)
 {
@@ -908,5 +933,4 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
   return;
-
 }
