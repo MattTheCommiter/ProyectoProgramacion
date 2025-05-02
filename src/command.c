@@ -15,15 +15,14 @@
 #include <string.h>
 #include <strings.h>
 
-#define CMD_LENGTH 50 /*!<maximum length of commands written by user*/
-#define ARG_LENGTH 50 /*!<maximum length of object names*/
+#define CMD_LENGTH 100 /*!<maximum length of commands written by user*/
+#define ARG_LENGTH 50  /*!<maximum length of object names*/
 
 /**
  * @brief Array mapping command strings to their descriptions.
  */
 
-char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}, {"o", "Open"}, {"u", "Use"}, {"tu", "turn"}};
-
+char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "Exit"}, {"m", "Move"}, {"d", "Drop"}, {"t", "Take"}, {"c", "Chat"}, {"at", "Attack"}, {"i", "Inspect"}, {"r", "Recruit"}, {"ab", "Abandon"}, {"s", "Save"}, {"l", "Load"}, {"tm", "Team"}, {"o", "Open"}, {"u", "Use"}, {"tu", "turn"}, {"g", "Give"}};
 
 /**
  * @brief This struct stores the code related to a command: the command's code, its argument (for take and drop functions) and its success value
@@ -34,7 +33,7 @@ struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
   char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
-  char argument2[WORD_SIZE];        /*!< Second argument (optional in USE command) */
+  char argument2[ARG_LENGTH];       /*!< Second argument (optional in USE command) */
   Status lastcmd_Success;           /*!< Whether the last command was succesful or not*/
 };
 
@@ -90,91 +89,186 @@ CommandCode command_get_code(Command *command)
 
 Status command_get_user_input(Command *command)
 {
-  char input[CMD_LENGTH] = "", *token = NULL;
+  char input[CMD_LENGTH] = "", *token = NULL, first_argument[ARG_LENGTH], second_argument[ARG_LENGTH];
+  char *aux = NULL, *sep = NULL, input_cpy[CMD_LENGTH];
   int i = UNKNOWN - NO_CMD + 1;
 
   CommandCode cmd;
 
   if (!command)
-  {
     return ERROR;
-  }
-  /*read the command entered by the user*/
-  if (fgets(input, CMD_LENGTH, stdin))
+
+  if (fgets(input, CMD_LENGTH, stdin) == NULL)
   {
-    token = strtok(input, " \r\n");
-    if (!token)
-    {
-      return command_set_code(command, UNKNOWN);
-    }
-
-    cmd = UNKNOWN;
-    /* We verify that the code written by the user corresponds to one of the commands saved in cmd_to_str, whether it is a one-letter code or the full name of the code. */
-    /*If either of the comparisons are true, the loop ends and the index 'i' is used to save the chosen command through the command_set_code function*/
-    while (cmd == UNKNOWN && i < N_CMD)
-    {
-      if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL]))
-      {
-        cmd = i + NO_CMD;
-      }
-      else
-      {
-        i++;
-      }
-    }
-
-
-    /* first argument for all commands */
-    if (cmd == TAKE || cmd == INSPECT || cmd == DROP || cmd == MOVE || cmd == RECRUIT || cmd == ABANDON || cmd == CHAT || cmd == ATTACK || cmd == SAVE || cmd == LOAD || cmd == TEAM ||cmd == OPEN || cmd == USE)
-    {
-      token = strtok(NULL, " \r\n");
-      if (token)
-      {
-        command_set_argument(command, token);
-      }
-      else
-      {
-        command_set_argument(command, NO_ARG);
-      }
-    }
-    else
-    {
-      command_set_argument(command, NO_ARG);
-    }
-
-    /* second argument specifically for the USE command */
-    if (cmd == USE)
-    {
-      token = strtok(NULL, " \r\n");
-      if (token && !strcasecmp(token, "over"))
-      {
-        token = strtok(NULL, "\r\n");
-        if (token)
-        {
-          command_set_argument2(command, token);
-        }
-        else
-        {
-          command_set_argument2(command, NO_ARG);
-        }
-      }
-      else
-      {
-        command_set_argument2(command, NO_ARG);
-      }
-    }
-    else
-    {
-      command_set_argument2(command, NO_ARG);
-    }
-
-    return command_set_code(command, cmd);
-  }
-  else
-  {
-    fprintf(stdout, "No fgets");
     return command_set_code(command, EXIT);
   }
+
+  memcpy(input_cpy, input, CMD_LENGTH);
+
+  token = strtok(input, " \r\n");
+  if (!token)
+    return command_set_code(command, UNKNOWN);
+
+  cmd = UNKNOWN;
+
+  while (cmd == UNKNOWN && i < N_CMD)
+  {
+    if (!strcasecmp(token, cmd_to_str[i][CMDS]) || !strcasecmp(token, cmd_to_str[i][CMDL]))
+    {
+      cmd = i + NO_CMD;
+    }
+    else
+    {
+      i++;
+    }
+  }
+
+  switch (cmd)
+  {
+  /* commands that only expect one argument */
+  case TAKE:
+  case DROP:
+  case CHAT:
+  case SAVE:
+  case LOAD:
+  case MOVE:
+  case ATTACK:
+  case INSPECT:
+  case RECRUIT:
+  case TEAM:
+  case ABANDON:
+  {
+    /* copy of the input buffer needed because strtok modifies the input string to have a NULL character before the buffer's end */
+    if (strlen(token) == strlen(input_cpy))
+    {
+      command_set_argument(command, NO_ARG);
+      break;
+    }
+
+    /* pointer to the first word after the command token */
+    aux = input + strlen(token) + 1;
+
+    /* truncate command argument if necessary - will likely casue a action error in game_actions module */
+    if (strlen(aux) >= ARG_LENGTH)
+    {
+      strncpy(first_argument, aux, ARG_LENGTH - 1);
+      first_argument[ARG_LENGTH - 1] = '\0';
+    }
+    else
+    {
+      strcpy(first_argument, aux);
+      first_argument[strlen(aux) - 1] = '\0';
+    }
+
+    command_set_argument(command, first_argument);
+    command_set_argument2(command, NO_ARG);
+
+    break;
+  }
+  case OPEN:
+  case USE:
+  case GIVE:
+  {
+    if (cmd == GIVE)
+      sep = GIVE_ARG;
+    if (cmd == OPEN)
+      sep = OPEN_ARG;
+    if (cmd == USE)
+      sep = USE_ARG;
+
+    /* keyword is not found */
+    if (strstr(input_cpy, sep) == NULL && cmd != USE)
+    {
+      command_set_argument(command, NO_ARG);
+      command_set_argument2(command, NO_ARG);
+      break;
+    } else if (cmd == USE && strstr(input_cpy, sep) == NULL) {
+      /* handle explicitly case where use is called without second argument */
+
+      /* start of first word after command token */
+      aux = input + strlen(token) + 1;
+
+      /* truncate if necessary */
+      if (strlen(aux) >= ARG_LENGTH)
+      {
+        strncpy(first_argument, aux, ARG_LENGTH - 1);
+        first_argument[ARG_LENGTH - 1] = '\0';
+      }
+      else
+      {
+        strcpy(first_argument, aux);
+        first_argument[strlen(aux) - 1] = '\0';
+      }
+
+      /* assign both arguments, second arg is empty */
+      command_set_argument(command, first_argument);
+      command_set_argument2(command, NO_ARG);
+
+      /* exit switch statement */
+      break;
+    }
+
+    /* second argument of the command */
+    aux = strstr(input_cpy, sep) + strlen(sep);
+
+    /* no second argument is given */
+    if (aux + strlen(aux) - 1 == input + strlen(input) - 1) /* avoid out of bounds access with -1 */
+    {
+      command_set_argument(command, NO_ARG);
+      command_set_argument2(command, NO_ARG);
+      break;
+    }
+
+    /* truncate second argument if necessary */
+    if (strlen(aux) >= ARG_LENGTH)
+    {
+      strncpy(second_argument, aux, ARG_LENGTH - 1);
+      second_argument[ARG_LENGTH - 1] = '\0';
+    }
+    else
+    {
+      strcpy(second_argument, aux);
+      second_argument[strlen(aux) - 1] = '\0';
+    }
+
+    /* assign second argument */
+    command_set_argument2(command, second_argument);
+
+    /* null-terminate first argument for easier function calls */
+    aux = strstr(input_cpy, sep);
+    *aux = '\0';
+
+    /* start of the first word after command token */
+    aux = input_cpy + strlen(token) + 1;
+
+    /* truncate if necessary */
+    if (strlen(aux) >= ARG_LENGTH)
+    {
+      strncpy(first_argument, aux, ARG_LENGTH - 1);
+      first_argument[ARG_LENGTH - 1] = '\0';
+    }
+    else
+    {
+      strncpy(first_argument, aux, strlen(aux) + 1);
+      first_argument[strlen(aux)] = '\0';
+    }
+
+    /* assign first argument as well */
+    command_set_argument(command, first_argument);
+
+    /* exit switch statement */
+    break;
+  }
+  default:
+  {
+    /* no argument expected */
+    command_set_argument(command, NO_ARG);
+    command_set_argument2(command, NO_ARG);
+    break;
+  }
+  }
+
+  return command_set_code(command, cmd);
 }
 
 char *command_get_argument(Command *command)
