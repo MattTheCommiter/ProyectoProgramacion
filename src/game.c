@@ -28,7 +28,9 @@ typedef struct _InterfaceData{
   char message[DIALOGUE_LINE_LENGTH];/*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
   Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
-}InterfaceData;
+  int command_counter;            /*!<Counter for the number of commands executed */
+} InterfaceData;
+
 
 
 /**
@@ -888,6 +890,7 @@ InterfaceData *game_interface_data_create()
   data->description[1] = '\0';
   data->message[1] = '\0';
   data->show_message = FALSE;
+  data->command_counter = 0;
   return data;
 }
 
@@ -980,6 +983,31 @@ Status game_interface_in_pos_set_description(Game *game, int pos, char *desc)
   strcpy(game->playerGraphicInformation[pos]->description, desc);
   return OK;
 }
+
+/*START: FUNCTIONS RELATED TO command_counter*/
+
+  int game_get_command_counter(Game *game) {
+    if (!game) {
+      return -1; 
+    }
+    return game->playerGraphicInformation[game->turn]->command_counter;
+  }
+  
+  void game_set_command_counter(Game *game, int counter) {
+    if (!game) {
+      return;
+    }
+    game->playerGraphicInformation[game->turn]->command_counter = counter;
+  }
+  
+  void game_increment_command_counter(Game *game) {
+    if (!game) {
+      return;
+    }
+    game->playerGraphicInformation[game->turn]->command_counter++;
+  }
+
+/*END: FUNCTIONS RELATED TO command_counter*/
 
 Bool game_get_show_message(Game *game)
 {
