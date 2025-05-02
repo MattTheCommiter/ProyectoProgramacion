@@ -131,7 +131,7 @@ char *frame_color_to_string(Frame_color color){
 Area* screen_area_init(int x, int y, int width, int height){
   int i = 0;
   Area* area = NULL;
-  /*We assign all of the values given as arguments simultaneously, placing the cursosr in the x,y position with respects to the __data pointer*/
+  /*We assign all of the values given as arguments simultaneously, placing the cursor in the x,y position with respects to the __data pointer*/
   if ( (area  = (Area*) malloc (sizeof(struct _Area))) ){
     *area = (struct _Area) {x, y, width, height, ACCESS(__data, x, y)};
 
