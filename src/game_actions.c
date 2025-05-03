@@ -969,7 +969,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
 
 void game_actions_give(Game *game, char *object_name, char *player_name)
 {
-  Player *recipient = NULL;
+  Player *recipient = NULL, *dependant = NULL;
   Object *object = NULL;
 
   if (!game || !object_name || !player_name)
@@ -1008,6 +1008,19 @@ void game_actions_give(Game *game, char *object_name, char *player_name)
     return;
   }
 
+  /*Check if the object passed has dependencies*/
+  if(object_get_dependency(object) != NO_ID){
+    if(!(dependant = game_get_object(game, object_get_dependency(object)))){
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if(player_backpack_contains(recipient, dependant) == FALSE){
+      /*The recipient cant take the object*/
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+  
   /* check if recipient player has sufficient room */
   if (player_backpack_is_full(recipient) == TRUE)
   {
