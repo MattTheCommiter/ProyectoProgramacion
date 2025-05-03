@@ -1308,8 +1308,7 @@ Status gameManagement_load_interface(Game *game, char *filename)
 
       token = strtok(NULL, "/|\r\n");
       show = atol(token) == 1 ? TRUE : FALSE;
-
-      game_set_show_message_in_pos(game, pos, show);
+      game_set_show_message_in_pos(game, show, pos);
     }
   }
 

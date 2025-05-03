@@ -271,7 +271,7 @@ Player *game_get_player_from_name(Game *game, char *name)
     return NULL;
   for (i = 0; i < game->n_players; i++)
   {
-    if (!strcmp(name, player_get_name(game->players[i])))
+    if (!strcasecmp(name, player_get_name(game->players[i])))
     {
       return game->players[i];
     }
@@ -990,8 +990,10 @@ Bool game_get_show_message(Game *game)
 
 Status game_set_show_message(Game *game, Bool bool)
 {
-  if (!game)
+  if (!game){
     return ERROR;
+    }
+
   game->playerGraphicInformation[game->turn]->show_message = bool;
   return OK;
 }
@@ -1007,6 +1009,7 @@ Status game_set_show_message_in_pos(Game *game, Bool bool, int pos)
 {
   if (!game || pos >= game->n_players)
     return ERROR;
+
   game->playerGraphicInformation[pos]->show_message = bool;
   return OK;
 }

@@ -191,6 +191,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
   switch (cmd)
   {
   case UNKNOWN:
+  
     game_actions_unknown(*game);
     break;
 
@@ -231,6 +232,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     break;
   case TEAM:
     game_actions_team(*game, command_get_argument(command), gengine);
+    break;
   case USE:
     game_actions_use(*game, command_get_argument(command), command_get_argument2(command));
     break;
@@ -246,7 +248,6 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
   default:
     break;
   }
-
   return OK;
 }
 
@@ -803,7 +804,6 @@ void game_actions_load(Game **game, char *arg)
   }
   else
   {
-    game_set_turn(*game, game_get_turn(*game) - 1);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), OK);
   }
 
@@ -831,6 +831,16 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
+  /*We check if the player is already on the same team*/
+  if(player_get_team(teammate) == player_get_team(game_get_current_player(game))){
+    sprintf(message, "The player %s is already on your team!", arg);
+    game_set_message(game, message);
+    game_set_show_message(game, TRUE);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+
   /*We found the turn corresponding to the new teammate*/
 
   for (i = 0; i < game_get_n_players(game); i++)
@@ -848,12 +858,14 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   strcpy(previous_message, game_get_message(game));
   show = game_get_show_message(game);
 
+  /*print the message for the other player to accept or decline*/
   sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
-
+  
   game_set_message(game, message);
   game_set_show_message(game, TRUE);
-
+  /*paint the game in order to see the new message*/
   graphic_engine_paint_game(gengine, game);
+  /*get the user input*/
   acceptance = command_get_confirmation();
 
   /*set the values back */
