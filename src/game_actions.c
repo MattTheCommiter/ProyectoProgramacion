@@ -969,8 +969,8 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
 
 void game_actions_give(Game *game, char *object_name, char *player_name)
 {
-  Player *recipient = NULL, *dependant = NULL;
-  Object *object = NULL;
+  Player *recipient = NULL;
+  Object *object = NULL, *dependant = NULL;
 
   if (!game || !object_name || !player_name)
   {
@@ -1014,7 +1014,7 @@ void game_actions_give(Game *game, char *object_name, char *player_name)
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
-    if(player_backpack_contains(recipient, dependant) == FALSE){
+    if(player_backpack_contains(recipient, object_get_dependency(object)) == FALSE){
       /*The recipient cant take the object*/
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;

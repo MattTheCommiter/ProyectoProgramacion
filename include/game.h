@@ -27,7 +27,7 @@
 #define MAX_LINKS (MAX_SPACES * 4)  /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
 #define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
-#define MAX_MISSIONS 5              /*!<The maximum ammount of missions that can be in the game*/
+#define MAX_MISSIONS 10             /*!<The maximum ammount of missions that can be in the game*/
 
 /**
  * @brief describes whether we want to access to the last, the second to last or the third to last command
