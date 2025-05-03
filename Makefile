@@ -7,7 +7,7 @@ DOCDIR=./doc
 INC=-Iinclude
 CLIBS=-L$(LIBDIR) -lscreen
 TESTS=character_test set_test space_test link_test inventory_test object_test player_test
-EXE=juego_hormiga $(TESTS)
+EXE=juego $(TESTS)
 vpath %.h $(INCDIR)
 vpath %.c $(SRCDIR)
 vpath %.o $(OBJDIR)
@@ -15,7 +15,7 @@ vpath %.o $(OBJDIR)
 .PHONY: all general tests clean run runV runLog runLog_read1 runLog_read2 set_test_run character_test_run space_test_run inventory_test_run link_test_run object_test_run player_test_run set_test_runV character_test_runV space_test_runV inventory_test_runV link_test_runV object_test_runV player_test_runV docs clean_docs tests test_run commands
 
 #make - compile game 
-all: juego_hormiga
+all: juego
 
 #make tests - compile every test
 tests: $(TESTS)
@@ -24,14 +24,14 @@ tests: $(TESTS)
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego_hormiga :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o $(OBJDIR)/libscreen.o $(OBJDIR)/cinematics.o
+juego :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o $(OBJDIR)/libscreen.o $(OBJDIR)/cinematics.o $(OBJDIR)/mission.o
 	gcc -g -o $@ $^
 
 
 
 ###################################################### OBJECTS NEEDED FOR GAME ######################################################
 $(OBJDIR)/game.o: game.c game.h command.h types.h space.h set.h character.h \
-  player.h inventory.h object.h gameManagement.h link.h cinematics.h
+  player.h inventory.h object.h gameManagement.h link.h cinematics.h mission.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/game_loop.o: src/game_loop.c include/graphic_engine.h include/game.h \
@@ -56,7 +56,7 @@ $(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h \
-  command.h space.h set.h player.h object.h link.h
+  command.h space.h set.h player.h object.h link.h cinematics.h mission.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/object.o: object.c object.h types.h
@@ -82,6 +82,9 @@ $(OBJDIR)/link.o: link.c link.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/cinematics.o: cinematics.c cinematics.h types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/mission.o: mission.c mission.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
@@ -167,19 +170,19 @@ docs:
 
 #Various run commmands
 run:
-	./juego_hormiga house.dat
+	./juego house.dat
 
 runLog:
-	./juego_hormiga house.dat -l Logfile
+	./juego house.dat -l Logfile
 
 runLog_read1:
-	./juego_hormiga house.dat -l Logfile < game1.cmd
+	./juego house.dat -l Logfile < game1.cmd
 
 runLog_read2:
-	./juego_hormiga house.dat -l Logfile < game2.cmd
+	./juego house.dat -l Logfile < game2.cmd
 
 runV:
-	valgrind --leak-check=full ./juego_hormiga house.dat
+	valgrind --leak-check=full ./juego house.dat
 
 character_test_run:
 	@echo ">>>>>>Running character_test:"

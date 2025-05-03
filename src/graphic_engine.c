@@ -383,7 +383,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
   /*We print the player, its location , health and then the object in the inventory*/
 
-  sprintf(str, "Player(%s) : %d (%d)",player_get_name(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
+  sprintf(str, "Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
   screen_area_puts(ge->descript, str);

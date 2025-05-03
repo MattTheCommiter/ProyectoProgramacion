@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #include <unistd.h>
 #include <time.h>
@@ -98,6 +99,9 @@ int main(int argc, char *argv[])
     }
   }
 
+  /*Command to support UNICODE characters*/
+  setlocale(LC_ALL, "");
+
   /* initializes the game and the graphic engine using the game data file*/
   if (!game_loop_init(&game, &gengine, argv[1])){
     /*runs the game loop, from user inputs and updates the game state. It also logs commands if a log file is given*/
@@ -130,7 +134,7 @@ int game_loop_init(Game **game, Graphic_engine **gengine, char *file_name)
     game_destroy((*game));
     return 1;
   }
-
+  game_set_current_cinematic(*game, INTRODUCTION);
   return 0;
 }
 

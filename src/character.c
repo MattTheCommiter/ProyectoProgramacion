@@ -29,7 +29,7 @@ struct _Character
     Bool friendly;                            /*!<A bool that sets wether the character is friendly or not*/
     char message[MAX_MESSAGES][WORD_SIZE];    /*!<a array of strings for the message that a character says*/
     int n_messages;                           /*!<number of messages of a character*/
-    int message_turn;                         /*!<the turn of the next mess¡sage to say*/
+    int message_turn;                         /*!<the turn of the next message to say*/
     Id following;                             /*!<Id of the player they are following*/
     Id location;                              /*Id of the location of the character*/
 };
@@ -210,7 +210,7 @@ Id character_get_location(Character *c) {
 }
 
 Status character_add_message(Character *c, char *message){
-    if(!c || !message) return ERROR;
+    if(!c || !message || (c->message_turn + 1) > MAX_MESSAGES) return ERROR;
     strcpy(c->message[c->n_messages], message);
     c->n_messages++;
     return OK;

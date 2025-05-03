@@ -13,7 +13,7 @@
 
 #include "types.h"
 
-#define GDESCTAM 7          /*!<Maximum size of the graphic description*/
+#define GDESCTAM 17          /*!<Maximum size of the graphic description*/
 #define MAXHEALTH 100       /*!<Maximum health a character can have*/
 #define MAX_MESSAGES 15    /*!<Maximum number of messages a character can say*/
 

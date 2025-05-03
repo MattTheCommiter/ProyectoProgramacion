@@ -11,6 +11,7 @@
 #ifndef LIBSCREEN_H
 #define LIBSCREEN_H
 #include "types.h"
+#include "character.h"
 
 /**
  * @brief Definition of Area type for the _Area structure

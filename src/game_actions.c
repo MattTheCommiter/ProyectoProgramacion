@@ -828,8 +828,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }else{
-    set_add(player_get_team(game_get_current_player(game)), player_get_id(teammate));
-    set_add(player_get_team(teammate), player_get_id(game_get_current_player(game)));
+    player_set_team(teammate, player_get_id(game_get_current_player(game)));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
     return;
   }

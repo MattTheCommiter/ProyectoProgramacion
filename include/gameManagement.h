@@ -18,6 +18,7 @@
  #include "object.h"
  #include "link.h"
  #include "cinematics.h"
+ #include "mission.h"
 
  
  /*declaration of public functions*/
@@ -87,7 +88,30 @@
   */
  Status gameManagement_load_cinematics(Game *game, char *filename);
 
+ /**
+  * @brief loads the missions from a file
+  * @author Alvaro Inigo
+  * @param game a pointer to the game
+  * @param filename the name of the file to read
+  * @return Status OK or ERROR
+  */
+ Status gameManagement_load_missions(Game *game, char *filename);
+
+ /**
+  * @brief saves all the information related to the game in a file acording to a specific format
+  * @author Alvaro Inigo
+  * @param game a pointer to the game
+  * @param filename the name of the file to save into
+  * @return Status OK or ERROR
+  */
  Status gameManagement_save(Game *game, char *filename);
 
+ /**
+  * @brief loads all the information of the game for the command load
+  * @author Alvaro Inigo
+  * @param game a pointer to the game
+  * @param filename the name of the file to read
+  * @return Status OK or ERROR
+  */
  Status gameManagement_load(Game **game, char *filename);
  #endif

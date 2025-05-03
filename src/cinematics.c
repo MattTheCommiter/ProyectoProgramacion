@@ -18,7 +18,7 @@
  */
 struct _Cinematics_text{
     char cinematic_text[NUMBER_OF_DIALOG_LINES][DIALOGUE_LINE_LENGTH];    /*!<Two-dinemnsional array that stores the dialog lines for each cinematic*/
-    int n_lines;                                                        /*!<Number of dialogue lines in the cinematic*/
+    int n_lines;                                                          /*!<Number of dialogue lines in the cinematic*/
 };
 
 

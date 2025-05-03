@@ -13,8 +13,17 @@ int COLUMNS=80; /*!<Number of total columns in the game's screen*/
 #define TOTAL_DATA (ROWS * COLUMNS) + 1 /*!<Total ammount of characters in the screen with extra space for NULL termination*/
 #define BG_CHAR '~'   /*!<Value which corresponds to painting the background*/
 #define FG_CHAR ' '   /*!<Value which corresponds to painting the foreground*/
-#define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x)) /*Macro function that returns a determined position (x,y) with respects to a certain cursor (d, which is usually a pointer to the data that we want to access)*/
-
+#define ACCESS(d, x, y) (d + ((y) * COLUMNS) + (x)) /*!<Macro function that returns a determined position (x,y) with respects to a certain cursor (d, which is usually a pointer to the data that we want to access)*/
+#define FINAL_CHARACTER 1 /*!<Size of the '\0' character that limits the size of strings*/
+#define SIZE_IN_CHAR_TWO_HEXADECIMAL_VALUES 2 /*!<Size two hexadecimal values occupy in a string, with each hexadecimal value corresponding to a character*/
+#define SIZE_OF_CONVERTED_UNCODE_SEQ 4  /*!<Size of a UNICODE sequence string that has been converted to its corresponding code, with the '\0' at the end*/
+#define N_ESCAPE_SEQ 4    /*!<Number of escape sequences that are found in a UNICODE sequence, for instance, \xF0\x9F\x91\xA9 has 4 escape sequences*/
+#define HEXADECIMAL_BASE 16   /*!<Numerical value that corresponds to the base of hexadecimal numbers*/
+#define EMOTICON_SIZE 1 /*!<Represents the size of the special UNICODE character in the terminal*/
+#define NEXT_POSITION 1 /*!<Represents the number of positions advanced when desiring to move to the next position in an array*/
+#define STARTING_POSITION 0 /*!<Represents the initial position in an array*/
+#define TOTAL_HORIZONTAL_SEPARATORS 4 /*!<Represents the number of separating characters that are found in a line*/
+#define SEPARATOR_LINE_AFTER_MAP 2    /*!<Represents that the separator line that is found after the map area is the second one out of the total*/
 /**
  * @brief structure that saves all of the information related to the area
  * 
@@ -63,10 +72,24 @@ void screen_destroy(){
 
 void screen_paint(Frame_color color, Bool lights_on){
   char *src = NULL;
-  char dest[COLUMNS + 1];
-  int i=0;
+  char destination[COLUMNS + FINAL_CHARACTER];
+  unsigned char aux[SIZE_IN_CHAR_TWO_HEXADECIMAL_VALUES + FINAL_CHARACTER]; /*Auxiliary variable where we store the two hexadecimal values that define each escape sequence*/
+  unsigned char gdesc[SIZE_OF_CONVERTED_UNCODE_SEQ + FINAL_CHARACTER]; /*Variable where we store the hexadecimal values which correspond to the UNICODE character, with the '\0' at the end*/
+  unsigned char sequence[GDESCTAM]; /*VAriable where we store the UNICODE sequence*/
+  int i=0, j=0;
+  int size_of_escape_seq_start;
+  int n_unicode_characters=0;
+  int n_separator_lines=0;
+  char light_theme_code[] = "[0;30;47m", dark_theme_code[] = "[0;37;40m", *selected_theme=NULL;
 
-  memset(dest, 0, COLUMNS + 1);
+  size_of_escape_seq_start = strlen("\\x");
+  if(lights_on == TRUE){
+    selected_theme = light_theme_code;
+  }else{
+    selected_theme = dark_theme_code;
+  }
+
+  memset(destination, 0, COLUMNS + 1);
 
   if (__data){
     /* puts(__data); */ /*Dump data directly to the terminal*/
@@ -74,17 +97,43 @@ void screen_paint(Frame_color color, Bool lights_on){
 
     puts("\033[2J"); /*Clear the terminal*/
     /*We go through the __data variable with pointer arythmetic, adding the number of columns in each iteration*/
-    for (src=__data; src < (__data + TOTAL_DATA - 1); src+=COLUMNS){
-      memcpy(dest, src, COLUMNS);
-      /* printf("%s\n", dest); */
+    for (src=__data; src < (__data + TOTAL_DATA - FINAL_CHARACTER); src+=COLUMNS){
+      memcpy(destination, src, COLUMNS);
+      
+      /*We set the number of UNICODE characters printed in the line to 0*/
+      n_unicode_characters = 0;
+      n_separator_lines=0;
       /*We print each character in the column individually*/
       for (i=0; i<COLUMNS; i++){
-        if (dest[i] == BG_CHAR){
-          printf("%s%c\033[0m", frame_color_to_string(color), dest[i]); /* fg:blue(34);bg:blue(44) */
-        }else if(lights_on){
-          printf("\033[0;30;47m%c\033[0m", dest[i]); /* fg:black(30);bg:white(47)*/
+        if (destination[i] == BG_CHAR){
+          if(n_separator_lines == SEPARATOR_LINE_AFTER_MAP){
+            /*We compensate the fact that the UNICODE character occupies 16 bytes but only one space in the printed output by printing spaces*/
+            for(j=0;j<n_unicode_characters * (GDESCTAM - FINAL_CHARACTER - EMOTICON_SIZE);j++){
+              printf("\033%s \033[0m", selected_theme);
+            }
+          }
+          printf("%s%c\033[0m", frame_color_to_string(color), destination[i]); /* fg:blue(34);bg:blue(44) */
+          n_separator_lines++;
         }else{
-          printf("\033[0;37;40m%c\033[0m", dest[i]); /* fg white(37);bg:black(40)*/
+          /*In case we detect an escape sequence indicating the presence of a UNICODE character, we must print this in a particular manner to ensure the terminal prints the image associated to the UNICODE sequence correctly*/
+          if (destination[i] == '\\' && destination[i + NEXT_POSITION] == 'x'){
+            /*We copy the sequence to an auxiliary variable called sequence*/
+            strncpy((char *)sequence, destination + i, GDESCTAM - FINAL_CHARACTER);
+            sequence[GDESCTAM] = '\0';
+            /*For each of the escape sequences, we store the two hexadecimal values (for instance, F and 0) in aux and use strtol to convert that into one of the hexadecimal values stored in gdesc.*/
+            for(j=0;j<N_ESCAPE_SEQ;j++){
+              aux[STARTING_POSITION] = (unsigned char)sequence[size_of_escape_seq_start + N_ESCAPE_SEQ*j];
+              aux[STARTING_POSITION + NEXT_POSITION] = (unsigned char)sequence[size_of_escape_seq_start + NEXT_POSITION + N_ESCAPE_SEQ*j];
+              aux[STARTING_POSITION + NEXT_POSITION + NEXT_POSITION] = '\0';
+              gdesc[j] = (unsigned char)strtol((char *)aux, NULL, HEXADECIMAL_BASE);
+            }
+            gdesc[SIZE_OF_CONVERTED_UNCODE_SEQ] = '\0';
+            printf("\033%s%s\033[0m", selected_theme, gdesc);
+            i += GDESCTAM - EMOTICON_SIZE;
+            n_unicode_characters++;
+          }else{
+            printf("\033%s%c\033[0m", selected_theme, destination[i]); /* fg white(37);bg:black(40)*/ 
+          }
         }
       }
       printf("\n");
