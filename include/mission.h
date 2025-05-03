@@ -28,8 +28,16 @@ typedef struct _Mission Mission;
 typedef enum{  
     NO_MISSION = -1,
     TEAM_MISSION,
+    LANTERN_MISSION,
     GENERATOR_MISSION,
-    FATHER_MISSION
+    FATHER_MISSION,
+    SECOND_FLOOR_MISSION,
+    MEDKIT_MISSION,
+    BEDROOM_MISSION,
+    REX_MISSION,
+    THIRD_FLOOR_MISSION,
+    BOSS_MISSION
+
 }Mission_Code;
 
  

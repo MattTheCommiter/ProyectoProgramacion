@@ -82,14 +82,14 @@ Status mission_add_objective(Mission *mission, char *objective){
 
 
 char *mission_get_next_dialogue(Mission *mission){
-    if(!mission || mission->next_dialogue_index >= mission->n_dialogues) return ERROR;
+    if(!mission || mission->next_dialogue_index >= mission->n_dialogues) return NULL;
     mission->next_dialogue_index++;
     return mission->dialogues[mission->next_dialogue_index - 1];
 }
 
 
 char *mission_get_next_objective(Mission *mission){
-    if(!mission || mission->next_objective_index >= mission->n_objectives) return ERROR;
+    if(!mission || mission->next_objective_index >= mission->n_objectives) return NULL;
     mission->next_objective_index ++;
     return mission->objectives[mission->next_objective_index - 1];
 }

@@ -28,6 +28,8 @@
 #o:3|Old Generator|15|This generator seems old, but could work if repaired|1|0|-1|-1|
 #o:4|rusty wrench|-1|a rusty but useful tool that could repair something|1|0|-1|-1|
 #o:5|rusty tool box|16|a rusty box with tools inside|0|0|-1|-1|
+#o:6|stairs|14|old and fragile stairs|0|0|-1|-1|
+
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -84,15 +86,18 @@
 
 @@Format: :code|step|current_objective|objectives...|  //  code|current_instruction|instructions...|
 
-
+@@Mission Team
 #mo:0|0|0|Team with your brother|
 #mt:0|0|Alice, lets work together, shall we?|
 
+@@Mission Linterna
+#mo:1|0|0|Turn on the lantern|Give the batteries to your sister|
+#mt:1|0|Alice, its so dark, turn on the lantern please|
 
-#mo:1|0|0|Turn on the lantern|Give the batteries to your sister|Look for a way to turn on the light of the house|Inspect the generator|
-#mt:1|0|Alice, its so dark, turn on the lantern please|Alice, you should turn on the lights of the house, im scared|
+@@Mission Generador
+#mo:2|0|0|Look for a way to turn on the light of the house|Inspect the generator|
+#mt:2|0|Alice, you should turn on the lights of the house, im scared|Oh, the old generator of my father, I might remember how to use it|
 
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@@@@ ALICE'S FLASHBACK @@@@@
 
@@ -117,8 +122,46 @@
 
 #c:3|Father|  F   |  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
-#mo:2|0|0|Go to the storage room|Open(use) the tool box|Return to the backyard with the wrench|Turn the generator on|
-#mt:2|0|Hey Alice, come help me with the generator!|Just go grab the wrench from the storage room|You were fast! Now use it on the generator|voila! thank's Alice's|
-
+@@Mission FLASHBACK de Alice
+#mo:3|0|0|Go to the storage room|Open(inspect) the tool box and take what could be useful|Return to the backyard with the wrench|Turn the generator on|
+#mt:3|0|Hey Alice, come help me with the generator!|Just go grab the wrench from the storage room|You were fast! Now use it on the generator|voila! thank's Alice's|
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+@@Mission subir al piso de arriba
+#mo:4|0|0|Both players must go to the upper floor, search the stairs|Both players Move up|
+#mt:4|0|Now that the lights are on, we should go upstairs!|
+
+@@CINEMATICA SUBIR AL PISO DE ARRIBA
+
+@@Mission buscar curacion para Alice
+
+#mo:5|0|0|Look for something to heal yourself in the bathroom|Inspect the medkit|Heal yourself|
+#mt:5|0|Oh! it hurts! I should heal me|It might be something in the medkit..|
+
+
+@@Mission cuarto de Bob
+#mo:6|0|0|Take Bob to his room|
+#mt:6|0|I should explore the house|
+
+@@CINEMATICA DEL DINOSAURIO QUE HABLA
+
+##aqui estaria bien que el dinosaurio dijera que no puedes reclutarle hasta no tener su pata
+
+@@Mission buscar la pata del DINOSAURIO
+
+#mo:7|0|0|Search for the leg of the Dino near the bedroom|take the leg and recluit the dino|
+#mt:7|0|Dont worry Mega-T-Rex! I'll help you|
+
+@@Mission subir al piso 3
+
+#mo:8|0|0|Get both players to the upper floor, look for the stairs|
+#mt:8|0|Lets go! We should be able to find grandma's treasure|
+
+@@CINEMATICA BOSS FINAL
+
+#mo:9|0|0|Kill the teddy bear|go to the next room to see the treasure|take the treasure|
+#mt:9|0||You shall not pass!|We are sorry teddy bear, you had to die|lets take the treasure!|
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+

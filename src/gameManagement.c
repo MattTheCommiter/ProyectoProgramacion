@@ -675,14 +675,13 @@ Status gameManagement_load_cinematics(Game *game, char *filename)
 #endif
     }
   }
-
   if (ferror(file))
   {
+
     status = ERROR;
   }
 
   fclose(file);
-
   return status;
 }
 
@@ -719,7 +718,6 @@ Status gameManagement_load_missions(Game *game, char *filename)
         fclose(file);
         return ERROR;
       }
-
       toks = strtok(line + start_len, "|\r\n");
       code = atol(toks);
       mission_set_code(mission, code);
@@ -773,7 +771,6 @@ Status gameManagement_load_missions(Game *game, char *filename)
   }
 
   fclose(file);
-
   return status;
 }
 

@@ -237,18 +237,19 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
   default:
     break;
   }
-
+  /*
   game_rules_apply(*game);
-
+  */
   
   /* Increment the command counter */
   game_increment_command_counter(*game);
  
   /* Check if the counter is a multiple of 10 */
+  /*
   if (game_get_command_counter(*game) % 10 == 0) {
     game_rules_apply_random(*game);
   }
-  
+  */
   return OK;
 }
 

@@ -28,7 +28,7 @@ typedef struct _InterfaceData{
   char message[DIALOGUE_LINE_LENGTH];/*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
   Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
-  int command_counter;            /*!<Counter for the number of commands executed */
+  int command_counter;             /*!<Counter for the number of commands executed */
 } InterfaceData;
 
 
@@ -113,7 +113,6 @@ Status game_create(Game **game)
 
 Status game_create_from_file(Game **game, char *filename)
 {
-
   if (game_create(game) == ERROR)
   {
     return ERROR;
@@ -151,7 +150,7 @@ Status game_create_from_file(Game **game, char *filename)
   }
   if(gameManagement_load_missions((*game), filename) == ERROR)
   {
-    fprintf(stdout, "Could not load cinematics");
+    fprintf(stdout, "Could not load misions");
     return ERROR;
   }
 
