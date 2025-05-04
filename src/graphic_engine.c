@@ -20,22 +20,22 @@
  */
 #define WIDTH_MAP N_TOTAL_COLUMNS_IN_SQUARE     /*!<Width of the map in the graphic interface*/
 #define WIDTH_DIALOGUE 60                       /*!<Width of the dialogue boc in the graphic interface*/
-#define WIDTH_DES WIDTH_MAP                     /*!<Width of the description box in the graphic interface*/
+#define WIDTH_DES 40                            /*!<Width of the description box in the graphic interface*/
 #define WIDTH_BAN 25                            /*!<Width of the banner in the graphic interface*/
 #define WIDTH_COMPASS WIDTH_DIALOGUE            /*!<Width of the compas area in the graphic_interface*/
-#define WIDTH_HLP 40                            /*!<Width of the help area in the grapihc interface*/
-#define WIDTH_FEEDBACK WIDTH_HLP                /*!<Width of the feedback area in the grapihc interface*/
+#define WIDTH_HLP WIDTH_MAP                     /*!<Width of the help area in the grapihc interface*/
+#define WIDTH_FEEDBACK WIDTH_DES                /*!<Width of the feedback area in the grapihc interface*/
 #define WIDTH_SEPARATOR 1                       /*!<Width of the lines that separate space areas*/
-#define WIDTH_MISSION WIDTH_DIALOGUE + WIDTH_MAP + WIDTH_HLP + WIDTH_SEPARATOR * 2   /*!<Width of the mission area*/
+#define WIDTH_MISSION WIDTH_DIALOGUE + WIDTH_MAP + WIDTH_DES + WIDTH_SEPARATOR * 2   /*!<Width of the mission area*/
 
 #define HEIGHT_MAP (N_TOTAL_ROWS_IN_SQUARE + 2) /*!<Height of the map in the graphic interface*/
 #define HEIGHT_DIALOGUE HEIGHT_MAP              /*!<Height of the dialogue box in the grapihc interface*/
 #define HEIGHT_COMPASS 7                        /*!<Height of the compas area in the graphic_interface*/
 #define HEIGHT_MISSION 5                        /*!<Height of the mission area in the grapihc interface*/
 #define HEIGHT_BAN 1                            /*!<Height of the banner in the graphic interface*/
-#define HEIGHT_HLP HEIGHT_DIALOGUE              /*!<Height of the help box in the graphic interface*/
+#define HEIGHT_HLP HEIGHT_COMPASS               /*!<Height of the help box in the graphic interface*/
 #define HEIGHT_FDB HEIGHT_COMPASS               /*!<Height of the feedback box in the graphic interface*/
-#define HEIGHT_DES HEIGHT_COMPASS               /*!<Height of the description box in the graphic interface*/
+#define HEIGHT_DES HEIGHT_MAP                   /*!<Height of the description box in the graphic interface*/
 #define HEIGHT_SEPARATOR 1                      /*!<Height of the lines that separate areas in the graphic interface*/
 
 #define SIZE_OF_SPACE 2                         /*!<Size of the chars ' ,' between each object name*/
@@ -250,29 +250,20 @@ Graphic_engine *graphic_engine_create(){
     return ge;
   }
 
-  screen_init(HEIGHT_MAP + HEIGHT_DES + HEIGHT_MISSION + HEIGHT_BAN + HEIGHT_SEPARATOR + HEIGHT_SEPARATOR + HEIGHT_SEPARATOR, WIDTH_MISSION + WIDTH_SEPARATOR + WIDTH_SEPARATOR);
+  screen_init(HEIGHT_MAP + HEIGHT_COMPASS + HEIGHT_MISSION + HEIGHT_BAN + HEIGHT_SEPARATOR + HEIGHT_SEPARATOR + HEIGHT_SEPARATOR, WIDTH_MISSION + WIDTH_SEPARATOR + WIDTH_SEPARATOR);
   ge = (Graphic_engine *)malloc(sizeof(Graphic_engine));
   if (ge == NULL)
   {
     return NULL;
   }
-  /*Initializes all of the components of the game's graphic interface*/
-  /*ge->map = screen_area_init(WIDTH_DIALOGUE + 2, 1 + HEIGHT_MISSION, WIDTH_MAP, HEIGHT_MAP);
-  ge->descript = screen_area_init(WIDTH_MAP + WIDTH_DIALOGUE + 3, 1 + HEIGHT_MISSION, WIDTH_DES, HEIGHT_MAP);
-  ge->dialogue = screen_area_init(1, 1 + HEIGHT_MISSION, WIDTH_DIALOGUE, HEIGHT_MAP - HEIGHT_COMPASS - 1);
-  ge->compass = screen_area_init(1, (HEIGHT_MAP - HEIGHT_COMPASS + 1 + HEIGHT_MISSION), WIDTH_COMPASS, HEIGHT_COMPASS);
-  ge->banner = screen_area_init((int)((WIDTH_MAP + WIDTH_DES + 1 - WIDTH_BAN) / 2), HEIGHT_MAP + 2 + HEIGHT_MISSION, WIDTH_BAN, HEIGHT_BAN);
-  ge->help = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + 2 + HEIGHT_MISSION, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_HLP);
-  ge->feedback = screen_area_init(1, HEIGHT_MAP + HEIGHT_BAN + HEIGHT_HLP + 3 + HEIGHT_MISSION, WIDTH_MAP + WIDTH_DES + 1, HEIGHT_FDB);
-  ge->mission = screen_area_init(1, 1, WIDTH_MAP, HEIGHT_MISSION);*/
 
   ge->map = screen_area_init(WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR, WIDTH_MAP, HEIGHT_MAP);
-  ge->descript = screen_area_init(WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_MAP + HEIGHT_SEPARATOR, WIDTH_DES, HEIGHT_DES);
+  ge->descript = screen_area_init(WIDTH_SEPARATOR + WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_MAP + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR, WIDTH_DES, HEIGHT_DES);
   ge->dialogue = screen_area_init(1, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR, WIDTH_DIALOGUE, HEIGHT_DIALOGUE);
   ge->compass = screen_area_init(1, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_DIALOGUE + HEIGHT_SEPARATOR, WIDTH_COMPASS, HEIGHT_COMPASS);
   ge->banner = screen_area_init((int)((WIDTH_MISSION) / 2), 0, WIDTH_BAN, HEIGHT_BAN);
-  ge->help = screen_area_init(WIDTH_SEPARATOR + WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_MAP + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR, WIDTH_HLP, HEIGHT_HLP);
-  ge->feedback = screen_area_init(WIDTH_SEPARATOR + WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_MAP + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_HLP + HEIGHT_SEPARATOR, WIDTH_FEEDBACK, HEIGHT_FDB);
+  ge->help = screen_area_init(WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_MAP + HEIGHT_SEPARATOR, WIDTH_HLP, HEIGHT_HLP);
+  ge->feedback = screen_area_init(WIDTH_SEPARATOR + WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_MAP + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_DES + HEIGHT_SEPARATOR, WIDTH_FEEDBACK, HEIGHT_FDB);
   ge->mission = screen_area_init(1, HEIGHT_BAN, WIDTH_MISSION, HEIGHT_MISSION);
 
   return ge;
@@ -346,6 +337,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->descript);
   /*For all the objects in the game, we print its location*/
 
+  screen_area_puts(ge->descript, " OBJECTS IN THE GAME:");
   for (i = 0; i < game_get_n_objects(game); i++)
   {
     object_name = object_get_name(game_get_object_in_pos(game, i));
@@ -353,10 +345,12 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     object_gdesc = object_get_gdesc(game_get_object_in_pos(game, i));
     if (obj_loc != NO_ID)
     {
+      sprintf(str, " %s %s", object_name, object_gdesc);
+      screen_area_puts(ge->descript, str);
       if(space_get_discovered(game_get_space(game, obj_loc)) == TRUE){
-        sprintf(str, "%s %s location:%d", object_name, object_gdesc, (int)obj_loc);
+        sprintf(str, " - location:%d", (int)obj_loc);
       }else{
-        sprintf(str, "%s %s location:?", object_name, object_gdesc);
+        sprintf(str, " - location:?");
       }
     
       screen_area_puts(ge->descript, str);
@@ -364,9 +358,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
 
   /*for all the characters, we print their location and health*/
-
-  sprintf(str, "Characters : ");
-  screen_area_puts(ge->descript, str);
+  screen_area_puts(ge->descript, " "); /*Separator line*/
+  screen_area_puts(ge->descript, " CHARACTERS IN THE GAME: ");
   for (i = 0; i < game_get_n_characters(game); i++)
   {
     character_gdesc = character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
@@ -376,17 +369,20 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
 
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, " %s %s location:%d health: %d following: %ld", character_name, character_gdesc, (int)character_loc, character_hp >= 0? character_hp:0, character_following);
+      sprintf(str, " %s %s  location:%d health: %d following: %ld", character_name, character_gdesc, (int)character_loc, character_hp >= 0? character_hp:0, character_following);
     }else{
-      sprintf(str, " %s %s (?)", character_name, character_gdesc);
+      sprintf(str, " %s %s  (?)", character_name, character_gdesc);
     }
     screen_area_puts(ge->descript, str);
   }
   /*We print the player, its location , health and then the object in the inventory*/
 
+  screen_area_puts(ge->descript, " "); /*Separator line*/
+  screen_area_puts(ge->descript, " PLAYER INFORMATION: ");
   sprintf(str, " Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
-  sprintf(str, "  Objects in the inventory: ");
+  screen_area_puts(ge->descript, " "); /*Separator line*/
+  sprintf(str, " Objects in the inventory: ");
   screen_area_puts(ge->descript, str);
   for (i = 0; i < player_get_num_objects_in_backpack(game_get_current_player(game)); i++)
   {
@@ -424,20 +420,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  screen_area_puts(ge->help, " - move 'dir' or m 'dir'");
-  screen_area_puts(ge->help, " - exit or e");
-  screen_area_puts(ge->help, " - take 'arg' or t 'arg'");
-  screen_area_puts(ge->help, " - drop 'arg' or d 'arg'");
-  screen_area_puts(ge->help, " - chat 'arg' or c 'arg'");
-  screen_area_puts(ge->help, " - attack 'arg' or at 'arg'");
-  screen_area_puts(ge->help, " - inspect 'arg' or i 'arg'");
-  screen_area_puts(ge->help, " - recruit 'arg' or r 'arg'");
-  screen_area_puts(ge->help, " - abandon 'arg' or ab 'arg'");
-  screen_area_puts(ge->help, " - ssave 'arg' or s 'arg'");
-  screen_area_puts(ge->help, " - load 'arg' or l 'arg'");
-  screen_area_puts(ge->help, " - team 'arg' or tm 'arg'");
-  screen_area_puts(ge->help, " - open 'arg' with 'arg' or o 'arg' with 'arg'");
-  screen_area_puts(ge->help, " - give 'arg' to 'arg' or g 'arg' to 'arg'");
+  screen_area_puts(ge->help, " - move 'dir' or m 'dir' - exit or e - take 'arg' or t 'arg' - drop 'arg' or d 'arg' - chat 'arg' or c 'arg' - attack 'arg' or at 'arg' - inspect 'arg' or i 'arg' - recruit 'arg' or r 'arg' - abandon 'arg' or ab 'arg' - ssave 'arg' or s 'arg' - load 'arg' or l 'arg' - team 'arg' or tm 'arg' - open 'arg' with 'arg' or o 'arg' with 'arg' - give 'arg' to 'arg' or g 'arg' to 'arg'");
 
   /* Paint in the feedback area */
   screen_area_puts(ge->feedback, "Player command history: ");

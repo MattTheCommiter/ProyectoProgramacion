@@ -23,7 +23,8 @@ int COLUMNS=80; /*!<Number of total columns in the game's screen*/
 #define NEXT_POSITION 1 /*!<Represents the number of positions advanced when desiring to move to the next position in an array*/
 #define STARTING_POSITION 0 /*!<Represents the initial position in an array*/
 #define TOTAL_HORIZONTAL_SEPARATORS 4 /*!<Represents the number of separating characters that are found in a line*/
-#define SEPARATOR_LINE_AFTER_MAP 2    /*!<Represents that the separator line that is found after the map area is the second one out of the total*/
+#define SEPARATOR_LINE_AFTER_MAP 3    /*!<Represents that the separator line that is found after the map area is the second one out of the total*/
+#define START_ESCAPE_SEQUENCE "\\x"   /*!<Represents the start of escape sequences for unicode */
 /**
  * @brief structure that saves all of the information related to the area
  * 
@@ -89,7 +90,7 @@ void screen_paint(Frame_color color, Bool lights_on){
     return;
 }
 
-  size_of_escape_seq_start = strlen("\\x");
+  size_of_escape_seq_start = strlen(START_ESCAPE_SEQUENCE);
   if(lights_on == TRUE){
     selected_theme = light_theme_code;
   }else{
