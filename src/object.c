@@ -26,6 +26,7 @@ struct _Object
     long id;                     /*!< Id number of the object, it must be unique*/
     char name[WORD_SIZE ];       /*!< Name of the object*/
     char description[WORD_SIZE]; /*!< The description of the object to inspect*/
+    char gdesc[GDESCTAM];        /*!< The graphical description of the object*/
     int health;                  /*!< Amount o fhealth object gan give or take from player */
     Bool movable;                /*!< Whether the object can be moved between spaces*/
     Id dependency;               /*!< Id of which object this object is dependent on to be picked up, if any */
@@ -216,4 +217,20 @@ int object_get_health(Object *object) {
     if (!object) return -1;
 
     return object->health;
+}
+
+Status object_set_gdesc(Object *object, char *gdesc) {
+    if (!object || !gdesc) {
+        return ERROR;
+    }
+    strncpy(object->gdesc, gdesc, GDESCTAM - 1);
+    object->gdesc[GDESCTAM - 1] = '\0';
+    return OK;
+}
+
+char *object_get_gdesc(Object *object) {
+    if (!object) {
+        return NULL;
+    }
+    return object->gdesc;
 }

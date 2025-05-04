@@ -51,11 +51,25 @@ void test1_object_set_id();
 void test1_object_get_name();
 
 /**
+ * @test Test object_get_gdesc after setting a valid gdesc
+ * @pre A valid object is created and a gdesc is set
+ * @post The function returns a pointer to the correct gdesc
+ */
+void test1_object_get_gdesc();
+
+/**
  * @test Test object_set_name with a valid name
  * @pre A valid object is created, a non-empty name is passed
  * @post The function returns OK
  */
 void test1_object_set_name();
+
+/**
+ * @test Test object_set_gdesc with a valid gdesc
+ * @pre A valid object is created, a non-empty gdesc is passed
+ * @post The function returns OK
+ */
+void test1_object_set_gdesc();
 
 /**
  * @test Test object_print with a valid object
@@ -117,11 +131,25 @@ void test2_object_set_id();
 void test2_object_get_name();
 
 /**
+ * @test Test object_get_gdesc with NULL object
+ * @pre The object is NULL
+ * @post The function returns NULL
+ */
+void test2_object_get_gdesc();
+
+/**
  * @test Test object_set_name with an empty string
  * @pre A valid object is created, an empty name is passed
  * @post The function returns OK
  */
 void test2_object_set_name();
+
+/**
+ * @test Test object_set_gdesc with an empty string
+ * @pre A valid object is created, an empty gdesc is passed
+ * @post The function returns OK
+ */
+void test2_object_set_gdesc();
 
 /**
  * @test Test object_print with NULL object

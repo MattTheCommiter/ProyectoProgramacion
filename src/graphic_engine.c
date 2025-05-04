@@ -301,7 +301,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, character_following;
 
   char **map_information = NULL, **compass_information=NULL;
-  char str[MAX_STR], *object_name = NULL, *character_gdesc = NULL, *character_name = NULL;
+  char str[MAX_STR], *object_name = NULL, *object_gdesc=NULL, *character_gdesc = NULL, *character_name = NULL;
   int i, character_hp;
 
   /* Paint the in the map area */
@@ -350,12 +350,13 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   {
     object_name = object_get_name(game_get_object_in_pos(game, i));
     obj_loc = game_get_object_location(game, object_get_id(game_get_object_in_pos(game, i)));
+    object_gdesc = object_get_gdesc(game_get_object_in_pos(game, i));
     if (obj_loc != NO_ID)
     {
       if(space_get_discovered(game_get_space(game, obj_loc)) == TRUE){
-        sprintf(str, "  %s location:%d", object_name, (int)obj_loc);
+        sprintf(str, "%s %s location:%d", object_name, object_gdesc, (int)obj_loc);
       }else{
-        sprintf(str, "  %s location:?", object_name);
+        sprintf(str, "%s %s location:?", object_name, object_gdesc);
       }
     
       screen_area_puts(ge->descript, str);
@@ -375,15 +376,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
 
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, "%s (%s) location:%d health: %d following: %ld", character_gdesc, character_name, (int)character_loc, character_hp >= 0? character_hp:0, character_following);
+      sprintf(str, " %s %s location:%d health: %d following: %ld", character_name, character_gdesc, (int)character_loc, character_hp >= 0? character_hp:0, character_following);
     }else{
-      sprintf(str, "%s (?)", character_gdesc);
+      sprintf(str, " %s %s (?)", character_name, character_gdesc);
     }
     screen_area_puts(ge->descript, str);
   }
   /*We print the player, its location , health and then the object in the inventory*/
 
-  sprintf(str, "Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
+  sprintf(str, " Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   sprintf(str, "  Objects in the inventory: ");
   screen_area_puts(ge->descript, str);
@@ -391,9 +392,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   {
     object_name = object_get_name(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
     obj_loc = game_get_object_location(game, (player_get_backpack_object_id_at(game_get_current_player(game), i)));
+    object_gdesc = object_get_gdesc(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
     if (obj_loc == NO_ID)
     {
-      sprintf(str, "  %s", object_name);
+      sprintf(str, " %s %s", object_name, object_gdesc);
       screen_area_puts(ge->descript, str);
     }
   }
@@ -414,6 +416,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     screen_area_puts(ge->banner, "  House of legacy: Bob");
   }
 
+  /*Paint in the mission area*/
+  
+
+
   /* Paint in the help area */
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
@@ -427,8 +433,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->help, " - inspect 'arg' or i 'arg'");
   screen_area_puts(ge->help, " - recruit 'arg' or r 'arg'");
   screen_area_puts(ge->help, " - abandon 'arg' or ab 'arg'");
-  screen_area_puts(ge->help, " - s 'arg' or Save 'arg'");
-  screen_area_puts(ge->help, " - l 'arg' or Load 'arg'");
+  screen_area_puts(ge->help, " - ssave 'arg' or s 'arg'");
+  screen_area_puts(ge->help, " - load 'arg' or l 'arg'");
+  screen_area_puts(ge->help, " - team 'arg' or tm 'arg'");
+  screen_area_puts(ge->help, " - open 'arg' with 'arg' or o 'arg' with 'arg'");
+  screen_area_puts(ge->help, " - give 'arg' to 'arg' or g 'arg' to 'arg'");
 
   /* Paint in the feedback area */
   screen_area_puts(ge->feedback, "Player command history: ");
