@@ -785,23 +785,23 @@ gdesc57
 @@Format: :code|step|current_objective|objectives...|  //  code|current_instruction|instructions...|
 
 @@Mission Team
-#mo:0|0|0|Team with your brother|
-#mt:0|0|Alice, lets work together, shall we?|
+#mo:0|0|0|(ALICE)Team with your brother|
+#mt:0|0|Bob: Alice, lets work together, shall we?|
 
 @@Mission Linterna
-#mo:1|0|0|Turn on the lantern|Give the batteries to your sister|
-#mt:1|0|Alice, its so dark, turn on the lantern please|
+#mo:1|0|0|swith turn to Bob|(BOB)Give the batteries to your sister|
+#mt:1|0|Alice: Bob, give me the batteries so I can turn on the lantern| |
 
 @@Mission Generador
-#mo:2|0|0|Look for a way to turn on the light of the house|Inspect the generator|
-#mt:2|0|Alice, you should turn on the lights of the house, im scared|Oh, the old generator of my father, I might remember how to use it|
+#mo:2|0|0|(ALICE) Look for a way to turn on the light of the house|(ALICE) Inspect the generator|
+#mt:2|0|Bob: Alice, you should turn on the lights of the house, im scared|Alice: Oh, the old generator of my father, I might remember how to use it|
 
 
 @@@@@ ALICE'S FLASHBACK @@@@@
 
-#o:101|Generator|16|A generator to light the house|1|0|-1|-1|
+#o:101|Generator|150|A generator to light the house|1|0|-1|-1|
 #o:102|wrench|160|a useful weapon that could repair something|1|0|-1|-1|
-#o:103|tool box|16|a tool box with tools inside|0|0|-1|-1|
+#o:103|tool box|160|a tool box with tools inside|0|0|-1|-1|
 
 
 #s:130|Corridor2|0|
@@ -1054,8 +1054,8 @@ gdesc57
 #c:3|Father|  F   |  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
 @@Mission FLASHBACK de Alice
-#mo:3|0|0|Go to the storage room|Open(inspect) the tool box and take what could be useful|Return to the backyard with the wrench|Turn the generator on|
-#mt:3|0|Hey Alice, come help me with the generator!|Just go grab the wrench from the storage room|You were fast! Now use it on the generator|voila! thank's Alice's|
+#mo:3|0|0|(ALICE)Go to the storage room|(ALICE)Open(inspect) the tool box and take what could be useful|(ALICE)Return to the backyard with the wrench|(ALICE)Turn the generator on|
+#mt:3|0|Father: Hey Alice, come help me with the generator!|Father: Just go grab the wrench from the storage room|You were fast! Now use it on the generator|Father: voila! thank's Alice's|
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

@@ -512,9 +512,25 @@ Status game_set_description(Game *game, char *desc);
  */
 char *game_get_description(Game *game);
 
-/*Funcion temporal, hasta que cambiemos player por un array de jugadores
-necesaria por ahora para el modulo de game reader
-*/
+/**
+ * @brief sets objective message in the game for the current player
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param desc the new objective message
+ * @return Status OK or ERROR.
+ */
+Status game_set_objective(Game *game, char *desc);
+
+/**
+ * @brief Returns the objective text in the game for the current player
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return char* the string that contains the objective message
+ */
+char *game_get_objective(Game *game);
+
 
 /**
  * @brief adds a player to the game, as well as their command history
@@ -608,7 +624,7 @@ Status game_move_followers(Game *game, Id new_space_id);
 /**
  * @brief gets the lastCmd of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return Command the lastCMD
  */
@@ -617,7 +633,7 @@ Command *game_interface_in_pos_get_lastCmd(Game *game, int pos);
 /**
  * @brief gets the second to last Cmd of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return Command the second to last CMD
  */
@@ -626,7 +642,7 @@ Command *game_interface_in_pos_get_second_to_last_Cmd(Game *game, int pos);
 /**
  * @brief gets the third to last Cmd of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return Command the third to last CMD
  */
@@ -635,7 +651,7 @@ Command *game_interface_in_pos_get_third_to_last_Cmd(Game *game, int pos);
 /**
  * @brief gets the message of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return char* the message
  */
@@ -644,12 +660,29 @@ char *game_interface_in_pos_get_message(Game *game, int pos);
 /**
  * @brief gets the description of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return char* the description
  */
 char *game_interface_in_pos_get_description(Game *game, int pos);
 
+/**
+ * @brief gets the objective of an interface given its position
+ * @author Alvaor Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface wanted
+ * @return char* the objective text of the interface
+ */
+char *game_interface_in_pos_get_objective(Game *game, int pos);
+
+/**
+ * @brief sets the message of a specific interface given its position
+ * @author Alvaro Inigo
+ * @param game a pointer to game
+ * @param pos the position of the interface
+ * @param desc the new message to set
+ * @return Status OK or ERROR
+ */
 Status game_interface_in_pos_set_message(Game *game, int pos, char *desc);
 
 /**
@@ -671,6 +704,16 @@ Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
  * @return Status OK or ERROR
  */
 Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
+
+/**
+ * @brief sets the objective text for the interface located in position pos given
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface
+ * @param desc the new objective message
+ * @return Status OK or ERROR
+ */
+Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc);
 
 
 /**
@@ -895,4 +938,20 @@ Status game_set_current_mission(Game *game, Mission_Code mission);
  * @return Status OK or ERROR
  */
 Status game_add_mission(Game *game, Mission *mission);
+
+/**
+ * @brief sets the next objective of the current mission in the game on the message of game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status OK or ERROR
+ */
+Status game_set_next_objective(Game *game);
+
+/**
+ * @brief sets the next dialogue line of the current mission in the game on the message of game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status OK or ERROR
+ */
+Status game_set_next_dialogue(Game *game);
 #endif

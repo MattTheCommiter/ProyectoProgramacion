@@ -14,6 +14,9 @@
 
 #include "types.h"
 
+#define BATTERIES_ID 1  /*!<The id of the batteries, used for checking missions*/
+#define LANTERN_ID 2    /*!<The id of the lantern, used for checking missions*/
+#define GENERATOR_NAME "Generator" /*!<The name of the generator, used for checking missions*/
 /**
  * @brief Defines a new type for the Object structure.
  */

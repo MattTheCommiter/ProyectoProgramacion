@@ -60,6 +60,14 @@ void game_rules_set_object_location(Game *game, Id object_id, Id space_id);
  */
 void game_rules_receive_foe_attack(Game *game, char *enemy_name);
 
+/**
+ * @brief this function updates the missions of the game, acording to the last command and current state of the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ */
+void game_rules_mission_update(Game *game);
 
 
-#endif // GAMERULES_H
+
+
+#endif

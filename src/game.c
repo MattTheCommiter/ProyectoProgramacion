@@ -27,6 +27,7 @@ typedef struct _InterfaceData{
   Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
   char message[DIALOGUE_LINE_LENGTH];/*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
+  char objective[MAX_MISSION_MESSAGE];  /*!<String that has the text for the next objective of the game, acording to each mission*/
   Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
   int command_counter;             /*!<Counter for the number of commands executed */
 } InterfaceData;
@@ -498,9 +499,13 @@ char *game_get_message(Game *game)
 
 Status game_set_message(Game *game, char *msg)
 {
-  if (!game || !msg)
+  if (!game)
     return ERROR;
-
+  if(!msg){
+    game->playerGraphicInformation[game->turn]->message[0] = ' ';
+    game->playerGraphicInformation[game->turn]->message[1] = '\0';
+    return OK;
+  }
   strcpy(game->playerGraphicInformation[game->turn]->message, msg);
   return OK;
 }
@@ -793,6 +798,26 @@ char *game_get_description(Game *game)
   return game->playerGraphicInformation[game->turn]->description;
 }
 
+Status game_set_objective(Game *game, char *desc)
+{
+
+  if (!game || !desc)
+  {
+    return ERROR;
+  }
+  strcpy(game->playerGraphicInformation[game->turn]->objective, desc);
+  return OK;
+}
+
+char *game_get_objective(Game *game)
+{
+  if (!game)
+  {
+    return NULL;
+  }
+  return game->playerGraphicInformation[game->turn]->objective;
+}
+
 Status game_add_player(Game *game, Player *player)
 {
   if (!game || !player)
@@ -886,8 +911,11 @@ InterfaceData *game_interface_data_create()
 
   data->description[0] = ' ';
   data->message[0] = ' ';
+  data->objective[0] = ' ';
+
   data->description[1] = '\0';
   data->message[1] = '\0';
+  data->objective[1] = '\0';
   data->show_message = FALSE;
   data->command_counter = 0;
   return data;
@@ -966,10 +994,18 @@ char *game_interface_in_pos_get_description(Game *game, int pos)
   return game->playerGraphicInformation[pos]->description;
 }
 
+char *game_interface_in_pos_get_objective(Game *game, int pos)
+{
+  if (!game || pos >= game->n_players || pos < 0)
+    return NULL;
+
+  return game->playerGraphicInformation[pos]->objective;
+}
+
 Status game_interface_in_pos_set_message(Game *game, int pos, char *message)
 {
 
-  if (!game || pos >= game->n_players || pos < 0)
+  if (!game || pos >= game->n_players || pos < 0 || !message)
     return ERROR;
   strcpy(game->playerGraphicInformation[pos]->message, message);
   return OK;
@@ -980,6 +1016,14 @@ Status game_interface_in_pos_set_description(Game *game, int pos, char *desc)
   if (!game || pos >= game->n_players || pos < 0)
     return ERROR;
   strcpy(game->playerGraphicInformation[pos]->description, desc);
+  return OK;
+}
+
+Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc)
+{
+  if (!game || pos >= game->n_players || pos < 0)
+    return ERROR;
+  strcpy(game->playerGraphicInformation[pos]->objective, desc);
   return OK;
 }
 
@@ -1105,4 +1149,14 @@ Status game_add_mission(Game *game, Mission *mission){
   game->missions[game->n_missions] = mission;
   game->n_missions++;
   return OK;
+}
+
+Status game_set_next_objective(Game *game){
+  if(!game) return ERROR;
+  return game_set_objective(game, mission_get_next_objective(game_get_current_mission(game)));
+}
+
+Status game_set_next_dialogue(Game *game){
+  if(!game) return ERROR;
+  return game_set_message(game, mission_get_next_dialogue(game_get_current_mission(game)));
 }

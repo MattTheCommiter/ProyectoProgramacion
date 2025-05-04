@@ -136,3 +136,33 @@ char *mission_get_dialogue_in_pos(Mission *mission, int pos){
     return mission->dialogues[pos];
 }
 
+char *mission_get_name(Mission *mission) {
+    if (!mission) return NULL;
+
+    switch (mission->code) {
+        case NO_MISSION:
+            return "NO MISSION";
+        case TEAM_MISSION:
+            return "TEAM MISSION";
+        case LANTERN_MISSION:
+            return "LANTERN MISSION";
+        case GENERATOR_MISSION:
+            return "GENERATOR MISSION";
+        case FATHER_MISSION:
+            return "FATHER MISSION";
+        case SECOND_FLOOR_MISSION:
+            return "SECOND FLOOR MISSION";
+        case MEDKIT_MISSION:
+            return "MEDKIT MISSION";
+        case BEDROOM_MISSION:
+            return "BEDROOM MISSION";
+        case REX_MISSION:
+            return "REX MISSION";
+        case THIRD_FLOOR_MISSION:
+            return "THIRD FLOOR MISSION";
+        case BOSS_MISSION:
+            return "BOSS MISSION";
+        default:
+            return "UNKNOWN MISSION";
+    }
+}

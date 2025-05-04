@@ -194,4 +194,11 @@ int mission_get_next_dialogue_index(Mission *mission);
  */
 int mission_get_next_objective_index(Mission *mission);
 
+/**
+ * @brief returns the name of a mission
+ * @author Alvaro Inigo
+ * @param mission a pointer to the mission to get the name
+ * @return char* the name of the mission
+ */
+char *mission_get_name(Mission *mission);
 #endif
