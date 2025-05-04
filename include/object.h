@@ -1,6 +1,6 @@
 /**
  * @file object.h
- * @author Alvaro
+ * @author Alvaro, Guilherme Povedano, Matteu Artunedo
  * @brief Defines the object characteristics
  * @version 0.1
  * @date 2025-02-10
@@ -12,6 +12,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include "player.h"
 #include "types.h"
 
 #define BATTERIES_ID 1  /*!<The id of the batteries, used for checking missions*/
@@ -177,5 +178,23 @@ Id object_get_open(Object *object);
  * @return The object's health field, or -1 in case of error
 */
 int object_get_health(Object *object);
+
+/**
+ * @brief gets the gdesc of an object
+ * @date 4-05-2025
+ * @author Matteo Artunedo
+ * @param object a pointer to the object
+ * @return char * the graphical description
+ */
+char *object_get_gdesc(Object *object);
+/**
+ * @brief Sets the graphical description of an object
+ * @date 2025-04-25
+ * @author Matteo Artunedo
+ * @param object a pointer to the object
+ * @param gdesc the new gdesc of the object
+ * @return Status: OK or ERROR
+ */
+Status object_set_gdesc(Object *object, char *gdesc);
 
 #endif

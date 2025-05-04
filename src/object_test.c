@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 35 /*!<Defines the total ammount of test functions*/
+#define MAX_TESTS 39 /*!<Defines the total ammount of test functions*/
 
 /**
  * @brief in the main function all tests can be executated
@@ -112,6 +112,14 @@ int main(int argc, char **argv)
         test1_object_get_movable();
     if (all || test == 35)
         test2_object_get_movable();
+    if (all || test == 36)
+        test1_object_get_gdesc();
+    if (all || test == 37)
+        test2_object_get_gdesc();
+    if (all || test == 38)
+        test1_object_set_gdesc();
+    if (all || test == 39)
+        test2_object_set_gdesc();
 
     PRINT_PASSED_PERCENTAGE;
 
@@ -160,6 +168,21 @@ void test1_object_set_name()
 {
     Object *o = object_create(1);
     PRINT_TEST_RESULT(object_set_name(o, "Shield") == OK);
+    object_destroy(o);
+}
+
+void test1_object_get_gdesc()
+{
+    Object *o = object_create(1);
+    object_set_gdesc(o, "----");
+    PRINT_TEST_RESULT(strcmp(object_get_gdesc(o), "----") == 0);
+    object_destroy(o);
+}
+
+void test1_object_set_gdesc()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_gdesc(o, "--<--") == OK);
     object_destroy(o);
 }
 
@@ -216,6 +239,18 @@ void test2_object_set_name()
 {
     Object *o = object_create(1);
     PRINT_TEST_RESULT(object_set_name(o, "") == OK);
+    object_destroy(o);
+}
+
+void test2_object_get_gdesc()
+{
+    PRINT_TEST_RESULT(object_get_gdesc(NULL) == NULL);
+}
+
+void test2_object_set_gdesc()
+{
+    Object *o = object_create(1);
+    PRINT_TEST_RESULT(object_set_gdesc(o, "") == OK);
     object_destroy(o);
 }
 

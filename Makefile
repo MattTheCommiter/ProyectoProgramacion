@@ -224,9 +224,9 @@ test_run:
 	./inventory_test
 	@echo ">>>>>>Running link_test:"
 	./link_test
-	@echo ">>>>>>Running object_test:"
+	@echo ">>>>>>Running object_test:"                                                      
 	./object_test
-	@echo ">>>>>>Running player_test:"
+	@echo ">>>>>>Running player_test:"                            
 	./player_test
 
 character_test_runV:

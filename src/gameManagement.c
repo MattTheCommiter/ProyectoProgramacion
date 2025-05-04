@@ -265,6 +265,7 @@ Status gameManagement_load_objects(Game *game, char *filename)
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
+  char gdesc[GDESCTAM] = "";
   char description[WORD_SIZE] = "";
   char *toks = NULL;
   Id id = NO_ID, spaceId = NO_ID, dependency = NO_ID, open = NO_ID;
@@ -294,6 +295,8 @@ Status gameManagement_load_objects(Game *game, char *filename)
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
+      toks = strtok(NULL, "|\r\n");
+      strcpy(gdesc, toks);
       toks = strtok(NULL, "|");
       spaceId = atol(toks);
       toks = strtok(NULL, "|\n\r");
@@ -317,6 +320,7 @@ Status gameManagement_load_objects(Game *game, char *filename)
       if (object != NULL)
       { /*Sets the information related to the object and adds it to the game*/
         object_set_name(object, name);
+        object_set_gdesc(object, gdesc);
         object_set_description(object, description);
         object_set_movable(object, movable == 1 ? TRUE : FALSE);
         object_set_health(object, health);
@@ -861,7 +865,7 @@ Status gameManagement_save_objects(Game *game, FILE *saving_file)
   for (i = 0; i < game_get_n_objects(game); i++)
   {
     object = game_get_object_in_pos(game, i);
-    fprintf(saving_file, "#o:%ld|%s|%ld|%s|%d|%d|%ld|%ld|\n", object_get_id(object), object_get_name(object), game_get_object_location(game, object_get_id(object)), object_get_description(object), object_get_movable(object) == TRUE ? 1 : 0, object_get_health(object), object_get_dependency(object), object_get_open(object));
+    fprintf(saving_file, "#o:%ld|%s|%s|%ld|%s|%d|%d|%ld|%ld|\n", object_get_id(object), object_get_name(object), object_get_gdesc(object), game_get_object_location(game, object_get_id(object)), object_get_description(object), object_get_movable(object) == TRUE ? 1 : 0, object_get_health(object), object_get_dependency(object), object_get_open(object));
   }
 
   return OK;

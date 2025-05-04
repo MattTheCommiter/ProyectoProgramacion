@@ -724,10 +724,10 @@ gdesc57
 
 @@Format:  :Id|Name|SpaceId|Description|Movable|Health|Dependency|Open|
 
-#o:1|Batteries|-1|Small batteries, could power up a lantern|1|0|-1|-1|
-#o:2|Lantern|-1|A lantern that can light up a room|1|0|-1|-1|
-#o:3|Old Generator|15|This generator seems old, but could work if repaired|1|0|-1|-1|
-#o:6|stairs|14|old and fragile stairs|0|0|-1|-1|
+#o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|-1|-1|
+#o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
+#o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work if repaired|1|0|-1|-1|
+#o:6|stairs|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
 
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -799,9 +799,9 @@ gdesc57
 
 @@@@@ ALICE'S FLASHBACK @@@@@
 
-#o:101|Generator|150|A generator to light the house|1|0|-1|-1|
-#o:102|wrench|160|a useful weapon that could repair something|1|0|-1|-1|
-#o:103|tool box|160|a tool box with tools inside|0|0|-1|-1|
+#o:101|Generator|\xF0\x9F\x8F\xAD|16|A generator to light the house|1|0|-1|-1|
+#o:102|wrench|\xF0\x9F\x94\xA7|160|a useful weapon that could repair something|1|0|-1|-1|
+#o:103|tool box|\xF0\x9F\xA7\xB0|16|a tool box with tools inside|0|0|-1|-1|
 
 
 #s:130|Corridor2|0|
@@ -1051,7 +1051,7 @@ gdesc57
 #l:150160|LivingRoomToHall|150|160|4|1|
 #l:160150|LivingRoomToHall|150|160|3|1|
 
-#c:3|Father|  F   |  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
+#c:3|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
 @@Mission FLASHBACK de Alice
 #mo:3|0|0|(ALICE)Go to the storage room|(ALICE)Open(inspect) the tool box and take what could be useful|(ALICE)Return to the backyard with the wrench|(ALICE)Turn the generator on|
