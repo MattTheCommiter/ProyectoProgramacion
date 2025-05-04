@@ -7,7 +7,7 @@
 #o:102|wrench|160|a useful weapon that could repair something|1|0|-1|-1|
 #o:103|tool box|16|a tool box with tools inside|0|0|-1|-1|
 #p:1|Alice| A |11|5|3|1|
-#p:2|Bob| B |11|5|3|2|
+#p:2|Bob| B |11|5|3|1|
 #t:0
 #s:11|FrontalPatio|1|         |         |         |         |         |
 #s:12|Corridor1|0|         |         |         |         |         |
@@ -46,7 +46,7 @@
 #l:150140|BackyardtoLivingRoom|150|140|2|1|
 #l:150160|LivingRoomToHall|150|160|4|1|
 #l:160150|LivingRoomToHall|150|160|3|1|
-#i:0|Save/save.dat/OK|No command/OK|No command/OK| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.| |0|
+#i:0|Save/prueba.txt/OK|Team/ERROR|Team/ERROR| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.| |0|
 #i:1|No command/OK|No command/OK|No command/OK| | |0|
 #mo:0|0|0|Team with your brother|
 #mi:0|0|Alice, lets work together, shall we?|

@@ -185,6 +185,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
   switch (cmd)
   {
   case UNKNOWN:
+  
     game_actions_unknown(*game);
     break;
 
@@ -225,6 +226,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     break;
   case TEAM:
     game_actions_team(*game, command_get_argument(command), gengine);
+    break;
   case USE:
     game_actions_use(*game, command_get_argument(command), command_get_argument2(command));
     break;
@@ -237,19 +239,6 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
   default:
     break;
   }
-  /*
-  game_rules_apply(*game);
-  */
-  
-  /* Increment the command counter */
-  game_increment_command_counter(*game);
- 
-  /* Check if the counter is a multiple of 10 */
-  /*
-  if (game_get_command_counter(*game) % 10 == 0) {
-    game_rules_apply_random(*game);
-  }
-  */
   return OK;
 }
 
@@ -771,17 +760,33 @@ void game_actions_save(Game *game, char *arg){
 
 }
 
-void game_actions_load(Game **game, char *arg){
-  if(!game || !(*game) || !arg){
+void game_actions_load(Game **game, char *arg)
+{
+  Command *command = NULL, *command_cpy = NULL;
+  if (!game || !(*game) || !arg)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
     return;
   }
+  /*We save the command load to paint it after loading*/
+  command = game_interface_data_get_cmd_in_pos(*game, LAST);
+  command_cpy = command_create();
+  if(!command || !command_cpy){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
+    return;
+  }
+  command_set_code(command_cpy, command_get_code(command));
+  command_set_argument(command_cpy, command_get_argument(command));
+  command_set_argument2(command_cpy, command_get_argument2(command));
+  /*END of copying the command*/
 
   if(gameManagement_load(game, arg) == ERROR){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
     return;
-  }else{
-    game_set_turn(*game, game_get_turn(*game) - 1);
+  }
+  else
+  {
+    game_interface_data_set_last_command(*game, command_cpy);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), OK);
   }
 
@@ -807,6 +812,16 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
+  /*We check if the player is already on the same team*/
+  if(player_get_team(teammate) == player_get_team(game_get_current_player(game))){
+    sprintf(message, "The player %s is already on your team!", arg);
+    game_set_message(game, message);
+    game_set_show_message(game, TRUE);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+
   /*We found the turn corresponding to the new teammate*/
 
   for(i = 0; i < game_get_n_players(game); i++){
@@ -822,12 +837,14 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine){
   strcpy(previous_message, game_get_message(game));
   show = game_get_show_message(game);
 
+  /*print the message for the other player to accept or decline*/
   sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
-
+  
   game_set_message(game, message);
   game_set_show_message(game, TRUE);
-
+  /*paint the game in order to see the new message*/
   graphic_engine_paint_game(gengine, game);
+  /*get the user input*/
   acceptance = command_get_confirmation();
 
   /*set the values back */
@@ -921,4 +938,72 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   game_set_show_message(game, FALSE);
   return;
 
+void game_actions_give(Game *game, char *object_name, char *player_name)
+{
+  Player *recipient = NULL;
+  Object *object = NULL, *dependant = NULL;
+
+  if (!game || !object_name || !player_name)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+  /*reset if we want the game to show the message*/
+  game_set_show_message(game, FALSE);
+
+  /* find recipient player */
+  if ((recipient = game_get_player_from_name(game, player_name)) == NULL)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* find object to be passed */
+  if ((object = game_get_object_from_name(game, object_name)) == NULL)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* find that object in the backpack of currrent_player */
+  if (player_backpack_contains(game_get_current_player(game), object_get_id(object)) == FALSE)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* check both players in the same space */
+  if (game_get_current_player_location(game) != player_get_location(recipient))
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*Check if the object passed has dependencies*/
+  if(object_get_dependency(object) != NO_ID){
+    if(!(dependant = game_get_object(game, object_get_dependency(object)))){
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if(player_backpack_contains(recipient, object_get_dependency(object)) == FALSE){
+      /*The recipient cant take the object*/
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+  
+  /* check if recipient player has sufficient room */
+  if (player_backpack_is_full(recipient) == TRUE)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* exchange the object */
+  player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object));
+  player_add_object_to_backpack(recipient, object_get_id(object));
+
+  /* correct exit */
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
 }

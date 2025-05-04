@@ -174,18 +174,18 @@ Status gameManagement_load_spaces(Game *game, char *filename)
     return ERROR;
   }
 
-  if (!(read_gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
+  if (!(read_gdesc = (char **)calloc(N_TOTAL_ROWS_IN_SQUARE, sizeof(char *))))
   {
     return ERROR;
   }
-  if (!(read_gdesc[0] = (char *)calloc(N_LINES_IN_GDESC * (N_ROWS_IN_GDESC + 1), sizeof(char))))
+  if (!(read_gdesc[0] = (char *)calloc(N_TOTAL_ROWS_IN_SQUARE * (N_TOTAL_COLUMNS_IN_SQUARE), sizeof(char))))
   {
     free(read_gdesc);
     return ERROR;
   }
-  for (i = 1; i < 5; i++)
+  for (i = 1; i < N_TOTAL_ROWS_IN_SQUARE; i++)
   {
-    read_gdesc[i] = read_gdesc[0] + (N_ROWS_IN_GDESC + 1) * i;
+    read_gdesc[i] = read_gdesc[0] + (N_TOTAL_COLUMNS_IN_SQUARE) * i;
   }
 
   file = fopen(filename, "r");
@@ -200,7 +200,6 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
     if (strncmp("#s:", line, 3) == 0)
-    /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
     {
       toks = strtok(line + 3, "|");
       id = atol(toks);
@@ -209,63 +208,24 @@ Status gameManagement_load_spaces(Game *game, char *filename)
       toks = strtok(NULL, "|");
       discovered = atoi(toks);
 
-      /*Si hay una descripción gráfica, la leemos y la copiamos a nuetra matriz read_gdesc*/
-      if ((toks = strtok(NULL, "|\n\r")) != NULL)
-      {
-        strcpy(read_gdesc[0], toks);
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[1], toks);
+      
+      for(i=0;i<N_TOTAL_ROWS_IN_SQUARE;i++){
+        fgets(line, WORD_SIZE, file);
+        /*In case there is a \n at the end of the line, we remove it*/
+        toks = strtok(line, "\n");
+        if (toks) {
+          strncpy(read_gdesc[i], toks, N_TOTAL_COLUMNS_IN_SQUARE - 1);
         }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
+        /*If there is no \n character, we save it normally*/
+        else{
+          strncpy(read_gdesc[i], line, N_TOTAL_COLUMNS_IN_SQUARE - 1);
         }
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[2], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[3], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
-        toks = strtok(NULL, "|");
-        if (toks)
-        {
-          strcpy(read_gdesc[4], toks);
-        }
-        else
-        {
-          game_set_finished(game, TRUE);
-          fprintf(stdout, "\nInvalid graphic description\n");
-        }
+        read_gdesc[i][N_TOTAL_COLUMNS_IN_SQUARE - 1] = '\0';
       }
-      else
-      {
-        /*Si no hay una descripción gráfica, copiamos espacios en blanco a la descripción del espacio*/
-        strcpy(read_gdesc[0], "         ");
-        strcpy(read_gdesc[1], "         ");
-        strcpy(read_gdesc[2], "         ");
-        strcpy(read_gdesc[3], "         ");
-        strcpy(read_gdesc[4], "         ");
-      }
+      
 
 #ifdef DEBUG
-      printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
+   
 #endif
       /*
        * It creates the space with the data that has been read
@@ -516,9 +476,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
       toks = strtok(NULL, "|\r");
       following = atol(toks);
 
-      /*
-      #c:3|ant friend|    ^0m|122|5|0|Hey ant friend!
-      */
+      
 
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, friendliness, following);
@@ -944,7 +902,7 @@ Status gameManagement_save_turn(Game *game, FILE *saving_file)
 }
 Status gameManagement_save_spaces(Game *game, FILE *saving_file)
 {
-  int i;
+  int i, j;
   Space *space = NULL;
   char **gdesc = NULL;
 
@@ -955,7 +913,10 @@ Status gameManagement_save_spaces(Game *game, FILE *saving_file)
 
     space = game_get_space_in_pos(game, i);
     gdesc = space_get_gdesc(space);
-    fprintf(saving_file, "#s:%ld|%s|%d|%s|%s|%s|%s|%s|\n", space_get_id(space), space_get_name(space), space_get_discovered(space) == TRUE ? 1 : 0, gdesc[0], gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
+    fprintf(saving_file, "#s:%ld|%s|%d|\n", space_get_id(space), space_get_name(space), space_get_discovered(space) == TRUE ? 1 : 0);
+    for(j = 0; j < N_TOTAL_ROWS_IN_SQUARE; j++){
+      fprintf(saving_file, "%s\n",gdesc[j]);
+    }
   }
 
   return OK;
@@ -1305,8 +1266,7 @@ Status gameManagement_load_interface(Game *game, char *filename)
 
       token = strtok(NULL, "/|\r\n");
       show = atol(token) == 1 ? TRUE : FALSE;
-
-      game_set_show_message_in_pos(game, pos, show);
+      game_set_show_message_in_pos(game, show, pos);
     }
   }
 

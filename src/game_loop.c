@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #include <unistd.h>
 #include <time.h>
@@ -21,7 +22,7 @@
 #include "game.h"
 
 #define TIME_BETWEEN_TURNS 1  /*!< Ammount of seconds the game gives each player to visualize their action before changing the turn*/
-#define TIME_BETWEEN_CINEMATICS 4  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
+#define TIME_BETWEEN_CINEMATICS 3  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -97,6 +98,9 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+
+  /*Command to support UNICODE characters*/
+  setlocale(LC_ALL, "");
 
   /* initializes the game and the graphic engine using the game data file*/
   if (!game_loop_init(&game, &gengine, argv[1])){

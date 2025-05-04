@@ -43,7 +43,7 @@ struct _Game
   int n_objects;                                        /*!<Number of objects in the game*/
   Player *players[MAX_PLAYERS];                         /*!<Array of the different players in the game*/
   int n_players;                                        /*!<Number of players in the game*/
-  int turn;                                             /*!<Integer that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
+  TurnByPlayer turn;                                    /*!<Enumeration value that describes in which turn the game is currently in (the integer corresponds to the position in the array of players of the player whose turn it is to play)*/
   Space *spaces[MAX_SPACES];                            /*!<Array of Spaces*/
   int n_spaces;                                         /*!<Number of spaces in the game*/
   Character *characters[MAX_CHARACTERS];                /*!<Array of characters in the game*/
@@ -272,7 +272,7 @@ Player *game_get_player_from_name(Game *game, char *name)
     return NULL;
   for (i = 0; i < game->n_players; i++)
   {
-    if (!strcmp(name, player_get_name(game->players[i])))
+    if (!strcasecmp(name, player_get_name(game->players[i])))
     {
       return game->players[i];
     }
@@ -812,7 +812,7 @@ void game_next_turn(Game *game)
   game->turn = (game->turn + 1) % (game->n_players);
 }
 
-int game_get_turn(Game *game)
+TurnByPlayer game_get_turn(Game *game)
 {
   if (!game)
   {
@@ -821,7 +821,7 @@ int game_get_turn(Game *game)
   return game->turn;
 }
 
-Status game_set_turn(Game *game, int turn)
+Status game_set_turn(Game *game, TurnByPlayer turn)
 {
   if (!game || turn >= game->n_players || turn < 0)
     return ERROR;
@@ -1017,8 +1017,10 @@ Bool game_get_show_message(Game *game)
 
 Status game_set_show_message(Game *game, Bool bool)
 {
-  if (!game)
+  if (!game){
     return ERROR;
+    }
+
   game->playerGraphicInformation[game->turn]->show_message = bool;
   return OK;
 }
@@ -1034,6 +1036,7 @@ Status game_set_show_message_in_pos(Game *game, Bool bool, int pos)
 {
   if (!game || pos >= game->n_players)
     return ERROR;
+
   game->playerGraphicInformation[pos]->show_message = bool;
   return OK;
 }

@@ -32,7 +32,7 @@ char *cmd_to_str[N_CMD][N_CMDT] = {{"", "No command"}, {"", "Unknown"}, {"e", "E
 struct _Command
 {
   CommandCode code;                 /*!< Name of the command */
-  char arg_description[ARG_LENGTH]; /*!< The argument description user in the 'Take' command*/
+  char arg_description[ARG_LENGTH]; /*!< The argument description user in the command*/
   char argument2[ARG_LENGTH];       /*!< Second argument (optional in USE command) */
   Status lastcmd_Success;           /*!< Whether the last command was succesful or not*/
 };
@@ -337,8 +337,7 @@ Status command_get_lastcmd_success(Command *command)
 Bool command_get_confirmation()
 {
   char input[CMD_LENGTH];
-  while (!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")))
-    ;
+  while (!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")));
 
   if (!strcasecmp(input, "N\n"))
     return FALSE;

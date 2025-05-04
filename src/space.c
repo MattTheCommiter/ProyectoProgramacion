@@ -50,19 +50,19 @@ Space *space_create(Id id)
   newSpace->characters = set_create();
   newSpace->discovered = FALSE;
 
-  if (!(newSpace->gdesc = (char **)calloc(N_LINES_IN_GDESC, sizeof(char *))))
+  if (!(newSpace->gdesc = (char **)calloc(N_TOTAL_ROWS_IN_SQUARE, sizeof(char *))))
   {
     space_destroy(newSpace);
     return NULL;
   }
-  if (!(newSpace->gdesc[0] = (char *)calloc((N_ROWS_IN_GDESC + 1) * N_LINES_IN_GDESC, sizeof(char))))
+  if (!(newSpace->gdesc[0] = (char *)calloc((N_TOTAL_COLUMNS_IN_SQUARE ) * N_TOTAL_ROWS_IN_SQUARE, sizeof(char))))
   {
     space_destroy(newSpace);
     return NULL;
   }
-  for (i = 1; i < N_LINES_IN_GDESC; i++)
+  for (i = 1; i < N_TOTAL_ROWS_IN_SQUARE; i++)
   {
-    newSpace->gdesc[i] = newSpace->gdesc[0] + (N_ROWS_IN_GDESC + 1) * i;
+    newSpace->gdesc[i] = newSpace->gdesc[0] + (N_TOTAL_COLUMNS_IN_SQUARE) * i;
   }
   return newSpace;
 }
@@ -192,7 +192,7 @@ Status space_print(Space *space)
     }
   }
   fprintf(stdout, "\nGraphic description of the space: ");
-  for (i = 0; i < N_LINES_IN_GDESC; i++)
+  for (i = 0; i < N_TOTAL_ROWS_IN_SQUARE; i++)
   {
     printf("\n%s", space->gdesc[i]);
   }
@@ -254,7 +254,7 @@ Status space_set_gdesc(Space *space, char **space_gdescription)
   int i = 0;
   if (!space)
     return ERROR;
-  for (i = 0; i < N_LINES_IN_GDESC; i++)
+  for (i = 0; i < N_TOTAL_ROWS_IN_SQUARE; i++)
   {
     if (!strcpy(space->gdesc[i], space_gdescription[i]))
     {
