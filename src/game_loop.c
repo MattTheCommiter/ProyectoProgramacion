@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #include <unistd.h>
 #include <time.h>
@@ -97,6 +98,9 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+
+  /*Command to support UNICODE characters*/
+  setlocale(LC_ALL, "");
 
   /* initializes the game and the graphic engine using the game data file*/
   if (!game_loop_init(&game, &gengine, argv[1])){
