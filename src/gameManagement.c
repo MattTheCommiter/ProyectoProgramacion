@@ -200,7 +200,6 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
     if (strncmp("#s:", line, 3) == 0)
-    /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
     {
       toks = strtok(line + 3, "|");
       id = atol(toks);
@@ -226,7 +225,7 @@ Status gameManagement_load_spaces(Game *game, char *filename)
       
 
 #ifdef DEBUG
-      printf("Leido: %ld|%s|%ld|%ld|%ld|%ld\n", id, name, north, east, south, west);
+   
 #endif
       /*
        * It creates the space with the data that has been read
@@ -481,9 +480,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
       toks = strtok(NULL, "|\r");
       following = atol(toks);
 
-      /*
-      #c:3|ant friend|    ^0m|122|5|0|Hey ant friend!
-      */
+      
 
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, friendliness, following);
@@ -912,7 +909,7 @@ Status gameManagement_save_turn(Game *game, FILE *saving_file)
 }
 Status gameManagement_save_spaces(Game *game, FILE *saving_file)
 {
-  int i;
+  int i, j;
   Space *space = NULL;
   char **gdesc = NULL;
 
@@ -923,7 +920,10 @@ Status gameManagement_save_spaces(Game *game, FILE *saving_file)
 
     space = game_get_space_in_pos(game, i);
     gdesc = space_get_gdesc(space);
-    fprintf(saving_file, "#s:%ld|%s|%d|%s|%s|%s|%s|%s|\n", space_get_id(space), space_get_name(space), space_get_discovered(space) == TRUE ? 1 : 0, gdesc[0], gdesc[1], gdesc[2], gdesc[3], gdesc[4]);
+    fprintf(saving_file, "#s:%ld|%s|%d|\n", space_get_id(space), space_get_name(space), space_get_discovered(space) == TRUE ? 1 : 0);
+    for(j = 0; j < N_TOTAL_ROWS_IN_SQUARE; j++){
+      fprintf(saving_file, "%s\n",gdesc[j]);
+    }
   }
 
   return OK;

@@ -14,7 +14,7 @@
 #include "types.h"
 #include "set.h"
 
-#define N_TOTAL_ROWS_IN_SQUARE 57    /*!<Number of lines in one of the space squares*/
+#define N_TOTAL_ROWS_IN_SQUARE 58    /*!<Number of lines in one of the space squares*/
 #define N_TOTAL_COLUMNS_IN_SQUARE 152/*!<Number of rows in one of the space squares*/
 
 /**
