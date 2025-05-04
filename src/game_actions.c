@@ -791,11 +791,23 @@ void game_actions_save(Game *game, char *arg)
 
 void game_actions_load(Game **game, char *arg)
 {
+  Command *command = NULL, *command_cpy = NULL;
   if (!game || !(*game) || !arg)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
     return;
   }
+  /*We save the command load to paint it after loading*/
+  command = game_interface_data_get_cmd_in_pos(*game, LAST);
+  command_cpy = command_create();
+  if(!command || !command_cpy){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), ERROR);
+    return;
+  }
+  command_set_code(command_cpy, command_get_code(command));
+  command_set_argument(command_cpy, command_get_argument(command));
+  command_set_argument2(command_cpy, command_get_argument2(command));
+  /*END of copying the command*/
 
   if (gameManagement_load(game, arg) == ERROR)
   {
@@ -804,6 +816,7 @@ void game_actions_load(Game **game, char *arg)
   }
   else
   {
+    game_interface_data_set_last_command(*game, command_cpy);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(*game, LAST), OK);
   }
 
