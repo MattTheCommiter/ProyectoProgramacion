@@ -72,7 +72,7 @@ void screen_destroy(){
 
 void screen_paint(Frame_color color, Bool lights_on){
   char *src = NULL;
-  char destination[COLUMNS + FINAL_CHARACTER];
+  char *destination=NULL;
   unsigned char aux[SIZE_IN_CHAR_TWO_HEXADECIMAL_VALUES + FINAL_CHARACTER]; /*Auxiliary variable where we store the two hexadecimal values that define each escape sequence*/
   unsigned char gdesc[SIZE_OF_CONVERTED_UNCODE_SEQ + FINAL_CHARACTER]; /*Variable where we store the hexadecimal values which correspond to the UNICODE character, with the '\0' at the end*/
   unsigned char sequence[GDESCTAM]; /*VAriable where we store the UNICODE sequence*/
@@ -81,6 +81,13 @@ void screen_paint(Frame_color color, Bool lights_on){
   int n_unicode_characters=0;
   int n_separator_lines=0;
   char light_theme_code[] = "[0;30;47m", dark_theme_code[] = "[0;37;40m", *selected_theme=NULL;
+
+
+  destination = malloc((COLUMNS + FINAL_CHARACTER) * sizeof(char));
+  if (!destination) {
+    fprintf(stderr, "Memory allocation failed\n");
+    return;
+}
 
   size_of_escape_seq_start = strlen("\\x");
   if(lights_on == TRUE){
@@ -139,6 +146,8 @@ void screen_paint(Frame_color color, Bool lights_on){
       printf("\n");
     }
   }
+  free(destination);
+  return;
 }
 
 char *frame_color_to_string(Frame_color color){
