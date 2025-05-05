@@ -31,7 +31,7 @@ void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge);
 
 void game_rules_alice_flashback_init(Game *game);
 void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_engine *ge);
-void game_rules_spawn_ghost(game);
+void game_rules_spawn_ghost(Game *game);
 
 void game_rules_mission_update(Game *game, Graphic_engine *ge)
 {
@@ -148,6 +148,10 @@ void game_rules_lantern_mission(Game *game, Mission *mission, Graphic_engine *ge
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
+            /*tambien ponemos los mensajes nuevos en el turno de alice*/
+            game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
+            game_set_show_message_in_pos(game , TRUE, ALICE_TURN);
+
             graphic_engine_clear_dialogue(ge);
         }
         break;
@@ -208,6 +212,8 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
         /*cuando alice abre la caja de herramientas, se pasa*/
         if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), TOOLBOX_NAME))
         {
+            /*se genera la llave inglesa en el espacio*/
+            space_add_objectId(game_get_space(game, STORAGE_ROOM__FLASH_SPACE), WRENCH_ID);
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
@@ -226,6 +232,11 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
+
+            /*imprimimos el siguiente mensaje tambien en el turno de BOB*/
+            game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
+            game_set_show_message_in_pos(game , TRUE, BOB_TURN);
+
             graphic_engine_clear_dialogue(ge);
             game_set_lights_on(game, TRUE);
             return;
@@ -277,7 +288,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         }
     case (4):
         /*se pide subir al espacio de arriba, cuando suben, se llama a la cinematica de escaleras y se cambia de mision a la de curar a alice*/
-        if (character_get_location(BOB) == HALL1 && character_get_location(ALICE) == HALL1)
+        if (player_get_location(BOB) == HALL1 && player_get_location(ALICE) == HALL1)
         {
             /*llamar a la cinematica de alice haciendose daño*/
             game_set_current_mission(game, MEDKIT_MISSION);
@@ -299,6 +310,36 @@ void game_rules_medkit_mission(Game *game, Mission *mission, Graphic_engine *ge)
     if (!game || !mission || !ge)
         return;
     step = mission_get_current_step(mission);
+    switch(step){
+        case(0):
+        /*en el primer paso se pide llegar al baño a buscar el medkit*/
+            if(player_get_location(ALICE) == BATHROOM_SPACE){
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(1):
+        /*el segundo paso consiste en inspeccionar el medkit*/
+            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDKIT_NAME)){
+                /*metemos los objetos en el espacio(aparecen)*/
+                space_add_objectId(game_get_space(game, BATHROOM_SPACE), BANDAIDS_ID);
+                space_add_objectId(game_get_space(game, BATHROOM_SPACE), MEDICINE_ID);
+
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(2):
+        /*en el tercer paso, se pide a alice curarse, despues se termina la mision*/
+        if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == USE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && (!strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), BANDAIDS_NAME) || !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDICINE_NAME))){
+            game_set_current_mission(game, REX_MISSION);
+            game_set_next_dialogue(game);
+            game_set_next_objective(game);
+            game_set_show_message(game, TRUE);
+            graphic_engine_clear_dialogue(ge);
+            return;
+        }
+
+
+    }
     return;
 }
 void game_rules_bedroom_mission(Game *game, Mission *mission, Graphic_engine *ge)
@@ -343,7 +384,7 @@ void game_rules_alice_flashback_init(Game *game)
     return;
 }
 
-void game_rules_spawn_ghost(game)
+void game_rules_spawn_ghost(Game *game)
 {
     if (!game)
         return;
@@ -359,6 +400,16 @@ void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_eng
     game_set_next_dialogue(game);
     game_set_next_objective(game);
     game_set_show_message(game, TRUE);
+
+    /*nos aseguramos de que el mensaje que hemos puesto le salga a ambos jugadores */
+    if(game_get_turn(game) == BOB_TURN){
+        game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
+        game_set_show_message_in_pos(game , TRUE, ALICE_TURN);
+    }else{
+        game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
+        game_set_show_message_in_pos(game , TRUE, BOB_TURN);
+    }
+
     graphic_engine_clear_dialogue(ge);
     return;
 }
