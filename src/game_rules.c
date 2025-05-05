@@ -13,6 +13,9 @@
 #include <time.h>
 #include <strings.h>
 
+#define BOB (game_get_player_in_pos(game, BOB_TURN))
+#define ALICE (game_get_player_in_pos(game, ALICE_TURN))
+
 /*PRIVATE FUNCTIONS*/
 void game_rules_no_mission(Game *game);
 void game_rules_team_mission(Game *game, Mission *mission, Graphic_engine *ge);
@@ -27,7 +30,8 @@ void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine
 void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge);
 
 void game_rules_alice_flashback_init(Game *game);
-
+void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_engine *ge);
+void game_rules_spawn_ghost(game);
 
 
 
@@ -95,12 +99,12 @@ void game_rules_no_mission(Game *game){
 
 void game_rules_team_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     switch(step){
         case(0):
         /*Si estan en el mismo equipo, la mision se termina ahi*/
-            if(player_get_team(game_get_player_in_pos(game, ALICE_TURN)) == player_get_team(game_get_player_in_pos(game, BOB_TURN))){
+            if(player_get_team(ALICE) == player_get_team(BOB)){
                 game_set_current_mission(game, LANTERN_MISSION);
                 game_set_next_objective(game);
                 game_set_next_dialogue(game);
@@ -116,23 +120,19 @@ void game_rules_team_mission(Game *game, Mission *mission, Graphic_engine *ge){
 }
 void game_rules_lantern_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
 
     switch(step){
         /*en el primer paso, se solicita que se cambie de turno a Bob*/
         case(0):
             if(game_get_turn(game) == BOB_TURN){
-                mission_set_current_step(mission, step + 1);
-                game_set_next_dialogue(game);
-                game_set_next_objective(game);
-                game_set_show_message(game , TRUE);
-                graphic_engine_clear_dialogue(ge);
+                game_rules_mission_step(game, mission, step, ge);
             }
             break;
         /*en el segundo paso, se solicita que se de las baterias a Alice, entonces la mision terminara*/
         case(1):
-            if(player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), BATTERIES_ID) == TRUE){
+            if(player_backpack_contains(ALICE, BATTERIES_ID) == TRUE){
                 game_set_current_mission(game, GENERATOR_MISSION);
                 game_set_next_dialogue(game);
                 game_set_next_objective(game);
@@ -148,17 +148,13 @@ void game_rules_lantern_mission(Game *game, Mission *mission, Graphic_engine *ge
 
 void game_rules_generator_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     switch(step){
         case(0):
             /*el primer paso solicita que Alice busque el cuarto con el generador*/
-            if(player_get_location(game_get_player_in_pos(game, ALICE_TURN)) == GENERATOR_SPACE){
-                mission_set_current_step(mission, step + 1);
-                game_set_next_dialogue(game);
-                game_set_next_objective(game);
-                game_set_show_message(game , TRUE);
-                graphic_engine_clear_dialogue(ge);
+            if(player_get_location(ALICE) == GENERATOR_SPACE){
+                game_rules_mission_step(game, mission, step, ge);
             }
             break;
         case(1):
@@ -180,43 +176,110 @@ void game_rules_generator_mission(Game *game, Mission *mission, Graphic_engine *
 }
 void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
+    switch(step){
+        case(0):
+        /*cuando alice llega al espacio del storage room, se pasa en la mision*/
+            if(player_get_location(ALICE) == STORAGE_ROOM__FLASH_SPACE){
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(1):
+            /*cuando alice abre la caja de herramientas, se pasa*/
+            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), TOOLBOX_NAME)){
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(2):
+            /*cuando alice vuelve con la llave inglesa al espacio del padre, se vuelve*/
+            if(player_get_location(ALICE) == GENERATOR_FLASH_SPACE && player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), WRENCH_ID)){
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(3):
+            /*cuando alice inspecciona el generador, se termina la mision y se encienden las luces*/
+            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GENERATOR_FLASH_NAME)){
+                game_set_current_mission(game, SECOND_FLOOR_MISSION);
+                game_set_next_dialogue(game);
+                game_set_next_objective(game);
+                game_set_show_message(game , TRUE);
+                graphic_engine_clear_dialogue(ge);
+                game_set_lights_on(game, TRUE);
+                return;
+            }
+        
+    }
     return;
 }
+
 void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
+    switch (step)
+    {
+        case (0):
+            /*En el primer paso se solicita a los jugadores ir al espacio de las escaleras*/
+            if(player_get_location(ALICE) == FIRST_STAIRS_ROOM && player_get_location(BOB) == FIRST_STAIRS_ROOM){
+                game_rules_mission_step(game, mission, step, ge);
+                game_rules_spawn_ghost(game);
+                return;
+            }
+        case(1):
+            /*Durante el segundo paso, se pide a bob que busque el cuchillo*/
+            if(player_backpack_contains(BOB, KNIFE_ID)){
+                /*si ya lo habia cogido antes, saltamos dos pasos*/
+                if(player_get_location(BOB) == FIRST_STAIRS_ROOM) mission_set_current_step(mission, step + 1);
+
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(2):
+            /*Una vez con el cuchillo, se pide a bob volver al espacio del fantasma*/
+            if(player_get_location(BOB) == FIRST_STAIRS_ROOM){
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(3):
+            /*ahora se pide acabar con el fantasma, despues se termina la mision*/
+            if(character_get_health(game_get_character_from_name(game, GHOST_NAME)) <= 0){
+
+            }
+
+    
+    default:
+        break;
+    }
     return;
 }
 void game_rules_medkit_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     return;
 }
 void game_rules_bedroom_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     return;
 }
 void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     return;
 }
 void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     return;
 }
 void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge){
     int step;
-    if(!game || !mission) return;
+    if(!game || !mission || !ge) return;
     step = mission_get_current_step(mission);
     return;
 }
@@ -227,5 +290,21 @@ void game_rules_alice_flashback_init(Game *game){
     if(!game) return;
     /*movemos a Alice a los espacios reservados para el flashback*/
     player_set_location(game_get_player_in_pos(game, ALICE_TURN), GENERATOR_FLASH_SPACE);
+    return;
+}
+
+void game_rules_spawn_ghost(game){
+    if(!game) return;
+    character_set_location(game_get_character_from_name(game, GHOST_NAME), FIRST_STAIRS_ROOM);
+    return;
+}
+
+void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_engine *ge){
+    if(!game || !mission || !ge || step < 0) return;
+    mission_set_current_step(mission, step + 1);
+    game_set_next_dialogue(game);
+    game_set_next_objective(game);
+    game_set_show_message(game , TRUE);
+    graphic_engine_clear_dialogue(ge);
     return;
 }

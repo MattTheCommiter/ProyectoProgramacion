@@ -727,6 +727,7 @@ gdesc57
 #o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|-1|-1|
 #o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
 #o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work if repaired|1|0|-1|-1|
+#o:4|knife|\xF0\x9F\xAA\x9C|12|nice and sharp knife|1|0|-1|-1|
 #o:6|stairs|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
 
 
@@ -746,8 +747,10 @@ gdesc57
 
 @@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
 
-#c:1|EvilToy|\xF0\x9F\xA7\xB8|spider|40|10|0|-1|Fight me If you have the nerves||
-#c:2|Dinosaur|\xF0\x9F\xA6\x96|spider|23|5|0|-1|Help me!|
+#c:1|EvilToy|\xF0\x9F\xA7\xB8|spider|40|10|0|-1|Fight me If you have the nerves!|
+#c:2|Dinosaur|\xF0\x9F\xA6\x96|spider|23|5|1|-1|Help me!|
+#c:2|Ghost|\xF0\x9F\xA6\x96|spider|14|5|0|-1|The next floor is only for our King!|
+
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -1060,7 +1063,7 @@ gdesc57
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@Mission subir al piso de arriba
-#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|Attack the ghost|Both players Move up|
+#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
 #mt:4|0|Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!|Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: Attack!|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA

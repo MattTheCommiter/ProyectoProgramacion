@@ -19,6 +19,8 @@
 
 #define GENERATOR_SPACE 15
 #define GENERATOR_FLASH_SPACE 150
+#define STORAGE_ROOM__FLASH_SPACE 160
+#define FIRST_STAIRS_ROOM 14
 
 /**
  * @brief specifies the type for the _Space structure

@@ -17,7 +17,11 @@
 
 #define BATTERIES_ID 1  /*!<The id of the batteries, used for checking missions*/
 #define LANTERN_ID 2    /*!<The id of the lantern, used for checking missions*/
-#define GENERATOR_NAME "Generator" /*!<The name of the generator, used for checking missions*/
+#define WRENCH_ID 102   /*!<The id of the wrench, used for checking missions*/
+#define KNIFE_ID 4       /*!<The id of the knife, used for checking missions*/
+#define GENERATOR_NAME "Old Generator" /*!<The name of the old generator, used for checking missions*/
+#define GENERATOR_FLASH_NAME "Generator" /*!<The name of the generator, used for checking missions*/
+#define TOOLBOX_NAME "tool box"     /*!<The name of the tool box, used for checking missions*/
 /**
  * @brief Defines a new type for the Object structure.
  */

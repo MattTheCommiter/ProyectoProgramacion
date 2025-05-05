@@ -17,6 +17,8 @@
 #define MAXHEALTH 100       /*!<Maximum health a character can have*/
 #define MAX_MESSAGES 15    /*!<Maximum number of messages a character can say*/
 
+#define GHOST_NAME "Ghost" /*!<Name of the ghost that attacks during a mission*/
+
 /**
  * @brief Defines a new type for the Character structure.
  *
