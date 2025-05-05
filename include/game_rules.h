@@ -1,7 +1,7 @@
 
 
 /**
- * @file GameRules.h
+ * @file game_rules.h
  * @author Araceli Gutiérrez
  * @brief 
  * @version 0.1

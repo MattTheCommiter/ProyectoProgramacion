@@ -1059,13 +1059,13 @@ Bool game_get_show_message(Game *game)
   return game->playerGraphicInformation[game->turn]->show_message;
 }
 
-Status game_set_show_message(Game *game, Bool bool)
+Status game_set_show_message(Game *game, Bool boolean)
 {
   if (!game){
     return ERROR;
     }
 
-  game->playerGraphicInformation[game->turn]->show_message = bool;
+  game->playerGraphicInformation[game->turn]->show_message = boolean;
   return OK;
 }
 
@@ -1076,12 +1076,12 @@ Bool game_get_show_message_in_pos(Game *game, int pos)
   return game->playerGraphicInformation[pos]->show_message;
 }
 
-Status game_set_show_message_in_pos(Game *game, Bool bool, int pos)
+Status game_set_show_message_in_pos(Game *game, Bool boolean, int pos)
 {
   if (!game || pos >= game->n_players)
     return ERROR;
 
-  game->playerGraphicInformation[pos]->show_message = bool;
+  game->playerGraphicInformation[pos]->show_message = boolean;
   return OK;
 }
 
