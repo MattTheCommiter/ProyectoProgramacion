@@ -136,10 +136,8 @@ char *mission_get_dialogue_in_pos(Mission *mission, int pos){
     return mission->dialogues[pos];
 }
 
-char *mission_get_name(Mission *mission) {
-    if (!mission) return NULL;
-
-    switch (mission->code) {
+char *mission_get_name(Mission_Code code) {
+    switch (code) {
         case NO_MISSION:
             return "NO MISSION";
         case TEAM_MISSION:

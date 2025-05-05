@@ -980,6 +980,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
   return;
+}
 
   void game_actions_give(Game * game, char *object_name, char *player_name)
   {

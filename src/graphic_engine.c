@@ -297,11 +297,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
+  /*paint the dialogue and messages*/
   if(game_get_show_message(game) == TRUE){
     screen_area_puts(ge->dialogue, game_get_message(game));
   }else{
     screen_area_clear(ge->dialogue);
   }
+
+  /*Paint the current mission*/
+  screen_area_clear(ge->mission);
+  sprintf(str, "CURRENT MISSION : %s", mission_get_name(game_get_current_mission_code(game)));
+  screen_area_puts(ge->mission, str);
+  sprintf(str, "CURRENT OBJECTIVE : %s", game_get_objective(game));
+  screen_area_puts(ge->mission, str);
 
 
   /**************PAINT COMPAS ******************/
@@ -354,6 +362,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       }
     
       screen_area_puts(ge->descript, str);
+    }else{
+      sprintf(str, " %s %s", object_name, object_gdesc);
+      screen_area_puts(ge->descript, str);
     }
   }
 
@@ -389,11 +400,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     object_name = object_get_name(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
     obj_loc = game_get_object_location(game, (player_get_backpack_object_id_at(game_get_current_player(game), i)));
     object_gdesc = object_get_gdesc(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
-    if (obj_loc == NO_ID)
-    {
-      sprintf(str, " %s %s", object_name, object_gdesc);
-      screen_area_puts(ge->descript, str);
-    }
+
+    sprintf(str, " %s %s", object_name, object_gdesc);
+    screen_area_puts(ge->descript, str);
+    
   }
   /*Printing the description of the game, given after the command 'Inspect'*/
   if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT &&command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
@@ -471,5 +481,11 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
     sprintf(str, " %s (%s) : OK (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
 
+  return;
+}
+
+void graphic_engine_clear_dialogue(Graphic_engine *ge){
+  if(!ge) return;
+  screen_area_clear(ge->dialogue);
   return;
 }

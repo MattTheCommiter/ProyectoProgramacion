@@ -1,14 +1,14 @@
-
-@@@@@ General Spaces at the game@@@@@
-
-@@Format: :Id|Name|Discovered|
-gdes1
-gdesc2
-...
-gdesc57
-
-
-#s:11|FrontalPatio|0|
+#o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|-1|-1|
+#o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
+#o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work if repaired|1|0|-1|-1|
+#o:6|stairs|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
+#o:101|Generator|\xF0\x9F\x8F\xAD|16|A generator to light the house|1|0|-1|-1|
+#o:102|wrench|\xF0\x9F\x94\xA7|160|a useful weapon that could repair something|1|0|-1|-1|
+#o:103|tool box|\xF0\x9F\xA7\xB0|16|a tool box with tools inside|0|0|-1|-1|
+#p:1|Alice|\xF0\x9F\x91\xA9|12|5|3|2|
+#p:2|Bob|\xF0\x9F\x91\xA6|11|5|3|1|
+#t:0
+#s:11|FrontalPatio|1|
 .......................................................................................................................................................
 .......:::::......+@@.......@.....-:::.@..:*#%@..=@@@:..@.-@.@=@....%...++#..@+*#*++==-....:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.
 .@........:...@@+.@@=.......#@@@@+.:...@....+-@......@#@@+..........@#@@%@@..@@@@@@@@@@@@..:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.
@@ -67,7 +67,7 @@ gdesc57
 .......*@@.@.....::::-..........:::...:::::::::::::::::::::::.:::-:::-:-...........:-...:@@@@....:::::::.@.......::::::::::........................:::.
 .@%#@@@:-@+@:..:.:.:.::--:::::::-.-:-.:::::::::::::::::::::::..::-.::::.:=-:::::::::-..@..@....:::::::::..@@@@....:::::.:::-::::::::-::---:::::.::::::.
 .......................................................................................................................................................
-#s:12|Corridor1|0|
+#s:12|Corridor1|1|
                                                                                                                             @            .             
                     @*                                             @@@@@@##@@@@@@=                                         @           @=  @ .@        
                       @@                                      . @      =@   =      @@#                                   @+          @  @= @  @        
@@ -124,7 +124,7 @@ gdesc57
                    .         .  +@    @@                                                                                 @*                @. @        
                               @     @@                                                                                      @              @. @        
                             @     =@                                                                                          @-           @. @        
-                          @     =@                                                                                              @-         @. @                                                                                                                                                                                         
+                          @     =@                                                                                              @-         @. @        
                                                                                                                                                        
 #s:13|Corridor2|0|
                                                                                                                             @            .             
@@ -200,7 +200,7 @@ gdesc57
                                                                                                                                                        
 .              ..                                                                                                                                   .  
 ..          .....-:.. .                                                         ...                                                                    
-            .+#-@+%%*@.                                                         .#-----------------------@.                                             
+            .+#-@+%%*@.                                                         .#-----------------------@.                                            
 ..      ....%:+...%.:-@:.                                                       .+**********%.%********%:@.                                         .. 
 .       .. @=-.  .*=..*@..                                                      .+*:      ..% *        +.@.                                        ... 
 ..        :=%#.  .%#:.*@ .                                                      .+*:.     ..% *        =.@.                                          . 
@@ -244,7 +244,7 @@ gdesc57
 ..   ...@%*+-:..  .............#*%...                                       @@@%..       . .@@@#.                             ..=# *...         .+.... 
 ..     .... ...:::-===+++*#%@%%#.....                                      . .....        .......                              ...%#.......... ..+.... 
 ..                         ... ..                                                                                                .. .................. 
-#s:15|Backyard|0|                                           
+#s:15|Backyard|0|
                                                                                                                     .:                         X.      
                                                                                                                     &                           + .... 
                                                                                                                   . &.                         .:x ..& 
@@ -716,94 +716,6 @@ gdesc57
 .......*@@.@.....::::-..........:::...:::::::::::::::::::::::.:::-:::-:-...........:-...:@@@@....:::::::.@.......::::::::::........................:::.
 .@%#@@@:-@+@:..:.:.:.::--:::::::-.-:-.:::::::::::::::::::::::..::-.::::.:=-:::::::::-..@..@....:::::::::..@@@@....:::::.:::-::::::::-::---:::::.::::::.
 .......................................................................................................................................................
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-@@@@@ General Objects at the game @@@@@
-
-@@Format:  :Id|Name|SpaceId|Description|Movable|Health|Dependency|Open|
-
-#o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|-1|-1|
-#o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
-#o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work if repaired|1|0|-1|-1|
-#o:6|stairs|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
-
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-@@@@@ Players at the game @@@@@
-
-@@Format: :Id|Name|Gdesc|SpaceId|Health|InventorySize|Team|Idobject1|....|Idobjectn
-
-#p:1|Alice|\xF0\x9F\x91\xA9|11|5|3|1|2|
-#p:2|Bob|\xF0\x9F\x91\xA6|11|5|3|1|1|
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-@@@@@ General Characters present at the game @@@@@
-
-@@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
-
-#c:1|EvilToy|\xF0\x9F\xA7\xB8|spider|40|10|0|-1|Fight me If you have the nerves||
-#c:2|Dinosaur|\xF0\x9F\xA6\x96|spider|23|5|0|-1|Help me!|
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-@@@@@ General links at the game @@@@@
-
-@@Format: :Id|Name|OriginId|DestId|Direction|Open|
-
-#l:1112|EntryToCorridor1|11|12|1|1|
-#l:1211|Corridor1ToEntry|12|11|2|1|
-#l:1213|Corridor1ToCorridor2|12|13|1|1|
-#l:1312|Corridor2ToCorridor1|13|12|2|1|
-#l:1314|Corridor2ToLivingRoom|13|14|3|1|
-#l:1413|LivingRoomToCorridor2|14|13|4|1|
-#l:1415|LivingRoomToBackyard|14|15|1|1|
-#l:1514|BackyardtoLivingRoom|15|14|2|1|
-#l:1516|BackyardtoStorage|15|16|4|1|
-#l:1615|StoragetoBackyard|16|15|3|1|
-#l:1421|LivingRoomToHall|14|21|5|0|
-#l:2114|LivingRoomToHall|21|14|6|1|
-
-@@@@@ Text of the cinematics @@@@@
-#cin:0| Bob: this is very scary!|
-#cin:0| Alice: calm down Bob, there's nothing to worry about|
-#cin:0| Bob: if that were really the case then mum and dad wouldn't have told us this is a bad idea.|
-#cin:0| Alice: you know how they are, always overreacting. All we have to do is find what grandma told us she left here.|
-#cin:0| Bob: what if she didn't leave anything here? You know how sick she was in her last days...|
-#cin:0| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.|
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-@@@@@ General missions at the game @@@@@
-
-@@Format: :code|step|current_objective|objectives...|  //  code|current_instruction|instructions...|
-
-@@Mission Team
-#mo:0|0|0|(ALICE)Team with your brother|
-#mt:0|0|Bob: Alice, lets work together, shall we?|
-
-@@Mission Linterna
-#mo:1|0|0|swith turn to Bob|(BOB)Give the batteries to your sister|
-#mt:1|0|Alice: Bob, give me the batteries so I can turn on the lantern| |
-
-@@Mission Generador
-#mo:2|0|0|(ALICE) Look for a way to turn on the light of the house|(ALICE) Inspect the generator|
-#mt:2|0|Bob: Alice, you should turn on the lights of the house, im scared|Alice: Oh, the old generator of my father, I might remember how to use it|
-
-
-@@@@@ ALICE'S FLASHBACK @@@@@
-
-#o:101|Generator|\xF0\x9F\x8F\xAD|16|A generator to light the house|1|0|-1|-1|
-#o:102|wrench|\xF0\x9F\x94\xA7|160|a useful weapon that could repair something|1|0|-1|-1|
-#o:103|tool box|\xF0\x9F\xA7\xB0|16|a tool box with tools inside|0|0|-1|-1|
-
-
 #s:130|Corridor2|0|
                                                                                                                             @            .             
                     @*                                             @@@@@@##@@@@@@=                                         @           @=  @ .@        
@@ -863,8 +775,6 @@ gdesc57
                             @     =@                                                                                          @-           @. @        
                                                                                                                                                        
                                                                                                                                                        
-
-
 #s:140|LivingRoom|0|
                                                                                                                                                        
                                                                                                                                                        
@@ -1042,57 +952,54 @@ gdesc57
 .......*@@.@.....::::-..........:::...:::::::::::::::::::::::.:::-:::-:-...........:-...:@@@@....:::::::.@.......::::::::::........................:::.
 .@%#@@@:-@+@:..:.:.:.::--:::::::-.-:-.:::::::::::::::::::::::..::-.::::.:=-:::::::::-..@..@....:::::::::..@@@@....:::::.:::-::::::::-::---:::::.::::::.
 .......................................................................................................................................................
-
-
+#c:1|EvilToy|\xF0\x9F\xA7\xB8|spider|40|10|0|-1|Fight me If you have the nerves|
+#c:2|Dinosaur|\xF0\x9F\xA6\x96|spider|23|5|0|-1|Help me!|
+#c:3|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
+#l:1112|EntryToCorridor1|11|12|1|1|
+#l:1211|Corridor1ToEntry|12|11|2|1|
+#l:1213|Corridor1ToCorridor2|12|13|1|1|
+#l:1312|Corridor2ToCorridor1|13|12|2|1|
+#l:1314|Corridor2ToLivingRoom|13|14|3|1|
+#l:1413|LivingRoomToCorridor2|14|13|4|1|
+#l:1415|LivingRoomToBackyard|14|15|1|1|
+#l:1514|BackyardtoLivingRoom|15|14|2|1|
+#l:1516|BackyardtoStorage|15|16|4|1|
+#l:1615|StoragetoBackyard|16|15|3|1|
+#l:1421|LivingRoomToHall|14|21|5|0|
+#l:2114|LivingRoomToHall|21|14|6|1|
 #l:130140|Corridor2ToLivingRoom|130|140|3|1|
 #l:140130|LivingRoomToCorridor2|140|130|4|1|
 #l:140150|LivingRoomToBackyard|140|150|1|1|
 #l:150140|BackyardtoLivingRoom|150|140|2|1|
 #l:150160|LivingRoomToHall|150|160|4|1|
 #l:160150|LivingRoomToHall|150|160|3|1|
-
-#c:3|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
-
-@@Mission FLASHBACK de Alice
-#mo:3|0|0|(ALICE)Go to the storage room|(ALICE)Open(inspect) the tool box and take what could be useful|(ALICE)Return to the backyard with the wrench|(ALICE)Turn (inspect) the generator on|
-#mt:3|0|Father: Hey Alice, come help me with the generator!|Father: Just go grab the wrench from the storage room|You were fast! Now use it on the generator|Father: voila! thank's Alice's|
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-@@Mission subir al piso de arriba
-#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|Attack the ghost|Both players Move up|
-#mt:4|0|Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!|Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: Attack!|
-
-@@CINEMATICA SUBIR AL PISO DE ARRIBA
-
-@@Mission buscar curacion para Alice
-
-#mo:5|0|0|(Alice)Look for something to heal yourself in the bathroom|(Alice)Open (inspect) the medkit|(Alice)Heal yourself|
-#mt:5|0|Alice: Oh! it hurts! I should heal me|Alice: It might be something in the medkit..| |
-
-
-@@Mission cuarto de Bob
+#i:0|Save/guardado.dat/OK|Move/n/OK|Team/OK|Bob: Alice, lets work together, shall we?| |(ALICE)Team with your brother|0|
+#i:1|No command/OK|No command/OK|No command/OK| | | |0|
+#mo:0|0|1|(ALICE)Team with your brother|
+#mi:0|1|Bob: Alice, lets work together, shall we?|
+#mo:1|0|0|swith turn to Bob|(BOB)Give the batteries to your sister|
+#mi:1|0|Alice: Bob, give me the batteries so I can turn on the lantern| |
+#mo:2|0|0|(ALICE) Look for a way to turn on the light of the house|(ALICE) Inspect the generator|
+#mi:2|0|Bob: Alice, you should turn on the lights of the house, im scared|Alice: Oh, the old generator of my father, I might remember how to use it|
+#mo:3|0|0|(ALICE)Go to the storage room|(ALICE)Open(inspect) the tool box and take what could be useful|(ALICE)Return to the backyard with the wrench|(ALICE)Turn the generator on|
+#mi:3|0|Father: Hey Alice, come help me with the generator!|Father: Just go grab the wrench from the storage room|You were fast! Now use it on the generator|Father: voila! thank's Alice's|
+#mo:4|0|0|Both players must go to the upper floor, search the stairs|Both players Move up|
+#mi:4|0|Now that the lights are on, we should go upstairs!|
+#mo:5|0|0|Look for something to heal yourself in the bathroom|Inspect the medkit|Heal yourself|
+#mi:5|0|Oh! it hurts! I should heal me|It might be something in the medkit..|
 #mo:6|0|0|Take Bob to his room|
-#mt:6|0|I should explore the house|
-
-@@CINEMATICA DEL DINOSAURIO QUE HABLA
-
-##aqui estaria bien que el dinosaurio dijera que no puedes reclutarle hasta no tener su pata
-
-@@Mission buscar la pata del DINOSAURIO
-
-#mo:7|0|0|(Bob)Search for the leg of the Dino near the bedroom|(Bob)take the leg and recluit the dino|
-#mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|
-
-@@Mission subir al piso 3
-
+#mi:6|0|I should explore the house|
+#mo:7|0|0|Search for the leg of the Dino near the bedroom|take the leg and recluit the dino|
+#mi:7|0|Dont worry Mega-T-Rex! I'll help you|
 #mo:8|0|0|Get both players to the upper floor, look for the stairs|
-#mt:8|0|Bob: Lets go! We should be able to find grandma's treasure|
-
-@@CINEMATICA BOSS FINAL
-
-#mo:9|0|0|(Bob)Kill the teddy bear|go to the next room to see the treasure|take the treasure|
-#mt:9|0|Evil toy: You shall not pass!|ALice: We are sorry teddy bear, you had to die|Bob: lets take the treasure!|
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
+#mi:8|0|Lets go! We should be able to find grandma's treasure|
+#mo:9|0|0|Kill the teddy bear|go to the next room to see the treasure|take the treasure|
+#mi:9|0|You shall not pass!|We are sorry teddy bear, you had to die|lets take the treasure!|
+#cin : 0| Bob: this is very scary!|
+#cin : 0| Alice: calm down Bob, there's nothing to worry about|
+#cin : 0| Bob: if that were really the case then mum and dad wouldn't have told us this is a bad idea.|
+#cin : 0| Alice: you know how they are, always overreacting. All we have to do is find what grandma told us she left here.|
+#cin : 0| Bob: what if she didn't leave anything here? You know how sick she was in her last days...|
+#cin : 0| Alice: I saw the honesty in her eyes Bob, she really did leave something important for us to find.|
+#ccur:2
+#mcur:0

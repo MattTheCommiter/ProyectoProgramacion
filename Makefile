@@ -24,7 +24,7 @@ tests: $(TESTS)
 general: $(EXE)
 
 ###################################################### GAME EXECUTABLE ######################################################
-juego :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o $(OBJDIR)/libscreen.o $(OBJDIR)/cinematics.o $(OBJDIR)/mission.o
+juego :  $(OBJDIR)/link.o $(OBJDIR)/inventory.o $(OBJDIR)/game_loop.o $(OBJDIR)/game.o $(OBJDIR)/graphic_engine.o $(OBJDIR)/command.o $(OBJDIR)/game_actions.o $(OBJDIR)/space.o $(OBJDIR)/gameManagement.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/character.o $(OBJDIR)/set.o $(OBJDIR)/libscreen.o $(OBJDIR)/cinematics.o $(OBJDIR)/mission.o $(OBJDIR)/game_rules.o  
 	gcc -g -o $@ $^
 
 
@@ -35,7 +35,7 @@ $(OBJDIR)/game.o: game.c game.h command.h types.h space.h set.h character.h \
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/game_loop.o: src/game_loop.c include/graphic_engine.h include/game.h \
-  command.h types.h space.h set.h player.h character.h inventory.h object.h link.h libscreen.h cinematics.h
+  command.h types.h space.h set.h player.h character.h inventory.h object.h link.h libscreen.h cinematics.h game_rules.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h \
@@ -85,6 +85,9 @@ $(OBJDIR)/cinematics.o: cinematics.c cinematics.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/mission.o: mission.c mission.h types.h
+	gcc $(INC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/game_rules.o: game_rules.c game_rules.h types.h game.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
