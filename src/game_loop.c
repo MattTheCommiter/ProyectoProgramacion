@@ -23,7 +23,7 @@
 #include "game_rules.h"
 
 #define TIME_BETWEEN_TURNS 1  /*!< Ammount of seconds the game gives each player to visualize their action before changing the turn*/
-#define TIME_BETWEEN_CINEMATICS 3  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
+#define TIME_BETWEEN_CINEMATICS 1  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
