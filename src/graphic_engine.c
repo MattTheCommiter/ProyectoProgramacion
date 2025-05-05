@@ -75,9 +75,11 @@ struct _Graphic_engine
  * @param south Id of the space in the south
  * @param west Id of the space in the west
  * @param east Id of the space in the east
+ * @param up Id of the space on top
+ * @param down Id of the space beow
  * @return two-dimensional array with the compas information
  */
-char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east);
+char **graphic_interface_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
 
 
 /**
@@ -102,9 +104,9 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
 
 /*PRIVATE FUNCTIONS*/
-char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east)
+char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down)
 {
-  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ";
+  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", *up_name=NULL, *down_name=NULL;
   int i, left_padding, total_width, middle_str_pos;
   if (!game)
   {
@@ -232,8 +234,12 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
 
 
 
-  
+  up_name = (char *)space_get_name(game_get_space(game, up));
+  if(!up_name) up_name = blank_word;
+  down_name = (char *)space_get_name(game_get_space(game, down));
+  if(!down_name) down_name = blank_word;
   memset((void *)compas_info[6], (int)' ', WIDTH_COMPASS);
+  sprintf(compas_info[6], "Up: %s  Down: %s", up_name, down_name);
   compas_info[6][WIDTH_COMPASS - 1] = '\0';
 
 
@@ -289,7 +295,7 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, character_following;
+  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, id_up=NO_ID, id_down=NO_ID, character_following;
 
   char **map_information = NULL, **compass_information=NULL;
   char str[MAX_STR], *object_name = NULL, *object_gdesc=NULL, *character_gdesc = NULL, *character_name = NULL;
@@ -318,7 +324,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   id_south = game_get_connection(game, id_act, S);
   id_east = game_get_connection(game, id_act, E);
   id_west = game_get_connection(game, id_act, W);
-  compass_information = graphic_engine_paint_compass(game, id_north, id_south, id_west, id_east);
+  id_up = game_get_connection(game, id_act, U);
+  id_down = game_get_connection(game, id_act, D);
+  compass_information = graphic_engine_paint_compass(game, id_north, id_south, id_west, id_east, id_up, id_down);
   for(i=0;i<HEIGHT_COMPASS;i++){
     screen_area_puts(ge->compass, compass_information[i]);
   }
@@ -328,7 +336,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
 
   /**************PAINT MAP AREA**************/
-  sprintf(str, "Current space: %s", space_get_name(game_get_space(game, id_act)));
+  sprintf(str, "Current space: %s (%ld)", space_get_name(game_get_space(game, id_act)), space_get_id(game_get_space(game, id_act)));
   screen_area_puts(ge->map, str);
   if ((id_act = game_get_current_player_location(game)) != NO_ID)
   {    
@@ -344,6 +352,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   ***/
   screen_area_clear(ge->descript);
   /*For all the objects in the game, we print its location*/
+  screen_area_puts(ge->descript, "----------------------------------------");
+  screen_area_puts(ge->descript, "        GENERAL GAME INFORMATION: ");
+  screen_area_puts(ge->descript, " "); /*Separator line*/
 
   screen_area_puts(ge->descript, " OBJECTS IN THE GAME:");
   for (i = 0; i < game_get_n_objects(game); i++)
@@ -378,9 +389,15 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
-
+    character_print(game_get_character(game, game_get_character_id_at(game, i)));
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, " %s %s  location:%d health: %d following: %ld", character_name, character_gdesc, (int)character_loc, character_hp >= 0? character_hp:0, character_following);
+      sprintf(str, " %s %s", character_name, character_gdesc);
+      screen_area_puts(ge->descript, str);
+      sprintf(str, " - location:%d",(int)character_loc);
+      screen_area_puts(ge->descript, str);
+      sprintf(str, " - health: %d", character_hp >= 0? character_hp:0);
+      screen_area_puts(ge->descript, str);
+      sprintf(str, " - following: %ld", character_following);
     }else{
       sprintf(str, " %s %s  (?)", character_name, character_gdesc);
     }
@@ -404,6 +421,29 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     sprintf(str, " %s %s", object_name, object_gdesc);
     screen_area_puts(ge->descript, str);
     
+  }
+  screen_area_puts(ge->descript, "----------------------------------------");
+  screen_area_puts(ge->descript, "       CURRENT SPACE INFORMATION: ");
+  screen_area_puts(ge->descript, " "); /*Separator line*/
+
+  sprintf(str, " Characters in the space: ");
+  screen_area_puts(ge->descript, str);
+  for (i = 0; i < space_get_n_characters(game_get_space(game, id_act)); i++){
+    character_name = character_get_name(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
+    character_gdesc = character_get_gdesc(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
+    sprintf(str, " %s %s", character_name, character_gdesc);
+    screen_area_puts(ge->descript, str);
+  }
+
+
+
+  sprintf(str, " Objects in the space: ");
+  screen_area_puts(ge->descript, str);
+  for (i = 0; i < space_get_num_of_objects(game_get_space(game, id_act)); i++){
+    object_name = object_get_name(game_get_object(game, space_get_object_id_in_pos(game_get_space(game, id_act), i)));
+    object_gdesc = object_get_gdesc(game_get_object(game, space_get_object_id_in_pos(game_get_space(game, id_act), i)));
+    sprintf(str, " %s %s", object_name, object_gdesc);
+    screen_area_puts(ge->descript, str);
   }
   /*Printing the description of the game, given after the command 'Inspect'*/
   if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT &&command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
