@@ -858,10 +858,11 @@ gdesc57
 #o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|-1|-1|
 #o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
 #o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work if repaired|1|0|-1|-1|
+#o:4|knife||12|nice and sharp knife|1|0|-1|-1|
 #o:5|StairsTo2ndFloor|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
 #o:6|StairsTo3rdFloor|\xF0\x9F\xAA\x9C|23|old and fragile stairs|0|0|-1|-1|
 #o:7|Key|\xF0\x9F\x94\x91|-1|the key to victory ;)|1|0|-1|3132|
-#o:8|MedKit|\xF0\x9F\xA7\xB0|-1|Open this to heal yourself|1|0|-1|-1|
+#o:8|MedKit|\xF0\x9F\xA7\xB0|-1|Open this to heal yourself|0|0|-1|-1|
 #o:9|Band-aids|\xF0\x9F\xA9\xB9|-1|This will help your wound!|1|2|-1|-1|
 #o:10|Medicine|\xF0\x9F\x92\x8A|-1|Some medicine always helps!|1|3|-1|-1|
 #o:11|DinosaurLeg|\xF0\x9F\xA6\xBF|-1|Who knows how that ended up here|1|0|-1|-1|
