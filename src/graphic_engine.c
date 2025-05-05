@@ -79,7 +79,7 @@ struct _Graphic_engine
  * @param down Id of the space beow
  * @return two-dimensional array with the compas information
  */
-char **graphic_interface_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
+char **graphic_engine_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
 
 
 /**

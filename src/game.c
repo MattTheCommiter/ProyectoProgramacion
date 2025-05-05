@@ -338,11 +338,17 @@ void game_print(Game *game)
   {
     link_print(game->links[i]);
   }
-
+  fprintf(stdout, "=> Objects:\n");
   for (i = 0; i < game->n_objects; i++)
   {
     object_print(game->objects[i]);
   }
+  fprintf(stdout, "=> Characters:\n");
+  for (i = 0; i < game->n_characters; i++)
+  {
+    character_print(game->characters[i]);
+  }
+  fprintf(stdout, "=> Players:\n");
   for (i = 0; i < game->n_players; i++)
   {
     player_print(game_get_current_player(game));
