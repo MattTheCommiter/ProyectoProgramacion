@@ -738,7 +738,7 @@ gdesc57
 @@Format: :Id|Name|Gdesc|SpaceId|Health|InventorySize|Team|Idobject1|....|Idobjectn
 
 #p:1|Alice|\xF0\x9F\x91\xA9|11|5|3|1|2|
-#p:2|Bob|\xF0\x9F\x91\xA6|11|5|3|1|1|
+#p:2|Bob|\xF0\x9F\x91\xA6|11|5|3|2|1|
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
