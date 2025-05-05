@@ -1,7 +1,7 @@
 /**
  * @brief It implements the non deterministic nature of the game
  *
- * @file GameRules.c
+ * @file game_rules.c
  * @author Araceli Gutiérrez
  * @version 0.1
  * @date May 2025

@@ -69,7 +69,7 @@ struct _Graphic_engine
 
 /**
  * @brief paints the compas area of the graphic interface
- * 
+ * @author Matteo Arunedo
  * @param game pointer to the game
  * @param north Id of the space in the north
  * @param south Id of the space in the south
@@ -77,7 +77,7 @@ struct _Graphic_engine
  * @param east Id of the space in the east
  * @return two-dimensional array with the compas information
  */
-char **graphic_interface_paint_compas(Game *game, Id north, Id south, Id west, Id east);
+char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east);
 
 
 /**
@@ -93,7 +93,7 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 
 /**
  * @brief Paints the feedback of one command in the player command history
- * 
+ * @author Matteo Artunedo 
  * @param game pointer to the game
  * @param ge pointer to the graphic engine
  * @param pos position of the command (whether we want to print the last command, the second to last or the third to last)

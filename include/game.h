@@ -267,17 +267,8 @@ Id game_get_object_id_at(Game *game, int position);
  * @return Status if the function has been completed succesfully
  */
 Status game_add_character(Game *game, Character *character);
+
 /**
- * @brief adds an object to the game
- * @date 03/03/25
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param position the position in the array of objects of the object we want to get the Id
- * @return Id the id of the character
- */
-
-
- /**
   * @brief returns the character in the position pos of the array of characters in game
   * @date 18/04/25
   * @author Alvaro Inigo
@@ -287,6 +278,14 @@ Status game_add_character(Game *game, Character *character);
   */
 Character *game_get_character_in_pos(Game *game, int pos);
 
+/**
+  * @brief returns the character id in the position pos of the array of characters in game
+  * @date 18/04/25
+  * @author Alvaro Inigo
+  * @param game a pointer to the game
+  * @param position the position of the character in the array
+  * @return Character* the wanted character
+  */
 Id game_get_character_id_at(Game *game, int position);
 
 /**
@@ -327,15 +326,6 @@ Id game_get_object_id_at(Game *game, int position);
  * @return Status if the function has been completed succesfully
  */
 Status game_add_character(Game *game, Character *character);
-/**
- * @brief adds an object to the game
- * @date 03/03/25
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param position the position in the array of objects of the object we want to get the Id
- * @return Id the id of the character
- */
-Id game_get_character_id_at(Game *game, int position);
 
 /**
  * @brief gets the object of the game(pointer)
@@ -676,21 +666,11 @@ char *game_interface_in_pos_get_description(Game *game, int pos);
 char *game_interface_in_pos_get_objective(Game *game, int pos);
 
 /**
- * @brief sets the message of a specific interface given its position
- * @author Alvaro Inigo
- * @param game a pointer to game
- * @param pos the position of the interface
- * @param desc the new message to set
- * @return Status OK or ERROR
- */
-Status game_interface_in_pos_set_message(Game *game, int pos, char *desc);
-
-/**
  * @brief sets the message of an interface in a given turn
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param pos the position of the interface in the game array
- * @param desc the new message
+ * @param message the new message
  * @return Status  OK or ERROR
  */
 Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
@@ -754,10 +734,10 @@ Bool game_get_show_message(Game *game);
  * @brief sets if the message must be shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
- * @param bool TRUE or FALSE
+ * @param boolean TRUE or FALSE
  * @return Status OK or ERROR if an error happened
  */
-Status game_set_show_message(Game *game, Bool bool);
+Status game_set_show_message(Game *game, Bool boolean);
 
 /**
  * @brief gets if the message of the player in the turn pos must have its message shown
@@ -772,11 +752,11 @@ Bool game_get_show_message_in_pos(Game *game, int pos);
  * @brief sets if the message of the player in the turn pos must have its message shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
- * @param bool the bool to set
+ * @param boolean the bool to set
  * @param pos the turn of the player
  * @return Bool TRUE or FALSE if the message must or not be shown
  */
-Status game_set_show_message_in_pos(Game *game, Bool bool, int pos);
+Status game_set_show_message_in_pos(Game *game, Bool boolean, int pos);
 
 /**
  * @brief Finds an object from the game by its name.

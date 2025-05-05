@@ -1,7 +1,9 @@
 
 #include "mission.h"
 
-
+/**
+ * @brief Data structure containing all information relative to a certain mission in the game
+ */
 struct _Mission{
     Mission_Code code;                                      /*!<The code of the mission, this codes are defined on the enumeration in mission.h*/
     char dialogues[MAX_DIALOGUES][MAX_MISSION_MESSAGE];     /*!<The dialogues in a mission, this will be messages 'said' by the characters in the missions*/
