@@ -637,14 +637,13 @@ Status gameManagement_load_cinematics(Game *game, char *filename)
 #endif
     }
   }
-
   if (ferror(file))
   {
+
     status = ERROR;
   }
 
   fclose(file);
-
   return status;
 }
 
@@ -681,7 +680,6 @@ Status gameManagement_load_missions(Game *game, char *filename)
         fclose(file);
         return ERROR;
       }
-
       toks = strtok(line + start_len, "|\r\n");
       code = atol(toks);
       mission_set_code(mission, code);
@@ -735,7 +733,6 @@ Status gameManagement_load_missions(Game *game, char *filename)
   }
 
   fclose(file);
-
   return status;
 }
 
@@ -1020,7 +1017,7 @@ Status gameManagement_save_interface(Game *game, FILE *saving_file)
       fprintf(saving_file, "%s/%s|", third_to_lastName, command_get_lastcmd_success(third_to_last) == OK ? "OK" : "ERROR");
     }
 
-    fprintf(saving_file, "%s|%s|%d|\n", game_interface_in_pos_get_message(game, i), game_interface_in_pos_get_description(game, i), game_get_show_message_in_pos(game, i) == TRUE ? 1 : 0);
+    fprintf(saving_file, "%s|%s|%s|%d|\n", game_interface_in_pos_get_message(game, i), game_interface_in_pos_get_description(game, i), game_interface_in_pos_get_objective(game, i), game_get_show_message_in_pos(game, i) == TRUE ? 1 : 0);
   }
 
   return OK;
@@ -1270,6 +1267,10 @@ Status gameManagement_load_interface(Game *game, char *filename)
       token = strtok(NULL, "/|\r\n");
 
       game_interface_in_pos_set_description(game, pos, token);
+
+      token = strtok(NULL, "/|\r\n");
+
+      game_interface_in_pos_set_objective(game, pos, token);
 
       token = strtok(NULL, "/|\r\n");
       show = atol(token) == 1 ? TRUE : FALSE;

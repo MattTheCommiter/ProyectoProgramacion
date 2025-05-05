@@ -20,23 +20,26 @@
 #define MAX_OBJECTIVES 15        /*!<the maximum objectives a mission can have*/   
 #define MAX_DIALOGUES 15         /*!<the maximum dialogues a mission can have*/ 
   
-
+/**
+ * @brief Alias for the Mission data structure.
+ */
 typedef struct _Mission Mission;
 
-/*!<The mission code, each mission in the game has its own code*/
-
+/**
+ * @brief The mission code, each mission in the game has its own code
+ */
 typedef enum{  
-    NO_MISSION = -1,
-    TEAM_MISSION,
-    LANTERN_MISSION,
-    GENERATOR_MISSION,
-    FATHER_MISSION,
-    SECOND_FLOOR_MISSION,
-    MEDKIT_MISSION,
-    BEDROOM_MISSION,
-    REX_MISSION,
-    THIRD_FLOOR_MISSION,
-    BOSS_MISSION
+    NO_MISSION = -1,        /*!< Enum value that identifies the mission NO_MISSION to be used in mission-related functions */           
+    TEAM_MISSION,           /*!< Enum value that identifies the mission TEAM_MISSION to be used in mission-related functions */
+    LANTERN_MISSION,        /*!< Enum value that identifies the mission LANTERN_MISSION to be used in mission-related functions */   
+    GENERATOR_MISSION,      /*!< Enum value that identifies the mission GENERATOR_MISSION to be used in mission-related functions */     
+    FATHER_MISSION,         /*!< Enum value that identifies the mission FATHER_MISSION to be used in mission-related functions */  
+    SECOND_FLOOR_MISSION,   /*!< Enum value that identifies the mission SECOND_FLOOR_MISSION to be used in mission-related functions */        
+    MEDKIT_MISSION,         /*!< Enum value that identifies the mission MEDKIT_MISSION to be used in mission-related functions */  
+    BEDROOM_MISSION,        /*!< Enum value that identifies the mission BEDROOM_MISSION to be used in mission-related functions */   
+    REX_MISSION,            /*!< Enum value that identifies the mission REX_MISSION to be used in mission-related functions */
+    THIRD_FLOOR_MISSION,    /*!< Enum value that identifies the mission THIRD_FLOOR_MISSION to be used in mission-related functions */       
+    BOSS_MISSION            /*!< Enum value that identifies the mission BOSS_MISSION to be used in mission-related functions */
 
 }Mission_Code;
 
@@ -194,4 +197,11 @@ int mission_get_next_dialogue_index(Mission *mission);
  */
 int mission_get_next_objective_index(Mission *mission);
 
+/**
+ * @brief returns the name of a mission
+ * @author Alvaro Inigo
+ * @param mission_code the code of the mission to get its name
+ * @return char* the name of the mission
+ */
+char *mission_get_name(Mission_Code mission_code);
 #endif

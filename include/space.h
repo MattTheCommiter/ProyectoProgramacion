@@ -17,6 +17,11 @@
 #define N_TOTAL_ROWS_IN_SQUARE 58    /*!<Number of lines in one of the space squares*/
 #define N_TOTAL_COLUMNS_IN_SQUARE 152/*!<Number of rows in one of the space squares*/
 
+#define GENERATOR_SPACE 15
+#define GENERATOR_FLASH_SPACE 150
+#define STORAGE_ROOM__FLASH_SPACE 160
+#define FIRST_STAIRS_ROOM 14
+
 /**
  * @brief specifies the type for the _Space structure
  */

@@ -69,7 +69,7 @@ struct _Graphic_engine
 
 /**
  * @brief paints the compas area of the graphic interface
- * 
+ * @author Matteo Arunedo
  * @param game pointer to the game
  * @param north Id of the space in the north
  * @param south Id of the space in the south
@@ -95,7 +95,7 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 
 /**
  * @brief Paints the feedback of one command in the player command history
- * 
+ * @author Matteo Artunedo 
  * @param game pointer to the game
  * @param ge pointer to the graphic engine
  * @param pos position of the command (whether we want to print the last command, the second to last or the third to last)
@@ -303,11 +303,19 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
+  /*paint the dialogue and messages*/
   if(game_get_show_message(game) == TRUE){
     screen_area_puts(ge->dialogue, game_get_message(game));
   }else{
     screen_area_clear(ge->dialogue);
   }
+
+  /*Paint the current mission*/
+  screen_area_clear(ge->mission);
+  sprintf(str, "CURRENT MISSION : %s", mission_get_name(game_get_current_mission_code(game)));
+  screen_area_puts(ge->mission, str);
+  sprintf(str, "CURRENT OBJECTIVE : %s", game_get_objective(game));
+  screen_area_puts(ge->mission, str);
 
 
   /**************PAINT COMPAS ******************/
@@ -365,6 +373,9 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       }
     
       screen_area_puts(ge->descript, str);
+    }else{
+      sprintf(str, " %s %s", object_name, object_gdesc);
+      screen_area_puts(ge->descript, str);
     }
   }
 
@@ -406,11 +417,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     object_name = object_get_name(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
     obj_loc = game_get_object_location(game, (player_get_backpack_object_id_at(game_get_current_player(game), i)));
     object_gdesc = object_get_gdesc(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
-    if (obj_loc == NO_ID)
-    {
-      sprintf(str, " %s %s", object_name, object_gdesc);
-      screen_area_puts(ge->descript, str);
-    }
+
+    sprintf(str, " %s %s", object_name, object_gdesc);
+    screen_area_puts(ge->descript, str);
+    
   }
   screen_area_puts(ge->descript, "----------------------------------------");
   screen_area_puts(ge->descript, "       CURRENT SPACE INFORMATION: ");
@@ -511,5 +521,11 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
     sprintf(str, " %s (%s) : OK (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
 
+  return;
+}
+
+void graphic_engine_clear_dialogue(Graphic_engine *ge){
+  if(!ge) return;
+  screen_area_clear(ge->dialogue);
   return;
 }

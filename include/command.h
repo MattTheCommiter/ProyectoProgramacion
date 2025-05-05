@@ -20,9 +20,10 @@
 #define MAX_CMD_ARG 20 /*!< Maximum number of characters in the argument parameter of the command*/
 #define NO_ARG NULL    /*!< the pointer defined for no argument*/
 
-#define USE_ARG " over "
-#define OPEN_ARG " with "
-#define GIVE_ARG " to "
+#define USE_ARG " over " /*!< Defines the separator corresponding to the USE command */
+#define OPEN_ARG " with " /*!< Defines the separator corresponding to the OPEN command */
+#define GIVE_ARG " to " /*!< Defines the separator corresponding to the GIVE command */
+
 /**
  * @brief Enumeration of the two possible ways the user can introduce a command
  */

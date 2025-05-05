@@ -20,9 +20,10 @@
 #include "game_actions.h"
 #include "command.h"
 #include "game.h"
+#include "game_rules.h"
 
 #define TIME_BETWEEN_TURNS 1  /*!< Ammount of seconds the game gives each player to visualize their action before changing the turn*/
-#define TIME_BETWEEN_CINEMATICS 0  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
+#define TIME_BETWEEN_CINEMATICS 1  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -167,14 +168,21 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
       }
       game_set_current_cinematic(*game, NO_CINEMATIC);
       game_set_show_message(*game, FALSE);
+      /*clear the dialogue after the cinematic*/
+      graphic_engine_clear_dialogue(gengine);
     }
-
+    if(game_get_current_mission_code(*game) == NO_MISSION){
+      game_rules_mission_update(*game, gengine);
+    }
 
     /*We paint the game for the player whose turn it currently is*/
     graphic_engine_paint_game(gengine, *game);
     /*We read the player's command and add it to their command history*/
     command_get_user_input(last_cmd);
     game_actions_update(game, last_cmd, gengine);
+
+    /*we update the mission state*/
+    game_rules_mission_update(*game, gengine);
 
     /*If log is enabled*/
     if (log_file){

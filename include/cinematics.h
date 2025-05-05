@@ -14,6 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * @brief Data structure for managing the cinematics of the game
+ */
 typedef enum {
     INTRODUCTION,   /*!<Corresponds to the cinematic that will be played at the beggining of the game*/
     FIRST_STAIRS,   /*!<Corresponds to the cinematic that will be played when the characters go up the stairs from the firsst to the second floor*/

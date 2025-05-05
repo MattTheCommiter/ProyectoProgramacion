@@ -1,7 +1,9 @@
 
 #include "mission.h"
 
-
+/**
+ * @brief Data structure containing all information relative to a certain mission in the game
+ */
 struct _Mission{
     Mission_Code code;                                      /*!<The code of the mission, this codes are defined on the enumeration in mission.h*/
     char dialogues[MAX_DIALOGUES][MAX_MISSION_MESSAGE];     /*!<The dialogues in a mission, this will be messages 'said' by the characters in the missions*/
@@ -82,14 +84,14 @@ Status mission_add_objective(Mission *mission, char *objective){
 
 
 char *mission_get_next_dialogue(Mission *mission){
-    if(!mission || mission->next_dialogue_index >= mission->n_dialogues) return ERROR;
+    if(!mission || mission->next_dialogue_index >= mission->n_dialogues) return NULL;
     mission->next_dialogue_index++;
     return mission->dialogues[mission->next_dialogue_index - 1];
 }
 
 
 char *mission_get_next_objective(Mission *mission){
-    if(!mission || mission->next_objective_index >= mission->n_objectives) return ERROR;
+    if(!mission || mission->next_objective_index >= mission->n_objectives) return NULL;
     mission->next_objective_index ++;
     return mission->objectives[mission->next_objective_index - 1];
 }
@@ -136,3 +138,31 @@ char *mission_get_dialogue_in_pos(Mission *mission, int pos){
     return mission->dialogues[pos];
 }
 
+char *mission_get_name(Mission_Code code) {
+    switch (code) {
+        case NO_MISSION:
+            return "NO MISSION";
+        case TEAM_MISSION:
+            return "TEAM MISSION";
+        case LANTERN_MISSION:
+            return "LANTERN MISSION";
+        case GENERATOR_MISSION:
+            return "GENERATOR MISSION";
+        case FATHER_MISSION:
+            return "FATHER MISSION";
+        case SECOND_FLOOR_MISSION:
+            return "SECOND FLOOR MISSION";
+        case MEDKIT_MISSION:
+            return "MEDKIT MISSION";
+        case BEDROOM_MISSION:
+            return "BEDROOM MISSION";
+        case REX_MISSION:
+            return "REX MISSION";
+        case THIRD_FLOOR_MISSION:
+            return "THIRD FLOOR MISSION";
+        case BOSS_MISSION:
+            return "BOSS MISSION";
+        default:
+            return "UNKNOWN MISSION";
+    }
+}
