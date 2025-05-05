@@ -25,7 +25,7 @@
  * @date 27-01-2025
  * @author Profesores
  *
- * @param game
+ * @param game pointer to game containing all of its information 
  */
 void game_actions_unknown(Game *game);
 
@@ -35,7 +35,7 @@ void game_actions_unknown(Game *game);
  * @date 27-01-2025
  * @author Profesores
  *
- * @param game
+ * @param game pointer to game containing all of its information 
  */
 void game_actions_exit(Game *game);
 
@@ -46,6 +46,7 @@ void game_actions_exit(Game *game);
  * @author Alvaro Inigo
  *
  * @param game a pointer to the structure with the game's main information
+ * @param arg the direction the player wishes to move towards
  */
 void game_actions_move(Game *game, char *arg);
 
@@ -67,6 +68,7 @@ void game_actions_take(Game *game, char *arg);
  * @author Matteo Artunedo, AGL (modifications to update to player's backpack)
  *
  * @param game a pointer to the structure with the game's main information
+ * @param arg string containing the name of the object they are going to drop
  */
 void game_actions_drop(Game *game, char *arg);
 
@@ -148,6 +150,7 @@ void game_actions_load(Game **game, char *arg);
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param arg the name of the player to join the team
+ * @param gengine pointer to graphic engine in order to allow for team forming confirmation
  */
 void game_actions_team(Game *game, char *arg, Graphic_engine *gengine);
 
@@ -167,6 +170,16 @@ void game_actions_use(Game *game, char *object_name, char *character_name);
  * @param game pointer to the game
  */
 void game_actions_turn(Game *game);
+
+/**
+ * @brief Command that allows the player to give others obejcts in their inventory 
+ * @author Guilherme Povedano 
+ * @date 02-05-25
+ * @param game pointer to game struct containing the game's information 
+ * @param object_name string containing the name of the object to be passed along 
+ * @param player_name string containing the name of the recipient player of the object
+ */
+void game_actions_give(Game * game, char *object_name, char *player_name);
 
 /*Game actions implementation*/
 
@@ -231,6 +244,9 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
     break;
   case TURN:
     game_actions_turn(*game);
+    break;
+  case GIVE: 
+    game_actions_give(*game, command_get_argument(command), command_get_argument2(command));
     break;
   default:
     break;
@@ -982,7 +998,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   return;
 }
 
-  void game_actions_give(Game * game, char *object_name, char *player_name)
+void game_actions_give(Game * game, char *object_name, char *player_name)
   {
     Player *recipient = NULL;
     Object *object = NULL, *dependant = NULL;

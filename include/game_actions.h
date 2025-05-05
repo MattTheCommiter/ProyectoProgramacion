@@ -38,7 +38,6 @@
  */
 #define ATTACK_CHANCE 4
 
-#define OPEN_ARG " with "
 /**
  * @brief Updates the game's last_cmd to the newest command, calling the action functions (which are private) depending on the command
  *
@@ -47,6 +46,7 @@
  *
  * @param game a pointer to the structure with the game's main information
  * @param cmd the newest command
+ * @param gengine pointer to the game's graphic engine
  * @return Status : whether function was completed succesfully
  */
 Status game_actions_update(Game **game, Command *cmd, Graphic_engine *gengine);
