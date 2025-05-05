@@ -29,7 +29,6 @@ typedef struct _InterfaceData{
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
   char objective[MAX_MISSION_MESSAGE];  /*!<String that has the text for the next objective of the game, acording to each mission*/
   Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
-  int command_counter;             /*!<Counter for the number of commands executed */
 } InterfaceData;
 
 
@@ -338,11 +337,17 @@ void game_print(Game *game)
   {
     link_print(game->links[i]);
   }
-
+  fprintf(stdout, "=> Objects:\n");
   for (i = 0; i < game->n_objects; i++)
   {
     object_print(game->objects[i]);
   }
+  fprintf(stdout, "=> Characters:\n");
+  for (i = 0; i < game->n_characters; i++)
+  {
+    character_print(game->characters[i]);
+  }
+  fprintf(stdout, "=> Players:\n");
   for (i = 0; i < game->n_players; i++)
   {
     player_print(game_get_current_player(game));
@@ -917,7 +922,6 @@ InterfaceData *game_interface_data_create()
   data->message[1] = '\0';
   data->objective[1] = '\0';
   data->show_message = FALSE;
-  data->command_counter = 0;
   return data;
 }
 
@@ -1026,31 +1030,6 @@ Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc)
   strcpy(game->playerGraphicInformation[pos]->objective, desc);
   return OK;
 }
-
-/*START: FUNCTIONS RELATED TO command_counter*/
-
-  int game_get_command_counter(Game *game) {
-    if (!game) {
-      return -1; 
-    }
-    return game->playerGraphicInformation[game->turn]->command_counter;
-  }
-  
-  void game_set_command_counter(Game *game, int counter) {
-    if (!game) {
-      return;
-    }
-    game->playerGraphicInformation[game->turn]->command_counter = counter;
-  }
-  
-  void game_increment_command_counter(Game *game) {
-    if (!game) {
-      return;
-    }
-    game->playerGraphicInformation[game->turn]->command_counter++;
-  }
-
-/*END: FUNCTIONS RELATED TO command_counter*/
 
 Bool game_get_show_message(Game *game)
 {
