@@ -106,8 +106,9 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
 /*PRIVATE FUNCTIONS*/
 char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down)
 {
-  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", *up_name=NULL, *down_name=NULL;
+  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", unknown_str[] = "???", *up_name=NULL, *down_name=NULL;
   int i, left_padding, total_width, middle_str_pos;
+  long link_id;
   if (!game)
   {
     return NULL;
@@ -235,9 +236,15 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
 
 
   up_name = (char *)space_get_name(game_get_space(game, up));
+  link_id = game_get_current_player_location(game) * 100 + up;
   if(!up_name) up_name = blank_word;
+  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE) up_name = unknown_str;
+  
   down_name = (char *)space_get_name(game_get_space(game, down));
+  link_id = game_get_current_player_location(game) * 100 + down;
   if(!down_name) down_name = blank_word;
+  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE) down_name = unknown_str;
+  
   memset((void *)compas_info[6], (int)' ', WIDTH_COMPASS);
   sprintf(compas_info[6], "Up: %s  Down: %s", up_name, down_name);
   compas_info[6][WIDTH_COMPASS - 1] = '\0';

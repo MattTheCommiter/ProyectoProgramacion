@@ -506,7 +506,6 @@ Status gameManagement_load_characters(Game *game, char *filename)
           character_add_message(character, message);
         }
         game_add_character(game, character);
-        game_print(game);
       }
     }
   }
