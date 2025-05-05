@@ -695,33 +695,6 @@ Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
  */
 Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc);
 
-
-/**
- * @brief Gets the command counter for the current player.
- * @author Araceli Gutiérrez
- *
- * @param game Pointer to the Game structure.
- * @return int The current command counter value.
- */
-int game_get_command_counter(Game *game);
-
-/**
- * @brief Sets the command counter for the current player.
- * @author Araceli Gutiérrez
- *
- * @param game Pointer to the Game structure.
- * @param counter The new command counter value.
- */
-void game_set_command_counter(Game *game, int counter);
-
-/**
- * @brief Increments the command counter for the current player.
- * @author Araceli Gutiérrez
- *
- * @param game Pointer to the Game structure.
- */
-void game_increment_command_counter(Game *game);
-
 /**
  * @brief returns if the message of the game must be shown
  * @author Alvaro Inigo
