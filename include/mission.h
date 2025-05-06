@@ -16,7 +16,7 @@
 #include "types.h"
 
 
-#define MAX_MISSION_MESSAGE 100  /*!<The maximum ammount of chars a message can have*/
+#define MAX_MISSION_MESSAGE 150  /*!<The maximum ammount of chars a message can have*/
 #define MAX_OBJECTIVES 15        /*!<the maximum objectives a mission can have*/   
 #define MAX_DIALOGUES 15         /*!<the maximum dialogues a mission can have*/ 
   
