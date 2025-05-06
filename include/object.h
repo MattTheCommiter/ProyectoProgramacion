@@ -19,9 +19,16 @@
 #define LANTERN_ID 2    /*!<The id of the lantern, used for checking missions*/
 #define WRENCH_ID 102   /*!<The id of the wrench, used for checking missions*/
 #define KNIFE_ID 4       /*!<The id of the knife, used for checking missions*/
+#define BANDAIDS_ID 9   /*!<The id of the band-aids, used for checking and applying missions*/
+#define MEDICINE_ID 10  /*!<The id of the medicine, used for checking and applying missions*/
+#define DINOSAURLEG_ID 11           /*!<The id of the dinosaur led, used for checking missions*/
 #define GENERATOR_NAME "Old Generator" /*!<The name of the old generator, used for checking missions*/
 #define GENERATOR_FLASH_NAME "Generator" /*!<The name of the generator, used for checking missions*/
 #define TOOLBOX_NAME "tool box"     /*!<The name of the tool box, used for checking missions*/
+#define MEDKIT_NAME "MedKit"        /*!<The name of the Medkit, used for checking missions*/
+#define BANDAIDS_NAME "Band-aids"        /*!<The name of the band-aids, used for checking missions*/
+#define MEDICINE_NAME "Medicine"        /*!<The name of the medicine, used for checking missions*/
+
 /**
  * @brief Defines a new type for the Object structure.
  */

@@ -22,11 +22,11 @@
 #include "mission.h"
 
 #define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
-#define MAX_OBJECTS 25              /*!<The maximum ammount of objects present at the game*/
+#define MAX_OBJECTS 25             /*!<The maximum ammount of objects present at the game*/
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
 #define MAX_LINKS (MAX_SPACES * 4)  /*!<The maximum amount of links present at the game*/
 #define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
-#define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
+#define MAX_PLAYERS 2               /*!<The maximum ammout of players that can play at the same time*/
 #define MAX_MISSIONS 10             /*!<The maximum ammount of missions that can be in the game*/
 
 /**

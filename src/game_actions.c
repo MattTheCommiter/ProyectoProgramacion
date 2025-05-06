@@ -928,6 +928,12 @@ void game_actions_turn(Game *game)
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE);
 
+  /*la mision del flashback no permite cambios de turno*/
+  if(game_get_current_mission_code(game) == FATHER_MISSION){
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
   game_next_turn(game);
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;

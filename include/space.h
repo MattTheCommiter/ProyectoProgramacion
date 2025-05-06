@@ -21,7 +21,10 @@
 #define GENERATOR_FLASH_SPACE 150       /*!<Space where the generator of the flashback is at*/
 #define STORAGE_ROOM__FLASH_SPACE 160   /*!<Space where the storage room of the flashback is at*/
 #define FIRST_STAIRS_ROOM 14            /*!<Space where the stairs is at*/
+#define SECOND_STAIRS_ROOM 23            /*!<Space where the stairs is at*/
+#define BATHROOM_SPACE 25                  /*!<Space for the bathroom*/
 #define HALL1 21                        /*!<Space of the hall1*/
+#define HIDDENROOM 31                     /*!<Space of the hidden room*/
 
 /**
  * @brief specifies the type for the _Space structure
