@@ -17,14 +17,17 @@
 #define N_TOTAL_ROWS_IN_SQUARE 58    /*!<Number of lines in one of the space squares*/
 #define N_TOTAL_COLUMNS_IN_SQUARE 152/*!<Number of rows in one of the space squares*/
 
-#define GENERATOR_SPACE 15              /*!<Space where the generator is at*/
-#define GENERATOR_FLASH_SPACE 150       /*!<Space where the generator of the flashback is at*/
-#define STORAGE_ROOM__FLASH_SPACE 160   /*!<Space where the storage room of the flashback is at*/
-#define FIRST_STAIRS_ROOM 14            /*!<Space where the stairs is at*/
-#define SECOND_STAIRS_ROOM 23            /*!<Space where the stairs is at*/
-#define BATHROOM_SPACE 25                  /*!<Space for the bathroom*/
-#define HALL1 21                        /*!<Space of the hall1*/
-#define HIDDENROOM 31                     /*!<Space of the hidden room*/
+#define GENERATOR_SPACE 15              /*!<Space id where the generator is at*/
+#define GENERATOR_FLASH_SPACE 150       /*!<Space id where the generator of the flashback is at*/
+#define STORAGE_ROOM__FLASH_SPACE 160   /*!<Space id where the storage room of the flashback is at*/
+#define FIRST_STAIRS_ROOM 14            /*!<Space id where the stairs is at*/
+#define SECOND_STAIRS_ROOM 23            /*!<Space id where the stairs is at*/
+#define BATHROOM_SPACE 25                  /*!<Space id for the bathroom*/
+#define HALL1 21                        /*!<Space id of the hall1*/
+#define HALL2 22                        /*!<Space id of the hall2*/
+#define CORRIDOR3 23                        /*!<Space id of the corridor3*/
+#define BEDROOM 24                      /*!<Space id of the Bob's bedroom*/
+#define HIDDENROOM 31                     /*!<Space id of the hidden room*/
 
 /**
  * @brief specifies the type for the _Space structure

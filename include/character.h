@@ -18,6 +18,8 @@
 #define MAX_MESSAGES 15    /*!<Maximum number of messages a character can say*/
 
 #define GHOST_NAME "Ghost" /*!<Name of the ghost that attacks during a mission*/
+#define REX_NAME "Dinosaur" /*!<Name of the dinosaur*/
+#define REX_ID 2            /*!<Id of the dinosaur of the game*/
 
 /**
  * @brief Defines a new type for the Character structure.
