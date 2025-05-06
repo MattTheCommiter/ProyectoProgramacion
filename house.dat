@@ -874,6 +874,8 @@ gdesc57
 #o:10|Medicine|\xF0\x9F\x92\x8A|-1|Some medicine always helps!|1|3|-1|-1|
 #o:11|DinosaurLeg|\xF0\x9F\xA6\xBF|-1|Who knows how that ended up here|1|0|-1|-1|
 #o:12|KitchenKnife|\xF0\x9F\x94\xAA|14|A very sharp knife, caution when using it|1|0|-1|-1|
+#o:13|FamilyPhoto|\xF0\x9F\x96\xBC|-1|An eternal reminder of the beauty of love and family|1|0|-1|-1|
+#o:14|WrappedGift|\xF0\x9F\x8E\xB1|31|What could it be?|1|0|-1|-1|
 
 #o:101|Generator|\xF0\x9F\x8F\xAD|150|A generator to light the house|1|0|-1|-1|
 #o:102|wrench|\xF0\x9F\x94\xA7|-1|a useful weapon that could repair something|1|0|-1|-1|
@@ -965,6 +967,14 @@ gdesc57
 #cin:2| Bob: what happened to you?|
 #cin:2| Dinosaur: one of the toy dogs you had bit it off and put it somewhere around the house.|
 #cin:2| Bob: let me go find it.|
+
+#cin:3| Robocop: I've been expecting you.|
+#cin:3| Alice & Bob: Robocop?!?!?!?|
+#cin:3| Robocop: your grandmother was the one who rescued me from the ToysRUs. She loved me. I deserve her gift|
+#cin:3| Bob: but Robocop, you're just a toy. She was our grandmother...|
+#cin:3| Robocop: I don't care what you say, I will defend her gift with my life|
+#cin:3| Alice: so long then!|
+
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
@@ -982,7 +992,7 @@ gdesc57
 
 @@Mission Generador
 #mo:2|0|0|(ALICE) Look for a way to turn on the light of the house|(ALICE) Inspect the generator|
-#mt:2|0|Bob: Alice, you should turn on the lights of the house, im scared|Alice: Oh, the old generator of my father, I might remember how to use it|
+#mt:2|0|Bob: Alice, you should turn on the lights of the house, im scared|Alice: Oh, my father's old generator, I might remember how to use it|
 
 
 @@@@@ ALICE'S FLASHBACK @@@@@
