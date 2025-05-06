@@ -28,6 +28,7 @@
 #define MEDKIT_NAME "MedKit"        /*!<The name of the Medkit, used for checking missions*/
 #define BANDAIDS_NAME "Band-aids"        /*!<The name of the band-aids, used for checking missions*/
 #define MEDICINE_NAME "Medicine"        /*!<The name of the medicine, used for checking missions*/
+#define DINOSAUR_LEG_NAME "DinosaurLeg" /*!<The name of the dinosaur leg, used for checking missions*/
 
 /**
  * @brief Defines a new type for the Object structure.
