@@ -380,10 +380,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       }
     
       screen_area_puts(ge->descript, str);
-    }else{
+    }/*else{
       sprintf(str, " %s %s", object_name, object_gdesc);
       screen_area_puts(ge->descript, str);
-    }
+    }*/
   }
 
   /*for all the characters, we print their location and health*/

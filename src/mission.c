@@ -8,10 +8,10 @@ struct _Mission{
     Mission_Code code;                                      /*!<The code of the mission, this codes are defined on the enumeration in mission.h*/
     char dialogues[MAX_DIALOGUES][MAX_MISSION_MESSAGE];     /*!<The dialogues in a mission, this will be messages 'said' by the characters in the missions*/
     int n_dialogues;                                        /*!<the number of dialogues a mission has*/
-    int next_dialogue_index;                             /*!<the position in the array of the current dialogue*/
+    int next_dialogue_index;                                /*!<the position in the array of the next dialogue*/
     char objectives[MAX_OBJECTIVES][MAX_MISSION_MESSAGE];   /*!<the objectives of a mission, text to be shown in order for the player to see what to do*/
     int n_objectives;                                       /*!<the number of objectives a mission has*/
-    int next_objective_index;                            /*!<the position in the array of the current objective text*/
+    int next_objective_index;                               /*!<the position in the array of the next objective text*/
     int step;                                               /*!<the current step in the mission, each mission has own steps to follow*/
 };
 
