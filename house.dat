@@ -875,7 +875,7 @@ gdesc57
 #o:11|DinosaurLeg|\xF0\x9F\xA6\xBF|-1|Who knows how that ended up here|1|0|-1|-1|
 #o:12|KitchenKnife|\xF0\x9F\x94\xAA|14|A very sharp knife, caution when using it|1|0|-1|-1|
 
-#o:101|Generator|\xF0\x9F\x8F\xAD|16|A generator to light the house|1|0|-1|-1|
+#o:101|Generator|\xF0\x9F\x8F\xAD|150|A generator to light the house|1|0|-1|-1|
 #o:102|wrench|\xF0\x9F\x94\xA7|-1|a useful weapon that could repair something|1|0|-1|-1|
 #o:103|Toolbox|\xF0\x9F\xA7\xB0|160|a tool box with tools inside|0|0|-1|-1|
 

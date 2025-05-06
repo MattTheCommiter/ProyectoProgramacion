@@ -229,6 +229,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
         if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GENERATOR_FLASH_NAME))
         {
             game_set_current_mission(game, SECOND_FLOOR_MISSION);
+            player_set_location(ALICE, GENERATOR_SPACE);
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
