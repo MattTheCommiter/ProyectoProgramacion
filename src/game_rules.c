@@ -460,6 +460,7 @@ void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge)
             }
         case(2):
             /*al final se pide abrir el cofre del tesoro, gift*/
+            return;
     }
     return;
 }
@@ -496,7 +497,7 @@ void game_rules_spawn_final_boss(Game *game)
 {
     if (!game)
         return;
-        character_set_location(game_get_character(game, BOSS_ID), HIDDENROOM);
+    character_set_location(game_get_character(game, BOSS_ID), HIDDENROOM);
     return;
 }
 
