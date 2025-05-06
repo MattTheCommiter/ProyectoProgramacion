@@ -13,8 +13,18 @@
 #include <time.h>
 #include <strings.h>
 
-#define BOB (game_get_player_in_pos(game, BOB_TURN))
-#define ALICE (game_get_player_in_pos(game, ALICE_TURN))
+#define BOB_PLAYER (game_get_player_in_pos(game, BOB_TURN))
+#define ALICE_PLAYER (game_get_player_in_pos(game, ALICE_TURN))
+
+#define show_message_to_bob() ( \
+    game_set_show_message_in_pos(game, TRUE, BOB_TURN), \
+    game_set_show_message_in_pos(game, FALSE, ALICE_TURN) \
+)
+#define show_message_to_alice() ( \
+    game_set_show_message_in_pos(game, TRUE, ALICE_TURN), \
+    game_set_show_message_in_pos(game, FALSE, BOB_TURN) \
+)
+
 
 /*PRIVATE FUNCTIONS*/
 void game_rules_no_mission(Game *game);
@@ -95,8 +105,8 @@ void game_rules_no_mission(Game *game)
         return;
     game_set_current_mission(game, TEAM_MISSION);
     game_set_next_objective(game);
-    game_set_next_dialogue(game);
-    game_set_show_message(game, TRUE);
+    game_set_next_dialogue(game, ALICE);
+    show_message_to_alice();
 
     return;
 }
@@ -111,13 +121,12 @@ void game_rules_team_mission(Game *game, Mission *mission, Graphic_engine *ge)
     {
     case (0):
         /*Si estan en el mismo equipo, la mision se termina ahi*/
-        if (player_get_team(ALICE) == player_get_team(BOB))
+        if (player_get_team(ALICE_PLAYER) == player_get_team(BOB_PLAYER))
         {
             game_set_current_mission(game, LANTERN_MISSION);
             game_set_next_objective(game);
-            game_set_next_dialogue(game);
-            game_set_show_message(game, TRUE);
-            graphic_engine_clear_dialogue(ge);
+            game_set_next_dialogue(game, BOB);
+            show_message_to_bob();
             return;
         }
         break;
@@ -144,12 +153,12 @@ void game_rules_lantern_mission(Game *game, Mission *mission, Graphic_engine *ge
         break;
     /*en el segundo paso, se solicita que se de las baterias a Alice, entonces la mision terminara*/
     case (1):
-        if (player_backpack_contains(ALICE, BATTERIES_ID) == TRUE)
+        if (player_backpack_contains(ALICE_PLAYER, BATTERIES_ID) == TRUE)
         {
             game_set_current_mission(game, GENERATOR_MISSION);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, ALICE);
             game_set_next_objective(game);
-            game_set_show_message(game, TRUE);
+            show_message_to_alice();
             /*tambien ponemos los mensajes nuevos en el turno de alice*/
             game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
             game_set_show_message_in_pos(game , TRUE, ALICE_TURN);
@@ -173,7 +182,7 @@ void game_rules_generator_mission(Game *game, Mission *mission, Graphic_engine *
     {
     case (0):
         /*el primer paso solicita que Alice busque el cuarto con el generador*/
-        if (player_get_location(ALICE) == GENERATOR_SPACE)
+        if (player_get_location(ALICE_PLAYER) == GENERATOR_SPACE)
         {
             game_rules_mission_step(game, mission, step, ge);
         }
@@ -184,9 +193,9 @@ void game_rules_generator_mission(Game *game, Mission *mission, Graphic_engine *
         {
             game_rules_alice_flashback_init(game);
             game_set_current_mission(game, FATHER_MISSION);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, ALICE);
             game_set_next_objective(game);
-            game_set_show_message(game, TRUE);
+            show_message_to_alice();
             graphic_engine_clear_dialogue(ge);
         }
         break;
@@ -205,7 +214,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
     {
     case (0):
         /*cuando alice llega al espacio del storage room, se pasa en la mision*/
-        if (player_get_location(ALICE) == STORAGE_ROOM__FLASH_SPACE)
+        if (player_get_location(ALICE_PLAYER) == STORAGE_ROOM__FLASH_SPACE)
         {
             game_rules_mission_step(game, mission, step, ge);
             return;
@@ -221,7 +230,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
         }
     case (2):
         /*cuando alice vuelve con la llave inglesa al espacio del padre, se vuelve*/
-        if (player_get_location(ALICE) == GENERATOR_FLASH_SPACE && player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), WRENCH_ID))
+        if (player_get_location(ALICE_PLAYER) == GENERATOR_FLASH_SPACE && player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), WRENCH_ID))
         {
             game_rules_mission_step(game, mission, step, ge);
             return;
@@ -231,10 +240,10 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
         if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GENERATOR_FLASH_NAME))
         {
             game_set_current_mission(game, SECOND_FLOOR_MISSION);
-            player_set_location(ALICE, GENERATOR_SPACE);
-            game_set_next_dialogue(game);
+            player_set_location(ALICE_PLAYER, GENERATOR_SPACE);
+            game_set_next_dialogue(game, ALICE);
             game_set_next_objective(game);
-            game_set_show_message(game, TRUE);
+            game_set_show_message_in_pos(game , TRUE, ALICE_TURN);
 
             /*imprimimos el siguiente mensaje tambien en el turno de BOB*/
             game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
@@ -258,7 +267,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
     {
     case (0):
         /*En el primer paso se solicita a los jugadores ir al espacio de las escaleras*/
-        if (player_get_location(ALICE) == FIRST_STAIRS_ROOM && player_get_location(BOB) == FIRST_STAIRS_ROOM)
+        if (player_get_location(ALICE) == FIRST_STAIRS_ROOM && player_get_location(BOB_PLAYER) == FIRST_STAIRS_ROOM)
         {
             game_rules_mission_step(game, mission, step, ge);
             game_rules_spawn_ghost(game);
@@ -266,10 +275,10 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         }
     case (1):
         /*Durante el segundo paso, se pide a bob que busque el cuchillo*/
-        if (player_backpack_contains(BOB, KNIFE_ID))
+        if (player_backpack_contains(BOB_PLAYER, KNIFE_ID))
         {
             /*si ya lo habia cogido antes, saltamos dos pasos*/
-            if (player_get_location(BOB) == FIRST_STAIRS_ROOM)
+            if (player_get_location(BOB_PLAYER) == FIRST_STAIRS_ROOM)
                 mission_set_current_step(mission, step + 1);
 
             game_rules_mission_step(game, mission, step, ge);
@@ -277,7 +286,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         }
     case (2):
         /*Una vez con el cuchillo, se pide a bob volver al espacio del fantasma*/
-        if (player_get_location(BOB) == FIRST_STAIRS_ROOM)
+        if (player_get_location(BOB_PLAYER) == FIRST_STAIRS_ROOM)
         {
             game_rules_mission_step(game, mission, step, ge);
             return;
@@ -291,12 +300,12 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         }
     case (4):
         /*se pide subir al espacio de arriba, cuando suben, se llama a la cinematica de escaleras y se cambia de mision a la de curar a alice*/
-        if (player_get_location(BOB) == HALL1 && player_get_location(ALICE) == HALL1)
+        if (player_get_location(BOB_PLAYER) == HALL1 && player_get_location(ALICE_PLAYER) == HALL1)
         {
             /*llamar a la cinematica de alice haciendose daño*/
             game_set_current_cinematic(game, FIRST_STAIRS);
             game_set_current_mission(game, MEDKIT_MISSION);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, ALICE);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
@@ -317,7 +326,7 @@ void game_rules_medkit_mission(Game *game, Mission *mission, Graphic_engine *ge)
     switch(step){
         case(0):
         /*en el primer paso se pide llegar al baño a buscar el medkit*/
-            if(player_get_location(ALICE) == BATHROOM_SPACE){
+            if(player_get_location(ALICE_PLAYER) == BATHROOM_SPACE){
                 game_rules_mission_step(game, mission, step, ge);
                 return;
             }
@@ -335,7 +344,7 @@ void game_rules_medkit_mission(Game *game, Mission *mission, Graphic_engine *ge)
         /*en el tercer paso, se pide a alice curarse, despues se termina la mision*/
         if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == USE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && (!strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), BANDAIDS_NAME) || !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDICINE_NAME))){
             game_set_current_mission(game, REX_MISSION);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, BOB);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
@@ -355,9 +364,9 @@ void game_rules_bedroom_mission(Game *game, Mission *mission, Graphic_engine *ge
     switch(step){
         case(0):
         /*cuando bob llega a su habitacion, llamamos a la cinematica del dinosaurio pidiendo ayuda*/
-        if(player_get_location(BOB) == BEDROOM){
+        if(player_get_location(BOB_PLAYER) == BEDROOM){
             game_set_current_mission(game, REX_MISSION);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, BOB);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
@@ -397,7 +406,8 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
         if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == RECRUIT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
         {
             game_set_current_mission(game, THIRD_FLOOR_MISSION);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, ALICE);
+            game_set_next_dialogue(game, BOB);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
@@ -420,12 +430,13 @@ void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine
     case (0):
         /*Both players go to the upper floor; mission ends when both get there*/
         /*HIDDEN_ROOM es la habitación a la que llegan cuando acceden al tercer piso desde el segundo*/
-        if (player_get_location(ALICE) == HIDDENROOM && player_get_location(BOB) == HIDDENROOM)
+        if (player_get_location(ALICE_PLAYER) == HIDDENROOM && player_get_location(BOB_PLAYER) == HIDDENROOM)
         {
             space_set_discovered(game_get_space(game, HIDDENROOM), TRUE);
             game_set_current_mission(game, BOSS_MISSION);
             game_set_next_objective(game);
-            game_set_next_dialogue(game);
+            game_set_next_dialogue(game, ALICE);
+            game_set_next_dialogue(game, BOB);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
             return;
@@ -507,7 +518,7 @@ void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_eng
     if (!game || !mission || !ge || step < 0)
         return;
     mission_set_current_step(mission, step + 1);
-    game_set_next_dialogue(game);
+    game_set_next_dialogue(game, game_get_turn(game));
     game_set_next_objective(game);
     game_set_show_message(game, TRUE);
 

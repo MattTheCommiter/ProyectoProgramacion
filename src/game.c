@@ -502,16 +502,16 @@ char *game_get_message(Game *game)
   return game->playerGraphicInformation[game->turn]->message;
 }
 
-Status game_set_message(Game *game, char *msg)
+Status game_set_message(Game *game, char *msg, Protagonists player)
 {
-  if (!game)
+  if (!game || player < ALICE || player > BOB)
     return ERROR;
   if(!msg){
     game->playerGraphicInformation[game->turn]->message[0] = ' ';
     game->playerGraphicInformation[game->turn]->message[1] = '\0';
     return OK;
   }
-  strcpy(game->playerGraphicInformation[game->turn]->message, msg);
+  strcpy(game->playerGraphicInformation[player]->message, msg);
   return OK;
 }
 
@@ -1135,7 +1135,7 @@ Status game_set_next_objective(Game *game){
   return game_set_objective(game, mission_get_next_objective(game_get_current_mission(game)));
 }
 
-Status game_set_next_dialogue(Game *game){
+Status game_set_next_dialogue(Game *game, Protagonists player){
   if(!game) return ERROR;
-  return game_set_message(game, mission_get_next_dialogue(game_get_current_mission(game)));
+  return game_set_message(game, mission_get_next_dialogue(game_get_current_mission(game)), player);
 }

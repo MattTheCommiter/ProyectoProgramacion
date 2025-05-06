@@ -373,9 +373,10 @@ char *game_get_message(Game *game);
  * @author Matteo Artunedo
  * @param game a pointer to game
  * @param msg a string with the new message
+ * @param player the protagonist that will receive the message
  * @return OK if the function is completed succesfully or ERROR if an error occurrs
  */
-Status game_set_message(Game *game, char *msg);
+Status game_set_message(Game *game, char *msg, Protagonists player);
 
 /**
  * @brief Gets the object in a specific position in the object array
@@ -904,7 +905,8 @@ Status game_set_next_objective(Game *game);
  * @brief sets the next dialogue line of the current mission in the game on the message of game
  * @author Alvaro Inigo
  * @param game a pointer to the game
+ * @param player the protagonist which will receive the dialogue
  * @return Status OK or ERROR
  */
-Status game_set_next_dialogue(Game *game);
+Status game_set_next_dialogue(Game *game, Protagonists player);
 #endif

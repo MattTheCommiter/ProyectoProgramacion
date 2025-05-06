@@ -492,7 +492,7 @@ void game_actions_chat(Game *game, char *arg)
   if (cha != NULL)
   {
     game_set_show_message(game, TRUE);
-    game_set_message(game, character_chat(cha));
+    game_set_message(game, character_chat(cha), game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   else
@@ -593,7 +593,7 @@ void game_actions_attack(Game *game, char *arg)
     if (teammates > 1)
     {
       game_set_show_message(game, TRUE);
-      game_set_message(game, "TEAM ATTACK!");
+      game_set_message(game, "TEAM ATTACK!", game_get_turn(game));
     }
     character_set_health(enemy, character_get_health(enemy) - (PLAYER_DAMAGE * set_get_num_elements(followers)) - (PLAYER_DAMAGE * (teammates - 1)));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
@@ -676,7 +676,7 @@ void game_actions_recruit(Game *game, char *arg)
     return;
   }
   sprintf(message, "%s recluited", arg);
-  game_set_message(game, message);
+  game_set_message(game, message, game_get_turn(game));
   game_set_show_message(game, TRUE);
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
@@ -869,7 +869,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   if (player_get_team(teammate) == player_get_team(game_get_current_player(game)))
   {
     sprintf(message, "The player %s is already on your team!", arg);
-    game_set_message(game, message);
+    game_set_message(game, message, game_get_turn(game));
     game_set_show_message(game, TRUE);
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -895,7 +895,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   /*print the message for the other player to accept or decline*/
   sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
 
-  game_set_message(game, message);
+  game_set_message(game, message, game_get_turn(game));
   game_set_show_message(game, TRUE);
   /*paint the game in order to see the new message*/
   graphic_engine_paint_game(gengine, game);
@@ -903,7 +903,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   acceptance = command_get_confirmation();
 
   /*set the values back */
-  game_set_message(game, previous_message);
+  game_set_message(game, previous_message, game_get_turn(game));
   game_set_show_message(game, show);
   /*get back to the turn*/
   game_set_turn(game, current_turn);
