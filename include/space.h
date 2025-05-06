@@ -20,7 +20,8 @@
 #define GENERATOR_SPACE 15              /*!<Space id where the generator is at*/
 #define GENERATOR_FLASH_SPACE 150       /*!<Space id where the generator of the flashback is at*/
 #define STORAGE_ROOM__FLASH_SPACE 160   /*!<Space id where the storage room of the flashback is at*/
-#define FIRST_STAIRS_ROOM 14            /*!<Space id where the stairs is at*/
+#define FIRST_STAIRS_ROOM 14            /*!<Space id where the stairs is at(its also the living room)*/
+#define CORRIDOR1 12                    /*!<Space id where the knife will appear */
 #define SECOND_STAIRS_ROOM 23            /*!<Space id where the stairs is at*/
 #define BATHROOM_SPACE 25                  /*!<Space id for the bathroom*/
 #define HALL1 21                        /*!<Space id of the hall1*/
@@ -28,6 +29,7 @@
 #define CORRIDOR3 23                        /*!<Space id of the corridor3*/
 #define BEDROOM 24                      /*!<Space id of the Bob's bedroom*/
 #define HIDDENROOM 31                     /*!<Space id of the hidden room*/
+#define TREASUREROOM 32                   /*!<Space id of the treasure room*/
 
 /**
  * @brief specifies the type for the _Space structure

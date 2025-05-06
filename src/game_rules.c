@@ -228,7 +228,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
         }
     case (3):
         /*cuando alice inspecciona el generador, se termina la mision y se encienden las luces*/
-        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GENERATOR_FLASH_NAME))
+        if (player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), WRENCH_ID) && command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GENERATOR_FLASH_NAME))
         {
             game_set_current_mission(game, SECOND_FLOOR_MISSION);
             player_set_location(ALICE, GENERATOR_SPACE);
@@ -262,16 +262,14 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         {
             game_rules_mission_step(game, mission, step, ge);
             game_rules_spawn_ghost(game);
+            /*hacemos aparecer el cuchillo en el espacio del pasillo*/
+            space_add_objectId(game_get_space(game, CORRIDOR1), KNIFE_ID);
             return;
         }
     case (1):
         /*Durante el segundo paso, se pide a bob que busque el cuchillo*/
         if (player_backpack_contains(BOB, KNIFE_ID))
         {
-            /*si ya lo habia cogido antes, saltamos dos pasos*/
-            if (player_get_location(BOB) == FIRST_STAIRS_ROOM)
-                mission_set_current_step(mission, step + 1);
-
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
@@ -283,10 +281,11 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             return;
         }
     case (3):
-        /*ahora se pide acabar con el fantasma*/
+        /*ahora se pide acabar con el fantasma, despues se abre el link al piso de arriba*/
         if (character_get_health(game_get_character(game, GHOST_ID)) <= 0)
         {
             game_rules_mission_step(game, mission, step, ge);
+            link_set_is_open(game_get_link(game, LIVINGROOMTOHALL1), TRUE);
             return;
         }
     case (4):
@@ -334,7 +333,7 @@ void game_rules_medkit_mission(Game *game, Mission *mission, Graphic_engine *ge)
         case(2):
         /*en el tercer paso, se pide a alice curarse, despues se termina la mision*/
         if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == USE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && (!strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), BANDAIDS_NAME) || !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDICINE_NAME))){
-            game_set_current_mission(game, REX_MISSION);
+            game_set_current_mission(game, BEDROOM_MISSION);
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
@@ -380,23 +379,23 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
     switch(step){
         case(0):
         /*Bob in his room and Dinasourleg also in BEDROOM*/
-        if(game_get_current_player_location(game) == BEDROOM && game_get_object_location(game, DINOSAURLEG_ID) == BEDROOM){
+        if(game_get_current_player_location(game) == game_get_object_location(game, DINOSAURLEG_ID)){
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
         case (1):
         /*Bob busca la pata del dinosaurio y la coge (TAKE)*/
-        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == TAKE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), DINOSAUR_LEG_NAME))
+        if (player_backpack_contains(BOB, DINOSAURLEG_ID))
         {
             game_rules_mission_step(game, mission, step, ge);
-        
             return;
         }
         case (2):
-        /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION*/
+        /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
         if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == RECRUIT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
         {
             game_set_current_mission(game, THIRD_FLOOR_MISSION);
+            link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
@@ -422,12 +421,12 @@ void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine
         /*HIDDEN_ROOM es la habitación a la que llegan cuando acceden al tercer piso desde el segundo*/
         if (player_get_location(ALICE) == HIDDENROOM && player_get_location(BOB) == HIDDENROOM)
         {
-            space_set_discovered(game_get_space(game, HIDDENROOM), TRUE);
             game_set_current_mission(game, BOSS_MISSION);
             game_set_next_objective(game);
             game_set_next_dialogue(game);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
+            game_set_current_cinematic(game, BOBS_ROOM);
             return;
         }
         break;
@@ -459,8 +458,17 @@ void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge)
                 return;
             }
         case(2):
-            /*al final se pide abrir el cofre del tesoro, gift*/
+            /*al final se pide abrir el cofre del tesoro, gift, despues aparece la foto familiar.*/
+            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GIFTBOX_NAME))
+            space_add_objectId(game_get_space(game, TREASUREROOM), FAMILY_PIC_ID);
+            game_rules_mission_step(game, mission, step, ge);
             return;
+        case(3):
+            /*ahora se pide coger la foto familiar*/
+            if(player_backpack_contains(BOB, FAMILY_PIC_ID) || player_backpack_contains(ALICE, FAMILY_PIC_ID)){
+                game_set_current_cinematic(game, TREASURE);
+                return;
+            }
     }
     return;
 }
@@ -481,6 +489,7 @@ void game_rules_spawn_ghost(Game *game)
     if (!game)
         return;
     character_set_location(game_get_character(game, GHOST_ID), FIRST_STAIRS_ROOM);
+    space_add_character(game_get_space(game, FIRST_STAIRS_ROOM), GHOST_ID);
     return;
 }
 
@@ -498,6 +507,7 @@ void game_rules_spawn_final_boss(Game *game)
     if (!game)
         return;
     character_set_location(game_get_character(game, BOSS_ID), HIDDENROOM);
+    space_add_character(game_get_space(game, HIDDENROOM), BOSS_ID);
     return;
 }
 
