@@ -2,7 +2,7 @@
  * @brief It implements the non deterministic nature of the game
  *
  * @file game_rules.c
- * @author Araceli Gutiérrez
+ * @author Álvaro Iñigo; Araceli Gutiérrez
  * @version 0.1
  * @date May 2025
  * @copyright GNU Public License
@@ -349,6 +349,31 @@ void game_rules_bedroom_mission(Game *game, Mission *mission, Graphic_engine *ge
     if (!game || !mission || !ge)
         return;
     step = mission_get_current_step(mission);
+    switch(step){
+        case(0):
+        /*Bob in his room*/
+        if(player_get_location(BOB) == BEDROOM){
+            game_rules_mission_step(game, mission, step, ge);
+            return;
+        }
+        case (1):
+        
+        /*cuando Bob encuentra al dinosaurio (dinosaurio tiene que estar en BEDROOM), se termina la misión y se llama a la misión REX*/
+        if (space_object_belongs(game_get_space(game, BEDROOM_ID), REX_ID)== TRUE && command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
+        {
+            game_set_current_mission(game, REX_MISSION);
+            game_set_next_dialogue(game);
+            game_set_next_objective(game);
+            game_set_show_message(game, TRUE);
+            graphic_engine_clear_dialogue(ge);
+
+            /*mensajes de dialogo de dinosaurio pidiendo q Bob que busque su pata*/
+        
+            return;
+        }
+        default:
+            break;
+    }
     return;
 }
 void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
@@ -357,6 +382,36 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
     if (!game || !mission || !ge)
         return;
     step = mission_get_current_step(mission);
+    switch(step){
+        case(0):
+        /*Bob in his room and Dinasourleg also in BEDROOM*/
+        if(game_get_current_player_location(game) == BEDRROM_ID && game_get_object_location(game, DinasourLeg)== BEDRROM_ID){
+            game_rules_mission_step(game, mission, step, ge);
+            return;
+        }
+        case (1):
+        /*Bob busca la pata del dinosaurio y la coge (TAKE)*/
+        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == TAKE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), DinasourLeg_NAME))
+        {
+            game_rules_mission_step(game, mission, step, ge);
+        
+            return;
+        }
+        case (2):
+        /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION*/
+        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == RECRUIT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
+        {
+            game_set_current_mission(game, THIRD_FLOOR_MISSION);
+            game_set_next_dialogue(game);
+            game_set_next_objective(game);
+            game_set_show_message(game, TRUE);
+            graphic_engine_clear_dialogue(ge);
+        
+            return;
+        }
+        default:
+            break;
+    }
     return;
 }
 void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine *ge)
@@ -365,6 +420,26 @@ void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine
     if (!game || !mission || !ge)
         return;
     step = mission_get_current_step(mission);
+    switch (step)
+    {
+    case (0):
+        /*Both players go to the upper floor; mission ends when both get there*/
+        /*HIDDEN_ROOM_31 es la habitación a la que llegan cuando acceden al tercer piso desde el segundo*/
+        if (player_get_location(ALICE) == HIDDEN_ROOM_31 && player_get_location(BOB) == HIDDEN_ROOM_31)
+        {
+            space_set_discovered(game_get_space(game, HIDDEN_ROOM_31), TRUE);
+            game_set_current_mission(game, BOSS_MISSION);
+            game_set_next_objective(game);
+            game_set_next_dialogue(game);
+            game_set_show_message(game, TRUE);
+            graphic_engine_clear_dialogue(ge);
+            return;
+        }
+        break;
+    default:
+        break;
+    }
+    
     return;
 }
 void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge)
