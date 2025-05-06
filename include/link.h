@@ -12,6 +12,10 @@
 
 #include "types.h"
 
+#define HIDDENROOMTOTREASURE 3132 
+#define LIVINGROOMTOHALL1  1421
+#define HALL2TOLIVINGROOM 2331
+
 /** @brief public alias for the opaque _Link structure */
 typedef struct _Link Link;
 

@@ -901,7 +901,7 @@ gdesc57
 @@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
 #c:1|EvilToy|\xF0\x9F\xA7\xB8|\xF0\x9F\x92\x80|40|10|0|-1|Fight me If you have the nerves|
 #c:2|Dinosaur|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|23|5|0|-1|Help me!|
-#c:3|FinalBoss|\xF0\x9F\xA4\x96|\xF0\x9F\x92\x80|31|20|0|-1|Your grandmother's gift is mine to keep!|
+#c:3|FinalBoss|\xF0\x9F\xA4\x96|\xF0\x9F\x92\x80|-1|20|0|-1|Your grandmother's gift is mine to keep!|
 #c:4|Ghost|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|-1|5|0|-1|The next floor is only for our King!|
 #c:5|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
@@ -923,7 +923,9 @@ gdesc57
 #l:1514|BackyardtoLivingRoom|15|14|2|1|
 #l:1516|BackyardtoStorage|15|16|4|1|
 #l:1615|StoragetoBackyard|16|15|3|1|
-#l:1421|LivingRoomToHall1|14|21|5|1|
+
+#l:1421|LivingRoomToHall1|14|21|5|0|
+
 #l:2114|Hall1ToLivingRoom|21|14|6|1|
 #l:2122|Hall1ToHall2|21|22|2|1|
 #l:2221|Hall2ToHall1|22|21|1|1|
@@ -933,7 +935,9 @@ gdesc57
 #l:2423|BedroomToCorridor3|24|23|4|1|
 #l:2325|Corridor3ToBathroom|23|25|2|1|
 #l:2523|BathroomToCorridor3|25|23|1|1|
-#l:2231|Hall2ToHiddenRoom|22|31|5|1|
+
+#l:2231|Hall2ToHiddenRoom|22|31|5|0|
+
 #l:3122|HiddenRoomToHall2|31|22|6|1|
 #l:3132|HiddenRoomToTreasureRoom|31|32|1|1|
 
@@ -1290,8 +1294,8 @@ gdesc57
 
 @@CINEMATICA BOSS FINAL
 
-#mo:9|0|0|(Bob)Kill the teddy bear|go to the next room to see the treasure|take the treasure|
-#mt:9|0|Evil toy: You shall not pass!|ALice: We are sorry teddy bear, you had to die|Bob: lets take the treasure!|
+#mo:9|0|0|(Bob)Kill the teddy bear|go to the next room to see the treasure, open link 'HiddenRoomToTreasureRoom' with key|open(Inspect) the gift|Take the treasure(photo?;))|
+#mt:9|0|Evil toy: You shall not pass!|ALice: We are sorry teddy bear, you had to die|Alice: come on, lets open the gift box|Bob: lets take the treasure!|
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 

@@ -630,7 +630,10 @@ Status gameManagement_load_cinematics(Game *game, char *filename)
       i = atoi(toks);
       toks = strtok(NULL, "|\r\n");
       game_set_current_cinematic(game, i);
-      cinematics_text_add_line(game_get_current_cinematic_text(game), toks);
+      if(toks){
+        cinematics_text_add_line(game_get_current_cinematic_text(game), toks);
+      }
+
 
 #ifdef DEBUG
       printf("Leido: #cin%ld|%s\n", i, toks);
