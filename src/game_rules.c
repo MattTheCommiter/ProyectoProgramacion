@@ -32,6 +32,8 @@ void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge);
 void game_rules_alice_flashback_init(Game *game);
 void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_engine *ge);
 void game_rules_spawn_ghost(Game *game);
+void game_rules_spawn_dinosaur_leg(Game *game);
+void game_rules_spawn_final_boss(Game *game);
 
 void game_rules_mission_update(Game *game, Graphic_engine *ge)
 {
@@ -282,7 +284,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         }
     case (3):
         /*ahora se pide acabar con el fantasma*/
-        if (character_get_health(game_get_character_from_name(game, GHOST_NAME)) <= 0)
+        if (character_get_health(game_get_character(game, GHOST_ID)) <= 0)
         {
             game_rules_mission_step(game, mission, step, ge);
             return;
@@ -292,6 +294,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         if (player_get_location(BOB) == HALL1 && player_get_location(ALICE) == HALL1)
         {
             /*llamar a la cinematica de alice haciendose daño*/
+            game_set_current_cinematic(game, FIRST_STAIRS);
             game_set_current_mission(game, MEDKIT_MISSION);
             game_set_next_dialogue(game);
             game_set_next_objective(game);
@@ -351,26 +354,18 @@ void game_rules_bedroom_mission(Game *game, Mission *mission, Graphic_engine *ge
     step = mission_get_current_step(mission);
     switch(step){
         case(0):
-        /*Bob in his room*/
+        /*cuando bob llega a su habitacion, llamamos a la cinematica del dinosaurio pidiendo ayuda*/
         if(player_get_location(BOB) == BEDROOM){
-            game_rules_mission_step(game, mission, step, ge);
-            return;
-        }
-        case (1):
-        
-        /*cuando Bob encuentra al dinosaurio (dinosaurio tiene que estar en BEDROOM), se termina la misión y se llama a la misión REX*/
-        if (space_object_belongs(game_get_space(game, BEDROOM), REX_ID)== TRUE && command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
-        {
             game_set_current_mission(game, REX_MISSION);
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
             graphic_engine_clear_dialogue(ge);
-
-            /*mensajes de dialogo de dinosaurio pidiendo q Bob que busque su pata*/
-        
+            game_set_current_cinematic(game, BOBS_ROOM);
             return;
         }
+        case (1):
+        
         default:
             break;
     }
@@ -449,6 +444,23 @@ void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge)
     if (!game || !mission || !ge)
         return;
     step = mission_get_current_step(mission);
+    switch(step){
+        case(0):
+        /*cuando se acaba con el boss final, se pasa y spawneamos la llave*/
+            if(character_get_health(game_get_character(game, BOSS_ID)) <= 0){
+                game_rules_mission_step(game, mission, step, ge);
+                space_add_objectId(game_get_space(game,HIDDENROOM), KEY_ID);
+                return;
+            }
+        case(1):
+        /*en el segundo paso se pide abrir el link con la llave*/
+            if(link_get_is_open(game_get_link(game, HIDDENROOMTOTREASURE)) == TRUE){
+                game_rules_mission_step(game, mission, step, ge);
+                return;
+            }
+        case(2):
+            /*al final se pide abrir el cofre del tesoro, gift*/
+    }
     return;
 }
 
@@ -467,7 +479,7 @@ void game_rules_spawn_ghost(Game *game)
 {
     if (!game)
         return;
-    character_set_location(game_get_character_from_name(game, GHOST_NAME), FIRST_STAIRS_ROOM);
+    character_set_location(game_get_character(game, GHOST_ID), FIRST_STAIRS_ROOM);
     return;
 }
 
@@ -479,6 +491,15 @@ void game_rules_spawn_dinosaur_leg(Game *game)
     space_add_objectId(game_get_space(game, HALL2), DINOSAURLEG_ID);
     return;
 }
+
+void game_rules_spawn_final_boss(Game *game)
+{
+    if (!game)
+        return;
+        character_set_location(game_get_character(game, BOSS_ID), HIDDENROOM);
+    return;
+}
+
 
 void game_rules_mission_step(Game *game, Mission *mission, int step, Graphic_engine *ge)
 {

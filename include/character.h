@@ -17,9 +17,12 @@
 #define MAXHEALTH 100       /*!<Maximum health a character can have*/
 #define MAX_MESSAGES 15    /*!<Maximum number of messages a character can say*/
 
-#define GHOST_NAME "Ghost" /*!<Name of the ghost that attacks during a mission*/
-#define REX_NAME "Dinosaur" /*!<Name of the dinosaur*/
+#define GHOST_NAME "Ghost"      /*!<Name of the ghost that attacks during a mission*/
+#define REX_NAME "Dinosaur"     /*!<Name of the dinosaur*/
+#define FINAL_BOSS_NAME "FinalBoss"  /*!<Name of the final Boss of the game*/
 #define REX_ID 2            /*!<Id of the dinosaur of the game*/
+#define GHOST_ID 4          /*!<Id of the ghost of the game*/
+#define BOSS_ID 3           /*!<Id of the BOSS of the game*/
 
 /**
  * @brief Defines a new type for the Character structure.

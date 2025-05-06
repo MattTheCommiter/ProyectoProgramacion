@@ -22,6 +22,7 @@
 #define BANDAIDS_ID 9   /*!<The id of the band-aids, used for checking and applying missions*/
 #define MEDICINE_ID 10  /*!<The id of the medicine, used for checking and applying missions*/
 #define DINOSAURLEG_ID 11           /*!<The id of the dinosaur led, used for checking missions*/
+#define KEY_ID 7                    /*!<The id of the key, used for checking missions*/
 #define GENERATOR_NAME "Old Generator" /*!<The name of the old generator, used for checking missions*/
 #define GENERATOR_FLASH_NAME "Generator" /*!<The name of the generator, used for checking missions*/
 #define TOOLBOX_NAME "tool box"     /*!<The name of the tool box, used for checking missions*/
