@@ -104,7 +104,7 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
 
 /*PRIVATE FUNCTIONS*/
-char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down)
+char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down) 
 {
   char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", unknown_str[] = "???", *up_name=NULL, *down_name=NULL;
   int i, left_padding, total_width, middle_str_pos;
