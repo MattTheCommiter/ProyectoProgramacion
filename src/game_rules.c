@@ -356,6 +356,7 @@ void game_rules_bedroom_mission(Game *game, Mission *mission, Graphic_engine *ge
         /*cuando bob llega a su habitacion, llamamos a la cinematica del dinosaurio pidiendo ayuda*/
         if(player_get_location(BOB) == BEDROOM){
             game_set_current_mission(game, REX_MISSION);
+            space_add_objectId(game_get_space(game, HALL2), DINOSAURLEG_ID);
             game_set_next_dialogue(game);
             game_set_next_objective(game);
             game_set_show_message(game, TRUE);
@@ -379,7 +380,7 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
     switch(step){
         case(0):
         /*Bob in his room and Dinasourleg also in BEDROOM*/
-        if(game_get_current_player_location(game) == game_get_object_location(game, DINOSAURLEG_ID)){
+        if(player_get_location(BOB) == game_get_object_location(game, DINOSAURLEG_ID)){
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
@@ -392,7 +393,7 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
         }
         case (2):
         /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
-        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == RECRUIT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
+        if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB))
         {
             game_set_current_mission(game, THIRD_FLOOR_MISSION);
             link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);

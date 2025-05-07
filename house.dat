@@ -900,7 +900,7 @@ gdesc57
 
 @@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
 #c:1|EvilToy|\xF0\x9F\xA7\xB8|\xF0\x9F\x92\x80|40|10|0|-1|Fight me If you have the nerves|
-#c:2|Dinosaur|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|23|5|0|-1|Help me!|
+#c:2|Dinosaur|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|24|5|0|-1|Help me!|
 #c:3|FinalBoss|\xF0\x9F\xA4\x96|\xF0\x9F\x92\x80|-1|20|0|-1|Your grandmother's gift is mine to keep!|
 #c:4|Ghost|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|-1|5|0|-1|The next floor is only for our King!|
 #c:5|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
@@ -999,7 +999,7 @@ gdesc57
 
 @@Mission Linterna
 #mo:1|0|0|swith turn to Bob|(BOB)Give the batteries to your sister|
-#mt:1|0|Alice: Bob, give me the batteries so I can turn on the lantern| |
+#mt:1|0| |Alice: Bob, give me the batteries so I can turn on the lantern|
 
 @@Mission Generador
 #mo:2|0|0|(ALICE) Look for a way to turn on the light of the house|(ALICE) Inspect the generator|
@@ -1264,13 +1264,13 @@ gdesc57
 
 @@Mission FLASHBACK de Alice
 #mo:3|0|0|(ALICE)Go to the storage room, (during this flashback, you cannot switch turn with bob)|(ALICE)Open(inspect) the tool box and take what could be useful, (during this flashback, you cannot switch turn with bob)|(ALICE)Return to the backyard with the wrench, (during this flashback, you cannot switch turn with bob)|(ALICE)Turn (inspect) the generator on with the wrench in your inventory|
-#mt:3|0|Father: Hey Alice, come help me with the generator! Go look for the wrench|Father: Just go grab the wrench that is inside the tool box|You were fast! Now use it on the generator|Father: voila! thank's Alice's|
+#mt:3|0|Father: Hey Alice, come help me with the generator! Go look for the wrench|Father: Just go grab the wrench that is inside the tool box|Take it and bring it here!|Father: Thats it|
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@Mission subir al piso de arriba
 #mo:4|0|0|Both players must go to the upper floor, search the stairs|(Alice)switch turn to Bob (BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
-#mt:4|0|Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!|Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: We can go up now|
+#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!|Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: We can go up now|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA
 
@@ -1281,14 +1281,14 @@ gdesc57
 
 
 @@Mission cuarto de Bob
-#mo:6|0|0|Take Bob to his room|
-#mt:6|0|I should explore the house|
+#mo:6|0|0|(Bob)go to your Bedroom|
+#mt:6|0|Bob: I should explore the house|
 
 @@CINEMATICA DEL DINOSAURIO QUE HABLA
 
 ##aqui estaria bien que el dinosaurio dijera que no puedes reclutarle hasta no tener su pata
 
-@@Mission buscar la pata del DINOSAURIO
+@@Mission buscar la pata del DINOSAURIOf
 
 #mo:7|0|0|(Bob)Search for the leg of the Dino near the bedroom|(Bob) take the leg and return to help the dino| (Bob) recluit the dino|
 #mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|
