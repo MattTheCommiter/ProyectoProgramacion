@@ -315,8 +315,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   if(game_get_current_cinematic(game) == NO_CINEMATIC){
     screen_area_clear(ge->dialogue);
   }
-  if(game_get_show_message(game) == TRUE){
-    screen_area_puts(ge->dialogue, game_get_message(game));
+  if(game_get_show_message(game, game_get_turn(game)) == TRUE){
+    screen_area_puts(ge->dialogue, game_get_message(game, game_get_turn(game)));
   }
 
   /*Paint the current mission*/

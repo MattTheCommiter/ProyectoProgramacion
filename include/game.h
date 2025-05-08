@@ -363,9 +363,10 @@ Id game_get_objectId_from_name(Game *game, char *name);
  * @date 04/03/25
  * @author Matteo Artunedo
  * @param game a pointer to game
+ * @param player player the protagonist that has received the message
  * @return a string with the message
  */
-char *game_get_message(Game *game);
+char *game_get_message(Game *game, Protagonists player);
 
 /**
  * @brief Sets the message in the game for the current player
@@ -702,35 +703,17 @@ Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc);
  * @param game a pointer to the game
  * @return Bool TRUE if it must be shown of FALSE otherwise
  */
-Bool game_get_show_message(Game *game);
+Bool game_get_show_message(Game *game, Protagonists player);
 
 /**
  * @brief sets if the message must be shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param boolean TRUE or FALSE
+ * @param player the character that will be shown the message
  * @return Status OK or ERROR if an error happened
  */
-Status game_set_show_message(Game *game, Bool boolean);
-
-/**
- * @brief gets if the message of the player in the turn pos must have its message shown
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param pos the turn of the player
- * @return Bool TRUE or FALSE if the message must or not be shown
- */
-Bool game_get_show_message_in_pos(Game *game, int pos);
-
-/**
- * @brief sets if the message of the player in the turn pos must have its message shown
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param boolean the bool to set
- * @param pos the turn of the player
- * @return Bool TRUE or FALSE if the message must or not be shown
- */
-Status game_set_show_message_in_pos(Game *game, Bool boolean, int pos);
+Status game_set_show_message(Game *game, Bool boolean, Protagonists player);
 
 /**
  * @brief Finds an object from the game by its name.

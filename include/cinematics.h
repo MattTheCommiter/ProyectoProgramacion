@@ -30,7 +30,7 @@ typedef enum {
 #define N_CINEMATICS NO_CINEMATIC   /*!<Value that describes the number of cinematics in the game*/
 #define NUMBER_OF_DIALOG_LINES 20   /*!<Corresponds to the maximum number of interventions that can take place in a cinematic*/
 #define DIALOGUE_LINE_LENGTH 180      /*!<Corresponds to the maximum length of each intervention*/
-#define TIME_BETWEEN_CINEMATICS 1  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
+#define TIME_BETWEEN_CINEMATICS 0  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
 /**
  * @brief Definition of Cinematics_text type
  * @author Matteo Artunedo

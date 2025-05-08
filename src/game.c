@@ -494,12 +494,12 @@ Id game_get_objectId_from_name(Game *game, char *name)
   return NO_ID;
 }
 
-char *game_get_message(Game *game)
+char *game_get_message(Game *game, Protagonists player)
 {
   if (!game)
     return NULL;
 
-  return game->playerGraphicInformation[game->turn]->message;
+  return game->playerGraphicInformation[player]->message;
 }
 
 Status game_set_message(Game *game, char *msg, Protagonists player)
@@ -1031,36 +1031,20 @@ Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc)
   return OK;
 }
 
-Bool game_get_show_message(Game *game)
+Bool game_get_show_message(Game *game, Protagonists player)
 {
   if (!game)
     return FALSE;
-  return game->playerGraphicInformation[game->turn]->show_message;
+  return game->playerGraphicInformation[player]->show_message;
 }
 
-Status game_set_show_message(Game *game, Bool boolean)
+Status game_set_show_message(Game *game, Bool boolean, Protagonists player)
 {
   if (!game){
     return ERROR;
     }
 
-  game->playerGraphicInformation[game->turn]->show_message = boolean;
-  return OK;
-}
-
-Bool game_get_show_message_in_pos(Game *game, int pos)
-{
-  if (!game || pos < 0 || pos >= game->n_players)
-    return FALSE;
-  return game->playerGraphicInformation[pos]->show_message;
-}
-
-Status game_set_show_message_in_pos(Game *game, Bool boolean, int pos)
-{
-  if (!game || pos >= game->n_players)
-    return ERROR;
-
-  game->playerGraphicInformation[pos]->show_message = boolean;
+  game->playerGraphicInformation[player]->show_message = boolean;
   return OK;
 }
 

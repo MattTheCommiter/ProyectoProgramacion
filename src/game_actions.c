@@ -273,7 +273,7 @@ void game_actions_move(Game *game, char *arg)
     return;
   }
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   if (!strcasecmp(arg, "NORTH") || !strcasecmp(arg, "N"))
   {
@@ -344,7 +344,7 @@ void game_actions_take(Game *game, char *arg)
     return;
   }
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /*Find the object with the specified name "arg" in the game */
   for (i = 0; i < game_get_n_objects(game) && found == FALSE; i++)
@@ -419,7 +419,7 @@ void game_actions_drop(Game *game, char *arg)
   }
 
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /* Check if the player's backpack is empty */
   if (player_backpack_is_empty(game_get_current_player(game)))
@@ -491,14 +491,14 @@ void game_actions_chat(Game *game, char *arg)
   cha = game_get_character_from_name(game, arg);
   if (cha != NULL)
   {
-    game_set_show_message(game, TRUE);
+    game_set_show_message(game, TRUE, game_get_turn(game));
     game_set_message(game, character_chat(cha), game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   }
   else
   {
     /*reset if we want the game to show the message*/
-    game_set_show_message(game, FALSE);
+    game_set_show_message(game, FALSE, game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   }
 
@@ -515,7 +515,7 @@ void game_actions_attack(Game *game, char *arg)
   num = rand() % 10;
 
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /*Error control*/
   if (!game)
@@ -592,7 +592,7 @@ void game_actions_attack(Game *game, char *arg)
     /*if there are teammates attacking with the player, we show that there was a team attack*/
     if (teammates > 1)
     {
-      game_set_show_message(game, TRUE);
+      game_set_show_message(game, TRUE, game_get_turn(game));
       game_set_message(game, "TEAM ATTACK!", game_get_turn(game));
     }
     character_set_health(enemy, character_get_health(enemy) - (PLAYER_DAMAGE * set_get_num_elements(followers)) - (PLAYER_DAMAGE * (teammates - 1)));
@@ -616,7 +616,7 @@ void game_actions_inspect(Game *game, char *arg)
     return;
   }
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /*We find the object with tha name arg*/
   for (i = 0; i < game_get_n_objects(game); i++)
@@ -661,7 +661,7 @@ void game_actions_recruit(Game *game, char *arg)
     return;
   }
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /*In case the character is not friendly or it is already recruited, it cannot be recruited*/
   if (character_get_friendly(game_get_character_from_name(game, arg)) == FALSE || character_get_following(game_get_character_from_name(game, arg)) != NO_ID)
@@ -677,7 +677,7 @@ void game_actions_recruit(Game *game, char *arg)
   }
   sprintf(message, "%s recluited", arg);
   game_set_message(game, message, game_get_turn(game));
-  game_set_show_message(game, TRUE);
+  game_set_show_message(game, TRUE, game_get_turn(game));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
 }
@@ -690,7 +690,7 @@ void game_actions_abandon(Game *game, char *arg)
     return;
   }
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   if (character_get_following(game_get_character_from_name(game, arg)) != player_get_id(game_get_current_player(game)))
   {
@@ -724,7 +724,7 @@ void game_actions_open(Game *game, char *arg)
     return;
   }
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   if (strstr(arg, OPEN_ARG) != NULL)
   {
@@ -856,7 +856,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
     return;
 
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /*We found the player whose name is the argument given*/
   teammate = game_get_player_from_name(game, arg);
@@ -870,7 +870,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   {
     sprintf(message, "The player %s is already on your team!", arg);
     game_set_message(game, message, game_get_turn(game));
-    game_set_show_message(game, TRUE);
+    game_set_show_message(game, TRUE, game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -889,14 +889,14 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
 
   game_set_turn(game, turn);
   /*copy the previous values for the last command used*/
-  strcpy(previous_message, game_get_message(game));
-  show = game_get_show_message(game);
+  strcpy(previous_message, game_get_message(game, game_get_turn(game)));
+  show = game_get_show_message(game, game_get_turn(game));
 
   /*print the message for the other player to accept or decline*/
   sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
 
   game_set_message(game, message, game_get_turn(game));
-  game_set_show_message(game, TRUE);
+  game_set_show_message(game, TRUE, game_get_turn(game));
   /*paint the game in order to see the new message*/
   graphic_engine_paint_game(gengine, game);
   /*get the user input*/
@@ -904,7 +904,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
 
   /*set the values back */
   game_set_message(game, previous_message, game_get_turn(game));
-  game_set_show_message(game, show);
+  game_set_show_message(game, show, game_get_turn(game));
   /*get back to the turn*/
   game_set_turn(game, current_turn);
 
@@ -926,7 +926,7 @@ void game_actions_turn(Game *game)
   if (!game)
     return;
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
 
   /*la mision del flashback no permite cambios de turno*/
   if(game_get_current_mission_code(game) == FATHER_MISSION){
@@ -1000,7 +1000,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   }
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   /*reset if we want the game to show the message*/
-  game_set_show_message(game, FALSE);
+  game_set_show_message(game, FALSE, game_get_turn(game));
   return;
 }
 
@@ -1015,7 +1015,7 @@ void game_actions_give(Game * game, char *object_name, char *player_name)
       return;
     }
     /*reset if we want the game to show the message*/
-    game_set_show_message(game, FALSE);
+    game_set_show_message(game, FALSE, game_get_turn(game));
 
     /* find recipient player */
     if ((recipient = game_get_player_from_name(game, player_name)) == NULL)
