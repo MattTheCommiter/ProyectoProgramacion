@@ -423,7 +423,7 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
         }
         case (2):
         /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
-        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == RECRUIT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), REX_NAME))
+        if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB))
         {
             game_set_current_mission(game, THIRD_FLOOR_MISSION);
             link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);

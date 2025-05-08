@@ -1264,13 +1264,13 @@ gdesc57
 
 @@Mission FLASHBACK de Alice
 #mo:3|0|0|(ALICE)Go to the storage room, (during this flashback, you cannot switch turn with bob)|(ALICE)Open(inspect) the tool box and take what could be useful, (during this flashback, you cannot switch turn with bob)|(ALICE)Return to the backyard with the wrench, (during this flashback, you cannot switch turn with bob)|(ALICE)Turn (inspect) the generator on with the wrench in your inventory|
-#mt:3|0|Father: Hey Alice, come help me with the generator! Go look for the wrench|Father: Just go grab the wrench that is inside the tool box|Take it and bring it here!|Father: that's it!|
+#mt:3|0|Father: Hey Alice, come help me with the generator! Go look for the wrench|Father: Just go grab the wrench that is inside the tool box|You were fast! Now use it on the generator|Father: voila! thank's Alice's|
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@Mission subir al piso de arriba
-#mo:4|0|0|Both players must go to the upper floor, search the stairs||(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Kill the ghost|Both players Move up|
-#mt:4|0|Bob: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: Quick! Kill the ghost!|Alice: We can go up now|
+#mo:4|0|0|Both players must go to the upper floor, search the stairs|(Alice)switch turn to Bob (BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
+#mt:4|0|Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!|Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: We can go up now|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA
 
@@ -1281,14 +1281,14 @@ gdesc57
 
 
 @@Mission cuarto de Bob
-#mo:6|0|0|Take Bob to his room|
-#mt:6|0|I should explore the house|
+#mo:6|0|0|(Bob)go to your Bedroom|
+#mt:6|0|Bob: I should explore the house|
 
 @@CINEMATICA DEL DINOSAURIO QUE HABLA
 
 ##aqui estaria bien que el dinosaurio dijera que no puedes reclutarle hasta no tener su pata
 
-@@Mission buscar la pata del DINOSAURIO
+@@Mission buscar la pata del DINOSAURIOf
 
 #mo:7|0|0|(Bob)Search for the leg of the Dino near the bedroom|(Bob) take the leg and return to help the dino| (Bob) recluit the dino|
 #mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|
