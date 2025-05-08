@@ -899,10 +899,10 @@ gdesc57
 @@@@@ General Characters present at the game @@@@@
 
 @@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
-#c:1|EvilToy|\xF0\x9F\xA7\xB8|\xF0\x9F\x92\x80|40|10|0|-1|Fight me If you have the nerves|
-#c:2|Dinosaur|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|24|5|1|-1|Help me!|
-#c:3|FinalBoss|\xF0\x9F\xA4\x96|\xF0\x9F\x92\x80|-1|20|0|-1|Your grandmother's gift is mine to keep!|
-#c:4|Ghost|\xF0\x9F\xA6\x96|\xF0\x9F\x92\x80|-1|5|0|-1|The next floor is only for our King!|
+#c:1|EvilToy|\xF0\x9F\xA7\xB8|\xE2\x98\xA0|40|10|0|-1|Fight me If you have the nerves|
+#c:2|Dinosaur|\xF0\x9F\xA6\x96|\xE2\x98\xA0|24|5|1|-1|Help me!|
+#c:3|FinalBoss|\xF0\x9F\xA4\x96|\xE2\x98\xA0|-1|20|0|-1|Your grandmother's gift is mine to keep!|
+#c:4|Ghost|\xF0\x9F\x91\xBB|\xE2\x98\xA0|-1|5|0|-1|The next floor is only for our King!|
 #c:5|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
 
@@ -1269,8 +1269,8 @@ gdesc57
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@Mission subir al piso de arriba
-#mo:4|0|0|Both players must go to the upper floor, search the stairs|(Alice)switch turn to Bob| (BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
-#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!|Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: We can go up now|
+#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
+#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: We can go up now|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA
 

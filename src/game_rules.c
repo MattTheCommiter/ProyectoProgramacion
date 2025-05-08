@@ -284,14 +284,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             return;
         }
         break;
-    case(1):
-        /*se pasa cuando el turno cambia a Bob*/
-        if(game_get_turn(game) == BOB_TURN){
-            game_rules_mission_step(game, mission, step, ge);
-            return;
-        }
-        break;
-    case (2):
+    case (1):
         /*Durante el segundo paso, se pide a bob que busque el cuchillo*/
         if (player_backpack_contains(BOB_PLAYER, KNIFE_ID))
         {
@@ -299,7 +292,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             return;
         }
         break;
-    case (3):
+    case (2):
         /*Una vez con el cuchillo, se pide a bob volver al espacio del fantasma*/
         if (player_get_location(BOB_PLAYER) == FIRST_STAIRS_ROOM)
         {
@@ -307,7 +300,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             return;
         }
         break;
-    case (4):
+    case (3):
         /*ahora se pide acabar con el fantasma, despues se abre el link al piso de arriba*/
         if (character_get_health(game_get_character(game, GHOST_ID)) <= 0)
         {
@@ -317,7 +310,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             return;
         }
         break;
-    case (5):
+    case (4):
         /*se pide subir al espacio de arriba, cuando suben, se llama a la cinematica de escaleras y se cambia de mision a la de curar a alice*/
         if (player_get_location(BOB_PLAYER) == HALL1 && player_get_location(ALICE_PLAYER) == HALL1)
         {
@@ -424,7 +417,7 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
         }
         case (2):
         /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
-        if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB))
+        if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB_PLAYER))
         {
             game_set_current_mission(game, THIRD_FLOOR_MISSION);
             link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);

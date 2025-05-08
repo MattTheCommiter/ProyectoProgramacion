@@ -393,10 +393,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->descript, " CHARACTERS IN THE GAME: ");
   for (i = 0; i < game_get_n_characters(game); i++)
   {
-    character_gdesc = character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
     character_name = character_get_name(game_get_character(game, game_get_character_id_at(game, i)));
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
+    character_gdesc = character_hp > 0? character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i))):character_get_dead_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
       sprintf(str, " %s %s", character_name, character_gdesc);
