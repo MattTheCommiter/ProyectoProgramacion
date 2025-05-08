@@ -990,7 +990,7 @@ gdesc57
 
 
 @@@@@ General missions at the game @@@@@
-
+    mission->next_dialogue_index++;
 @@Format: :code|step|current_objective|objectives...|  //  code|current_instruction|instructions...|
 
 @@Mission Team
@@ -1264,7 +1264,7 @@ gdesc57
 
 @@Mission FLASHBACK de Alice
 #mo:3|0|0|(ALICE)Go to the storage room, (during this flashback, you cannot switch turn with bob)|(ALICE)Open(inspect) the tool box and take what could be useful, (during this flashback, you cannot switch turn with bob)|(ALICE)Return to the backyard with the wrench, (during this flashback, you cannot switch turn with bob)|(ALICE)Turn (inspect) the generator on with the wrench in your inventory|
-#mt:3|0|Father: Hey Alice, come help me with the generator! Go look for the wrench|Father: Just go grab the wrench that is inside the tool box|Take it and bring it here!|Father: Thats it|
+#mt:3|0|Father: Hey Alice, come help me with the generator! Go look for the wrench|Father: Just go grab the wrench that is inside the tool box|You were fast! Now use it on the generator|Father: voila! thank's Alice's|
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

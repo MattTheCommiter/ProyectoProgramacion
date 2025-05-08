@@ -23,7 +23,6 @@
 #include "game_rules.h"
 
 #define TIME_BETWEEN_TURNS 1  /*!< Ammount of seconds the game gives each player to visualize their action before changing the turn*/
-#define TIME_BETWEEN_CINEMATICS 1  /*!< Ammount of seconds the game gives the player to read each dialogue line in a cinematic*/
 
 /**
  * @brief creates the game structure with the information from a file (calls the game_create_from_file function) and creates the game's graphic engine (calling the graphic_engine_create function)
@@ -160,14 +159,14 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
 
     /*We play the cinematic if it corresponds to do so*/
     if(game_get_current_cinematic(*game) != NO_CINEMATIC){
-      game_set_show_message(*game, TRUE);
+      game_set_show_message(*game, TRUE, game_get_turn(*game));
       for(i=0;i<cinematics_get_n_lines(game_get_current_cinematic_text(*game));i++){
-        game_set_message(*game, cinematics_get_line(game_get_current_cinematic_text(*game), i));
+        game_set_message(*game, cinematics_get_line(game_get_current_cinematic_text(*game), i), game_get_turn(*game));
         graphic_engine_paint_game(gengine, *game);
         sleep(TIME_BETWEEN_CINEMATICS);
       }
       game_set_current_cinematic(*game, NO_CINEMATIC);
-      game_set_show_message(*game, FALSE);
+      game_set_show_message(*game, FALSE, game_get_turn(*game));
       /*clear the dialogue after the cinematic*/
       graphic_engine_clear_dialogue(gengine);
     }

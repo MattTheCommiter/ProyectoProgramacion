@@ -52,4 +52,10 @@ typedef enum
     D            /*!<Assigns value 6 to the keyword "D", which will be used in space-related functions*/
 } Direction;
 
+
+typedef enum
+{
+    ALICE,  /*!<Assigns value 0 to the keyword ALICE, the female protagonist of the game*/
+    BOB    /*!<Assigns value 1 to the keyword BOB, the male protagonist of the game*/
+}Protagonists;
 #endif

@@ -363,9 +363,10 @@ Id game_get_objectId_from_name(Game *game, char *name);
  * @date 04/03/25
  * @author Matteo Artunedo
  * @param game a pointer to game
+ * @param player player the protagonist that has received the message
  * @return a string with the message
  */
-char *game_get_message(Game *game);
+char *game_get_message(Game *game, Protagonists player);
 
 /**
  * @brief Sets the message in the game for the current player
@@ -373,9 +374,10 @@ char *game_get_message(Game *game);
  * @author Matteo Artunedo
  * @param game a pointer to game
  * @param msg a string with the new message
+ * @param player the protagonist that will receive the message
  * @return OK if the function is completed succesfully or ERROR if an error occurrs
  */
-Status game_set_message(Game *game, char *msg);
+Status game_set_message(Game *game, char *msg, Protagonists player);
 
 /**
  * @brief Gets the object in a specific position in the object array
@@ -701,35 +703,17 @@ Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc);
  * @param game a pointer to the game
  * @return Bool TRUE if it must be shown of FALSE otherwise
  */
-Bool game_get_show_message(Game *game);
+Bool game_get_show_message(Game *game, Protagonists player);
 
 /**
  * @brief sets if the message must be shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param boolean TRUE or FALSE
+ * @param player the character that will be shown the message
  * @return Status OK or ERROR if an error happened
  */
-Status game_set_show_message(Game *game, Bool boolean);
-
-/**
- * @brief gets if the message of the player in the turn pos must have its message shown
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param pos the turn of the player
- * @return Bool TRUE or FALSE if the message must or not be shown
- */
-Bool game_get_show_message_in_pos(Game *game, int pos);
-
-/**
- * @brief sets if the message of the player in the turn pos must have its message shown
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param boolean the bool to set
- * @param pos the turn of the player
- * @return Bool TRUE or FALSE if the message must or not be shown
- */
-Status game_set_show_message_in_pos(Game *game, Bool boolean, int pos);
+Status game_set_show_message(Game *game, Bool boolean, Protagonists player);
 
 /**
  * @brief Finds an object from the game by its name.
@@ -904,7 +888,8 @@ Status game_set_next_objective(Game *game);
  * @brief sets the next dialogue line of the current mission in the game on the message of game
  * @author Alvaro Inigo
  * @param game a pointer to the game
+ * @param player the protagonist which will receive the dialogue
  * @return Status OK or ERROR
  */
-Status game_set_next_dialogue(Game *game);
+Status game_set_next_dialogue(Game *game, Protagonists player);
 #endif
