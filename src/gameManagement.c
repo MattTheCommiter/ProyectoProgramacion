@@ -1045,7 +1045,7 @@ Status gameManagement_save_missions(Game *game, FILE *saving_file)
       fprintf(saving_file, "%s|", mission_get_objective_in_pos(mission, j));
     }
     fprintf(saving_file, "\n");
-    fprintf(saving_file, "#mi:%d|%d|", mission_get_code(mission), mission_get_next_dialogue_index(mission));
+    fprintf(saving_file, "#mt:%d|%d|", mission_get_code(mission), mission_get_next_dialogue_index(mission));
     for (j = 0; j < mission_get_n_dialogues(mission); j++)
     {
       fprintf(saving_file, "%s|", mission_get_dialogue_in_pos(mission, j));
@@ -1069,7 +1069,7 @@ Status gameManagement_save_cinematics(Game *game, FILE *saving_file)
     cinematic = game_get_cinematic_text_in_pos(game, i);
     for (j = 0; j < cinematics_get_n_lines(cinematic); j++)
     {
-      fprintf(saving_file, "#cin : %d|%s|\n", i, cinematics_get_line(cinematic, j));
+      fprintf(saving_file, "#cin:%d|%s|\n", i, cinematics_get_line(cinematic, j));
     }
   }
 
@@ -1351,9 +1351,10 @@ Status gameManagement_load_current_mission(Game *game, char *filename)
   start_len = strlen("#mcur:");
   while (fgets(line, WORD_SIZE, save))
   {
-    if (strncmp("#mcur:", line, start_len))
+    if (strncmp("#mcur:", line, start_len) == 0)
     {
       token = strtok(line + start_len, "\n\r");
+      printf("mision leida : %d, en la linea %s\n", i, line);
       i = atoi(token);
     }
   }

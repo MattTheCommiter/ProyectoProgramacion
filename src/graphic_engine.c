@@ -396,7 +396,6 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
-    character_print(game_get_character(game, game_get_character_id_at(game, i)));
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
       sprintf(str, " %s %s", character_name, character_gdesc);
       screen_area_puts(ge->descript, str);
@@ -477,7 +476,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  screen_area_puts(ge->help, " - move 'dir' or m 'dir' - exit or e - take 'arg' or t 'arg' - drop 'arg' or d 'arg' - chat 'arg' or c 'arg' - attack 'arg' or at 'arg' - inspect 'arg' or i 'arg' - recruit 'arg' or r 'arg' - abandon 'arg' or ab 'arg' - ssave 'arg' or s 'arg' - load 'arg' or l 'arg' - team 'arg' or tm 'arg' - open 'arg' with 'arg' or o 'arg' with 'arg' - give 'arg' to 'arg' or g 'arg' to 'arg'");
+  screen_area_puts(ge->help, " - move 'dir' or m 'dir' - exit or e - take 'arg' or t 'arg' - drop 'arg' or d 'arg' - chat 'arg' or c 'arg' - attack 'arg' or at 'arg' - inspect 'arg' or i 'arg' - recruit 'arg' or r 'arg' - abandon 'arg' or ab 'arg' - ssave 'arg' or s 'arg' - load 'arg' or l 'arg' - team 'arg' or tm 'arg' - open 'arg' with 'arg' or o 'arg' with 'arg' - give 'arg' to 'arg' or g 'arg' to 'arg' - turn or tu");
 
   /* Paint in the feedback area */
   screen_area_puts(ge->feedback, "Player command history: ");

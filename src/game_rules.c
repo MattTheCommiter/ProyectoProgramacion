@@ -210,6 +210,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
+        break;
     case (1):
         /*cuando alice abre la caja de herramientas, se pasa*/
         if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), TOOLBOX_NAME))
@@ -219,6 +220,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
+        break;
     case (2):
         /*cuando alice vuelve con la llave inglesa al espacio del padre, se vuelve*/
         if (player_get_location(ALICE) == GENERATOR_FLASH_SPACE && player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), WRENCH_ID))
@@ -226,6 +228,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
+        break;
     case (3):
         /*cuando alice inspecciona el generador, se termina la mision y se encienden las luces*/
         if (player_backpack_contains(game_get_player_in_pos(game, ALICE_TURN), WRENCH_ID) && command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GENERATOR_FLASH_NAME))
@@ -244,6 +247,7 @@ void game_rules_father_mission(Game *game, Mission *mission, Graphic_engine *ge)
             game_set_lights_on(game, TRUE);
             return;
         }
+        break;
     }
     return;
 }
@@ -260,27 +264,34 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
         /*En el primer paso se solicita a los jugadores ir al espacio de las escaleras*/
         if (player_get_location(ALICE) == FIRST_STAIRS_ROOM && player_get_location(BOB) == FIRST_STAIRS_ROOM)
         {
+            printf("estan en el mismo espacio");
             game_rules_mission_step(game, mission, step, ge);
             game_rules_spawn_ghost(game);
             /*hacemos aparecer el cuchillo en el espacio del pasillo*/
             space_add_objectId(game_get_space(game, CORRIDOR1), KNIFE_ID);
             return;
         }
-    case (1):
+    case(1):
+        /*se pasa cuando el turno se cambia a BOB*/
+        if(game_get_turn(game) == BOB_TURN){
+            game_rules_mission_step(game, mission, step, ge);
+            return;
+        }
+    case (2):
         /*Durante el segundo paso, se pide a bob que busque el cuchillo*/
         if (player_backpack_contains(BOB, KNIFE_ID))
         {
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
-    case (2):
+    case (3):
         /*Una vez con el cuchillo, se pide a bob volver al espacio del fantasma*/
         if (player_get_location(BOB) == FIRST_STAIRS_ROOM)
         {
             game_rules_mission_step(game, mission, step, ge);
             return;
         }
-    case (3):
+    case (4):
         /*ahora se pide acabar con el fantasma, despues se abre el link al piso de arriba*/
         if (character_get_health(game_get_character(game, GHOST_ID)) <= 0)
         {
@@ -288,7 +299,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             link_set_is_open(game_get_link(game, LIVINGROOMTOHALL1), TRUE);
             return;
         }
-    case (4):
+    case (5):
         /*se pide subir al espacio de arriba, cuando suben, se llama a la cinematica de escaleras y se cambia de mision a la de curar a alice*/
         if (player_get_location(BOB) == HALL1 && player_get_location(ALICE) == HALL1)
         {
