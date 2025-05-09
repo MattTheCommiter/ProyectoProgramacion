@@ -8,7 +8,7 @@ gdesc2
 gdesc57
 
 
-#s:11|FrontalPatio|0|
+#s:11|Entry|0|
 .......................................................................................................................................................
 .......:::::......+@@.......@.....-:::.@..:*#%@..=@@@:..@.-@.@=@....%...++#..@+*#*++==-....:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.
 .@........:...@@+.@@=.......#@@@@+.:...@....+-@......@#@@+..........@#@@%@@..@@@@@@@@@@@@..:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::.
@@ -863,7 +863,7 @@ gdesc57
 
 @@Format:  :Id|Name|GDESC|SpaceId|Description|Movable|Health|Dependency|Open|
 
-#o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|-1|-1|
+#o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|2|-1|
 #o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
 #o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work if repaired|1|0|-1|-1|
 #o:5|StairsTo2ndFloor|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
@@ -877,6 +877,10 @@ gdesc57
 #o:13|FamilyPicture|\xF0\x9F\x93\xB7|-1|An eternal reminder of the beauty of love and family|1|0|-1|-1|
 #o:14|WrappedGift|\xF0\x9F\x8E\x81|31|What could it be?|1|0|-1|-1|
 #o:15|WaterGun|\xF0\x9F\x94\xAB|31|May seem weak, but is very effective against robots|1|0|-1|-1|
+
+#o:16|Backpack|\xF0\x9F\x8E\x92|21|A backback to increase the size of the inventory|1|0|-1|-1|
+#o:17|Toilet paper|\xF0\x9F\xA7\xBB|25|Toilet paper, you never know when the toilet could call you!|1|0|-1|-1|
+#o:18|ivy|\xF0\x9F\x8C\xBF|15|Venomous plant, could harm you if you use it|1|-1|-1|-1|
 
 #o:101|Generator|\xF0\x9F\x8F\xAD|150|A generator to light the house|1|0|-1|-1|
 #o:102|wrench|\xF0\x9F\x94\xA7|-1|a useful weapon that could repair something|1|0|-1|-1|

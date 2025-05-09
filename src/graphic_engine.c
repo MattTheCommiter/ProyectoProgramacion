@@ -418,7 +418,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   sprintf(str, " Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   screen_area_puts(ge->descript, " "); /*Separator line*/
-  sprintf(str, " Objects in the inventory: ");
+  sprintf(str, " Objects in the inventory: (%d/%d)", player_get_num_objects_in_backpack(game_get_current_player(game)), inventory_get_max_objs(player_get_inventory(game_get_current_player(game))));
   screen_area_puts(ge->descript, str);
   for (i = 0; i < player_get_num_objects_in_backpack(game_get_current_player(game)); i++)
   {

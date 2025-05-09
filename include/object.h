@@ -24,6 +24,8 @@
 #define DINOSAURLEG_ID 11           /*!<The id of the dinosaur led, used for checking missions*/
 #define KEY_ID 7                    /*!<The id of the key, used for checking missions*/
 #define FAMILY_PIC_ID 13              /*!<The id of the Family picture, used for checking missions*/
+#define WATER_GUN_ID 15
+#define BACKPACK_ID 16                 /*!<The id of the backpack, used for checking game actions*/
 #define GENERATOR_NAME "Old Generator" /*!<The name of the old generator, used for checking missions*/
 #define GENERATOR_FLASH_NAME "Generator" /*!<The name of the generator, used for checking missions*/
 #define TOOLBOX_NAME "tool box"     /*!<The name of the tool box, used for checking missions*/
@@ -32,6 +34,9 @@
 #define MEDICINE_NAME "Medicine"        /*!<The name of the medicine, used for checking missions*/
 #define DINOSAUR_LEG_NAME "DinosaurLeg" /*!<The name of the dinosaur leg, used for checking missions*/
 #define GIFTBOX_NAME "WrappedGift"      /*!<The name of the Wrapped box, used for checking missions*/
+
+
+#define BACKPACK_SIZE 3             /*!<Size of the inventory that grows when taking the backpack*/
 
 /**
  * @brief Defines a new type for the Object structure.

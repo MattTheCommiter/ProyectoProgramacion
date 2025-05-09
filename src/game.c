@@ -257,6 +257,20 @@ Status game_set_current_player_location(Game *game, Id id)
   return OK;
 }
 
+Player *game_get_player(Game *game, Id player_id) 
+{  
+  int i;
+  
+  if (!game || player_id == NO_ID) return NULL;
+
+  for (i = 0 ; i < game->n_players ; i++) 
+  {
+    if (player_get_id(game->players[i]) == player_id) return game->players[i];
+  }
+  
+  return NULL;
+}
+
 Player *game_get_player_in_pos(Game *game, int pos)
 {
   if (!game || pos >= game->n_players || pos < 0)
