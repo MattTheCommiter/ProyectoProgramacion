@@ -186,10 +186,9 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
       game_set_current_cinematic(*game, NO_CINEMATIC);
       game_set_show_message(*game, FALSE, game_get_turn(*game));
       /*clear the dialogue after the cinematic*/
-      graphic_engine_clear_dialogue(gengine);
     }
     if(game_get_current_mission_code(*game) == NO_MISSION){
-      game_rules_mission_update(*game, gengine);
+      game_rules_mission_update(*game);
     }
 
     /*We paint the game for the player whose turn it currently is*/
@@ -199,7 +198,7 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
     game_actions_update(game, last_cmd, gengine);
 
     /*we update the mission state*/
-    game_rules_mission_update(*game, gengine);
+    game_rules_mission_update(*game);
 
     /*If log is enabled*/
     if (log_file){

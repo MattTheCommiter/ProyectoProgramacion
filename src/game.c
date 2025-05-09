@@ -500,7 +500,7 @@ Id game_get_objectId_from_name(Game *game, char *name)
   }
   for (i = 0; i < game->n_objects; i++)
   {
-    if (strcmp(object_get_name(game->objects[i]), name) == 0)
+    if (strcasecmp(object_get_name(game->objects[i]), name) == 0)
     {
       return object_get_id(game->objects[i]);
     }
@@ -571,7 +571,7 @@ Character *game_get_character_from_name(Game *game, char *name)
   }
   for (i = 0; i < game->n_characters; i++)
   {
-    if (strcmp(character_get_name(game->characters[i]), name) == 0)
+    if (strcasecmp(character_get_name(game->characters[i]), name) == 0)
     {
       return game->characters[i];
     }

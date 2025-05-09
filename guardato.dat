@@ -1057,8 +1057,8 @@
 #l:150140|BackyardtoLivingRoom|150|140|2|1|
 #l:150160|BackyardtoStorage|150|160|4|1|
 #l:160150|StoragetoBackyard|160|150|3|1|
-#i:0|Save/guardado.dat/OK|Load/guardato.dat/OK|Save//OK|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|A generator to light the house|(BOB)Go find a knife|1|
-#i:1|turn/OK|Move//OK|Inspect//OK|Alice: Bob, give me the batteries so I can turn on the lantern|This generator seems old, but could work|(BOB)Go find a knife|1|
+#i:0|Save/guardato.dat/OK|Move/s/OK|Inspect/Generator/OK|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|A generator to light the house|(BOB)Go find a knife|1|
+#i:1|turn/OK|Move/s/OK|Inspect/Old Generator/OK|Alice: Bob, give me the batteries so I can turn on the lantern|This generator seems old, but could work|(BOB)Go find a knife|1|
 #mo:0|0|1|(ALICE)Team with your brother|
 #mt:0|1|Bob: Alice, lets work together, shall we?|
 #mo:1|1|2|swith turn to Bob|(BOB)Give the batteries to your sister|
@@ -1118,4 +1118,4 @@
 #cin:4| Alice: Bob, I love you little brother|
 #ccur:5
 #mcur:4
-#light:0
+#light:1
