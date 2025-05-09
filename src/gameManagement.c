@@ -117,6 +117,15 @@ Status gameManagement_save_cinematics(Game *game, FILE *saving_file);
 Status gameManagement_save_current_cinematic(Game *game, FILE *saving_file);
 
 /**
+ * @brief Saves in a file the state of lights in the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param saving_file the file we want to write
+ * @return Status OK or ERROR
+ */
+Status gameManagement_save_lights(Game *game, FILE *saving_file);
+
+/**
  * @brief loads the turn of the game when calling to load function
  * @author Alvaro Inigo
  * @param game a pointer to the game
@@ -152,6 +161,15 @@ Status gameManagement_load_current_cinematic(Game *game, char *filename);
  */
 Status gameManagement_load_current_mission(Game *game, char *filename);
 
+/**
+ * @brief loads the state of lights in the game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param filename the name of the file to read
+ * @return Status OK or ERROR
+ */
+Status gameManagement_load_light(Game *game, char *filename);
+
 /*End of private functions*/
 
 Status gameManagement_load_spaces(Game *game, char *filename)
@@ -185,7 +203,7 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   }
   for (i = 1; i < N_TOTAL_ROWS_IN_SQUARE; i++)
   {
-    read_gdesc[i] = read_gdesc[0] + (N_TOTAL_COLUMNS_IN_SQUARE) * i;
+    read_gdesc[i] = read_gdesc[0] + (N_TOTAL_COLUMNS_IN_SQUARE)*i;
   }
 
   file = fopen(filename, "r");
@@ -208,24 +226,25 @@ Status gameManagement_load_spaces(Game *game, char *filename)
       toks = strtok(NULL, "|");
       discovered = atoi(toks);
 
-      
-      for(i=0;i<N_TOTAL_ROWS_IN_SQUARE;i++){
+      for (i = 0; i < N_TOTAL_ROWS_IN_SQUARE; i++)
+      {
         fgets(line, WORD_SIZE, file);
         /*In case there is a \n at the end of the line, we remove it*/
         toks = strtok(line, "\n");
-        if (toks) {
+        if (toks)
+        {
           strncpy(read_gdesc[i], toks, N_TOTAL_COLUMNS_IN_SQUARE - 1);
         }
         /*If there is no \n character, we save it normally*/
-        else{
+        else
+        {
           strncpy(read_gdesc[i], line, N_TOTAL_COLUMNS_IN_SQUARE - 1);
         }
         read_gdesc[i][N_TOTAL_COLUMNS_IN_SQUARE - 1] = '\0';
       }
-      
 
 #ifdef DEBUG
-   
+
 #endif
       /*
        * It creates the space with the data that has been read
@@ -480,8 +499,6 @@ Status gameManagement_load_characters(Game *game, char *filename)
       toks = strtok(NULL, "|\r");
       following = atol(toks);
 
-      
-
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, friendliness, following);
 #endif
@@ -630,10 +647,10 @@ Status gameManagement_load_cinematics(Game *game, char *filename)
       i = atoi(toks);
       toks = strtok(NULL, "|\r\n");
       game_set_current_cinematic(game, i);
-      if(toks){
+      if (toks)
+      {
         cinematics_text_add_line(game_get_current_cinematic_text(game), toks);
       }
-
 
 #ifdef DEBUG
       printf("Leido: #cin%ld|%s\n", i, toks);
@@ -679,7 +696,8 @@ Status gameManagement_load_missions(Game *game, char *filename)
     if (strncmp("#mo:", line, start_len) == 0)
     {
       mission = mission_create();
-      if(!mission){
+      if (!mission)
+      {
         fclose(file);
         return ERROR;
       }
@@ -694,16 +712,17 @@ Status gameManagement_load_missions(Game *game, char *filename)
       next = atol(toks);
       mission_set_next_objective(mission, next);
 
-      while((toks = strtok(NULL, "|\n\r"))){
-        if(mission_add_objective(mission, toks));
+      while ((toks = strtok(NULL, "|\n\r")))
+      {
+        if (mission_add_objective(mission, toks))
+          ;
       }
-      if(!game_add_mission(game, mission)){
+      if (!game_add_mission(game, mission))
+      {
         mission_destroy(mission);
         fclose(file);
         return ERROR;
       }
-
-
     }
 
     if (strncmp("#mt:", line, start_len) == 0)
@@ -713,7 +732,8 @@ Status gameManagement_load_missions(Game *game, char *filename)
       code = atol(toks);
 
       mission = game_get_mission_in_pos(game, code);
-      if(!mission){
+      if (!mission)
+      {
         fclose(file);
         return ERROR;
       }
@@ -722,12 +742,11 @@ Status gameManagement_load_missions(Game *game, char *filename)
       next = atol(toks);
       mission_set_next_dialogue(mission, next);
 
-      while((toks = strtok(NULL, "|\n\r"))){
+      while ((toks = strtok(NULL, "|\n\r")))
+      {
         mission_add_dialogue(mission, toks);
       }
-
     }
-    
   }
 
   if (ferror(file))
@@ -738,8 +757,6 @@ Status gameManagement_load_missions(Game *game, char *filename)
   fclose(file);
   return status;
 }
-
-
 
 Status gameManagement_save(Game *game, char *filename)
 {
@@ -819,6 +836,12 @@ Status gameManagement_save(Game *game, char *filename)
     fclose(save);
     return ERROR;
   }
+  if (!gameManagement_save_lights(game, save))
+  {
+    printf("Error en el guardado del estado de las luces.\n");
+    fclose(save);
+    return ERROR;
+  }
 
   fclose(save);
   return OK;
@@ -835,18 +858,35 @@ Status gameManagement_load(Game **game, char *filename)
   strcpy(filename_cpy, filename);
 
   if (game_create_from_file(&new_game, filename_cpy) == ERROR)
+  {
+    game_destroy(new_game);
     return ERROR;
-
-  
-
-
+  }
   if (gameManagement_load_turn(new_game, filename_cpy) == ERROR)
+  {
+    game_destroy(new_game);
     return ERROR;
+  }
   if (gameManagement_load_interface(new_game, filename_cpy) == ERROR)
+  {
+    game_destroy(new_game);
     return ERROR;
-  if(gameManagement_load_current_cinematic(new_game, filename) == ERROR) return ERROR;
-
-  if(gameManagement_load_current_mission(new_game, filename) == ERROR) return ERROR;
+  }
+  if (gameManagement_load_current_cinematic(new_game, filename) == ERROR)
+  {
+    game_destroy(new_game);
+    return ERROR;
+  }
+  if (gameManagement_load_current_mission(new_game, filename) == ERROR)
+  {
+    game_destroy(new_game);
+    return ERROR;
+  }
+  if (gameManagement_load_light(new_game, filename) == ERROR)
+  {
+    game_destroy(new_game);
+    return ERROR;
+  }
 
   if (game_destroy(*game) == ERROR)
     return ERROR;
@@ -873,7 +913,6 @@ Status gameManagement_save_objects(Game *game, FILE *saving_file)
 
   return OK;
 }
-
 
 Status gameManagement_save_players(Game *game, FILE *saving_file)
 {
@@ -921,8 +960,9 @@ Status gameManagement_save_spaces(Game *game, FILE *saving_file)
     space = game_get_space_in_pos(game, i);
     gdesc = space_get_gdesc(space);
     fprintf(saving_file, "#s:%ld|%s|%d|\n", space_get_id(space), space_get_name(space), space_get_discovered(space) == TRUE ? 1 : 0);
-    for(j = 0; j < N_TOTAL_ROWS_IN_SQUARE; j++){
-      fprintf(saving_file, "%s\n",gdesc[j]);
+    for (j = 0; j < N_TOTAL_ROWS_IN_SQUARE; j++)
+    {
+      fprintf(saving_file, "%s\n", gdesc[j]);
     }
   }
 
@@ -964,7 +1004,6 @@ Status gameManagement_save_links(Game *game, FILE *saving_file)
 
   return OK;
 }
-
 
 Status gameManagement_save_interface(Game *game, FILE *saving_file)
 {
@@ -1121,6 +1160,14 @@ Status gameManagement_load_turn(Game *game, char *filename)
   {
     return ERROR;
   }
+  return OK;
+}
+
+Status gameManagement_save_lights(Game *game, FILE *saving_file)
+{
+  if (!game || !saving_file)
+    return ERROR;
+  fprintf(saving_file, "#light:%d\n", game_get_lights_on(game) == TRUE ? 1 : 0);
   return OK;
 }
 
@@ -1285,8 +1332,8 @@ Status gameManagement_load_interface(Game *game, char *filename)
   return OK;
 }
 
-
-Status gameManagement_load_current_cinematic(Game *game, char *filename){
+Status gameManagement_load_current_cinematic(Game *game, char *filename)
+{
   FILE *file = NULL;
   Status status = OK;
   char line[WORD_SIZE] = "";
@@ -1329,13 +1376,11 @@ Status gameManagement_load_current_cinematic(Game *game, char *filename){
   fclose(file);
 
   return status;
-
 }
-
 
 Status gameManagement_load_current_mission(Game *game, char *filename)
 {
-  
+
   FILE *save = NULL;
   char line[WORD_SIZE] = "";
   char *token = NULL;
@@ -1354,13 +1399,45 @@ Status gameManagement_load_current_mission(Game *game, char *filename)
     if (strncmp("#mcur:", line, start_len) == 0)
     {
       token = strtok(line + start_len, "\n\r");
-      printf("mision leida : %d, en la linea %s\n", i, line);
       i = atoi(token);
     }
   }
 
   fclose(save);
   if (game_set_current_mission(game, i) == ERROR)
+  {
+    return ERROR;
+  }
+  return OK;
+}
+
+Status gameManagement_load_light(Game *game, char *filename)
+{
+  FILE *save = NULL;
+  char line[WORD_SIZE] = "";
+  char *token = NULL;
+  int i, start_len;
+  Bool lights_on;
+
+  if (!game || !filename)
+    return ERROR;
+
+  save = fopen(filename, "r");
+
+  if (!save)
+    return ERROR;
+  start_len = strlen("#light:");
+  while (fgets(line, WORD_SIZE, save))
+  {
+    if (strncmp("#light:", line, start_len) == 0)
+    {
+      token = strtok(line + start_len, "\n\r");
+      i = atoi(token);
+    }
+  }
+  lights_on = i==1?TRUE:FALSE;
+  fclose(save);
+  if (game_set_lights_on(game, lights_on) == ERROR)
   {
     return ERROR;
   }

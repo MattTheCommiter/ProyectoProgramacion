@@ -531,9 +531,3 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
 
   return;
 }
-
-void graphic_engine_clear_dialogue(Graphic_engine *ge){
-  if(!ge) return;
-  screen_area_clear(ge->dialogue);
-  return;
-}

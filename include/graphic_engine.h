@@ -56,11 +56,5 @@ void graphic_engine_destroy(Graphic_engine *ge);
  */
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
 
-/**
- * @brief clears the dialogue of the graphic engine
- * @author Alvaro Inigo
- * @param ge a pointer to the graphic engine
- */
-void graphic_engine_clear_dialogue(Graphic_engine *ge);
 
 #endif
