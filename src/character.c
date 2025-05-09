@@ -31,7 +31,7 @@ struct _Character
     int n_messages;                           /*!<number of messages of a character*/
     int message_turn;                         /*!<the turn of the next message to say*/
     Id following;                             /*!<Id of the player they are following*/
-    Id location;                              /*Id of the location of the character*/
+    Id location;                              /*!<Id of the location of the character*/
 };
 
 Character *character_create(Id id)

@@ -69,7 +69,7 @@ struct _Graphic_engine
 
 /**
  * @brief paints the compas area of the graphic interface
- * 
+ * @author Matteo Arunedo
  * @param game pointer to the game
  * @param north Id of the space in the north
  * @param south Id of the space in the south
@@ -79,7 +79,7 @@ struct _Graphic_engine
  * @param down Id of the space beow
  * @return two-dimensional array with the compas information
  */
-char **graphic_interface_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
+char **graphic_engine_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
 
 
 /**
@@ -95,7 +95,7 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 
 /**
  * @brief Paints the feedback of one command in the player command history
- * 
+ * @author Matteo Artunedo 
  * @param game pointer to the game
  * @param ge pointer to the graphic engine
  * @param pos position of the command (whether we want to print the last command, the second to last or the third to last)
@@ -104,10 +104,11 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
 
 /*PRIVATE FUNCTIONS*/
-char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down)
+char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down) 
 {
-  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", *up_name=NULL, *down_name=NULL;
+  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", unknown_str[] = "???", *up_name=NULL, *down_name=NULL;
   int i, left_padding, total_width, middle_str_pos;
+  long link_id;
   if (!game)
   {
     return NULL;
@@ -235,9 +236,15 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
 
 
   up_name = (char *)space_get_name(game_get_space(game, up));
+  link_id = game_get_current_player_location(game) * 100 + up;
   if(!up_name) up_name = blank_word;
+  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE) up_name = unknown_str;
+  
   down_name = (char *)space_get_name(game_get_space(game, down));
+  link_id = game_get_current_player_location(game) * 100 + down;
   if(!down_name) down_name = blank_word;
+  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE) down_name = unknown_str;
+  
   memset((void *)compas_info[6], (int)' ', WIDTH_COMPASS);
   sprintf(compas_info[6], "Up: %s  Down: %s", up_name, down_name);
   compas_info[6][WIDTH_COMPASS - 1] = '\0';
@@ -303,11 +310,21 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
   /* Paint the in the map area */
   screen_area_clear(ge->map);
-  if(game_get_show_message(game) == TRUE){
-    screen_area_puts(ge->dialogue, game_get_message(game));
-  }else{
+
+  /*paint the dialogue and messages*/
+  if(game_get_current_cinematic(game) == NO_CINEMATIC){
     screen_area_clear(ge->dialogue);
   }
+  if(game_get_show_message(game, game_get_turn(game)) == TRUE){
+    screen_area_puts(ge->dialogue, game_get_message(game, game_get_turn(game)));
+  }
+
+  /*Paint the current mission*/
+  screen_area_clear(ge->mission);
+  sprintf(str, "CURRENT MISSION : %s", mission_get_name(game_get_current_mission_code(game)));
+  screen_area_puts(ge->mission, str);
+  sprintf(str, "CURRENT OBJECTIVE : %s", game_get_objective(game));
+  screen_area_puts(ge->mission, str);
 
 
   /**************PAINT COMPAS ******************/
@@ -365,7 +382,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
       }
     
       screen_area_puts(ge->descript, str);
-    }
+    }/*else{
+      sprintf(str, " %s %s", object_name, object_gdesc);
+      screen_area_puts(ge->descript, str);
+    }*/
   }
 
   /*for all the characters, we print their location and health*/
@@ -373,12 +393,11 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->descript, " CHARACTERS IN THE GAME: ");
   for (i = 0; i < game_get_n_characters(game); i++)
   {
-    character_gdesc = character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
     character_name = character_get_name(game_get_character(game, game_get_character_id_at(game, i)));
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
+    character_gdesc = character_hp > 0? character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i))):character_get_dead_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
-    character_print(game_get_character(game, game_get_character_id_at(game, i)));
     if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
       sprintf(str, " %s %s", character_name, character_gdesc);
       screen_area_puts(ge->descript, str);
@@ -399,18 +418,17 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   sprintf(str, " Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   screen_area_puts(ge->descript, " "); /*Separator line*/
-  sprintf(str, " Objects in the inventory: ");
+  sprintf(str, " Objects in the inventory: (%d/%d)", player_get_num_objects_in_backpack(game_get_current_player(game)), inventory_get_max_objs(player_get_inventory(game_get_current_player(game))));
   screen_area_puts(ge->descript, str);
   for (i = 0; i < player_get_num_objects_in_backpack(game_get_current_player(game)); i++)
   {
     object_name = object_get_name(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
     obj_loc = game_get_object_location(game, (player_get_backpack_object_id_at(game_get_current_player(game), i)));
     object_gdesc = object_get_gdesc(game_get_object(game, player_get_backpack_object_id_at(game_get_current_player(game), i)));
-    if (obj_loc == NO_ID)
-    {
-      sprintf(str, " %s %s", object_name, object_gdesc);
-      screen_area_puts(ge->descript, str);
-    }
+
+    sprintf(str, " %s %s", object_name, object_gdesc);
+    screen_area_puts(ge->descript, str);
+    
   }
   screen_area_puts(ge->descript, "----------------------------------------");
   screen_area_puts(ge->descript, "       CURRENT SPACE INFORMATION: ");
@@ -460,7 +478,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  screen_area_puts(ge->help, " - move 'dir' or m 'dir' - exit or e - take 'arg' or t 'arg' - drop 'arg' or d 'arg' - chat 'arg' or c 'arg' - attack 'arg' or at 'arg' - inspect 'arg' or i 'arg' - recruit 'arg' or r 'arg' - abandon 'arg' or ab 'arg' - ssave 'arg' or s 'arg' - load 'arg' or l 'arg' - team 'arg' or tm 'arg' - open 'arg' with 'arg' or o 'arg' with 'arg' - give 'arg' to 'arg' or g 'arg' to 'arg'");
+  screen_area_puts(ge->help, " - move 'dir' or m 'dir' - exit or e - take 'arg' or t 'arg' - drop 'arg' or d 'arg' - chat 'arg' or c 'arg' - attack 'arg' or at 'arg' - inspect 'arg' or i 'arg' - recruit 'arg' or r 'arg' - abandon 'arg' or ab 'arg' - ssave 'arg' or s 'arg' - load 'arg' or l 'arg' - team 'arg' or tm 'arg' - open 'arg' with 'arg' or o 'arg' with 'arg' - give 'arg' to 'arg' or g 'arg' to 'arg' - turn or tu");
 
   /* Paint in the feedback area */
   screen_area_puts(ge->feedback, "Player command history: ");
@@ -511,5 +529,11 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
     sprintf(str, " %s (%s) : OK (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
 
+  return;
+}
+
+void graphic_engine_clear_dialogue(Graphic_engine *ge){
+  if(!ge) return;
+  screen_area_clear(ge->dialogue);
   return;
 }

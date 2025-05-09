@@ -48,12 +48,13 @@ void graphic_engine_destroy(Graphic_engine *ge);
 /**
  * @brief paints the graphic interface of the game
  *
- * @date 12-02-2025
+ * @date 05-05-2025
  * @author Profesores
  *
  * @param ge pointer to the game's textual graphic engine
  * @param game pointer to the game interface, with information about the player and the object being used in the function
  */
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game);
+
 
 #endif

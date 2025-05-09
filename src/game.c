@@ -27,8 +27,10 @@ typedef struct _InterfaceData{
   Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
   char message[DIALOGUE_LINE_LENGTH];/*!<String that has the message of the character the player last talked to*/
   char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
+  char objective[MAX_MISSION_MESSAGE];  /*!<String that has the text for the next objective of the game, acording to each mission*/
   Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
-}InterfaceData;
+} InterfaceData;
+
 
 
 /**
@@ -111,7 +113,6 @@ Status game_create(Game **game)
 
 Status game_create_from_file(Game **game, char *filename)
 {
-
   if (game_create(game) == ERROR)
   {
     return ERROR;
@@ -149,7 +150,7 @@ Status game_create_from_file(Game **game, char *filename)
   }
   if(gameManagement_load_missions((*game), filename) == ERROR)
   {
-    fprintf(stdout, "Could not load cinematics");
+    fprintf(stdout, "Could not load misions");
     return ERROR;
   }
 
@@ -256,6 +257,20 @@ Status game_set_current_player_location(Game *game, Id id)
   return OK;
 }
 
+Player *game_get_player(Game *game, Id player_id) 
+{  
+  int i;
+  
+  if (!game || player_id == NO_ID) return NULL;
+
+  for (i = 0 ; i < game->n_players ; i++) 
+  {
+    if (player_get_id(game->players[i]) == player_id) return game->players[i];
+  }
+  
+  return NULL;
+}
+
 Player *game_get_player_in_pos(Game *game, int pos)
 {
   if (!game || pos >= game->n_players || pos < 0)
@@ -336,11 +351,17 @@ void game_print(Game *game)
   {
     link_print(game->links[i]);
   }
-
+  fprintf(stdout, "=> Objects:\n");
   for (i = 0; i < game->n_objects; i++)
   {
     object_print(game->objects[i]);
   }
+  fprintf(stdout, "=> Characters:\n");
+  for (i = 0; i < game->n_characters; i++)
+  {
+    character_print(game->characters[i]);
+  }
+  fprintf(stdout, "=> Players:\n");
   for (i = 0; i < game->n_players; i++)
   {
     player_print(game_get_current_player(game));
@@ -479,7 +500,7 @@ Id game_get_objectId_from_name(Game *game, char *name)
   }
   for (i = 0; i < game->n_objects; i++)
   {
-    if (strcmp(object_get_name(game->objects[i]), name) == 0)
+    if (strcasecmp(object_get_name(game->objects[i]), name) == 0)
     {
       return object_get_id(game->objects[i]);
     }
@@ -487,20 +508,24 @@ Id game_get_objectId_from_name(Game *game, char *name)
   return NO_ID;
 }
 
-char *game_get_message(Game *game)
+char *game_get_message(Game *game, Protagonists player)
 {
   if (!game)
     return NULL;
 
-  return game->playerGraphicInformation[game->turn]->message;
+  return game->playerGraphicInformation[player]->message;
 }
 
-Status game_set_message(Game *game, char *msg)
+Status game_set_message(Game *game, char *msg, Protagonists player)
 {
-  if (!game || !msg)
+  if (!game || player < ALICE || player > BOB)
     return ERROR;
-
-  strcpy(game->playerGraphicInformation[game->turn]->message, msg);
+  if(!msg){
+    game->playerGraphicInformation[game->turn]->message[0] = ' ';
+    game->playerGraphicInformation[game->turn]->message[1] = '\0';
+    return OK;
+  }
+  strcpy(game->playerGraphicInformation[player]->message, msg);
   return OK;
 }
 
@@ -546,7 +571,7 @@ Character *game_get_character_from_name(Game *game, char *name)
   }
   for (i = 0; i < game->n_characters; i++)
   {
-    if (strcmp(character_get_name(game->characters[i]), name) == 0)
+    if (strcasecmp(character_get_name(game->characters[i]), name) == 0)
     {
       return game->characters[i];
     }
@@ -792,6 +817,26 @@ char *game_get_description(Game *game)
   return game->playerGraphicInformation[game->turn]->description;
 }
 
+Status game_set_objective(Game *game, char *desc)
+{
+
+  if (!game || !desc)
+  {
+    return ERROR;
+  }
+  strcpy(game->playerGraphicInformation[game->turn]->objective, desc);
+  return OK;
+}
+
+char *game_get_objective(Game *game)
+{
+  if (!game)
+  {
+    return NULL;
+  }
+  return game->playerGraphicInformation[game->turn]->objective;
+}
+
 Status game_add_player(Game *game, Player *player)
 {
   if (!game || !player)
@@ -885,8 +930,11 @@ InterfaceData *game_interface_data_create()
 
   data->description[0] = ' ';
   data->message[0] = ' ';
+  data->objective[0] = ' ';
+
   data->description[1] = '\0';
   data->message[1] = '\0';
+  data->objective[1] = '\0';
   data->show_message = FALSE;
   return data;
 }
@@ -964,10 +1012,18 @@ char *game_interface_in_pos_get_description(Game *game, int pos)
   return game->playerGraphicInformation[pos]->description;
 }
 
+char *game_interface_in_pos_get_objective(Game *game, int pos)
+{
+  if (!game || pos >= game->n_players || pos < 0)
+    return NULL;
+
+  return game->playerGraphicInformation[pos]->objective;
+}
+
 Status game_interface_in_pos_set_message(Game *game, int pos, char *message)
 {
 
-  if (!game || pos >= game->n_players || pos < 0)
+  if (!game || pos >= game->n_players || pos < 0 || !message)
     return ERROR;
   strcpy(game->playerGraphicInformation[pos]->message, message);
   return OK;
@@ -981,36 +1037,28 @@ Status game_interface_in_pos_set_description(Game *game, int pos, char *desc)
   return OK;
 }
 
-Bool game_get_show_message(Game *game)
+Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc)
+{
+  if (!game || pos >= game->n_players || pos < 0)
+    return ERROR;
+  strcpy(game->playerGraphicInformation[pos]->objective, desc);
+  return OK;
+}
+
+Bool game_get_show_message(Game *game, Protagonists player)
 {
   if (!game)
     return FALSE;
-  return game->playerGraphicInformation[game->turn]->show_message;
+  return game->playerGraphicInformation[player]->show_message;
 }
 
-Status game_set_show_message(Game *game, Bool bool)
+Status game_set_show_message(Game *game, Bool boolean, Protagonists player)
 {
   if (!game){
     return ERROR;
     }
 
-  game->playerGraphicInformation[game->turn]->show_message = bool;
-  return OK;
-}
-
-Bool game_get_show_message_in_pos(Game *game, int pos)
-{
-  if (!game || pos < 0 || pos >= game->n_players)
-    return FALSE;
-  return game->playerGraphicInformation[pos]->show_message;
-}
-
-Status game_set_show_message_in_pos(Game *game, Bool bool, int pos)
-{
-  if (!game || pos >= game->n_players)
-    return ERROR;
-
-  game->playerGraphicInformation[pos]->show_message = bool;
+  game->playerGraphicInformation[player]->show_message = boolean;
   return OK;
 }
 
@@ -1078,4 +1126,14 @@ Status game_add_mission(Game *game, Mission *mission){
   game->missions[game->n_missions] = mission;
   game->n_missions++;
   return OK;
+}
+
+Status game_set_next_objective(Game *game){
+  if(!game) return ERROR;
+  return game_set_objective(game, mission_get_next_objective(game_get_current_mission(game)));
+}
+
+Status game_set_next_dialogue(Game *game, Protagonists player){
+  if(!game) return ERROR;
+  return game_set_message(game, mission_get_next_dialogue(game_get_current_mission(game)), player);
 }

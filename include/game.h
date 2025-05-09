@@ -2,7 +2,7 @@
  * @brief It defines the game interface
  *
  * @file game.h
- * @author Profesores PPROG
+ * @author Profesores PPROG, Álvaro Iñigo, Matteo Artuñedo, Guilherme Povedano, Araceli Gutiérrez
  * @version 0
  * @date 27-01-2025
  * @copyright GNU Public License
@@ -22,11 +22,11 @@
 #include "mission.h"
 
 #define MAX_SPACES 100              /*!<The maximum ammount of spaces that can exist in the game*/
-#define MAX_OBJECTS 10              /*!<The maximum ammount of objects present at the game*/
+#define MAX_OBJECTS 25             /*!<The maximum ammount of objects present at the game*/
 #define MAX_CHARACTERS 10           /*!<The maximum ammount of characters present at the game*/
-#define MAX_LINKS (MAX_SPACES * 4)  /*!<The maximum amount of links present at the game*/
-#define MAX_MESSAGE 50              /*!<The maximum ammout of characters in the messages*/
-#define MAX_PLAYERS 8               /*!<The maximum ammout of players that can play at the same time*/
+#define MAX_LINKS (MAX_SPACES * 6)  /*!<The maximum amount of links present at the game*/
+#define MAX_MESSAGE 75              /*!<The maximum ammout of characters in the messages*/
+#define MAX_PLAYERS 2               /*!<The maximum ammout of players that can play at the same time*/
 #define MAX_MISSIONS 10             /*!<The maximum ammount of missions that can be in the game*/
 
 /**
@@ -178,6 +178,16 @@ Id game_get_object_location(Game *game, Id objectId);
 Status game_set_object_location(Game *game, Id id, Id objectId);
 
 /**
+ * @brief Fetches player with a given ID
+ * @date 09-05-2025
+ * @author Guilherme Povedano 
+ * @param game pointer to game containing data 
+ * @param player_id id of the player to be fetched
+ * @return the player struct or NULL in case of ERROR.
+ */
+Player *game_get_player(Game *game, Id player_id);
+
+/**
  * @brief Gets the player of the game in a determinate position asked.
  * @date 18-04-2025
  * @author Alvaro Inigo
@@ -267,17 +277,8 @@ Id game_get_object_id_at(Game *game, int position);
  * @return Status if the function has been completed succesfully
  */
 Status game_add_character(Game *game, Character *character);
+
 /**
- * @brief adds an object to the game
- * @date 03/03/25
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param position the position in the array of objects of the object we want to get the Id
- * @return Id the id of the character
- */
-
-
- /**
   * @brief returns the character in the position pos of the array of characters in game
   * @date 18/04/25
   * @author Alvaro Inigo
@@ -287,6 +288,14 @@ Status game_add_character(Game *game, Character *character);
   */
 Character *game_get_character_in_pos(Game *game, int pos);
 
+/**
+  * @brief returns the character id in the position pos of the array of characters in game
+  * @date 18/04/25
+  * @author Alvaro Inigo
+  * @param game a pointer to the game
+  * @param position the position of the character in the array
+  * @return Character* the wanted character
+  */
 Id game_get_character_id_at(Game *game, int position);
 
 /**
@@ -327,15 +336,6 @@ Id game_get_object_id_at(Game *game, int position);
  * @return Status if the function has been completed succesfully
  */
 Status game_add_character(Game *game, Character *character);
-/**
- * @brief adds an object to the game
- * @date 03/03/25
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param position the position in the array of objects of the object we want to get the Id
- * @return Id the id of the character
- */
-Id game_get_character_id_at(Game *game, int position);
 
 /**
  * @brief gets the object of the game(pointer)
@@ -373,9 +373,10 @@ Id game_get_objectId_from_name(Game *game, char *name);
  * @date 04/03/25
  * @author Matteo Artunedo
  * @param game a pointer to game
+ * @param player player the protagonist that has received the message
  * @return a string with the message
  */
-char *game_get_message(Game *game);
+char *game_get_message(Game *game, Protagonists player);
 
 /**
  * @brief Sets the message in the game for the current player
@@ -383,9 +384,10 @@ char *game_get_message(Game *game);
  * @author Matteo Artunedo
  * @param game a pointer to game
  * @param msg a string with the new message
+ * @param player the protagonist that will receive the message
  * @return OK if the function is completed succesfully or ERROR if an error occurrs
  */
-Status game_set_message(Game *game, char *msg);
+Status game_set_message(Game *game, char *msg, Protagonists player);
 
 /**
  * @brief Gets the object in a specific position in the object array
@@ -512,9 +514,25 @@ Status game_set_description(Game *game, char *desc);
  */
 char *game_get_description(Game *game);
 
-/*Funcion temporal, hasta que cambiemos player por un array de jugadores
-necesaria por ahora para el modulo de game reader
-*/
+/**
+ * @brief sets objective message in the game for the current player
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param desc the new objective message
+ * @return Status OK or ERROR.
+ */
+Status game_set_objective(Game *game, char *desc);
+
+/**
+ * @brief Returns the objective text in the game for the current player
+ * @date 24/03/25
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return char* the string that contains the objective message
+ */
+char *game_get_objective(Game *game);
+
 
 /**
  * @brief adds a player to the game, as well as their command history
@@ -608,7 +626,7 @@ Status game_move_followers(Game *game, Id new_space_id);
 /**
  * @brief gets the lastCmd of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return Command the lastCMD
  */
@@ -617,7 +635,7 @@ Command *game_interface_in_pos_get_lastCmd(Game *game, int pos);
 /**
  * @brief gets the second to last Cmd of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return Command the second to last CMD
  */
@@ -626,7 +644,7 @@ Command *game_interface_in_pos_get_second_to_last_Cmd(Game *game, int pos);
 /**
  * @brief gets the third to last Cmd of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return Command the third to last CMD
  */
@@ -635,7 +653,7 @@ Command *game_interface_in_pos_get_third_to_last_Cmd(Game *game, int pos);
 /**
  * @brief gets the message of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return char* the message
  */
@@ -644,20 +662,27 @@ char *game_interface_in_pos_get_message(Game *game, int pos);
 /**
  * @brief gets the description of an interfaceData given its position
  * @author Alvaro Inigo
- * @param interface a pointer to the interface
+ * @param game a pointer to the game
  * @param pos the position of the interface wanted
  * @return char* the description
  */
 char *game_interface_in_pos_get_description(Game *game, int pos);
 
-Status game_interface_in_pos_set_message(Game *game, int pos, char *desc);
+/**
+ * @brief gets the objective of an interface given its position
+ * @author Alvaor Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface wanted
+ * @return char* the objective text of the interface
+ */
+char *game_interface_in_pos_get_objective(Game *game, int pos);
 
 /**
  * @brief sets the message of an interface in a given turn
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param pos the position of the interface in the game array
- * @param desc the new message
+ * @param message the new message
  * @return Status  OK or ERROR
  */
 Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
@@ -673,40 +698,32 @@ Status game_interface_in_pos_set_message(Game *game, int pos, char *message);
 Status game_interface_in_pos_set_description(Game *game, int pos, char *desc);
 
 /**
+ * @brief sets the objective text for the interface located in position pos given
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param pos the position of the interface
+ * @param desc the new objective message
+ * @return Status OK or ERROR
+ */
+Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc);
+
+/**
  * @brief returns if the message of the game must be shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @return Bool TRUE if it must be shown of FALSE otherwise
  */
-Bool game_get_show_message(Game *game);
+Bool game_get_show_message(Game *game, Protagonists player);
 
 /**
  * @brief sets if the message must be shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
- * @param bool TRUE or FALSE
+ * @param boolean TRUE or FALSE
+ * @param player the character that will be shown the message
  * @return Status OK or ERROR if an error happened
  */
-Status game_set_show_message(Game *game, Bool bool);
-
-/**
- * @brief gets if the message of the player in the turn pos must have its message shown
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param pos the turn of the player
- * @return Bool TRUE or FALSE if the message must or not be shown
- */
-Bool game_get_show_message_in_pos(Game *game, int pos);
-
-/**
- * @brief sets if the message of the player in the turn pos must have its message shown
- * @author Alvaro Inigo
- * @param game a pointer to the game
- * @param bool the bool to set
- * @param pos the turn of the player
- * @return Bool TRUE or FALSE if the message must or not be shown
- */
-Status game_set_show_message_in_pos(Game *game, Bool bool, int pos);
+Status game_set_show_message(Game *game, Bool boolean, Protagonists player);
 
 /**
  * @brief Finds an object from the game by its name.
@@ -868,4 +885,21 @@ Status game_set_current_mission(Game *game, Mission_Code mission);
  * @return Status OK or ERROR
  */
 Status game_add_mission(Game *game, Mission *mission);
+
+/**
+ * @brief sets the next objective of the current mission in the game on the message of game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @return Status OK or ERROR
+ */
+Status game_set_next_objective(Game *game);
+
+/**
+ * @brief sets the next dialogue line of the current mission in the game on the message of game
+ * @author Alvaro Inigo
+ * @param game a pointer to the game
+ * @param player the protagonist which will receive the dialogue
+ * @return Status OK or ERROR
+ */
+Status game_set_next_dialogue(Game *game, Protagonists player);
 #endif
