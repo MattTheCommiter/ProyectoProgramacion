@@ -845,7 +845,7 @@ gdesc57
 
 @@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
 #c:1|Dinosaur|\xF0\x9F\xA6\x96|\xE2\x98\xA0|24|5|1|-1|Help me!|
-#c:2|FinalBoss|\xF0\x9F\xA4\x96|\xE2\x98\xA0|-1|20|0|-1|Your grandmother's gift is mine to keep!|
+#c:2|Robocop|\xF0\x9F\xA4\x96|\xE2\x98\xA0|-1|2|0|-1|Your grandmother's gift is mine to keep!|
 #c:3|Ghost|\xF0\x9F\x91\xBB|\xE2\x98\xA0|-1|5|0|-1|The next floor is only for our King!|
 #c:4|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
@@ -883,7 +883,7 @@ gdesc57
 #l:2231|Hall2ToHiddenRoom|22|31|5|0|
 
 #l:3122|HiddenRoomToHall2|31|22|6|1|
-#l:3132|HiddenRoomToTreasureRoom|31|32|1|1|
+#l:3132|HiddenRoomToTreasureRoom|31|32|1|0|
 
 
 
@@ -942,8 +942,8 @@ gdesc57
 #mt:0|0|Bob: Alice, lets work together, shall we?|
 
 @@Mission Linterna
-#mo:1|0|0|swith turn to Bob|(BOB)Give the batteries to your sister|
-#mt:1|0| |Alice: Bob, give me the batteries so I can turn on the lantern|
+#mo:1|0|0|(BOB)Give the batteries to your sister|
+#mt:1|0|Alice: Bob, give me the batteries so I can turn on the lantern|
 
 @@Mission Generador
 #mo:2|0|0|(ALICE) Look for a way to turn on the light of the house|(ALICE) Inspect the generator|
@@ -1214,14 +1214,14 @@ gdesc57
 
 @@Mission subir al piso de arriba
 #mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
-#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: We can go up now|
+#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: kill the ghost!| We can go up now|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA
 
 @@Mission buscar curacion para Alice
 
 #mo:5|0|0|(Alice)Look for something to heal yourself in the bathroom|(Alice)Open (inspect) the medkit|(Alice)Heal yourself|
-#mt:5|0|Alice: Oh! it hurts! I should heal me|Alice: It might be something in the medkit..|Alice: I could heal with this|
+#mt:5|0|Alice: Oh! it hurts! I should heal me|Alice: It might be something in the medkit..|Alice: those band-aids look helpful|
 
 
 @@Mission cuarto de Bob
@@ -1235,7 +1235,7 @@ gdesc57
 @@Mission buscar la pata del DINOSAURIOf
 
 #mo:7|0|0|(Bob)Search for the leg of the Dino near the bedroom|(Bob) take the leg and return to help the dino| (Bob) recluit the dino|
-#mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|
+#mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|Dinosaur: let's go find this treasure!|
 
 @@Mission subir al piso 3
 

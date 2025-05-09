@@ -16,6 +16,12 @@
 #include "character.h" /* defines GDESCTAM macro */
 #include "inventory.h"
 
+#define ALICE_NAME "Alice"
+#define BOB_NAME "Bob"
+
+#define ALICE_ID 1
+#define BOB_ID 2
+
 /**
  * @brief Defines a new type for the Player structure.
  */

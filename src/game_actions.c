@@ -525,6 +525,8 @@ void game_actions_attack(Game *game, char *arg)
   Id characterId;
   Space *player_space = NULL;
   Set *followers = NULL;
+  Player *current_player = NULL;
+  char message[MAX_MESSAGE];
   num = rand() % 10;
 
   /*reset if we want the game to show the message*/
@@ -540,6 +542,55 @@ void game_actions_attack(Game *game, char *arg)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
+  }
+
+  /*define special behaviour for group attack in floor 3*/
+  if (character_get_id(enemy) == BOSS_ID) 
+  {
+    if (player_get_team(game_get_current_player(game)) == NO_ID) 
+    {
+      sprintf(message, "To attack them you must be teamed up with your sibling.\n");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if (player_backpack_contains(game_get_current_player(game), WATER_GUN_ID) == FALSE) 
+    {
+      sprintf(message, "To attack them you must have the water gun.\n");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+
+  /* special behaviour for group attack in floor 1 */
+  if (character_get_id(enemy) == TOY_ID) 
+  {
+    if (player_get_team(game_get_current_player(game)) == NO_ID) 
+    {
+      sprintf(message, "To attack them you must be teamed up with your sibling.\n");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), KNIFE_ID) == FALSE))
+    {
+      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.\n");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return; 
+    } else if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), LANTERN_ID) == FALSE))
+    {
+      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.\n");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
   }
 
   player_space = game_get_space(game, game_get_current_player_location(game));
@@ -675,6 +726,15 @@ void game_actions_recruit(Game *game, char *arg)
   }
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE, game_get_turn(game));
+
+  if (character_get_id(game_get_character_from_name(game, arg)) == REX_ID && player_backpack_contains(game_get_current_player(game), DINOSAURLEG_ID) == FALSE) 
+  { 
+    sprintf(message, "You cannot recruit this character until you have found its leg.\n");
+    game_set_message(game, message, game_get_turn(game));
+    game_set_show_message(game, TRUE, game_get_turn(game));
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
 
   /*In case the character is not friendly or it is already recruited, it cannot be recruited*/
   if (character_get_friendly(game_get_character_from_name(game, arg)) == FALSE || character_get_following(game_get_character_from_name(game, arg)) != NO_ID)
