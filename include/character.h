@@ -20,6 +20,9 @@
 #define GHOST_NAME "Ghost"      /*!<Name of the ghost that attacks during a mission*/
 #define REX_NAME "Dinosaur"     /*!<Name of the dinosaur*/
 #define FINAL_BOSS_NAME "FinalBoss"  /*!<Name of the final Boss of the game*/
+#define TOY_NAME "EvilToy"  /*!<Name of the toy in the game */
+
+#define TOY_ID 1            /*!< id of the toy in the game */
 #define REX_ID 2            /*!<Id of the dinosaur of the game*/
 #define GHOST_ID 4          /*!<Id of the ghost of the game*/
 #define BOSS_ID 3           /*!<Id of the BOSS of the game*/
