@@ -104,6 +104,21 @@ char **graphic_engine_create_space_square(Game *game, Id square_id);
 void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
 
 /*PRIVATE FUNCTIONS*/
+/**
+ * @brief Paints the compass with the names of the spaces in the specified directions
+ * (square left down on the screen). It generates a visual representation showing the names of the spaces
+ * in the north, south, west, east, up, and down directions relative to the current game state.
+ * @author Matteo Artunedo 
+ *
+ * @param game Pointer to the Game structure.
+ * @param north ID of the space to the north.
+ * @param south ID of the space to the south.
+ * @param west ID of the space to the west.
+ * @param east ID of the space to the east.
+ * @param up ID of the space above.
+ * @param down ID of the space below.
+ * @return A 2D array of characters representing the compass for orientation, or NULL if an error occurs.
+ */
 char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down) 
 {
   char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", unknown_str[] = "???", *up_name=NULL, *down_name=NULL;
@@ -535,6 +550,12 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
   return;
 }
 
+
+/**
+ * @brief Clears the dialogue area in the graphic engine
+ * @author Matteo Artuñedo, Alvaro Inigo
+ * @param ge a pointer to the Graphic_engine structure
+ */
 void graphic_engine_clear_dialogue(Graphic_engine *ge){
   if(!ge) return;
   screen_area_clear(ge->dialogue);

@@ -711,6 +711,7 @@ Status game_interface_in_pos_set_objective(Game *game, int pos, char *desc);
  * @brief returns if the message of the game must be shown
  * @author Alvaro Inigo
  * @param game a pointer to the game
+ * @param player the protagonist whose message status is being checked
  * @return Bool TRUE if it must be shown of FALSE otherwise
  */
 Bool game_get_show_message(Game *game, Protagonists player);
