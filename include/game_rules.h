@@ -2,8 +2,8 @@
 
 /**
  * @file game_rules.h
- * @author Araceli Gutiérrez
- * @brief 
+ * @author Álvaro Iñigo, Araceli Gutiérrez
+ * @brief Implements the rules of the game
  * @version 0.1
  * @date May 2025
  *

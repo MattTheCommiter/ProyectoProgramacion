@@ -12,9 +12,9 @@
 
 #include "types.h"
 
-#define HIDDENROOMTOTREASURE 3132 
-#define LIVINGROOMTOHALL1  1421
-#define HALL2TOHIDDENROOM 2231
+#define HIDDENROOMTOTREASURE 3132   /*!< Link ID for the hidden room to treasure room connection */
+#define LIVINGROOMTOHALL1  1421     /*!< Link ID for the living room to hall 1 connection */
+#define HALL2TOHIDDENROOM 2231      /*!< Link ID for the hall 2 to hidden room connection */
 
 /** @brief public alias for the opaque _Link structure */
 typedef struct _Link Link;

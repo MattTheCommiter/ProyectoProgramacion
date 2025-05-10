@@ -17,12 +17,23 @@
 #define BOB_PLAYER (game_get_player_in_pos(game, BOB_TURN)) /*!<Define function that gets the player BOB*/
 #define ALICE_PLAYER (game_get_player_in_pos(game, ALICE_TURN)) /*!<Defined function that gets the player ALICE*/
 
-/*!<Define function that shows the next dialogue only to BOB*/
+
+/**
+ * @brief Define function that shows the next dialogue only to BOB. 
+ * This macro sets the message visibility for BOB's turn to TRUE and for ALICE's turn to FALSE.
+ * @author Alvaro Inigo
+ */
 #define show_next_dialogue_to_bob() ( \
     game_set_show_message(game, TRUE, BOB_TURN), \
     game_set_show_message(game, FALSE, ALICE_TURN) \
 )
-/*!<Define function that shows the next dialogue only to ALICE*/
+
+
+/**
+ * @brief Define function that shows the next dialogue only to ALICE.
+ * This macro sets the message visibility for ALICE's turn to TRUE and for BOB's turn to FALSE.
+ * @author Alvaro Inigo
+ */
 #define show_next_dialogue_to_alice() ( \
     game_set_show_message(game, TRUE, ALICE_TURN), \
     game_set_show_message(game, FALSE, BOB_TURN) \
@@ -294,7 +305,7 @@ void game_rules_generator_mission(Game *game, Mission *mission)
         /*el primer paso solicita que Alice busque el cuarto con el generador*/
         if (player_get_location(ALICE_PLAYER) == GENERATOR_SPACE)
         {
-            game_rules_mission_step(game, mission, step, ge);
+            game_rules_mission_step(game, mission, step);
             show_next_dialogue_to_alice();
         }
         break;
@@ -383,7 +394,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission)
         /*En el primer paso se solicita a los jugadores ir al espacio de las escaleras*/
         if (player_get_location(ALICE_PLAYER) == FIRST_STAIRS_ROOM && player_get_location(BOB_PLAYER) == FIRST_STAIRS_ROOM)
         {
-            game_rules_mission_step(game, mission, step, ge);
+            game_rules_mission_step(game, mission, step);
             game_rules_spawn_ghost(game);
             /*hacemos aparecer el cuchillo en el espacio del pasillo*/
             space_add_objectId(game_get_space(game, CORRIDOR1), KNIFE_ID);
@@ -395,7 +406,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission)
         /*Durante el segundo paso, se pide a bob que busque el cuchillo*/
         if (player_backpack_contains(BOB_PLAYER, KNIFE_ID))
         {
-            game_rules_mission_step(game, mission, step, ge);
+            game_rules_mission_step(game, mission, step);
             show_next_dialogue_to_bob();
             return;
         }
@@ -404,7 +415,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission)
         /*Una vez con el cuchillo, se pide a bob volver al espacio del fantasma*/
         if (player_get_location(BOB_PLAYER) == FIRST_STAIRS_ROOM)
         {
-            game_rules_mission_step(game, mission, step, ge);
+            game_rules_mission_step(game, mission, step);
             show_next_dialogue_to_bob();
             return;
         }
@@ -448,7 +459,7 @@ void game_rules_medkit_mission(Game *game, Mission *mission)
         case(0):
         /*en el primer paso se pide llegar al baño a buscar el medkit*/
             if(player_get_location(ALICE_PLAYER) == BATHROOM_SPACE){
-                game_rules_mission_step(game, mission, step, ge);
+                game_rules_mission_step(game, mission, step);
                 show_next_dialogue_to_alice();
                 return;
             }
@@ -459,7 +470,7 @@ void game_rules_medkit_mission(Game *game, Mission *mission)
                 /*metemos los objetos en el espacio(aparecen)*/
                 space_add_objectId(game_get_space(game, BATHROOM_SPACE), BANDAIDS_ID);
                 space_add_objectId(game_get_space(game, BATHROOM_SPACE), MEDICINE_ID);
-                game_rules_mission_step(game, mission, step, ge);
+                game_rules_mission_step(game, mission, step);
                 show_next_dialogue_to_alice();
                 return;
             }
@@ -494,7 +505,6 @@ void game_rules_bedroom_mission(Game *game, Mission *mission)
             game_set_next_objective(game);
             space_add_objectId(game_get_space(game, HALL2), DINOSAURLEG_ID);
             show_next_dialogue_to_bob();
-            graphic_engine_clear_dialogue(ge);
             game_set_current_cinematic(game, BOBS_ROOM);    
             return;
         }
@@ -514,7 +524,7 @@ void game_rules_REX_mission(Game *game, Mission *mission)
         case(0):
             /*Bob and the leg in HALL2*/
             if(game_get_current_player_location(game) == game_get_object_location(game, DINOSAURLEG_ID)){
-                game_rules_mission_step(game, mission, step, ge);
+                game_rules_mission_step(game, mission, step);
                 show_next_dialogue_to_bob();
                 return;
             }
@@ -523,7 +533,7 @@ void game_rules_REX_mission(Game *game, Mission *mission)
             /*Bob busca la pata del dinosaurio y la coge (TAKE)*/
             if (player_backpack_contains(BOB_PLAYER, DINOSAURLEG_ID))
             {
-                game_rules_mission_step(game, mission, step, ge);
+                game_rules_mission_step(game, mission, step);
                 show_next_dialogue_to_bob();
                 return;
             }
@@ -539,7 +549,6 @@ void game_rules_REX_mission(Game *game, Mission *mission)
                 show_next_dialogue_to_bob();
                 game_set_message(game, game_get_message(game, ALICE), BOB);
                 game_set_show_message(game , TRUE, BOB_TURN);
-                graphic_engine_clear_dialogue(ge);
                 return;
             }
             break;
@@ -609,7 +618,7 @@ void game_rules_boss_mission(Game *game, Mission *mission)
             if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GIFTBOX_NAME))
             {
                 space_add_objectId(game_get_space(game, TREASUREROOM), FAMILY_PIC_ID);
-                game_rules_mission_step(game, mission, step, ge);
+                game_rules_mission_step(game, mission, step);
             }
             return;
         break;

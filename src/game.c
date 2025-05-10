@@ -712,11 +712,10 @@ Status game_add_link(Game *game, Link *link)
 }
 
 Id game_get_link_id_at(Game *game, long position) {
-  long i = 0;
 
   if (!game || position < 0) return NO_ID;
 
-  return link_get_id(game->links[i]);
+  return link_get_id(game->links[position]);
 }
 
 

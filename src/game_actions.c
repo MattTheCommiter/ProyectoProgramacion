@@ -818,25 +818,30 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
+  printf("arg1:%s, arg2:%s\n",arg1, arg2);
+  printf("el link buscado es %s\n", link_get_name(game_get_link(game, 3132)));
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE, game_get_turn(game));
   origin_id = game_get_current_player_location(game);
 
-
+  printf("comparacion: %d\n", strcasecmp(link_get_name(game_get_link(game, 3132)), arg1));
   /*find the corresponding link*/
   for (i = 0; i < game_get_n_links(game); i++)
   {
     l = game_get_link(game, game_get_link_id_at(game, i));
-
+    printf("%s\n", link_get_name(l));
     /*check if link name matches first argument in the command*/
-    if (strcasecmp(link_get_name(l), arg1) == 0)
+    if (strcasecmp(link_get_name(l), arg1) == 0){
+      printf("link encontrado\n");
       break;
+    }
   }
 
   /* check if link corresponds to current space, or if exit condition for loop was not found */
   if (link_get_origin_id(l) != origin_id || i == game_get_n_links(game))
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    printf("link no encontrado\n");
     return;
   }
 
