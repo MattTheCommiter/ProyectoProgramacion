@@ -806,7 +806,7 @@ gdesc57
 
 #o:1|Batteries|\xF0\x9F\x94\x8B|-1|Small batteries, could power up a lantern|1|0|2|-1|
 #o:2|Lantern|\xF0\x9F\x94\xA6|-1|A lantern that can light up a room|1|0|-1|-1|
-#o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work|1|0|-1|-1|
+#o:3|Old Generator|\xF0\x9F\x8F\xAD|15|This generator seems old, but could work|0|0|-1|-1|
 #o:5|StairsTo2ndFloor|\xF0\x9F\xAA\x9C|14|old and fragile stairs|0|0|-1|-1|
 #o:6|StairsTo3rdFloor|\xF0\x9F\xAA\x9C|22|old and fragile stairs|0|0|-1|-1|
 #o:7|Key|\xF0\x9F\x94\x91|-1|the key to victory ;)|1|0|-1|3132|
@@ -821,7 +821,7 @@ gdesc57
 
 #o:16|Backpack|\xF0\x9F\x8E\x92|21|A backback to increase the size of the inventory|1|0|-1|-1|
 #o:17|Toilet paper|\xF0\x9F\xA7\xBB|25|Toilet paper, you never know when the toilet could call you!|1|0|-1|-1|
-#o:18|ivy|\xF0\x9F\x8C\xBF|15|Venomous plant, could harm you if you use it|1|-1|-1|-1|
+#o:18|Ivy|\xF0\x9F\x8C\xBF|15|Venomous plant, could harm you if you use it|1|-1|-1|-1|
 
 #o:101|Generator|\xF0\x9F\x8F\xAD|150|A generator to light the house|1|0|-1|-1|
 #o:102|wrench|\xF0\x9F\x94\xA7|-1|a useful weapon that could repair something|1|0|-1|-1|
@@ -1213,20 +1213,20 @@ gdesc57
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@Mission subir al piso de arriba
-#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players must go to Hall1|
-#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: kill the ghost!| We can go up now|
+#mo:4|0|0|Both players must go to the upper floor through the stairs. Meet at the living room|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players must go to Hall1|
+#mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost while I blind him with my lantern!|Bob: this could help us. Now I have to go back and help Alice|Alice: kill the ghost!|Alice and Bob: we can go up now|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA
 
 @@Mission buscar curacion para Alice
 
-#mo:5|0|0|(Alice)Look for something to heal yourself in the bathroom|(Alice)Open (inspect) the medkit|(Alice)Heal yourself|
-#mt:5|0|Alice: Oh! it hurts! I should heal me|Alice: It might be something in the medkit..|Alice: those band-aids look helpful|
+#mo:5|0|0|(Alice)Look for something to heal your wounds with in the bathroom|(Alice)Open (inspect) the medkit|(Alice)Heal yourself with the available objects ("use" command)|
+#mt:5|0|Alice: Oh! it hurts! I need to find something to aid the pain|Alice: there may be something in the medkit..|Alice: those band-aids look helpful|
 
 
 @@Mission cuarto de Bob
 #mo:6|0|0|(Bob)go to your Bedroom|
-#mt:6|0|Bob: I should explore the house|
+#mt:6|0|Bob: I should explore the house in search of something that could find us find the treasure|
 
 @@CINEMATICA DEL DINOSAURIO QUE HABLA
 
@@ -1234,7 +1234,7 @@ gdesc57
 
 @@Mission buscar la pata del DINOSAURIO
 
-#mo:7|0|0|(Bob)Search for the leg of the Dino near the bedroom|(Bob) take the leg and return to help the dino| (Bob) recluit the dino|
+#mo:7|0|0|(Bob)Search for the Dinsaur's leg near the bedroom|(Bob) take the leg and return it to your Dinosaur friend|(Bob)Recruit the Dinosaur|
 #mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|Dinosaur: let's go find this treasure!|
 
 @@Mission subir al piso 3
@@ -1244,8 +1244,8 @@ gdesc57
 
 @@CINEMATICA BOSS FINAL
 
-#mo:9|0|0|Kill the evil toy|go to the next room to see the treasure, open link 'HiddenRoomToTreasureRoom' with key|open(Inspect) the gift|Take the treasure(photo?;))|
-#mt:9|0|Evil toy: You shall not pass!|ALice: We are sorry Robi, you had to die|Alice: come on, lets open the gift box|Bob: lets take the treasure!|
+#mo:9|0|0|Kill Robocop with an appropriate weapon|Go to the next room to see the treasure, open link 'HiddenRoomToTreasureRoom' with the key Robocop had hidden|Open the gift with "inspect" command|Take the treasure(photo?;))|
+#mt:9|0|Evil toy: You shall not pass!|ALice: We are sorry Robi, you had to die|Alice: come on, lets open the gift box|Bob: let's take the treasure!|
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
