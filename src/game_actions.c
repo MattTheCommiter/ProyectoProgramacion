@@ -549,7 +549,7 @@ void game_actions_attack(Game *game, char *arg)
   {
     if (player_get_team(game_get_current_player(game)) == NO_ID) 
     {
-      sprintf(message, "To attack them you must be teamed up with your sibling.\n");
+      sprintf(message, "To attack them you must be teamed up with your sibling.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -557,7 +557,7 @@ void game_actions_attack(Game *game, char *arg)
     }
     if (player_backpack_contains(game_get_current_player(game), WATER_GUN_ID) == FALSE) 
     {
-      sprintf(message, "To attack them you must have the water gun.\n");
+      sprintf(message, "To attack them you must have the water gun.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -570,7 +570,7 @@ void game_actions_attack(Game *game, char *arg)
   {
     if (player_get_team(game_get_current_player(game)) == NO_ID) 
     {
-      sprintf(message, "To attack them you must be teamed up with your sibling.\n");
+      sprintf(message, "To attack them you must be teamed up with your sibling.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -578,14 +578,14 @@ void game_actions_attack(Game *game, char *arg)
     }
     if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), KNIFE_ID) == FALSE))
     {
-      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.\n");
+      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return; 
     } else if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), LANTERN_ID) == FALSE))
     {
-      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.\n");
+      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -748,7 +748,7 @@ void game_actions_recruit(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  sprintf(message, "%s recluited", arg);
+  sprintf(message, "%s recruited", arg);
   game_set_message(game, message, game_get_turn(game));
   game_set_show_message(game, TRUE, game_get_turn(game));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
@@ -795,6 +795,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
     return;
   }
   /*reset if we want the game to show the message*/
+  printf("%s, %s", arg1, arg2);
   game_set_show_message(game, FALSE, game_get_turn(game));
   origin_id = game_get_current_player_location(game);
 
@@ -813,6 +814,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
   if (link_get_origin_id(l) != origin_id || i == game_get_n_links(game))
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    printf("Link not found");
     return;
   }
 
@@ -828,6 +830,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
       if (object_get_open(o) != link_get_id(l))
       {
         command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+        printf("Key doesn't open link");
         return;
       }
 
@@ -840,7 +843,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
       return;
     }
   }
-
+  printf("Key not found");
   /*in case function has not been exited, return with ERROR*/
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;

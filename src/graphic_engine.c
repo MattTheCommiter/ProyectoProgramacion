@@ -398,18 +398,21 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
     character_gdesc = character_hp > 0? character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i))):character_get_dead_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
     character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
-    if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, " %s %s", character_name, character_gdesc);
+    if(character_hp > 0){
+      if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
+        sprintf(str, " %s %s", character_name, character_gdesc);
+        screen_area_puts(ge->descript, str);
+        sprintf(str, " - location:%d",(int)character_loc);
+        screen_area_puts(ge->descript, str);
+        sprintf(str, " - health: %d", character_hp >= 0? character_hp:0);
+        screen_area_puts(ge->descript, str);
+        sprintf(str, " - following: %ld", character_following);
+      }else{
+        sprintf(str, " %s %s  (?)", character_name, character_gdesc);
+      }
       screen_area_puts(ge->descript, str);
-      sprintf(str, " - location:%d",(int)character_loc);
-      screen_area_puts(ge->descript, str);
-      sprintf(str, " - health: %d", character_hp >= 0? character_hp:0);
-      screen_area_puts(ge->descript, str);
-      sprintf(str, " - following: %ld", character_following);
-    }else{
-      sprintf(str, " %s %s  (?)", character_name, character_gdesc);
     }
-    screen_area_puts(ge->descript, str);
+
   }
   /*We print the player, its location , health and then the object in the inventory*/
 

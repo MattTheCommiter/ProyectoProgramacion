@@ -318,7 +318,8 @@ void game_rules_second_floor_mission(Game *game, Mission *mission, Graphic_engin
             game_set_current_mission(game, MEDKIT_MISSION);
             game_set_next_objective(game);
             game_set_next_dialogue(game, ALICE);
-            show_next_dialogue_to_alice();
+            game_set_show_message(game, TRUE, ALICE);
+            game_set_message(game, game_get_message(game, ALICE), BOB);
             return;
         }
         break;
@@ -422,13 +423,16 @@ void game_rules_REX_mission(Game *game, Mission *mission, Graphic_engine *ge)
             /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
             if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB_PLAYER))
             {
-                game_set_current_mission(game, THIRD_FLOOR_MISSION);
                 link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);
+
+                game_set_current_mission(game, THIRD_FLOOR_MISSION);
                 game_set_next_objective(game);
                 game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
-                show_next_dialogue_to_bob();
-                game_set_message(game, game_get_message(game, ALICE), BOB);
+                
+                game_set_next_dialogue(game, BOB);
+                game_set_message(game, game_get_message(game, BOB), ALICE);
                 game_set_show_message(game , TRUE, BOB_TURN);
+                game_set_show_message(game , TRUE, ALICE_TURN);
                 graphic_engine_clear_dialogue(ge);
                 return;
             }
@@ -458,10 +462,11 @@ void game_rules_third_floor_mission(Game *game, Mission *mission, Graphic_engine
             game_set_next_objective(game);
             /*We set the dialogues*/
             game_set_next_dialogue(game, ALICE);
-            game_set_current_cinematic(game, FINAL_BOSS);
-            game_set_show_message(game, TRUE, ALICE);
             game_set_message(game, game_get_message(game, ALICE), BOB);
+            game_set_show_message(game, TRUE, ALICE);
             game_set_show_message(game, TRUE, BOB);
+
+            game_set_current_cinematic(game, FINAL_BOSS);
             return;
         }
         break;
@@ -484,6 +489,13 @@ void game_rules_boss_mission(Game *game, Mission *mission, Graphic_engine *ge)
             if(character_get_health(game_get_character(game, BOSS_ID)) <= 0){
                 game_rules_mission_step(game, mission, step, ge);
                 space_add_objectId(game_get_space(game,HIDDENROOM), KEY_ID);
+                if(game_get_turn(game) == ALICE_TURN){
+                    game_set_message(game, game_get_message(game, ALICE), BOB);
+                }else if(game_get_turn(game) == BOB_TURN){
+                    game_set_message(game, game_get_message(game, BOB), ALICE);
+                }
+                game_set_show_message(game, TRUE, ALICE);
+                game_set_show_message(game, TRUE, BOB);
                 return;
             }
         break;
