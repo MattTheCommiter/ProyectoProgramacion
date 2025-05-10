@@ -675,39 +675,39 @@ gdesc57
 #s:31|HiddenRoom|0|            
                                                                           :                                                                             
                                                                           :                                                                             
-                                                                          :                                                                                                                                                                                                    
-                                                                          :                                                                           
-                                                                          :                                                                           
-                                                                          -                                                                           
-                                                                          -                                                                           
-                                                                          -                                                                           
-                                                                          :                                                                           
-                                                                          -                                                                           
-                                                                          .                                                                           
-                                                                         :*                                                                           
-                                                                        =- -                                                                          
-                                                                      :#    -=                                                                        
-                                                                     #        *:                                                                      
-                                                                   +            =                                                                     
-                                                                 :-              -:                                                                   
-                                                                =                  +                                                                  
-                                                              =:                    -+                                                                
-                                                            -=                        =.                                                              
-                                                          .#                            =                                                             
-                                                         +                               =-                                                       =@@ 
-     #@@-                                               -        =@@%###*+++****%@:        @:                                             %@*         
-           :  -@@=                                    %           -+@@@@@@%*#@@%=*           +                                    @@=  .              
-                   .*-  @@=                         @             =.       :    .=            -.                          @@: ==                      
-                             %@. +@#              +=              +=    ##      ++              +                 @%  %#                              
-                                     :@@:  -     :                +-.           :+               :+      -+  =@@                                      
-                                              :@@                 ==            +=                 @@@@:                                              
-                                                                  *-       +@=  +=                                                                    
-                                                -                 ==    %@# *   +=                 -                                                  
-                                                -                 *=  =@ :      +=                 -                                                  
-                                                                  *-       +@=  +=                                                                    
-                                                -                 ==    %@# *   +=                 -                                                  
-                                                -                 *=  =@ :      +=                 -   
-                                                :                 +:            +=                 :                                                  
+                                                                          :                                                                             
+                                                                          :                                                                            
+                                                                          :                                                                            
+                                                                          -                                                                            
+                                                                          -                                                                            
+                                                                          -                                                                            
+                                                                          :                                                                            
+                                                                          -                                                                            
+                                                                          .                                                                            
+                                                                         :*                                                                            
+                                                                        =- -                                                                           
+                                                                      :#    -=                                                                         
+                                                                     #        *:                                                                       
+                                                                   +            =                                                                      
+                                                                 :-              -:                                                                    
+                                                                =                  +                                                                   
+                                                              =:                    -+                                                                 
+                                                            -=                        =.                                                               
+                                                          .#                            =                                                              
+                                                         +                               =-                                                       =@@  
+     #@@-                                               -        =@@%###*+++****%@:        @:                                             %@*          
+           :  -@@=                                    %           -+@@@@@@%*#@@%=*           +                                    @@=  .               
+                   .*-  @@=                         @             =.       :    .=            -.                          @@: ==                       
+                             %@. +@#              +=              +=    ##      ++              +                 @%  %#                               
+                                     :@@:  -     :                +-.           :+               :+      -+  =@@                                       
+                                              :@@                 ==            +=                 @@@@:                                               
+                                                                  *-       +@=  +=                                                                     
+                                                -                 ==    %@# *   +=                 -                                                   
+                                                -                 *=  =@ :      +=                 -                                                   
+                                                                  *-       +@=  +=                                                                     
+                                                -                 ==    %@# *   +=                 -                                                   
+                                                -                 *=  =@ :      +=                 -                                                   
+                                                :                 +:            +=                 :                                                   
                                                 :                 =.            :-                 =                                                  
                                                 .                 *#@@@@@@@@@@@@@+                 -                                                  
                                                 .                =@              @                 -                                                  
@@ -1273,7 +1273,7 @@ gdesc57
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @@Mission subir al piso de arriba
-#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players Move up|
+#mo:4|0|0|Both players must go to the upper floor, search the stairs|(BOB)Go find a knife|(BOB)Return with your sister|(BOB)Attack the ghost|Both players must go to Hall1|
 #mt:4|0|Alice: Now that the lights are on, we should go upstairs!|Ghost: You wont be able to attack me without a weapon!      Alice: Bob! look for something to attack the ghost, while I light him!|Bob: Now I can return|Alice: kill the ghost!| We can go up now|
 
 @@CINEMATICA SUBIR AL PISO DE ARRIBA
@@ -1292,7 +1292,7 @@ gdesc57
 
 ##aqui estaria bien que el dinosaurio dijera que no puedes reclutarle hasta no tener su pata
 
-@@Mission buscar la pata del DINOSAURIOf
+@@Mission buscar la pata del DINOSAURIO
 
 #mo:7|0|0|(Bob)Search for the leg of the Dino near the bedroom|(Bob) take the leg and return to help the dino| (Bob) recluit the dino|
 #mt:7|0|Bob: Dont worry Mega-T-Rex! I'll help you|T-Rex: Give me my leg, please :/|Dinosaur: let's go find this treasure!|
