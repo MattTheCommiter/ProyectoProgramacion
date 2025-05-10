@@ -17,12 +17,23 @@
 #define BOB_PLAYER (game_get_player_in_pos(game, BOB_TURN)) /*!<Define function that gets the player BOB*/
 #define ALICE_PLAYER (game_get_player_in_pos(game, ALICE_TURN)) /*!<Defined function that gets the player ALICE*/
 
-/*!<Define function that shows the next dialogue only to BOB*/
+
+/**
+ * @brief Define function that shows the next dialogue only to BOB. 
+ * This macro sets the message visibility for BOB's turn to TRUE and for ALICE's turn to FALSE.
+ * @author Alvaro Inigo
+ */
 #define show_next_dialogue_to_bob() ( \
     game_set_show_message(game, TRUE, BOB_TURN), \
     game_set_show_message(game, FALSE, ALICE_TURN) \
 )
-/*!<Define function that shows the next dialogue only to ALICE*/
+
+
+/**
+ * @brief Define function that shows the next dialogue only to ALICE.
+ * This macro sets the message visibility for ALICE's turn to TRUE and for BOB's turn to FALSE.
+ * @author Alvaro Inigo
+ */
 #define show_next_dialogue_to_alice() ( \
     game_set_show_message(game, TRUE, ALICE_TURN), \
     game_set_show_message(game, FALSE, BOB_TURN) \
