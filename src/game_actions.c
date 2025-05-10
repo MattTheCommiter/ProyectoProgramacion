@@ -566,7 +566,7 @@ void game_actions_attack(Game *game, char *arg)
   }
 
   /* special behaviour for group attack in floor 1 */
-  if (character_get_id(enemy) == TOY_ID) 
+  if (character_get_id(enemy) == GHOST_ID) 
   {
     if (player_get_team(game_get_current_player(game)) == NO_ID) 
     {
@@ -618,6 +618,30 @@ void game_actions_attack(Game *game, char *arg)
     {
       set_add(followers, characterId);
     }
+  }
+
+  /* determinist mode behaviour */
+  if (DETERMINIST_MODE) 
+  {
+    team = player_get_team(game_get_current_player(game));
+    /* We look for teammates at the same space, this number will multiply the damage done to the character*/
+    for (i = 0; i < game_get_n_players(game); i++)
+    {
+      if (player_get_team(game_get_player_in_pos(game, i)) == team && player_get_location(game_get_player_in_pos(game, i)) == space_get_id(player_space))
+      {
+        teammates++;
+      }
+    }
+    /*if there are teammates attacking with the player, we show that there was a team attack*/
+    if (teammates > 1)
+    {
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      game_set_message(game, "TEAM ATTACK!", game_get_turn(game));
+    }
+    character_set_health(enemy, character_get_health(enemy) - (PLAYER_DAMAGE * set_get_num_elements(followers)) - (PLAYER_DAMAGE * (teammates - 1)));
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    set_destroy(followers);
+    return;
   }
 
   /*Depending on the number genered, either the enemy loses health or the player's team is damaged*/
