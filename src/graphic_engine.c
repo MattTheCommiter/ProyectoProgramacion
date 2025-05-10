@@ -547,6 +547,12 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
   return;
 }
 
+
+/**
+ * @brief Clears the dialogue area in the graphic engine
+ * @author Matteo Artuñedo, Alvaro Inigo
+ * @param ge a pointer to the Graphic_engine structure
+ */
 void graphic_engine_clear_dialogue(Graphic_engine *ge){
   if(!ge) return;
   screen_area_clear(ge->dialogue);
