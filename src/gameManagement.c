@@ -1324,7 +1324,7 @@ Status gameManagement_load_interface(Game *game, char *filename)
 
       token = strtok(NULL, "/|\r\n");
       show = atol(token) == 1 ? TRUE : FALSE;
-      game_set_show_message(game, show, pos);
+      game_set_show_message(game, show, (Protagonists)pos);
     }
   }
 

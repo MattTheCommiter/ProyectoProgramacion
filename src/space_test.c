@@ -14,6 +14,13 @@
 #include <string.h>
 
 #define MAX_TESTS 51 /*!<Total number of test functions*/
+#define SPACE_NAME "espacio" /*!<Name that will be given to the spaces created for the tests*/
+#define SPACE_ID 5 /*!<Id that will be given to the spaces created for the tests*/
+#define OBJECT_ID 3 /*!<Id that will be given to the objects created for the tests*/
+#define CHARACTER_ID 4 /*!<Id that will be given to the objects created for the tests*/
+#define NO_ELEMENTS 0 /*!<Number of elements of an empty set/array*/
+#define ONE_ELEMENT 1 /*!<Size of a one-element set or array*/
+#define INVALID_VALUE -1 /*!<Value used to test correct handling of incorrect arguments for certain functions*/
 
 /**
  * @brief Main function for SPACE unit tests.
@@ -160,7 +167,7 @@ void test1_space_create()
 {
   int result;
   Space *s;
-  s = space_create(5);
+  s = space_create(SPACE_ID);
   result = (s != NULL);
   PRINT_TEST_RESULT(result);
   space_destroy(s);
@@ -169,29 +176,29 @@ void test1_space_create()
 void test2_space_create()
 {
   Space *s;
-  s = space_create(4);
-  PRINT_TEST_RESULT(space_get_id(s) == 4);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_get_id(s) == SPACE_ID);
   space_destroy(s);
 }
 
 void test1_space_set_name()
 {
   Space *s;
-  s = space_create(5);
-  PRINT_TEST_RESULT(space_set_name(s, "hola") == OK);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_set_name(s, SPACE_NAME) == OK);
   space_destroy(s);
 }
 
 void test2_space_set_name()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_set_name(s, "hola") == ERROR);
+  PRINT_TEST_RESULT(space_set_name(s, SPACE_NAME) == ERROR);
 }
 
 void test3_space_set_name()
 {
   Space *s;
-  s = space_create(5);
+  s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_set_name(s, NULL) == ERROR);
   space_destroy(s);
 }
@@ -199,31 +206,31 @@ void test3_space_set_name()
 void test1_space_add_objectId()
 {
   Space *s;
-  s = space_create(5);
-  PRINT_TEST_RESULT(space_add_objectId(s, 1) == OK);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_add_objectId(s, OBJECT_ID) == OK);
   space_destroy(s);
 }
 
 void test2_space_add_objectId()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_add_objectId(s, 1) == ERROR);
+  PRINT_TEST_RESULT(space_add_objectId(s, OBJECT_ID) == ERROR);
 }
 
 void test3_space_add_objectId()
 {
   Space *s = NULL;
-  s = space_create(5);
+  s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_add_objectId(s, NO_ID) == ERROR);
   space_destroy(s);
 }
 
 void test1_space_get_name()
 {
-  Space *s;
-  s = space_create(1);
-  space_set_name(s, "adios");
-  PRINT_TEST_RESULT(strcmp(space_get_name(s), "adios") == 0);
+  Space *s=NULL;
+  s = space_create(SPACE_ID);
+  space_set_name(s, SPACE_NAME);
+  PRINT_TEST_RESULT(strcmp(space_get_name(s), SPACE_NAME) == 0);
   space_destroy(s);
 }
 
@@ -236,8 +243,8 @@ void test2_space_get_name()
 void test1_space_get_id()
 {
   Space *s;
-  s = space_create(25);
-  PRINT_TEST_RESULT(space_get_id(s) == 25);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_get_id(s) == SPACE_ID);
   space_destroy(s);
 }
 
@@ -250,32 +257,32 @@ void test2_space_get_id()
 void test1_space_object_belongs()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_object_belongs(s, 3) == FALSE);
+  PRINT_TEST_RESULT(space_object_belongs(s, OBJECT_ID) == FALSE);
   space_destroy(s);
 }
 
 void test2_space_object_belongs()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_objectId(s, 3);
-  PRINT_TEST_RESULT(space_object_belongs(s, 5) == FALSE);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
+  PRINT_TEST_RESULT(space_object_belongs(s, SPACE_ID) == FALSE);
   space_destroy(s);
 }
 
 void test3_space_object_belongs()
 {
   Space *s = NULL;
-  s = space_create(25);
-  PRINT_TEST_RESULT(space_object_belongs(s, 5) == FALSE);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_object_belongs(s, OBJECT_ID) == FALSE);
   space_destroy(s);
 }
 
 void test4_space_object_belongs()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_objectId(s, 3);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
   PRINT_TEST_RESULT(space_object_belongs(s, NO_ID) == FALSE);
   space_destroy(s);
 }
@@ -283,9 +290,9 @@ void test4_space_object_belongs()
 void test5_space_object_belongs()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_objectId(s, 5);
-  PRINT_TEST_RESULT(space_object_belongs(s, 5) == TRUE);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
+  PRINT_TEST_RESULT(space_object_belongs(s, OBJECT_ID) == TRUE);
   space_destroy(s);
 }
 
@@ -299,7 +306,7 @@ void test1_space_has_no_objects()
 void test2_space_has_no_objects()
 {
   Space *s = NULL;
-  s = space_create(25);
+  s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_has_no_objects(s) == TRUE);
   space_destroy(s);
 }
@@ -307,8 +314,8 @@ void test2_space_has_no_objects()
 void test3_space_has_no_objects()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_objectId(s, 3);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
   PRINT_TEST_RESULT(space_has_no_objects(s) == FALSE);
   space_destroy(s);
 }
@@ -316,46 +323,46 @@ void test3_space_has_no_objects()
 void test1_space_get_num_of_objects()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_get_num_of_objects(s) == 0);
+  PRINT_TEST_RESULT(space_get_num_of_objects(s) == INVALID_VALUE);
   space_destroy(s);
 }
 
 void test2_space_get_num_of_objects()
 {
   Space *s = NULL;
-  s = space_create(25);
-  PRINT_TEST_RESULT(space_get_num_of_objects(s) == 0);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_get_num_of_objects(s) == NO_ELEMENTS);
   space_destroy(s);
 }
 
 void test3_space_get_num_of_objects()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_objectId(s, 3);
-  PRINT_TEST_RESULT(space_get_num_of_objects(s) == 1);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
+  PRINT_TEST_RESULT(space_get_num_of_objects(s) == ONE_ELEMENT);
   space_destroy(s);
 }
 
 void test1_space_get_character_in_pos()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_get_character_in_pos(s, 3) == NO_ID);
+  PRINT_TEST_RESULT(space_get_character_in_pos(s, OBJECT_ID) == NO_ID);
 }
 
 void test2_space_get_character_in_pos()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_character(s, 10);
-  PRINT_TEST_RESULT(space_get_character_in_pos(s, 0) == 10);
+  s = space_create(SPACE_ID);
+  space_add_character(s, CHARACTER_ID);
+  PRINT_TEST_RESULT(space_get_character_in_pos(s, 0) == CHARACTER_ID);
   space_destroy(s);
 }
 
 void test3_space_get_character_in_pos()
 {
   Space *s = NULL;
-  s = space_create(25);
+  s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_get_character_in_pos(s, 0) == NO_ID);
   space_destroy(s);
 }
@@ -363,8 +370,8 @@ void test3_space_get_character_in_pos()
 void test4_space_get_character_in_pos()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_character(s, 10);
+  s = space_create(SPACE_ID);
+  space_add_character(s, CHARACTER_ID);
   PRINT_TEST_RESULT(space_get_character_in_pos(s, 1) == NO_ID);
   space_destroy(s);
 }
@@ -372,30 +379,30 @@ void test4_space_get_character_in_pos()
 void test1_space_add_character()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_add_character(s, 10) == ERROR);
+  PRINT_TEST_RESULT(space_add_character(s, CHARACTER_ID) == ERROR);
 }
 
 void test2_space_add_character()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_character(s, 5);
-  PRINT_TEST_RESULT(space_add_character(s, 5) == OK);
+  s = space_create(SPACE_ID);
+  space_add_character(s, CHARACTER_ID);
+  PRINT_TEST_RESULT(space_add_character(s, CHARACTER_ID) == OK);
   space_destroy(s);
 }
 
 void test3_space_add_character()
 {
   Space *s = NULL;
-  s = space_create(25);
-  PRINT_TEST_RESULT(space_add_character(s, 10) == OK);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_add_character(s, CHARACTER_ID) == OK);
   space_destroy(s);
 }
 
 void test4_space_add_character()
 {
   Space *s = NULL;
-  s = space_create(25);
+  s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_add_character(s, NO_ID) == ERROR);
   space_destroy(s);
 }
@@ -404,31 +411,31 @@ void test4_space_add_character()
 void test1_space_delete_character()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_delete_character(s, 10) == ERROR);
+  PRINT_TEST_RESULT(space_delete_character(s, CHARACTER_ID) == ERROR);
 }
 
 void test2_space_delete_character()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_character(s, 5);
-  PRINT_TEST_RESULT(space_delete_character(s, 5) == OK);
+  s = space_create(SPACE_ID);
+  space_add_character(s, CHARACTER_ID);
+  PRINT_TEST_RESULT(space_delete_character(s, CHARACTER_ID) == OK);
   space_destroy(s);
 }
 
 void test3_space_delete_character()
 {
   Space *s = NULL;
-  s = space_create(25);
-  PRINT_TEST_RESULT(space_delete_character(s, 10) == ERROR);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_delete_character(s, CHARACTER_ID) == ERROR);
   space_destroy(s);
 }
 
 void test4_space_delete_character()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_character(s, 5);
+  s = space_create(SPACE_ID);
+  space_add_character(s, CHARACTER_ID);
   PRINT_TEST_RESULT(space_delete_character(s, NO_ID) == ERROR);
   space_destroy(s);
 }
@@ -444,7 +451,7 @@ void test2_space_set_of_objects_is_full()
 {
   Space *s = NULL;
   int i;
-  s = space_create(25);
+  s = space_create(SPACE_ID);
   for (i = 0; i < MAX_ELEMENTS_IN_SET; i++)
   {
     space_add_objectId(s, (long)(i + 1));
@@ -456,7 +463,7 @@ void test2_space_set_of_objects_is_full()
 void test3_space_set_of_objects_is_full()
 {
   Space *s = NULL;
-  s = space_create(25);
+  s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_set_of_objects_is_full(s) == FALSE);
   space_destroy(s);
 }
@@ -464,8 +471,8 @@ void test3_space_set_of_objects_is_full()
 void test4_space_set_of_objects_is_full()
 {
   Space *s = NULL;
-  s = space_create(25);
-  space_add_objectId(s, 3);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
   PRINT_TEST_RESULT(space_set_of_objects_is_full(s) == FALSE);
   space_destroy(s);
 }
@@ -473,22 +480,22 @@ void test4_space_set_of_objects_is_full()
 void test1_space_delete_object()
 {
   Space *s;
-  s = space_create(5);
-  PRINT_TEST_RESULT(space_delete_object(s, 1) == ERROR);
+  s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_delete_object(s, OBJECT_ID) == ERROR);
   space_destroy(s);
 }
 
 void test2_space_delete_object()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_delete_object(s, 1) == ERROR);
+  PRINT_TEST_RESULT(space_delete_object(s, OBJECT_ID) == ERROR);
 }
 
 void test3_space_delete_object()
 {
   Space *s = NULL;
-  s = space_create(5);
-  space_add_objectId(s, 6);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
   PRINT_TEST_RESULT(space_delete_object(s, NO_ID) == ERROR);
   space_destroy(s);
 }
@@ -496,24 +503,24 @@ void test3_space_delete_object()
 void test4_space_delete_object()
 {
   Space *s = NULL;
-  s = space_create(5);
-  space_add_objectId(s, 6);
-  PRINT_TEST_RESULT(space_delete_object(s, 5) == ERROR);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
+  PRINT_TEST_RESULT(space_delete_object(s, SPACE_ID) == ERROR);
   space_destroy(s);
 }
 
 void test5_space_delete_object()
 {
   Space *s = NULL;
-  s = space_create(5);
-  space_add_objectId(s, 5);
-  PRINT_TEST_RESULT(space_delete_object(s, 5) == OK);
+  s = space_create(SPACE_ID);
+  space_add_objectId(s, OBJECT_ID);
+  PRINT_TEST_RESULT(space_delete_object(s, OBJECT_ID) == OK);
   space_destroy(s);
 }
 
 void test1_space_set_discovered()
 {
-  Space *s = space_create(5);
+  Space *s = space_create(SPACE_ID);
   PRINT_TEST_RESULT(space_set_discovered(s, FALSE) == OK);
   space_destroy(s);
 }
@@ -526,14 +533,14 @@ void test2_space_set_discovered()
 
 void test3_space_set_discovered()
 {
-  Space *s = space_create(5);
-  PRINT_TEST_RESULT(space_set_discovered(s, -1) == ERROR);
+  Space *s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_set_discovered(s, INVALID_VALUE) == ERROR);
   space_destroy(s);
 }
 
 void test1_space_get_discovered()
 {
-  Space *s = space_create(5);
+  Space *s = space_create(SPACE_ID);
   space_set_discovered(s, TRUE);
   PRINT_TEST_RESULT(space_get_discovered(s) == TRUE);
   space_destroy(s);
@@ -548,20 +555,20 @@ void test2_space_get_discovered()
 void test1_space_get_n_characters()
 {
   Space *s = NULL;
-  PRINT_TEST_RESULT(space_get_n_characters(s) == -1);
+  PRINT_TEST_RESULT(space_get_n_characters(s) == INVALID_VALUE);
 }
 
 void test2_space_get_n_characters()
 {
-  Space *s = space_create(5);
-  space_add_character(s, 5);
-  PRINT_TEST_RESULT(space_get_n_characters(s) == 1);
+  Space *s = space_create(SPACE_ID);
+  space_add_character(s, CHARACTER_ID);
+  PRINT_TEST_RESULT(space_get_n_characters(s) == ONE_ELEMENT);
   space_destroy(s);
 }
 
 void test3_space_get_n_characters()
 {
-  Space *s = space_create(5);
-  PRINT_TEST_RESULT(space_get_n_characters(s) == 0);
+  Space *s = space_create(SPACE_ID);
+  PRINT_TEST_RESULT(space_get_n_characters(s) == NO_ELEMENTS);
   space_destroy(s);
 }

@@ -19,7 +19,7 @@
  * 
  */
 #define WIDTH_MAP N_TOTAL_COLUMNS_IN_SQUARE     /*!<Width of the map in the graphic interface*/
-#define WIDTH_DIALOGUE 60                       /*!<Width of the dialogue boc in the graphic interface*/
+#define WIDTH_DIALOGUE 60                       /*!<Width of the dialogue box in the graphic interface*/
 #define WIDTH_DES 40                            /*!<Width of the description box in the graphic interface*/
 #define WIDTH_BAN 25                            /*!<Width of the banner in the graphic interface*/
 #define WIDTH_COMPASS WIDTH_DIALOGUE            /*!<Width of the compas area in the graphic_interface*/
@@ -38,19 +38,12 @@
 #define HEIGHT_DES HEIGHT_MAP                   /*!<Height of the description box in the graphic interface*/
 #define HEIGHT_SEPARATOR 1                      /*!<Height of the lines that separate areas in the graphic interface*/
 
-#define SIZE_OF_SPACE 2                         /*!<Size of the chars ' ,' between each object name*/
 #define FINAL_CHARACTER 1                       /*!<Size corresponding to the \0 character of the string*/
 #define ARROW_SIZE 1                            /*!<Size corresponding to the arrow characters*/
-#define BOTTOM_HEIGHT 1                         /*!<Height of the lowest line of spaces in the map*/
-#define MIDDLE_HEIGHT 2                         /*!<Height of the middle line of spaces in the map*/
-#define TOP_HEIGHT 3                            /*!<Height of the highest line of spaces in the map*/
-#define GDESC_INITIAL_POSITION 2                /*!<The position the first line of the graphic description of a space has in the total space square*/
-#define GDESC_FINAL_POSITION 7                  /*!<The position the last line of the graphic description of a space has in the total space square*/
 #define MAX_STR 255                             /*!<The maximum characters of a line*/
-
 /**
  * @brief Describes the positions of the array that contains each of the rows in the compass area
- * 
+ * @author Matteo Artunedo
  */
 typedef enum {
   COMPASS_TOP_BORDER = 0,   /*!< Top border of the compass */
@@ -62,15 +55,10 @@ typedef enum {
   UP_DOWN_ROW               /*!< Row for the up and down space names */
 } CompassRow;
 
-/**
- * @brief from a given space_id, since all id's of the spaces start with the floor the space is in, this macro function returns said floor value
- * 
- */
-#define space_get_floor(space_id) ((space_id) / 10)
 
 /**
  * @brief macro function that halves a given length
- * 
+ * @author Matteo Artunedo
  */
 #define halve_length(len) ((len)/2)
 
@@ -94,43 +82,6 @@ struct _Graphic_engine
 };
 
 /**
- * @brief paints the compas area of the graphic interface
- * @author Matteo Arunedo
- * @param game pointer to the game
- * @param north Id of the space in the north
- * @param south Id of the space in the south
- * @param west Id of the space in the west
- * @param east Id of the space in the east
- * @param up Id of the space on top
- * @param down Id of the space beow
- * @return two-dimensional array with the compas information
- */
-char **graphic_engine_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
-
-
-/**
- * @brief Create a square space description for the space with the given id
- * @author Matteo Artunedo
- * @param game pointer to the game structure
- * @param square_id id of the space which corresponds to the box being created
- * @return char** matrix with the square of the space that will be printed on the screen
- */
-char **graphic_engine_create_space_square(Game *game, Id square_id);
-
-
-
-/**
- * @brief Paints the feedback of one command in the player command history
- * @author Matteo Artunedo 
- * @param game pointer to the game
- * @param ge pointer to the graphic engine
- * @param pos position of the command (whether we want to print the last command, the second to last or the third to last)
- * @param str the string to which the feedback will be copied
- */
-void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
-
-/*PRIVATE FUNCTIONS*/
-/**
  * @brief Paints the compass with the names of the spaces in the specified directions
  * (square left down on the screen). It generates a visual representation showing the names of the spaces
  * in the north, south, west, east, up, and down directions relative to the current game state.
@@ -145,16 +96,31 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
  * @param down ID of the space below.
  * @return A 2D array of characters representing the compass for orientation, or NULL if an error occurs.
  */
+char **graphic_engine_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
+
+
+/**
+ * @brief Paints the feedback of one command in the player command history
+ * @author Matteo Artunedo 
+ * @param game pointer to the game
+ * @param ge pointer to the graphic engine
+ * @param pos position of the command (whether we want to print the last command, the second to last or the third to last)
+ * @param str the string to which the feedback will be copied
+ */
+void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, CommandPosition pos, char *str);
+
+/*PRIVATE FUNCTIONS*/
 char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down) 
 {
   char **compas_info = NULL, *space_name = NULL, *space_name2 = NULL, middle_str[] = "< + >", blank_word[] = " ", unknown_str[] = "???", *up_name = NULL, *down_name = NULL;
-  int i, left_padding, total_width, middle_str_pos;
-  long link_id;
+  int i=0, left_padding=0, total_width=0, middle_str_pos=0;
+  long link_id=NO_ID;
+  /*Error control*/
   if (!game)
   {
     return NULL;
   }
-
+  /*Create the two-dimensional array*/
   if (!(compas_info = (char **)calloc(HEIGHT_COMPASS, sizeof(char *))))
   {
     return NULL;
@@ -170,17 +136,20 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
     compas_info[i] = compas_info[0] + (WIDTH_COMPASS * i);
   }
 
+  /*Paint the top border of the compass*/
   memset((void *)compas_info[COMPASS_TOP_BORDER], (int)' ', WIDTH_COMPASS);
   compas_info[COMPASS_TOP_BORDER][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
-
-
   /*We paint the name of the north space in the upper part*/
   space_name = (char *)space_get_name(game_get_space(game, north));
+  link_id = get_link_id(game_get_current_player_location(game), north);
   if (!space_name)
   {
     space_name = blank_word;
+  }else if (link_get_is_open(game_get_link(game, link_id)) == FALSE && link_id < MIN_ID_FOR_FLASHBACK){
+    space_name = unknown_str;
   }
+    
   /* Calculate left padding */
   left_padding = halve_length(WIDTH_COMPASS - strlen(space_name));
 
@@ -212,13 +181,21 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
   /*We paint the area in the middle*/
   space_name = (char *)space_get_name(game_get_space(game, west));
   space_name2 = (char *)space_get_name(game_get_space(game, east));
+  
+  link_id = get_link_id(game_get_current_player_location(game), west);
   if (!space_name)
   {
     space_name = blank_word;
+  }else if (link_get_is_open(game_get_link(game, link_id)) == FALSE && link_id < MIN_ID_FOR_FLASHBACK){
+    space_name = unknown_str;
   }
+
+  link_id = get_link_id(game_get_current_player_location(game), east);
   if (!space_name2)
   {
     space_name2 = blank_word;
+  }else if (link_get_is_open(game_get_link(game, link_id)) == FALSE && link_id < MIN_ID_FOR_FLASHBACK){
+    space_name2 = unknown_str;
   }
 
   /* Calculate total width of the strings */
@@ -263,9 +240,12 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
 
   /*We paint the name of the south space in the lower part*/
   space_name = (char *)space_get_name(game_get_space(game, south));
+  link_id = get_link_id(game_get_current_player_location(game), south);
   if (!space_name)
   {
     space_name = blank_word;
+  }else if (link_get_is_open(game_get_link(game, link_id)) == FALSE && link_id < MIN_ID_FOR_FLASHBACK){
+    space_name = unknown_str;
   }
   /* Calculate left padding */
   left_padding = halve_length(WIDTH_COMPASS - strlen(space_name));
@@ -333,7 +313,7 @@ Graphic_engine *graphic_engine_create(){
   ge->descript = screen_area_init(WIDTH_SEPARATOR + WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_MAP + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR, WIDTH_DES, HEIGHT_DES);
   ge->dialogue = screen_area_init(1, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR, WIDTH_DIALOGUE, HEIGHT_DIALOGUE);
   ge->compass = screen_area_init(1, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_DIALOGUE + HEIGHT_SEPARATOR, WIDTH_COMPASS, HEIGHT_COMPASS);
-  ge->banner = screen_area_init((int)((WIDTH_MISSION) / 2), 0, WIDTH_BAN, HEIGHT_BAN);
+  ge->banner = screen_area_init((int)(halve_length(WIDTH_MISSION)), 0, WIDTH_BAN, HEIGHT_BAN);
   ge->help = screen_area_init(WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_MAP + HEIGHT_SEPARATOR, WIDTH_HLP, HEIGHT_HLP);
   ge->feedback = screen_area_init(WIDTH_SEPARATOR + WIDTH_DIALOGUE + WIDTH_SEPARATOR + WIDTH_MAP + WIDTH_SEPARATOR, HEIGHT_BAN + HEIGHT_MISSION + HEIGHT_SEPARATOR + HEIGHT_DES + HEIGHT_SEPARATOR, WIDTH_FEEDBACK, HEIGHT_FDB);
   ge->mission = screen_area_init(1, HEIGHT_BAN, WIDTH_MISSION, HEIGHT_MISSION);
@@ -361,8 +341,7 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, id_up=NO_ID, id_down=NO_ID, character_following, open_id, depend_id;
-
+  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, id_up=NO_ID, id_down=NO_ID, character_following = NO_ID, open_id = NO_ID, depend_id = NO_ID;
   char **map_information = NULL, **compass_information=NULL;
   char str[MAX_STR], *object_name = NULL, *object_gdesc=NULL, *character_gdesc = NULL, *character_name = NULL;
   int i, character_hp, obj_hp;
@@ -565,7 +544,7 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   }
   
   /*Printing the description of the game, given after the command 'Inspect'*/
-  if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT &&command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
+  if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
   {
     sprintf(str, "Object description: %s", game_get_description(game));
     screen_area_puts(ge->dialogue, str);
@@ -641,17 +620,5 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
     sprintf(str, " %s (%s) : OK (P%d)", cmd_to_str[cmd - NO_CMD][CMDL], cmd_to_str[cmd - NO_CMD][CMDS] , game_get_turn(game) + 1);
   }
 
-  return;
-}
-
-
-/**
- * @brief Clears the dialogue area in the graphic engine
- * @author Matteo Artuñedo, Alvaro Inigo
- * @param ge a pointer to the Graphic_engine structure
- */
-void graphic_engine_clear_dialogue(Graphic_engine *ge){
-  if(!ge) return;
-  screen_area_clear(ge->dialogue);
   return;
 }

@@ -140,45 +140,7 @@ Status space_print(Space *space)
   /* 1. Print the id and the name of the space */
   fprintf(stdout, "--> Space (Id: %ld; Name: %s)\n", space->id, space->name);
 
-  /* 2. For each direction, print its link */
-  /*idaux = space_get_north(space);
-  if (idaux != NO_ID)
-  {
-    fprintf(stdout, "---> North link: %ld.\n", idaux);
-  }
-  else
-  {
-    fprintf(stdout, "---> No north link.\n");
-  }
-  idaux = space_get_south(space);
-  if (idaux != NO_ID)
-  {
-    fprintf(stdout, "---> South link: %ld.\n", idaux);
-  }
-  else
-  {
-    fprintf(stdout, "---> No south link.\n");
-  }
-  idaux = space_get_east(space);
-  if (idaux != NO_ID)
-  {
-    fprintf(stdout, "---> East link: %ld.\n", idaux);
-  }
-  else
-  {
-    fprintf(stdout, "---> No east link.\n");
-  }
-  idaux = space_get_west(space);
-  if (idaux != NO_ID)
-  {
-    fprintf(stdout, "---> West link: %ld.\n", idaux);
-  }
-  else
-  {
-    fprintf(stdout, "---> No west link.\n");
-  }*/
-
-  /* 3. Print if there is an object in the space or not */
+  
   if (set_is_empty(space->objects))
   {
     fprintf(stdout, "---> No objects in the space.\n");
@@ -187,6 +149,18 @@ Status space_print(Space *space)
   {
     fprintf(stdout, "---> Object id's: \n");
     if (set_print(space->objects) == -1)
+    {
+      return ERROR;
+    }
+  }
+  if (set_is_empty(space->characters))
+  {
+    fprintf(stdout, "---> No characters in the space.\n");
+  }
+  else
+  {
+    fprintf(stdout, "---> Character id's: \n");
+    if (set_print(space->characters) == -1)
     {
       return ERROR;
     }
@@ -314,12 +288,12 @@ Bool space_set_of_objects_is_full(Space *space)
 int space_get_num_of_objects(Space *space)
 {
   if (!space)
-    return 0;
+    return -1;
 
   return set_get_num_elements(space->objects);
 }
 
-/*END OF OBJECT RELATED FUNCTIONS*/
+
 
 /****** */
 Id space_get_object_id_in_pos(Space *space, int pos)
@@ -329,6 +303,8 @@ Id space_get_object_id_in_pos(Space *space, int pos)
   return set_get_Id_in_pos(space->objects, pos);
 }
 /****** */
+
+/*END OF OBJECT RELATED FUNCTIONS*/
 
 Status space_set_discovered(Space *space, Bool discovered)
 {

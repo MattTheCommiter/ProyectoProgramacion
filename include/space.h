@@ -30,6 +30,12 @@
 #define BEDROOM 24                      /*!<Space id of the Bob's bedroom*/
 #define HIDDENROOM 31                     /*!<Space id of the hidden room*/
 #define TREASUREROOM 32                   /*!<Space id of the treasure room*/
+#define MIN_ID_FOR_FLASHBACK 100                /*!<Since flashback spaces have a different codification, flashback spaces are larger that 100 while the rest are smaller*/
+/**
+ * @brief from a given space_id, since all id's of the spaces start with the floor the space is in, this macro function returns said floor value
+ * @author Matteo Artunedo
+ */
+#define space_get_floor(space_id) ((space_id) / 10)
 
 /**
  * @brief specifies the type for the _Space structure
@@ -131,7 +137,7 @@ Bool space_set_of_objects_is_full(Space *space);
  * @brief returns the number of objects the space has
  * @author Matteo Artunedo
  * @param space a pointer to the space
- * @return int with the number of objects in the space
+ * @return int with the number of objects in the space, -1 in case of error
  */
 int space_get_num_of_objects(Space *space);
 

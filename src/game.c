@@ -896,6 +896,11 @@ Status game_kill_current_player(Game *game)
   for(i=0;i<total_objects;i++){
     space_add_objectId(game_get_space(game, player_death_location), player_get_backpack_object_id_at(game->players[game->turn], i));
   }
+  for(i=0;i<space_get_n_characters(game_get_space(game, player_death_location));i++){
+    if(character_get_following(game_get_character_in_pos(game, i)) == player_get_id(game_get_current_player(game))){
+      character_set_following(game_get_character_in_pos(game, i), NO_ID);
+    }
+  }
 
   game_next_turn(game);
 
