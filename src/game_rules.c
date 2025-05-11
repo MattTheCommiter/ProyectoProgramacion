@@ -41,12 +41,7 @@
 
 
 /*PRIVATE FUNCTIONS*/
-/**
- * @brief updates the mission in the game calling the rest of the gane_rules function according to the game's mission
- * 
- * @param game a pointer to the game
- */
-void game_rules_mission_update(Game *game);
+
 
 /**
  * @brief The sets the current mission to the first one on the game and steps into it.
