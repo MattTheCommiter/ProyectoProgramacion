@@ -174,7 +174,6 @@ Status gameManagement_load_light(Game *game, char *filename);
 
 Status gameManagement_load_spaces(Game *game, char *filename)
 {
-  /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
@@ -313,7 +312,6 @@ Status gameManagement_load_objects(Game *game, char *filename)
   {
     if (strncmp("#o:", line, length) == 0)
     {
-      /*#o:1|Seed|11|Well, just a seed|1|-1|-1|-1|*/
       toks = strtok(line + length, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
@@ -414,9 +412,7 @@ Status gameManagement_load_players(Game *game, char *filename)
       if (toks)
         teamId = atol(toks);
 
-/*
-#p: id|name|GDESC|idSpace|HP|INVENTORY|
-*/
+
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, inventory_size, teamId);
 #endif
@@ -574,7 +570,6 @@ Status gameManagement_load_links(Game *game, char *filename)
   length = strlen("#l:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    /*#l:31|Entry|11|121|1|1| Id,Nombre,Idsalida,Iddest,direccion,open*/
     if (strncmp("#l:", line, length) == 0)
     {
       toks = strtok(line + length, "|\r\n");
@@ -863,14 +858,15 @@ Status gameManagement_load(Game **game, char *filename)
 
   if (!game || !filename || !(*game))
     return ERROR;
-
+  /*Guardamos el nombre del fichero de manera independiente al game*/
   strcpy(filename_cpy, filename);
-
+  /*creamos el nuevo juego segun los datos de la copia del guardado*/
   if (game_create_from_file(&new_game, filename_cpy) == ERROR)
   {
     game_destroy(new_game);
     return ERROR;
   }
+
   if (gameManagement_load_turn(new_game, filename_cpy) == ERROR)
   {
     game_destroy(new_game);
@@ -896,7 +892,7 @@ Status gameManagement_load(Game **game, char *filename)
     game_destroy(new_game);
     return ERROR;
   }
-
+  /*si todo ha funcionado, se destruye el anterior juego y se intercambian punteros*/
   if (game_destroy(*game) == ERROR)
     return ERROR;
 

@@ -834,7 +834,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
   }
 
   /*reset if we want the game to show the message*/
-  printf("%s, %s", arg1, arg2);
+
   game_set_show_message(game, FALSE, (Protagonists)game_get_turn(game));
   origin_id = game_get_current_player_location(game);
 
@@ -853,6 +853,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
   if (link_get_origin_id(l) != origin_id || i == game_get_n_links(game))
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+
     return;
   }
 
