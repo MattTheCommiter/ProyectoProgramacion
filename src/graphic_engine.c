@@ -96,7 +96,7 @@ struct _Graphic_engine
  * @param down ID of the space below.
  * @return A 2D array of characters representing the compass for orientation, or NULL if an error occurs.
  */
-char **graphic_engine_paint_compas(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
+char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down);
 
 
 /**
