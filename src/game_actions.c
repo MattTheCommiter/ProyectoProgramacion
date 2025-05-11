@@ -637,10 +637,10 @@ void game_actions_attack(Game *game, char *arg)
   if (DETERMINIST_MODE == 1) 
   {
     team = player_get_team(game_get_current_player(game));
-    /* We look for teammates at the same space, this number will multiply the damage done to the character*/
+    /* We look for teammates at the same space and alive, this number will multiply the damage done to the character*/
     for (i = 0; i < game_get_n_players(game); i++)
     {
-      if (player_get_team(game_get_player_in_pos(game, i)) == team && player_get_location(game_get_player_in_pos(game, i)) == space_get_id(player_space))
+      if (player_get_health(game_get_player_in_pos(game, i)) > 0 && player_get_team(game_get_player_in_pos(game, i)) == team && player_get_location(game_get_player_in_pos(game, i)) == space_get_id(player_space))
       {
         teammates++;
       }
@@ -766,7 +766,7 @@ void game_actions_recruit(Game *game, char *arg)
 
   if (character_get_id(game_get_character_from_name(game, arg)) == REX_ID && player_backpack_contains(game_get_current_player(game), DINOSAURLEG_ID) == FALSE) 
   { 
-    sprintf(message, "Cannot recruit character until you have found its leg.\n");
+    sprintf(message, "Cannot recruit character until you have found its leg.");
     game_set_message(game, message, game_get_turn(game));
     game_set_show_message(game, TRUE, game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);

@@ -447,6 +447,7 @@ void game_rules_second_floor_mission(Game *game, Mission *mission)
             game_set_next_dialogue(game, ALICE);
             game_set_show_message(game, TRUE, ALICE);
             game_set_message(game, game_get_message(game, ALICE), BOB);
+            player_set_health(ALICE_PLAYER, player_get_health(ALICE_PLAYER) - STAIRS_DAMAGE);
             return;
         }
         break;
@@ -642,8 +643,9 @@ void game_rules_boss_mission(Game *game, Mission *mission)
             return;
         break;
         case(3):
+
             /*ahora se pide coger la foto familiar*/
-            if(player_backpack_contains(BOB_PLAYER, FAMILY_PIC_ID) || player_backpack_contains(ALICE, FAMILY_PIC_ID)){
+            if(player_backpack_contains(BOB_PLAYER, FAMILY_PIC_ID) || player_backpack_contains(ALICE_PLAYER, FAMILY_PIC_ID)){
                 if(player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) > 0){
                     game_set_current_cinematic(game, TREASURE);
                 }

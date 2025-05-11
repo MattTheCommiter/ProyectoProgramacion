@@ -17,6 +17,8 @@
 #include "game.h"
 #include "types.h"
 
+#define STAIRS_DAMAGE 2  /*!<Corresponds to the damage dealed to Alice after getting to the second floor*/
+
 /**
  * @brief Applies game rules based on various conditions.
  * Depending on the conditions met, it performs actions such as opening or closing
