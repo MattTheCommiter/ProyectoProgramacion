@@ -537,8 +537,11 @@ void game_actions_attack(Game *game, char *arg)
   {
     return;
   }
+
+  current_player = game_get_current_player(game);
   enemy = game_get_character_from_name(game, arg);
-  if (enemy == NULL || character_get_location(enemy) != player_get_location(game_get_current_player(game)) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
+  
+  if (enemy == NULL || character_get_location(enemy) != player_get_location(current_player) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -547,17 +550,17 @@ void game_actions_attack(Game *game, char *arg)
   /*define special behaviour for group attack in floor 3*/
   if (character_get_id(enemy) == BOSS_ID) 
   {
-    if (player_get_team(game_get_current_player(game)) == NO_ID) 
+    if (player_get_team(current_player) == NO_ID) 
     {
-      sprintf(message, "To attack them you must be teamed up with your sibling.\n");
+      sprintf(message, "To attack them you must be teamed up with your sibling.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
-    if (player_backpack_contains(game_get_current_player(game), WATER_GUN_ID) == FALSE) 
+    if (player_backpack_contains(current_player, WATER_GUN_ID) == FALSE) 
     {
-      sprintf(message, "To attack them you must have the water gun.\n");
+      sprintf(message, "To attack them you must have the water gun.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -568,24 +571,25 @@ void game_actions_attack(Game *game, char *arg)
   /* special behaviour for group attack in floor 1 */
   if (character_get_id(enemy) == GHOST_ID) 
   {
-    if (player_get_team(game_get_current_player(game)) == NO_ID) 
+    if (player_get_team(current_player) == NO_ID) 
     {
-      sprintf(message, "To attack them you must be teamed up with your sibling.\n");
+      sprintf(message, "To attack them you must be teamed up with your sibling.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
-    if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), KNIFE_ID) == FALSE))
+    if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, BOB_ID), KNIFE_ID) == FALSE))
     {
-      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.\n");
+      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return; 
-    } else if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), LANTERN_ID) == FALSE))
+    }
+    if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, ALICE_ID), LANTERN_ID) == FALSE))
     {
-      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.\n");
+      sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -621,7 +625,7 @@ void game_actions_attack(Game *game, char *arg)
   }
 
   /* determinist mode behaviour */
-  if (DETERMINIST_MODE) 
+  if (DETERMINIST_MODE == 1) 
   {
     team = player_get_team(game_get_current_player(game));
     /* We look for teammates at the same space, this number will multiply the damage done to the character*/
