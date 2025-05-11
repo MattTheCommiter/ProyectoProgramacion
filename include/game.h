@@ -548,8 +548,9 @@ Status game_add_player(Game *game, Player *player);
  * @brief Increments the turn, allowing the next player to play
  * @author Matteo Artunedo
  * @param game pointer to the game
+ * @return OK or ERROR if the turn could be changed succesfully
  */
-void game_next_turn(Game *game);
+Status game_next_turn(Game *game);
 
 /**
  * @brief receives the current turn of the player
@@ -586,12 +587,12 @@ int game_get_n_players(Game *game);
 Player *game_get_player_from_name(Game *game, char *name);
 
 /**
- * @brief it deletes a player from the array of players as well as his command history, freeing the allocated memory and reorganizing the arrays
+ * @brief it "kills" a player, dropping all of the items in his backpacj onto the space where he died and changing the turn
  * @author Matteo Artunedo
  * @param game pointer to the game
  * @return Status either OK or ERROR
  */
-Status game_delete_player(Game *game);
+Status game_kill_current_player(Game *game);
 
 /**
  * @brief changes the information data type for the current player, updating the last command and moving the ones that already existed one position backwards

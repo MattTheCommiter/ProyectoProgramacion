@@ -56,20 +56,3 @@ int cinematics_get_n_lines(Cinematics_text *ct){
     if(!ct) return -1;
     return ct->n_lines;
 }
-
-/*void cinematics_run(Game *game, Graphic_engine *gengine){
-    int i;
-    if(!game || !gengine) return;
-    if(game_get_current_cinematic(game) != NO_CINEMATIC){
-        game_set_show_message(game, TRUE);
-        for(i=0;i<cinematics_get_n_lines(game_get_current_cinematic_text(game));i++){
-          game_set_message(game, cinematics_get_line(game_get_current_cinematic_text(game), i));
-          graphic_engine_paint_game(gengine, game);
-          sleep(TIME_BETWEEN_CINEMATICS);
-        }
-        game_set_current_cinematic(game, NO_CINEMATIC);
-        game_set_show_message(game, FALSE);
-        clear the dialogue after the cinematic
-        graphic_engine_clear_dialogue(gengine);
-      }
-}*/

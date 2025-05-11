@@ -826,7 +826,8 @@ Status game_set_objective(Game *game, char *desc)
   {
     return ERROR;
   }
-  strcpy(game->playerGraphicInformation[game->turn]->objective, desc);
+  strcpy(game->playerGraphicInformation[ALICE_TURN]->objective, desc);
+  strcpy(game->playerGraphicInformation[BOB_TURN]->objective, desc);
   return OK;
 }
 
@@ -853,9 +854,13 @@ Status game_add_player(Game *game, Player *player)
   return OK;
 }
 
-void game_next_turn(Game *game)
+Status game_next_turn(Game *game)
 {
-  game->turn = (game->turn + 1) % (game->n_players);
+  if(player_get_health(game->players[(game->turn + 1)%game->n_players]) > 0){
+    game->turn = (game->turn + 1) % (game->n_players);
+    return OK;
+  }
+  return ERROR;
 }
 
 TurnByPlayer game_get_turn(Game *game)
@@ -880,31 +885,22 @@ int game_get_n_players(Game *game)
   return game->n_players;
 }
 
-Status game_delete_player(Game *game)
+Status game_kill_current_player(Game *game)
 {
-  int i;
+  int i, total_objects=0;
+  Id player_death_location=NO_ID;
 
   if (!game)
     return ERROR;
 
-  if (!(player_destroy(game->players[game->turn])))
-  {
-    return ERROR;
+  total_objects = player_get_num_objects_in_backpack(game->players[game->turn]);
+  player_death_location = player_get_location(game->players[game->turn]);
+  /*we place each object the player had in his backack in the space*/
+  for(i=0;i<total_objects;i++){
+    space_add_objectId(game_get_space(game, player_death_location), player_get_backpack_object_id_at(game->players[game->turn], i));
   }
-  command_destroy(game->playerGraphicInformation[game->turn]->lastCmd);
-  game->playerGraphicInformation[game->turn]->lastCmd = NULL;
-  command_destroy(game->playerGraphicInformation[game->turn]->second_to_lastCmd);
-  command_destroy(game->playerGraphicInformation[game->turn]->third_to_lastCmd);
-  free(game->playerGraphicInformation[game->turn]);
-  game->n_players--;
 
-  for (i = game->turn; i < game->n_players; i++)
-  {
-    game->players[i] = game->players[i + 1];
-    game->playerGraphicInformation[i] = game->playerGraphicInformation[i + 1];
-  }
-  game->players[game->n_players] = NULL;
-  game->playerGraphicInformation[i] = NULL;
+  game_next_turn(game);
 
   return OK;
 }

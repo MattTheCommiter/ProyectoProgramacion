@@ -15,7 +15,7 @@
 #define NO_ID -1       /*!<Identification code used for when no id is given*/
 #define NO_HP 0       /*!<Identification for the hp when it is not given*/
 
-extern int DETERMINIST_MODE;
+extern int DETERMINIST_MODE; /*!< Global int variable to toggle the determinist mode of the game */
 
 /**
  * @brief Specification of Id type that will be used to define and identify players, objects, links, etc.
@@ -54,7 +54,9 @@ typedef enum
     D            /*!<Assigns value 6 to the keyword "D", which will be used in space-related functions*/
 } Direction;
 
-
+/**
+ * @brief assigns a different enum value to each protagonist (player) of the game
+ */
 typedef enum
 {
     ALICE,  /*!<Assigns value 0 to the keyword ALICE, the female protagonist of the game*/

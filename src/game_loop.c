@@ -63,7 +63,7 @@ void game_loop_cleanup(Game *game, Graphic_engine *gengine);
 
 /*****************************************************************************/
 
-int DETERMINIST_MODE = 0;
+int DETERMINIST_MODE = 0; /*!< Initialization of the determinist mode variable */
 /**
  * @brief initializes the game loop (calling the game_loop_init function) and runs the game loop
  *
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Error opening the log file: |%s|", argv[i+1]);
         return 1;
       }
-      i += 2;
+      i += 1;
     }
   }
   /*at least four arguments provided (the program name, game data file, -l flag, and log file name*/
@@ -162,6 +162,7 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
   CommandCode cmd_code;
   char *cmd_name = NULL;
   char *cmd_arg = NULL;
+  char *cmd_arg2 = NULL;
   extern char *cmd_to_str[N_CMD][N_CMDT];
   Status cmd_status;
   int i;
@@ -205,38 +206,37 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file){
       cmd_code = command_get_code(last_cmd);
       cmd_name = cmd_to_str[cmd_code - NO_CMD][CMDL];    /*Converts the command code to a string, through the index of the array*/
       cmd_arg = command_get_argument(last_cmd);
+      cmd_arg2 = command_get_argument2(last_cmd);
       cmd_status = command_get_lastcmd_success(last_cmd);
 
       /*Log the command (and the argument in some cases) and its result*/
-      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP || cmd_code == MOVE || cmd_code == ATTACK || cmd_code == CHAT || cmd_code == ABANDON || cmd_code == RECRUIT){
+      if (cmd_code == TAKE || cmd_code == INSPECT || cmd_code == DROP || cmd_code == MOVE || cmd_code == ATTACK || cmd_code == CHAT || cmd_code == ABANDON || cmd_code == RECRUIT || cmd_code == TEAM){
         fprintf(log_file, "%s %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
-      }else{
+      }else if (cmd_code == USE || cmd_code == OPEN || cmd_code == GIVE) 
+      {
+        if (cmd_code == USE && cmd_arg2[0] != '\0') fprintf(log_file, "%s %s with %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_arg2, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
+        if (cmd_code == USE && cmd_arg2[0] == '\0') fprintf(log_file, "%s %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);        
+        if (cmd_code == OPEN) fprintf(log_file, "%s %s with %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_arg2, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
+        if (cmd_code == GIVE) fprintf(log_file, "%s %s to %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_arg2, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
+      }else 
+      {
         fprintf(log_file, "%s: %s (P%d)\n", cmd_name, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
       }
     }
 
-    /*We determine whether the player has chosen to exit the game or not*/
-    /*if(command_get_code(game_interface_data_get_cmd_in_pos(*game, LAST)) != EXIT){*/
-      /*If there are multiple players or the last player standing dies, we print the game again and introduce a timer for the player to be able to view the newly printed graphic engine, which shows the effects of their action (updated location, health bar, backpack, etc)*/
-      /*if(game_get_n_players(*game) > 1 || player_get_health(game_get_current_player(*game)) == 0){
-        graphic_engine_paint_game(gengine, *game);
-        sleep(TIME_BETWEEN_TURNS);
-      }*/
-
-      /*We check whether the player has died as a result of his last action*/
-      if(player_get_health(game_get_current_player(*game)) == 0){
-        /*If there are more players in the game, we delete the current player*/
-        if(game_get_n_players(*game) > 1){
-          game_delete_player(*game);
-        }
-        else{
-          /*If the current player is the only one left, the game finishes*/
-          game_set_finished(*game, TRUE);
-        }
+    /*We check whether the player has died as a result of his last action*/
+    if(player_get_health(game_get_current_player(*game)) == 0)
+    {
+      if(player_get_health(game_get_player_in_pos(*game, (game_get_turn(*game) + 1) % game_get_n_players(*game))) > 0){
+        /*If there are more players in the game, we lkill the current player*/
+        game_kill_current_player(*game);
       }
-      /*game_next_turn(*game);
-    }*/
-    
+      else
+      {
+        /*If the current player is the only one left, the game finishes*/
+        game_set_finished(*game, TRUE);
+      }
+    }
   }
   while ((command_get_code(game_interface_data_get_cmd_in_pos(*game, LAST)) != EXIT) && (game_get_finished(*game) == FALSE));
 }
