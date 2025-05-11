@@ -1084,10 +1084,8 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   }
 
   /*Remove the object from the game after use*/
-  if(!(player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object)))){
-    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-    return;
-  }
+  player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object));
+    
   if (!game_remove_object(game, object))
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
