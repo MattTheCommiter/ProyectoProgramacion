@@ -20,7 +20,7 @@
 * 
 */
 struct _Inventory {
-  Set *objs;               /*!< Set of objects in the player's backpack */
+  Set *objs;                /*!< Set of objects in the player's backpack */
   int max_objs;             /*!< max number of objects in the player's backpack */
 };
  

@@ -367,6 +367,9 @@ void game_print(Game *game)
     player_print(game_get_current_player(game));
     game->turn = (game->turn + 1) % (game->n_players);
   }
+  fprintf(stdout, "=> Light state: %s\n", game_get_lights_on(game) == TRUE? "TRUE":"FALSE");
+  fprintf(stdout, "=> Current Cinematic code: %s\n", game_get_current_cinematic(game));
+  fprintf(stdout, "=> Current mission: %s\n", mission_get_name(game_get_current_mission_code(game)));
 }
 
 Player *game_get_current_player(Game *game)

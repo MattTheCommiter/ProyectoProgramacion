@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #WARNING: this script works correctly when placed in the project root, where the src directory is located and the executable files are created.
 
 set -euo pipefail
