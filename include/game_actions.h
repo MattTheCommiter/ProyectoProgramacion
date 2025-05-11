@@ -32,8 +32,10 @@
  */
 #define ENEMY_DAMAGE 1
 
+#define MAX_RANDOM 10     /*!<Value that sets the maximum ammount of different values that can be generated randomly*/
+
 /**
- * @brief A number between 0 and 9 that determines the odds of the player hitting an enemy when using the command "attack".
+ * @brief A number between 0 and MAX_RANDOM that determines the odds of the player hitting an enemy when using the command "attack".
  * The higher the number, the higher the odds of the enemy damaging the player.
  */
 #define ATTACK_CHANCE 4

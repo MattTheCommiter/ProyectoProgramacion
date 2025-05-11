@@ -587,7 +587,7 @@ int game_get_n_players(Game *game);
 Player *game_get_player_from_name(Game *game, char *name);
 
 /**
- * @brief it "kills" a player, dropping all of the items in his backpacj onto the space where he died and changing the turn
+ * @brief it "kills" a player, dropping all of the items in his backpack onto the space where he died, making his followers abandon him and changing the turn
  * @author Matteo Artunedo
  * @param game pointer to the game
  * @return Status either OK or ERROR

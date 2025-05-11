@@ -14,7 +14,13 @@
 #include <string.h>
 
 #define MAX_TESTS 38 /*!<Total number of test functions for the Set module*/
-
+#define ID_1 1 /*!<Id value that will be used to test set functions*/
+#define ID_2 2 /*!<Id value that will be used to test set functions*/
+#define ID_3 3 /*!<Id value that will be used to test set functions*/
+#define ID_4 4 /*!<Id value that will be used to test set functions*/
+#define INVALID_POS1 -1 /*!<Value that serves as an invalid position in the tests*/
+#define INVALID_POS2 2 /*!<Value that serves as an invalid position in the tests*/
+#define ERROR_CODE -1 /*!<Error code retruned by several of the functions that return integers*/
 /**
  * @brief Main function for SET unit tests.
  *
@@ -165,7 +171,7 @@ void test1_set_add()
   int result;
   Set *s;
   s = set_create();
-  PRINT_TEST_RESULT(result = (set_add(s, 3) == OK));
+  PRINT_TEST_RESULT(result = (set_add(s, ID_1) == OK));
   set_destroy(s);
 }
 
@@ -183,8 +189,8 @@ void test3_set_add()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_add(s, 5) == OK));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_add(s, ID_1) == OK));
   set_destroy(s);
 }
 
@@ -192,7 +198,7 @@ void test4_set_add()
 {
   int result;
   Set *s = NULL;
-  PRINT_TEST_RESULT(result = (set_add(s, 3) == ERROR));
+  PRINT_TEST_RESULT(result = (set_add(s, ID_1) == ERROR));
   set_destroy(s);
 }
 
@@ -201,8 +207,8 @@ void test1_set_del()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_del(s, 3) == ERROR));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_del(s, ID_2) == ERROR));
   set_destroy(s);
 }
 
@@ -211,8 +217,8 @@ void test2_set_del()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_del(s, 5) == OK));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_del(s, ID_1) == OK));
   set_destroy(s);
 }
 
@@ -220,7 +226,7 @@ void test3_set_del()
 {
   int result;
   Set *s = NULL;
-  PRINT_TEST_RESULT(result = (set_del(s, 5) == ERROR));
+  PRINT_TEST_RESULT(result = (set_del(s, ID_1) == ERROR));
   set_destroy(s);
 }
 
@@ -237,7 +243,7 @@ void test1_set_print()
 {
   int result;
   Set *s = NULL;
-  PRINT_TEST_RESULT(result = (set_print(s)) == -1);
+  PRINT_TEST_RESULT(result = (set_print(s)) == ERROR_CODE);
 }
 
 void test2_set_print()
@@ -245,7 +251,7 @@ void test2_set_print()
   int result;
   Set *s = NULL;
   s = set_create();
-  set_add(s, 3);
+  set_add(s, ID_1);
   PRINT_TEST_RESULT(result = (set_print(s) == 1));
   set_destroy(s);
 }
@@ -255,11 +261,11 @@ void test3_set_print()
   int result;
   Set *s = NULL;
   s = set_create();
-  set_add(s, 3);
-  set_add(s, 5);
-  set_add(s, 7);
-  set_add(s, 6);
-  set_del(s, 5);
+  set_add(s, ID_1);
+  set_add(s, ID_2);
+  set_add(s, ID_3);
+  set_add(s, ID_4);
+  set_del(s, ID_1);
   PRINT_TEST_RESULT(result = (set_print(s) == 3));
   set_destroy(s);
 }
@@ -268,7 +274,7 @@ void test1_set_belongs()
 {
   int result;
   Set *s = NULL;
-  PRINT_TEST_RESULT(result = (set_belongs(s, 3) == FALSE));
+  PRINT_TEST_RESULT(result = (set_belongs(s, ID_1) == FALSE));
 }
 
 void test2_set_belongs()
@@ -276,8 +282,8 @@ void test2_set_belongs()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_belongs(s, 3) == FALSE));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_belongs(s, ID_2) == FALSE));
   set_destroy(s);
 }
 
@@ -286,8 +292,8 @@ void test3_set_belongs()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_belongs(s, 5) == TRUE));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_belongs(s, ID_1) == TRUE));
   set_destroy(s);
 }
 
@@ -296,7 +302,7 @@ void test4_set_belongs()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
+  set_add(s, ID_1);
   PRINT_TEST_RESULT(result = (set_belongs(s, NO_ID) == FALSE));
   set_destroy(s);
 }
@@ -322,7 +328,7 @@ void test3_set_is_empty()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
+  set_add(s, ID_1);
   PRINT_TEST_RESULT(result = (set_is_empty(s) == FALSE));
   set_destroy(s);
 }
@@ -360,7 +366,7 @@ void test1_set_get_num_elements()
 {
   int result;
   Set *s = NULL;
-  PRINT_TEST_RESULT(result = (set_get_num_elements(s) == -1));
+  PRINT_TEST_RESULT(result = (set_get_num_elements(s) == ERROR_CODE));
 }
 
 void test2_set_get_num_elements()
@@ -377,8 +383,8 @@ void test3_set_get_num_elements()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  set_add(s, 3);
+  set_add(s, ID_1);
+  set_add(s, ID_2);
   PRINT_TEST_RESULT(result = (set_get_num_elements(s) == 2));
   set_destroy(s);
 }
@@ -387,7 +393,7 @@ void test1_set_get_Id_in_pos()
 {
   int result;
   Set *s = NULL;
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1) == -1));
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1) == ERROR_CODE));
 }
 
 void test2_set_get_Id_in_pos()
@@ -395,7 +401,7 @@ void test2_set_get_Id_in_pos()
   int result;
   Set *s;
   s = set_create();
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 0) == -1));
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 0) == ERROR_CODE));
   set_destroy(s);
 }
 
@@ -404,8 +410,8 @@ void test3_set_get_Id_in_pos()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 0) == 5));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 0) == ID_1));
   set_destroy(s);
 }
 
@@ -414,9 +420,9 @@ void test4_set_get_Id_in_pos()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  set_add(s, 3);
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1) == 3));
+  set_add(s, ID_1);
+  set_add(s, ID_2);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 1) == ID_2));
   set_destroy(s);
 }
 
@@ -425,8 +431,8 @@ void test5_set_get_Id_in_pos()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, -1) == -1));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, INVALID_POS1) == ERROR_CODE));
   set_destroy(s);
 }
 
@@ -435,9 +441,9 @@ void test6_set_get_Id_in_pos()
   int result;
   Set *s;
   s = set_create();
-  set_add(s, 5);
-  set_add(s, 3);
-  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, 2) == -1));
+  set_add(s, ID_1);
+  set_add(s, ID_2);
+  PRINT_TEST_RESULT(result = (set_get_Id_in_pos(s, INVALID_POS2) == ERROR_CODE));
   set_destroy(s);
 }
 
@@ -453,7 +459,7 @@ void test2_set_get_pos_from_Id()
   int result;
   Set *s = NULL;
   s = set_create();
-  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 2) == -1));
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, INVALID_POS2) == ERROR_CODE));
   set_destroy(s);
 }
 
@@ -462,8 +468,8 @@ void test3_set_get_pos_from_Id()
   int result;
   Set *s = NULL;
   s = set_create();
-  set_add(s, 5);
-  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 2) == -1));
+  set_add(s, ID_1);
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, INVALID_POS2) == ERROR_CODE));
   set_destroy(s);
 }
 
@@ -472,8 +478,8 @@ void test4_set_get_pos_from_Id()
   int result;
   Set *s = NULL;
   s = set_create();
-  set_add(s, 5);
-  set_add(s, 3);
-  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, 3) == 1));
+  set_add(s, ID_1);
+  set_add(s, ID_2);
+  PRINT_TEST_RESULT(result = (set_get_pos_from_Id(s, ID_2) == 1));
   set_destroy(s);
 }
