@@ -49,6 +49,12 @@
 #define MAX_STR 255                             /*!<The maximum characters of a line*/
 
 /**
+ * @brief from a given space_id, since all id's of the spaces start with the floor the space is in, this macro function returns said floor value
+ * 
+ */
+#define space_get_floor(space_id) ((space_id) / 10)
+
+/**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
  *
  * @date 27-01-2025
@@ -317,12 +323,11 @@ void graphic_engine_destroy(Graphic_engine *ge)
 
 void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 {
-  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, id_up=NO_ID, id_down=NO_ID, character_following;
+  Id id_act = NO_ID, obj_loc = NO_ID, character_loc = NO_ID, id_north = NO_ID, id_south = NO_ID, id_east = NO_ID, id_west = NO_ID, id_up=NO_ID, id_down=NO_ID, character_following, open_id, depend_id;
 
   char **map_information = NULL, **compass_information=NULL;
   char str[MAX_STR], *object_name = NULL, *object_gdesc=NULL, *character_gdesc = NULL, *character_name = NULL;
-  int i, character_hp;
-
+  int i, character_hp, obj_hp;
   /* Paint the in the map area */
   screen_area_clear(ge->map);
 
@@ -380,57 +385,105 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_puts(ge->descript, "        GENERAL GAME INFORMATION: ");
   screen_area_puts(ge->descript, " "); /*Separator line*/
 
-  screen_area_puts(ge->descript, " OBJECTS IN THE GAME:");
+  screen_area_puts(ge->descript, " OBJECTS IN THE CURRENT FLOOR:");
   for (i = 0; i < game_get_n_objects(game); i++)
   {
-    object_name = object_get_name(game_get_object_in_pos(game, i));
     obj_loc = game_get_object_location(game, object_get_id(game_get_object_in_pos(game, i)));
-    object_gdesc = object_get_gdesc(game_get_object_in_pos(game, i));
-    if (obj_loc != NO_ID)
+    /*We check that either the object is in the same floor as the player or it is in the player's backpack*/
+    if ((obj_loc != NO_ID && (space_get_floor(obj_loc) == space_get_floor(id_act))) || player_backpack_contains(game_get_current_player(game),  object_get_id(game_get_object_in_pos(game, i))))
     {
+      object_name = object_get_name(game_get_object_in_pos(game, i));
+      object_gdesc = object_get_gdesc(game_get_object_in_pos(game, i));
+      obj_hp = object_get_health(game_get_object_in_pos(game, i));
+      open_id = object_get_open(game_get_object_in_pos(game, i));
+      depend_id = object_get_dependency(game_get_object_in_pos(game, i));
       sprintf(str, " %s %s", object_name, object_gdesc);
       screen_area_puts(ge->descript, str);
-      if(space_get_discovered(game_get_space(game, obj_loc)) == TRUE){
-        sprintf(str, " - location:%d", (int)obj_loc);
-      }else{
+      /*We print the object's information only if it is in a discovered space or in the backpack*/
+      if(space_get_discovered(game_get_space(game, obj_loc)) == TRUE || obj_loc == NO_ID){
+        /*If the location id is NO_ID, it means the object is in the backpack*/
+        if(obj_loc == NO_ID){
+          sprintf(str, " - location: backpack");
+        }else{
+          sprintf(str, " - location: %d", (int)obj_loc);
+        }
+        screen_area_puts(ge->descript, str);
+        switch(object_get_movable(game_get_object_in_pos(game, i))){
+          case TRUE:
+            sprintf(str, " - movable: YES");
+            break;
+          default:
+            sprintf(str, " - movable: NO");
+            break;
+        }
+        screen_area_puts(ge->descript, str);
+        /*If the object heals, we print the hp it gives*/
+        if(obj_hp > 0){
+          sprintf(str, " - HP the object gives: %d", obj_hp);
+          screen_area_puts(ge->descript, str);
+        }
+  
+        if(open_id != NO_ID){
+          sprintf(str, " - link the object opens: %s", link_get_name(game_get_link(game, open_id)));
+          screen_area_puts(ge->descript, str);
+        }
+  
+        if(depend_id != NO_ID){
+          sprintf(str, " - object depends of: %s", object_get_name(game_get_object(game, depend_id)));
+          screen_area_puts(ge->descript, str);
+        }
+      }else 
+      {
         sprintf(str, " - location:?");
-      }
-    
-      screen_area_puts(ge->descript, str);
-    }/*else{
-      sprintf(str, " %s %s", object_name, object_gdesc);
-      screen_area_puts(ge->descript, str);
-    }*/
+        screen_area_puts(ge->descript, str);
+      }  
+    }
   }
+
+  
 
   /*for all the characters, we print their location and health*/
   screen_area_puts(ge->descript, " "); /*Separator line*/
-  screen_area_puts(ge->descript, " CHARACTERS IN THE GAME: ");
+  screen_area_puts(ge->descript, " CHARACTERS IN THE CURRENT FLOOR: ");
   for (i = 0; i < game_get_n_characters(game); i++)
   {
-    character_name = character_get_name(game_get_character(game, game_get_character_id_at(game, i)));
     character_loc = game_get_character_location(game, game_get_character_id_at(game, i));
     character_hp = character_get_health(game_get_character(game, game_get_character_id_at(game, i)));
-    character_gdesc = character_hp > 0? character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i))):character_get_dead_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
-    character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
-    if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
-      sprintf(str, " %s %s", character_name, character_gdesc);
-      screen_area_puts(ge->descript, str);
-      sprintf(str, " - location:%d",(int)character_loc);
-      screen_area_puts(ge->descript, str);
-      sprintf(str, " - health: %d", character_hp >= 0? character_hp:0);
-      screen_area_puts(ge->descript, str);
-      sprintf(str, " - following: %ld", character_following);
-    }else{
-      sprintf(str, " %s %s  (?)", character_name, character_gdesc);
+
+    if(character_hp > 0 && space_get_floor(id_act) == space_get_floor(character_loc)){
+      /*We get the rest of the character's information*/
+      character_name = character_get_name(game_get_character(game, game_get_character_id_at(game, i)));
+      character_gdesc = character_hp > 0? character_get_gdesc(game_get_character(game, game_get_character_id_at(game, i))):character_get_dead_gdesc(game_get_character(game, game_get_character_id_at(game, i)));
+      character_following = character_get_following(game_get_character(game, game_get_character_id_at(game, i)));
+      if(space_get_discovered(game_get_space(game, character_loc)) == TRUE){
+        sprintf(str, " %s %s", character_name, character_gdesc);
+        screen_area_puts(ge->descript, str);
+        sprintf(str, " - location:%d",(int)character_loc);
+        screen_area_puts(ge->descript, str);
+        sprintf(str, " - health: %d", character_hp >= 0? character_hp:0);
+        screen_area_puts(ge->descript, str);
+        if(character_following != NO_ID){
+          sprintf(str, " - following: %s", player_get_name(game_get_player(game, character_following)));
+          screen_area_puts(ge->descript, str);
+        }
+        if(character_get_friendly(game_get_character(game, game_get_character_id_at(game, i))) == TRUE){
+          sprintf(str, " - friendly: YES");
+        }else{
+          sprintf(str, " - friendly: NO");
+        }
+        screen_area_puts(ge->descript, str);
+      }else{
+        sprintf(str, " %s %s  (?)", character_name, character_gdesc);
+        screen_area_puts(ge->descript, str);
+      }
     }
-    screen_area_puts(ge->descript, str);
+
   }
   /*We print the player, its location , health and then the object in the inventory*/
 
   screen_area_puts(ge->descript, " "); /*Separator line*/
   screen_area_puts(ge->descript, " PLAYER INFORMATION: ");
-  sprintf(str, " Player(%s) %s: %d (%d)",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), (int)game_get_current_player_location(game), player_get_health(game_get_current_player(game)));
+  sprintf(str, " Player(%s) %s  hp: %d",player_get_name(game_get_current_player(game)), player_get_gdesc(game_get_current_player(game)), player_get_health(game_get_current_player(game)));
   screen_area_puts(ge->descript, str);
   screen_area_puts(ge->descript, " "); /*Separator line*/
   sprintf(str, " Objects in the inventory: (%d/%d)", player_get_num_objects_in_backpack(game_get_current_player(game)), inventory_get_max_objs(player_get_inventory(game_get_current_player(game))));
@@ -443,8 +496,8 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
 
     sprintf(str, " %s %s", object_name, object_gdesc);
     screen_area_puts(ge->descript, str);
-    
   }
+
   screen_area_puts(ge->descript, "----------------------------------------");
   screen_area_puts(ge->descript, "       CURRENT SPACE INFORMATION: ");
   screen_area_puts(ge->descript, " "); /*Separator line*/
@@ -452,30 +505,33 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   sprintf(str, " Characters in the space: ");
   screen_area_puts(ge->descript, str);
   for (i = 0; i < space_get_n_characters(game_get_space(game, id_act)); i++){
-    character_name = character_get_name(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
-    character_gdesc = character_get_gdesc(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
-    sprintf(str, " %s %s", character_name, character_gdesc);
-    screen_area_puts(ge->descript, str);
+    character_hp = character_get_health(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
+    if(character_hp > 0){
+      character_name = character_get_name(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
+      character_gdesc = character_get_gdesc(game_get_character(game, space_get_character_in_pos(game_get_space(game, id_act), i)));
+      sprintf(str, " %s %s", character_name, character_gdesc);
+      screen_area_puts(ge->descript, str);
+    }
   }
 
-
+  screen_area_puts(ge->descript, " "); /*Separator line*/
 
   sprintf(str, " Objects in the space: ");
   screen_area_puts(ge->descript, str);
   for (i = 0; i < space_get_num_of_objects(game_get_space(game, id_act)); i++){
     object_name = object_get_name(game_get_object(game, space_get_object_id_in_pos(game_get_space(game, id_act), i)));
     object_gdesc = object_get_gdesc(game_get_object(game, space_get_object_id_in_pos(game_get_space(game, id_act), i)));
-    sprintf(str, " %s %s", object_name, object_gdesc);
+    sprintf(str, " - %s %s", object_name, object_gdesc);
     screen_area_puts(ge->descript, str);
+    
   }
+  
   /*Printing the description of the game, given after the command 'Inspect'*/
   if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT &&command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK)
   {
-    sprintf(str, "Object description:");
-    screen_area_puts(ge->descript, str);
+    sprintf(str, "Object description: %s", game_get_description(game));
+    screen_area_puts(ge->dialogue, str);
 
-    sprintf(str, "%s", game_get_description(game));
-    screen_area_puts(ge->descript, str);
   }
 
   /* Paint in the banner area */
@@ -493,7 +549,10 @@ void graphic_engine_paint_game(Graphic_engine *ge, Game *game)
   screen_area_clear(ge->help);
   sprintf(str, " The commands you can use are:");
   screen_area_puts(ge->help, str);
-  screen_area_puts(ge->help, " - move 'dir' or m 'dir' - exit or e - take 'arg' or t 'arg' - drop 'arg' or d 'arg' - chat 'arg' or c 'arg' - attack 'arg' or at 'arg' - inspect 'arg' or i 'arg' - recruit 'arg' or r 'arg' - abandon 'arg' or ab 'arg' - ssave 'arg' or s 'arg' - load 'arg' or l 'arg' - team 'arg' or tm 'arg' - open 'arg' with 'arg' or o 'arg' with 'arg' - give 'arg' to 'arg' or g 'arg' to 'arg' - turn or tu");
+  screen_area_puts(ge->help, " GENERAL COMMANDS: move 'dir' or m 'dir'| exit or e | save 'file' or s 'file' | load 'file' or l 'file'");
+  screen_area_puts(ge->help, " OBJECT RELATED: take 'obj' or t 'obj' | drop 'obj' or d 'obj' | inspect 'obj' or i 'obj' | open 'link' with 'obj' or o 'link' with 'obj'");
+  screen_area_puts(ge->help, " CHARACTER RELATED: chat 'ch' or c 'ch' | attack 'ch' or at 'ch' | recruit 'ch' or r 'ch' | abandon 'ch' or ab 'ch' | team 'ch' or tm 'ch'");
+  screen_area_puts(ge->help, " PLAYER RELATED: give 'obj' to 'player' or g 'obj' to 'player' | turn or tu");
 
   /* Paint in the feedback area */
   screen_area_puts(ge->feedback, "Player command history: ");

@@ -529,6 +529,8 @@ void game_actions_attack(Game *game, char *arg)
   char message[MAX_MESSAGE];
   num = rand() % 10;
 
+  current_player = game_get_current_player(game);
+
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE, game_get_turn(game));
 
@@ -540,7 +542,6 @@ void game_actions_attack(Game *game, char *arg)
 
   current_player = game_get_current_player(game);
   enemy = game_get_character_from_name(game, arg);
-  
   if (enemy == NULL || character_get_location(enemy) != player_get_location(current_player) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -612,13 +613,13 @@ void game_actions_attack(Game *game, char *arg)
   }
 
   /*The player counts as a follower of themselves*/
-  set_add(followers, player_get_id(game_get_current_player(game)));
+  set_add(followers, player_get_id(current_player));
 
   /*We add the rest of the followers in the space to the set*/
   for (i = 0; i < space_get_n_characters(player_space); i++)
   {
     characterId = space_get_character_in_pos(player_space, i);
-    if (character_get_following(game_get_character(game, characterId)) == player_get_id(game_get_current_player(game)))
+    if (character_get_following(game_get_character(game, characterId)) == player_get_id(current_player))
     {
       set_add(followers, characterId);
     }
@@ -656,7 +657,7 @@ void game_actions_attack(Game *game, char *arg)
     /*If the number is 0, it is the player who receives damage*/
     if (attacked_ally == 0)
     {
-      player_set_health(game_get_current_player(game), player_get_health(game_get_current_player(game)) - ENEMY_DAMAGE);
+      player_set_health(current_player, player_get_health(current_player) - ENEMY_DAMAGE);
     }
     /*If the number is higher the 1, one of the allies receives damage*/
     else
@@ -672,7 +673,7 @@ void game_actions_attack(Game *game, char *arg)
   }
   else
   {
-    team = player_get_team(game_get_current_player(game));
+    team = player_get_team(current_player);
     /* We look for teammates at the same space, this number will multiply the damage done to the character*/
     for (i = 0; i < game_get_n_players(game); i++)
     {
@@ -776,7 +777,7 @@ void game_actions_recruit(Game *game, char *arg)
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
-  sprintf(message, "%s recluited", arg);
+  sprintf(message, "%s recruited", arg);
   game_set_message(game, message, game_get_turn(game));
   game_set_show_message(game, TRUE, game_get_turn(game));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
@@ -825,6 +826,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
   printf("arg1:%s, arg2:%s\n",arg1, arg2);
   printf("el link buscado es %s\n", link_get_name(game_get_link(game, 3132)));
   /*reset if we want the game to show the message*/
+  printf("%s, %s", arg1, arg2);
   game_set_show_message(game, FALSE, game_get_turn(game));
   origin_id = game_get_current_player_location(game);
 
@@ -861,6 +863,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
       if (object_get_open(o) != link_get_id(l))
       {
         command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+        printf("Key doesn't open link");
         return;
       }
 
@@ -873,7 +876,7 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
       return;
     }
   }
-
+  printf("Key not found");
   /*in case function has not been exited, return with ERROR*/
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
   return;
