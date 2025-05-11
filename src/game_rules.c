@@ -480,7 +480,9 @@ void game_rules_medkit_mission(Game *game, Mission *mission)
             /*en el tercer paso, se pide a alice curarse, despues se termina la mision*/
             if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == USE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && (!strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), BANDAIDS_NAME) || !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDICINE_NAME))){
                 game_set_current_mission(game, BEDROOM_MISSION);
+                /*Asignamos la misión a ambos personajes*/
                 game_set_next_objective(game);
+                game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
                 game_set_next_dialogue(game, BOB);
                 show_next_dialogue_to_bob();
                 return;
