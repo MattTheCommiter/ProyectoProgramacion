@@ -1,4 +1,13 @@
-
+/**
+ * @file mission.c
+ * @author Alvaro Inigo
+ * @brief This file implements all the functions and data structures related to the module Mission
+ * @version 0.1
+ * @date 2025-05-06
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "mission.h"
 
 /**
@@ -86,11 +95,6 @@ Status mission_add_objective(Mission *mission, char *objective){
 char *mission_get_next_dialogue(Mission *mission){
     if(!mission || mission->next_dialogue_index >= mission->n_dialogues) return NULL;
     mission->next_dialogue_index++;
-    return mission->dialogues[mission->next_dialogue_index - 1];
-}
-
-char *mission_get_current_dialogue(Mission *mission){
-    if(!mission) return NULL;
     return mission->dialogues[mission->next_dialogue_index - 1];
 }
 

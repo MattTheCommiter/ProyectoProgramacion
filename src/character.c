@@ -177,8 +177,8 @@ Status character_print(Character *cha)
     for(i = 0; i <cha->n_messages; i++){
         fprintf(stdout, "\n---> The message %d: %s\n",i, cha->message[i]);
     }
-    fprintf(stdout,"\n");
     fprintf(stdout, "\n---> The Id of the player they are following: %ld\n", cha->following);
+    fprintf(stdout, "\n---> The Id of the space: %ld\n", cha->location);
 
     return OK;
 }
