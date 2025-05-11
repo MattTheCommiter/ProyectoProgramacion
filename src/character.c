@@ -21,17 +21,17 @@
  */
 struct _Character
 {
-    Id id;                                    /*!<Id of the character*/
-    char name[WORD_SIZE];                     /*!<a string that contains the name of the character*/
-    char gdesc[GDESCTAM];                     /*!<a string that contains the graphic description of the character*/
-    char dead_gdesc[GDESCTAM];                /*!<a string that contains the graphic description of the character*/
-    int health;                               /*!<the health of the character, an integer*/
-    Bool friendly;                            /*!<A bool that sets wether the character is friendly or not*/
-    char message[MAX_MESSAGES][WORD_SIZE];    /*!<a array of strings for the message that a character says*/
-    int n_messages;                           /*!<number of messages of a character*/
-    int message_turn;                         /*!<the turn of the next message to say*/
-    Id following;                             /*!<Id of the player they are following*/
-    Id location;                              /*!<Id of the location of the character*/
+    Id id;                                 /*!<Id of the character*/
+    char name[WORD_SIZE];                  /*!<a string that contains the name of the character*/
+    char gdesc[GDESCTAM];                  /*!<a string that contains the graphic description of the character*/
+    char dead_gdesc[GDESCTAM];             /*!<a string that contains the graphic description of the character*/
+    int health;                            /*!<the health of the character, an integer*/
+    Bool friendly;                         /*!<A bool that sets wether the character is friendly or not*/
+    char message[MAX_MESSAGES][WORD_SIZE]; /*!<a array of strings for the message that a character says*/
+    int n_messages;                        /*!<number of messages of a character*/
+    int message_turn;                      /*!<the turn of the next message to say*/
+    Id following;                          /*!<Id of the player they are following*/
+    Id location;                           /*!<Id of the location of the character*/
 };
 
 Character *character_create(Id id)
@@ -112,7 +112,6 @@ Status character_set_friendly(Character *c, Bool behave)
     return OK;
 }
 
-
 Id character_get_id(Character *c)
 {
     if (!c)
@@ -155,7 +154,6 @@ Bool character_get_friendly(Character *c)
     return c->friendly;
 }
 
-
 Status character_print(Character *cha)
 {
     int i;
@@ -172,45 +170,56 @@ Status character_print(Character *cha)
     {
         fprintf(stdout, "\n--> The character is friendly");
     }
-    fprintf(stdout, "The number of messages is: %d",cha->n_messages);
-    fprintf(stdout,"\n");
-    for(i = 0; i <cha->n_messages; i++){
-        fprintf(stdout, "\n---> The message %d: %s\n",i, cha->message[i]);
+    fprintf(stdout, "The number of messages is: %d", cha->n_messages);
+    fprintf(stdout, "\n");
+    for (i = 0; i < cha->n_messages; i++)
+    {
+        fprintf(stdout, "\n---> The message %d: %s\n", i, cha->message[i]);
     }
-    fprintf(stdout,"\n");
     fprintf(stdout, "\n---> The Id of the player they are following: %ld\n", cha->following);
+    fprintf(stdout, "\n---> The Id of the space: %ld\n", cha->location);
 
     return OK;
 }
 
-Status character_set_following(Character *c, Id follow_id){
-    if(!c) return ERROR;
+Status character_set_following(Character *c, Id follow_id)
+{
+    if (!c)
+        return ERROR;
 
     c->following = follow_id;
     return OK;
 }
 
-Id character_get_following(Character *c){
-    if(!c) return NO_ID;
+Id character_get_following(Character *c)
+{
+    if (!c)
+        return NO_ID;
 
     return c->following;
 }
 
-Status character_set_location(Character *c, Id location_id) {
-    if (!c) return ERROR;
+Status character_set_location(Character *c, Id location_id)
+{
+    if (!c)
+        return ERROR;
 
     c->location = location_id;
     return OK;
 }
 
-Id character_get_location(Character *c) {
-    if (!c) return NO_ID;
+Id character_get_location(Character *c)
+{
+    if (!c)
+        return NO_ID;
 
     return c->location;
 }
 
-Status character_add_message(Character *c, char *message){
-    if(!c || !message || (c->message_turn + 1) > MAX_MESSAGES) return ERROR;
+Status character_add_message(Character *c, char *message)
+{
+    if (!c || !message || (c->message_turn + 1) > MAX_MESSAGES)
+        return ERROR;
     strcpy(c->message[c->n_messages], message);
     c->n_messages++;
     return OK;
@@ -223,20 +232,26 @@ char *character_get_message_in_pos(Character *c, int pos)
     return c->message[pos];
 }
 
-int character_get_n_messages(Character *character){
-    if(!character) return -1;
+int character_get_n_messages(Character *character)
+{
+    if (!character)
+        return -1;
     return character->n_messages;
 }
 
-int character_get_message_turn(Character *character){
-    if(!character) return -1;
+int character_get_message_turn(Character *character)
+{
+    if (!character)
+        return -1;
     return character->message_turn;
 }
 
-char *character_chat(Character *character){
+char *character_chat(Character *character)
+{
     int turn;
-    if(!character || character->n_messages <= character->message_turn) return NULL;
+    if (!character || character->n_messages <= character->message_turn)
+        return NULL;
     turn = character->message_turn;
-    character->message_turn = (character->message_turn + 1)%character->n_messages;
+    character->message_turn = (character->message_turn + 1) % character->n_messages;
     return character->message[turn];
 }

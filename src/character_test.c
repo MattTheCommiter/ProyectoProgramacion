@@ -470,11 +470,6 @@ void test01_character_chat()
     PRINT_TEST_RESULT(character_chat(character) == NULL);
 }
 
-/**
- * @brief tests chatting with a valid and created character
- * @pre a valid pointer to character
- * @post char* the messages of the character
- */
 void test02_character_chat()
 {
     Character *character = NULL;

@@ -174,13 +174,12 @@ Status gameManagement_load_light(Game *game, char *filename);
 
 Status gameManagement_load_spaces(Game *game, char *filename)
 {
-  /*#s:11|Entry| _ | ___ | mo'_| @ _ | __/ __|*/
   FILE *file = NULL;
   char line[WORD_SIZE] = "";
   char name[WORD_SIZE] = "";
   char **read_gdesc;
   char *toks = NULL;
-  int i;
+  int i, length;
   Id id;
   Space *space = NULL;
   Status status = OK;
@@ -214,12 +213,14 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#s:");
 
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#s:", line, 3) == 0)
+
+    if (strncmp("#s:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|");
+      toks = strtok(line + length, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
@@ -290,7 +291,7 @@ Status gameManagement_load_objects(Game *game, char *filename)
   Id id = NO_ID, spaceId = NO_ID, dependency = NO_ID, open = NO_ID;
   Object *object = NULL;
   Status status = OK;
-  int movable = 1, health = 0;
+  int movable = 1, health = 0, length;
 
   if (!filename || !game)
   {
@@ -305,12 +306,13 @@ Status gameManagement_load_objects(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+
+  length = strlen("#o:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#o:", line, 3) == 0)
+    if (strncmp("#o:", line, length) == 0)
     {
-      /*#o:1|Seed|11|Well, just a seed|1|-1|-1|-1|*/
-      toks = strtok(line + 3, "|");
+      toks = strtok(line + length, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
@@ -373,7 +375,7 @@ Status gameManagement_load_players(Game *game, char *filename)
   Id id = NO_ID, spaceId = NO_ID, objectId = NO_ID, teamId = NO_ID;
   Player *player = NULL;
   Status status = OK;
-  int hp = 0;
+  int hp = 0, length;
   int inventory_size = 0;
 
   if (!filename || !game)
@@ -389,11 +391,12 @@ Status gameManagement_load_players(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#p:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#p:", line, 3) == 0)
+    if (strncmp("#p:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|\r\n");
+      toks = strtok(line + length, "|\r\n");
       id = atol(toks);
       toks = strtok(NULL, "|\r\n");
       strcpy(name, toks);
@@ -409,9 +412,6 @@ Status gameManagement_load_players(Game *game, char *filename)
       if (toks)
         teamId = atol(toks);
 
-/*
-#p: id|name|GDESC|idSpace|HP|INVENTORY|
-*/
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, inventory_size, teamId);
 #endif
@@ -462,7 +462,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
   Id id = NO_ID, spaceId = NO_ID, following = NO_ID;
   Character *character = NULL;
   Status status = OK;
-  int hp = 0;
+  int hp = 0, length;
   Bool friendliness = FALSE;
 
   if (!filename || !game)
@@ -478,11 +478,13 @@ Status gameManagement_load_characters(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#c:");
+
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#c:", line, 3) == 0)
+    if (strncmp("#c:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|\r\n");
+      toks = strtok(line + length, "|\r\n");
       id = atol(toks);
       toks = strtok(NULL, "|\r\n");
       strcpy(name, toks);
@@ -549,6 +551,7 @@ Status gameManagement_load_links(Game *game, char *filename)
   Id idOrigin = NO_ID, idDest = NO_ID;
   Direction direccion = UNKNOWN_DIR;
   Bool open = FALSE;
+  int length;
 
   if (!filename || !game)
   {
@@ -563,12 +566,12 @@ Status gameManagement_load_links(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#l:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    /*#l:31|Entry|11|121|1|1| Id,Nombre,Idsalida,Iddest,direccion,open*/
-    if (strncmp("#l:", line, 3) == 0)
+    if (strncmp("#l:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|\r\n");
+      toks = strtok(line + length, "|\r\n");
       id = atol(toks);
       toks = strtok(NULL, "|\r\n");
       strcpy(name, toks);
@@ -854,14 +857,15 @@ Status gameManagement_load(Game **game, char *filename)
 
   if (!game || !filename || !(*game))
     return ERROR;
-
+  /*Guardamos el nombre del fichero de manera independiente al game*/
   strcpy(filename_cpy, filename);
-
+  /*creamos el nuevo juego segun los datos de la copia del guardado*/
   if (game_create_from_file(&new_game, filename_cpy) == ERROR)
   {
     game_destroy(new_game);
     return ERROR;
   }
+
   if (gameManagement_load_turn(new_game, filename_cpy) == ERROR)
   {
     game_destroy(new_game);
@@ -887,7 +891,7 @@ Status gameManagement_load(Game **game, char *filename)
     game_destroy(new_game);
     return ERROR;
   }
-
+  /*si todo ha funcionado, se destruye el anterior juego y se intercambian punteros*/
   if (game_destroy(*game) == ERROR)
     return ERROR;
 
@@ -1324,7 +1328,7 @@ Status gameManagement_load_interface(Game *game, char *filename)
 
       token = strtok(NULL, "/|\r\n");
       show = atol(token) == 1 ? TRUE : FALSE;
-      game_set_show_message(game, show, pos);
+      game_set_show_message(game, show, (Protagonists)pos);
     }
   }
 
@@ -1435,7 +1439,7 @@ Status gameManagement_load_light(Game *game, char *filename)
       i = atoi(token);
     }
   }
-  lights_on = i==1?TRUE:FALSE;
+  lights_on = i == 1 ? TRUE : FALSE;
   fclose(save);
   if (game_set_lights_on(game, lights_on) == ERROR)
   {

@@ -34,36 +34,37 @@ $(OBJDIR)/game.o: game.c game.h command.h types.h space.h set.h character.h \
   player.h inventory.h object.h gameManagement.h link.h cinematics.h mission.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_loop.o: src/game_loop.c include/graphic_engine.h include/game.h \
-  command.h types.h space.h set.h player.h character.h inventory.h object.h link.h libscreen.h cinematics.h game_rules.h
+$(OBJDIR)/game_loop.o: game_loop.c graphic_engine.h game.h command.h types.h space.h set.h \
+  player.h character.h inventory.h object.h link.h cinematics.h mission.h \
+  libscreen.h game_actions.h gameManagement.h graphic_engine.h command.h game.h \
+  game_rules.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
-$(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h \
-  game.h command.h types.h space.h \
-  set.h player.h character.h inventory.h \
-  object.h link.h libscreen.h
+$(OBJDIR)/graphic_engine.o: graphic_engine.c graphic_engine.h game.h \
+  command.h types.h space.h set.h player.h character.h inventory.h \
+  object.h link.h cinematics.h mission.h libscreen.h game_actions.h gameManagement.h \
+  graphic_engine.h command.h game.h game_rules.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/command.o: command.c command.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h \
-  gameManagement.h game.h space.h set.h player.h character.h inventory.h object.h \
-  link.h graphic_engine.h libscreen.h 
+$(OBJDIR)/game_actions.o: game_actions.c game_actions.h command.h types.h gameManagement.h \
+  game.h space.h set.h player.h character.h inventory.h object.h link.h \
+  cinematics.h mission.h graphic_engine.h libscreen.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/space.o: space.c space.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/gameManagement.o: gameManagement.c gameManagement.h types.h game.h \
-  command.h space.h set.h player.h object.h link.h cinematics.h mission.h
+$(OBJDIR)/gameManagement.o: src/gameManagement.c include/gameManagement.h types.h game.h \
+  command.h space.h set.h player.h character.h inventory.h object.h link.h cinematics.h mission.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/object.o: object.c object.h types.h
+$(OBJDIR)/object.o: object.c object.h player.h types.h set.h character.h inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player.o: player.c player.h types.h set.h \
-  character.h inventory.h
+$(OBJDIR)/player.o: player.c player.h types.h set.h character.h inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OBJDIR)/character.o: character.c character.h types.h 
@@ -75,7 +76,7 @@ $(OBJDIR)/set.o: set.c set.h types.h
 $(OBJDIR)/inventory.o: inventory.c inventory.h types.h set.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/libscreen.o: libscreen.c libscreen.h types.h
+$(OBJDIR)/libscreen.o: libscreen.c libscreen.h character.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/link.o: link.c link.h types.h
@@ -87,38 +88,33 @@ $(OBJDIR)/cinematics.o: cinematics.c cinematics.h types.h
 $(OBJDIR)/mission.o: mission.c mission.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/game_rules.o: game_rules.c game_rules.h types.h game.h
+$(OBJDIR)/game_rules.o: src/game_rules.c include/game_rules.h include/game.h command.h types.h \
+  space.h set.h player.h character.h inventory.h object.h link.h cinematics.h mission.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
 ###################################################### OBJECTS NEEDED FOR TESTS ######################################################
-$(OBJDIR)/set_test.o: set_test.c set_test.h set.h \
-  types.h test.h
+$(OBJDIR)/set_test.o: set_test.c set_test.h set.h types.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/character_test.o: character_test.c character_test.h \
-  test.h character.h types.h
+$(OBJDIR)/character_test.o: character_test.c character_test.h test.h character.h types.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/space_test.o: space_test.c space_test.h space.h \
-  types.h set.h test.h
+$(OBJDIR)/space_test.o: space_test.c space_test.h space.h types.h set.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/inventory_test.o: inventory_test.c inventory_test.h \
-  set.h types.h inventory.h test.h
+$(OBJDIR)/inventory_test.o: inventory_test.c inventory_test.h set.h types.h inventory.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/link_test.o: link_test.c link_test.h link.h \
-  types.h test.h
+$(OBJDIR)/link_test.o: link_test.c link_test.h link.h types.h test.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/object_test.o: object_test.c object_test.h types.h \
-  test.h object.h
+$(OBJDIR)/object_test.o: object_test.c object_test.h types.h test.h object.h player.h set.h \
+  character.h inventory.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/player_test.o: player_test.c player_test.h \
-  inventory.h types.h set.h test.h \
-  player.h character.h
+$(OBJDIR)/player_test.o: player_test.c player_test.h inventory.h types.h set.h test.h player.h character.h
 	gcc $(INC) $(CFLAGS) -c $< -o $@
+
 ###################################################### TEST EXECUTABLES ######################################################
 #Set test related 
 set_test: $(OBJDIR)/set_test.o $(OBJDIR)/set.o
@@ -141,12 +137,12 @@ link_test: $(OBJDIR)/link_test.o $(OBJDIR)/link.o
 	gcc -o $@ $^
 	
 #Object test related
-object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o 
+object_test: $(OBJDIR)/object_test.o $(OBJDIR)/object.o $(OBJDIR)/player.o $(OBJDIR)/set.o $(OBJDIR)/inventory.o
 	gcc -o $@ $^
 
 
 #player test related
-player_test: $(OBJDIR)/player_test.o $(OBJDIR)/player.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o
+player_test: $(OBJDIR)/player_test.o $(OBJDIR)/player.o $(OBJDIR)/inventory.o $(OBJDIR)/set.o $(OBJDIR)/character.o
 	gcc -o $@ $^
 
 
@@ -175,14 +171,19 @@ docs:
 run:
 	./juego house.dat
 
+runD:
+	./juego house.dat -d
+	
 runLog:
 	./juego house.dat -l Logfile
 
 runLog_read1:
-	./juego house.dat -l Logfile < game1.cmd
+	./juego house.dat -l Logfile -d < game1.cmd
+	@diff -y Logfile.log game1.log 
 
 runLog_read2:
-	./juego house.dat -l Logfile < game2.cmd
+	./juego house.dat -l Logfile -d < game2.cmd
+	@diff -y Logfile.log game2.log 
 
 runV:
 	valgrind --leak-check=full ./juego house.dat
@@ -256,7 +257,7 @@ object_test_runV:
 	@echo ">>>>>>Running object_test with Valgrind:"
 	valgrind --leak-check=full ./object_test
 
-player_test_run_V:
+player_test_runV:
 	@echo ">>>>>>Running player_test with Valgrind:"
 	valgrind --leak-check=full ./player_test
 

@@ -24,7 +24,7 @@
 #define DINOSAURLEG_ID 11           /*!<The id of the dinosaur led, used for checking missions*/
 #define KEY_ID 7                    /*!<The id of the key, used for checking missions*/
 #define FAMILY_PIC_ID 13              /*!<The id of the Family picture, used for checking missions*/
-#define WATER_GUN_ID 15
+#define WATER_GUN_ID 15                 /*!<The id of the Water Gun, used for checking missions*/
 #define BACKPACK_ID 16                 /*!<The id of the backpack, used for checking game actions*/
 #define GENERATOR_NAME "Old Generator" /*!<The name of the old generator, used for checking missions*/
 #define GENERATOR_FLASH_NAME "Generator" /*!<The name of the generator, used for checking missions*/

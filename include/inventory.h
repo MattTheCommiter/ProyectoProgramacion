@@ -2,7 +2,7 @@
  * @brief It defines the space module interface
  *
  * @file inventory.h
- * @author PPROG - Team 2101_D - AGL
+ * @author PPROG - Team 2101_D - Araceli Gutiérrez
  * @version 
  * @date 21-03-2025
  * @copyright GNU Public License

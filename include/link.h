@@ -12,13 +12,18 @@
 
 #include "types.h"
 
-#define HIDDENROOMTOTREASURE 3132 
-#define LIVINGROOMTOHALL1  1421
-#define HALL2TOHIDDENROOM 2231
+#define HIDDENROOMTOTREASURE 3132   /*!< Link ID for the hidden room to treasure room connection */
+#define LIVINGROOMTOHALL1  1421     /*!< Link ID for the living room to hall 1 connection */
+#define HALL2TOHIDDENROOM 2231      /*!< Link ID for the hall 2 to hidden room connection */
 
 /** @brief public alias for the opaque _Link structure */
 typedef struct _Link Link;
 
+/**
+ * @brief macro function that returns the id of a link based on the initial id and the destination id
+ * 
+ */
+#define get_link_id(from_id, to_id)(100*from_id + to_id)
 /**
  * @brief Allocates memory and initializes a new link structure 
  * @author Guilherme Povedano 
