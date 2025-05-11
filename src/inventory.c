@@ -2,7 +2,7 @@
  * @brief It implements the inventory module
  *
  * @file inventory.c
- * @author PPROG - Equipo 2101_D - AGL
+ * @author PPROG - Equipo 2101_D - Araceli Gutiérrez
  * @version 2.0.7
  * @date 21-03-2025
  * @copyright GNU Public License
@@ -20,7 +20,7 @@
 * 
 */
 struct _Inventory {
-  Set *objs;                /*!< Set of objects in the player's backpack */
+  Set *objs;               /*!< Set of objects in the player's backpack */
   int max_objs;             /*!< max number of objects in the player's backpack */
 };
  
