@@ -227,7 +227,7 @@ void game_loop_run(Game **game, Graphic_engine *gengine, FILE *log_file)
       else if (cmd_code == USE || cmd_code == OPEN || cmd_code == GIVE)
       {
         if (cmd_code == USE && cmd_arg2[0] != '\0')
-          fprintf(log_file, "%s %s with %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_arg2, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
+          fprintf(log_file, "%s %s over %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_arg2, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
         if (cmd_code == USE && cmd_arg2[0] == '\0')
           fprintf(log_file, "%s %s: %s (P%d)\n", cmd_name, cmd_arg, cmd_status == OK ? "OK" : "ERROR", game_get_turn(*game) + 1);
         if (cmd_code == OPEN)
