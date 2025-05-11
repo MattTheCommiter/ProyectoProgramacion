@@ -179,10 +179,12 @@ runLog:
 	./juego house.dat -l Logfile
 
 runLog_read1:
-	./juego house.dat -l Logfile < game1.cmd
+	./juego house.dat -l Logfile -d < game1.cmd
+	@diff -y Logfile.log game1.log 
 
 runLog_read2:
-	./juego house.dat -l Logfile < game2.cmd
+	./juego house.dat -l Logfile -d < game2.cmd
+	@diff -y Logfile.log game2.log 
 
 runV:
 	valgrind --leak-check=full ./juego house.dat
