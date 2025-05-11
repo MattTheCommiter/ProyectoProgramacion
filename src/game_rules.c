@@ -544,6 +544,8 @@ void game_rules_REX_mission(Game *game, Mission *mission)
             {
                 link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);
 
+                player_remove_object_from_backpack(BOB_PLAYER, DINOSAURLEG_ID);
+                
                 game_set_current_mission(game, THIRD_FLOOR_MISSION);
                 game_set_next_objective(game);
                 game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));

@@ -580,6 +580,14 @@ void game_actions_attack(Game *game, char *arg)
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
+    if (player_get_location(game_get_player_in_pos(game, ALICE_TURN)) != player_get_location(game_get_player_in_pos(game, BOB_TURN)) || player_get_location(game_get_player_in_pos(game, ALICE_TURN)) != character_get_location(game_get_character(game, GHOST_ID)))
+    {
+      sprintf(message, "To attack the ghost both players must be with the him.");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
     if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, BOB_ID), KNIFE_ID) == FALSE))
     {
       sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
