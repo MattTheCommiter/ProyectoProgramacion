@@ -845,7 +845,7 @@ gdesc57
 
 @@Format: :Id|Name|Alive gdesc|Death gdesc|SpaceId|Health|Friendly|Following|chat message1.....|chat messageN|
 #c:1|Dinosaur|\xF0\x9F\xA6\x96|\xE2\x98\xA0|24|5|1|-1|Help me!|
-#c:2|Robocop|\xF0\x9F\xA4\x96|\xE2\x98\xA0|-1|20|0|-1|Your grandmother's gift is mine to keep!|
+#c:2|Robocop|\xF0\x9F\xA4\x96|\xE2\x98\xA0|-1|15|0|-1|Your grandmother's gift is mine to keep!|
 #c:3|Ghost|\xF0\x9F\x91\xBB|\xE2\x98\xA0|-1|5|0|-1|The next floor is only for our King!|
 #c:4|Father|\xF0\x9F\x91\xA8|  F   |150|5|1|-1|Hi Alice, bring me a beer!|Alice, go help your mom!|
 
