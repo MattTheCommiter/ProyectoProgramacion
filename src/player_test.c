@@ -2,7 +2,7 @@
  * @brief It tests the Player module
  *
  * @file player_test.c
- * @author PPROG - Team 2101_D - AGL
+ * @author PPROG - Team 2101_D - Araceli Gutiérrez
  * @version 1.0.2
  * @date 26-03-2025
  * @copyright GNU Public License
@@ -670,7 +670,8 @@ void test1_player_set_team() {
 
 /**Test whether the function sets the team ID correctly for a valid player */
 void test2_player_set_team() {
-    Player *player = player_create(1, 3); /* Create a player with ID 1 and inventory size 3 */
+    Player *player = NULL;
+    player = player_create(1, 3); 
     PRINT_TEST_RESULT(player != NULL);
     if (player != NULL) {
         PRINT_TEST_RESULT(player_set_team(player, 5) == OK);
