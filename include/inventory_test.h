@@ -2,7 +2,7 @@
  * @brief  test functions  for the Inventory module
  * 
  * @file inventory_test.h
- * @author PPROG - Team 2101_D - AGL
+ * @author PPROG - Team 2101_D - Araceli Gutiérrez
  * @version 1.0.2
  * @date 22-03-2025
  * @copyright GNU Public License

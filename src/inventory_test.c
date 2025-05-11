@@ -2,7 +2,7 @@
  * @brief It tests the Inventory module
  * 
  * @file inventory_test.c
- * @author PPROG - Team 2101_D - AGL
+ * @author PPROG - Team 2101_D - Araceli Gutiérrez
  * @version 1.0.2 
  * @date 22-03-2025
  * @copyright GNU Public License
@@ -112,7 +112,7 @@ void test1_inventory_create() {
 
 /**Test whether the function returns NULL for invalid input (negative max_objs)*/
 void test2_inventory_create() {
-    Inventory* inventory;
+    Inventory* inventory = NULL;
     inventory = inventory_create(-1);
     PRINT_TEST_RESULT(inventory == NULL);
 }
@@ -128,36 +128,44 @@ void test3_inventory_create() {
 
 /**test function for valid inventory */
 void test1_inventory_get_objs() {
-    Inventory* inventory = inventory_create(10);
-    Set* objs = inventory_get_objs(inventory);
+    Inventory* inventory = NULL;
+    Set* objs = NULL;
+    inventory = inventory_create(10);
+    objs = inventory_get_objs(inventory);
     PRINT_TEST_RESULT(objs != NULL);
     inventory_destroy(inventory);
 }
 
 /**tests if inventory_get_objs correctly returns NULL when the inventory pointer is NULL */
 void test2_inventory_get_objs() {
-    Set* objs = inventory_get_objs(NULL);
+    Set* objs = NULL;
+    objs = inventory_get_objs(NULL);
     PRINT_TEST_RESULT(objs == NULL);
 }
 
 /** tests if it correctly returns the maximum number of objects for a valid inventory */
 void test1_inventory_get_max_objs() {
-    Inventory* inventory = inventory_create(10);
-    int max_objs = inventory_get_max_objs(inventory);
+    Inventory* inventory = NULL;
+    int max_objs;
+    inventory = inventory_create(10);
+    max_objs = inventory_get_max_objs(inventory);
     PRINT_TEST_RESULT(max_objs == 10);
     inventory_destroy(inventory);
 }
 
 /**Tests if it correctly returns -1 when the inventory pointer is NULL */
 void test2_inventory_get_max_objs() {
-    int max_objs = inventory_get_max_objs(NULL);
+    int max_objs;
+    max_objs = inventory_get_max_objs(NULL);
     PRINT_TEST_RESULT(max_objs == -1);
 }
 
 /**test for the maximum number of objects of an inventory */
 void test3_inventory_get_max_objs() {
-    Inventory* inventory = inventory_create(MAX_ELEMENTS_IN_SET);
-    int max_objs = inventory_get_max_objs(inventory);
+    Inventory* inventory = NULL;
+    int max_objs;
+    inventory = inventory_create(MAX_ELEMENTS_IN_SET);
+    max_objs = inventory_get_max_objs(inventory);
     PRINT_TEST_RESULT(max_objs == MAX_ELEMENTS_IN_SET);
     inventory_destroy(inventory);
 }
@@ -175,15 +183,18 @@ void test1_inventory_contains() {
 
 /**tests if inventory_contains correctly identifies an object that does not exist in the inventory */
 void test2_inventory_contains() {
-    Inventory* inventory = inventory_create(10);
-    Bool result = inventory_contains(inventory, 1);
+    Inventory* inventory = NULL;
+    Bool result;
+    inventory = inventory_create(10);
+    result = inventory_contains(inventory, 1);
     PRINT_TEST_RESULT(result == FALSE);
     inventory_destroy(inventory);
 }
 
 /** tests if inventory_contains correctly returns FALSE when the inventory pointer is NULL */
 void test3_inventory_contains() {
-    Bool result = inventory_contains(NULL, 1);
+    Bool result;
+    result = inventory_contains(NULL, 1);
     PRINT_TEST_RESULT(result == FALSE);
 }
 
@@ -201,38 +212,47 @@ void test1_inventory_set_objs() {
 
 /** tests if inventory_set_objs correctly returns ERROR when the inventory pointer is NULL */
 void test2_inventory_set_objs() {
-    Set* new_objs = set_create();
-    Status result = inventory_set_objs(NULL, new_objs);
+    Set* new_objs = NULL;
+    Status result;
+    new_objs = set_create();
+    result = inventory_set_objs(NULL, new_objs);
     PRINT_TEST_RESULT(result == ERROR);
     set_destroy(new_objs);
 }
 
 /** tests if inventory_set_objs correctly returns ERROR when the set pointer is NULL */
 void test3_inventory_set_objs() {
-    Inventory* inventory = inventory_create(10);
-    Status result = inventory_set_objs(inventory, NULL);
+    Inventory* inventory = NULL;
+    Status result;
+    inventory = inventory_create(10);
+    result = inventory_set_objs(inventory, NULL);
     PRINT_TEST_RESULT(result == ERROR);
     inventory_destroy(inventory);
 }
 
 /** tests if inventory_set_max_objs correctly sets the maximum number of objects for a valid inventory */
 void test1_inventory_set_max_objs() {
-    Inventory* inventory = inventory_create(10);
-    Status result = inventory_set_max_objs(inventory, 20);
+    Inventory* inventory = NULL;
+    Status result;
+    inventory = inventory_create(10);
+    result = inventory_set_max_objs(inventory, 20);
     PRINT_TEST_RESULT(result == OK && inventory_get_max_objs(inventory) == 20);
     inventory_destroy(inventory);
 }
 
 /**Test if it correctly returns ERROR when the inventory pointer is NULL */
 void test2_inventory_set_max_objs() {
-    Status result = inventory_set_max_objs(NULL, 20);
+    Status result;
+    result = inventory_set_max_objs(NULL, 20);
     PRINT_TEST_RESULT(result == ERROR);
 }
 
 /** tests if inventory_set_max_objs correctly returns ERROR when the max_objs value is negative */
 void test3_inventory_set_max_objs() {
-    Inventory* inventory = inventory_create(10);
-    Status result = inventory_set_max_objs(inventory, -5);
+    Inventory* inventory = NULL;
+    Status result;
+    inventory = inventory_create(10);
+    result = inventory_set_max_objs(inventory, -5);
     PRINT_TEST_RESULT(result == ERROR);
     inventory_destroy(inventory);
 }
@@ -289,7 +309,8 @@ void test2_inventory_is_empty() {
 
 /** tests if inventory_is_empty correctly returns TRUE when the inventory pointer is NULL */
 void test3_inventory_is_empty() {
-    Bool result = inventory_is_empty(NULL);
+    Bool result;
+    result = inventory_is_empty(NULL);
     PRINT_TEST_RESULT(result == TRUE);
 }
 
@@ -346,7 +367,8 @@ void test2_inventory_add_object_id() {
 
 /**tests if inventory_add_object_id correctly returns ERROR when the inventory pointer is NULL */
 void test3_inventory_add_object_id() {
-    Status result = inventory_add_object_id(NULL, 1);
+    Status result;
+    result = inventory_add_object_id(NULL, 1);
     PRINT_TEST_RESULT(result == ERROR);
 }
 
