@@ -182,7 +182,9 @@ Status command_get_user_input(Command *command)
       command_set_argument(command, NO_ARG);
       command_set_argument2(command, NO_ARG);
       break;
-    } else if (cmd == USE && strstr(input_cpy, sep) == NULL) {
+    }
+    else if (cmd == USE && strstr(input_cpy, sep) == NULL)
+    {
       /* handle explicitly case where use is called without second argument */
 
       /* start of first word after command token */
@@ -337,7 +339,8 @@ Status command_get_lastcmd_success(Command *command)
 Bool command_get_confirmation()
 {
   char input[CMD_LENGTH];
-  while (!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")));
+  while (!fgets(input, MAX_CMD_ARG, stdin) || (strcasecmp(input, "N\n") && strcasecmp(input, "Y\n")))
+    ;
 
   if (!strcasecmp(input, "N\n"))
     return FALSE;

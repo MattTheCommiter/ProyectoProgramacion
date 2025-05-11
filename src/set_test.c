@@ -13,14 +13,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 38 /*!<Total number of test functions for the Set module*/
-#define ID_1 1 /*!<Id value that will be used to test set functions*/
-#define ID_2 2 /*!<Id value that will be used to test set functions*/
-#define ID_3 3 /*!<Id value that will be used to test set functions*/
-#define ID_4 4 /*!<Id value that will be used to test set functions*/
+#define MAX_TESTS 38    /*!<Total number of test functions for the Set module*/
+#define ID_1 1          /*!<Id value that will be used to test set functions*/
+#define ID_2 2          /*!<Id value that will be used to test set functions*/
+#define ID_3 3          /*!<Id value that will be used to test set functions*/
+#define ID_4 4          /*!<Id value that will be used to test set functions*/
 #define INVALID_POS1 -1 /*!<Value that serves as an invalid position in the tests*/
-#define INVALID_POS2 2 /*!<Value that serves as an invalid position in the tests*/
-#define ERROR_CODE -1 /*!<Error code retruned by several of the functions that return integers*/
+#define INVALID_POS2 2  /*!<Value that serves as an invalid position in the tests*/
+#define ERROR_CODE -1   /*!<Error code retruned by several of the functions that return integers*/
 /**
  * @brief Main function for SET unit tests.
  *

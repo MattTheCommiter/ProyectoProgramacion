@@ -412,7 +412,6 @@ Status gameManagement_load_players(Game *game, char *filename)
       if (toks)
         teamId = atol(toks);
 
-
 #ifdef DEBUG
       printf("Leido: %ld|%s|%s|%ld|%d|%d|%ld|\n", id, name, gdesc, spaceId, hp, inventory_size, teamId);
 #endif
@@ -1440,7 +1439,7 @@ Status gameManagement_load_light(Game *game, char *filename)
       i = atoi(token);
     }
   }
-  lights_on = i==1?TRUE:FALSE;
+  lights_on = i == 1 ? TRUE : FALSE;
   fclose(save);
   if (game_set_lights_on(game, lights_on) == ERROR)
   {
