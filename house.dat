@@ -823,7 +823,7 @@ gdesc57
 #o:17|Toilet paper|\xF0\x9F\xA7\xBB|25|Toilet paper, you never know when the toilet could call you!|1|0|-1|-1|
 #o:18|Ivy|\xF0\x9F\x8C\xBF|15|Venomous plant, could harm you if you use it|1|-1|-1|-1|
 
-#o:101|Generator|\xF0\x9F\x8F\xAD|150|A generator to light the house|1|0|-1|-1|
+#o:101|Generator|\xF0\x9F\x8F\xAD|150|A generator to light the house|0|0|-1|-1|
 #o:102|wrench|\xF0\x9F\x94\xA7|-1|a useful weapon that could repair something|1|0|-1|-1|
 #o:103|Tool box|\xF0\x9F\xA7\xB0|160|a tool box with tools inside|0|0|-1|-1|
 
@@ -929,6 +929,11 @@ gdesc57
 #cin:4| Alice: Wait, we might have earned something else from this adventure|
 #cin:4| Bob: You are right, I think we had a nice experience|
 #cin:4| Alice: Bob, I love you little brother|
+
+#cin:5| Alice: this picture is beautiful, but I wish Bob could be here with me to enjoy this gift. I love you little brother, rest in peace...|
+
+#cin:6| Bob: this picture is beautiful, but I wish Alice could be here with me to enjoy this gift. I love you little sister, rest in peace...|
+
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

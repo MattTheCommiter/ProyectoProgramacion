@@ -20,6 +20,11 @@
 typedef struct _Link Link;
 
 /**
+ * @brief macro function that returns the id of a link based on the initial id and the destination id
+ * 
+ */
+#define get_link_id(from_id, to_id)(100*from_id + to_id)
+/**
  * @brief Allocates memory and initializes a new link structure 
  * @author Guilherme Povedano 
  * @date 19-03-2025

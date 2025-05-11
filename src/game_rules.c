@@ -41,6 +41,12 @@
 
 
 /*PRIVATE FUNCTIONS*/
+/**
+ * @brief updates the mission in the game calling the rest of the gane_rules function according to the game's mission
+ * 
+ * @param game a pointer to the game
+ */
+void game_rules_mission_update(Game *game);
 
 /**
  * @brief The sets the current mission to the first one on the game and steps into it.
@@ -482,7 +488,6 @@ void game_rules_medkit_mission(Game *game, Mission *mission)
                 game_set_current_mission(game, BEDROOM_MISSION);
                 /*Asignamos la misión a ambos personajes*/
                 game_set_next_objective(game);
-                game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
                 game_set_next_dialogue(game, BOB);
                 show_next_dialogue_to_bob();
                 return;
@@ -550,7 +555,6 @@ void game_rules_REX_mission(Game *game, Mission *mission)
                 
                 game_set_current_mission(game, THIRD_FLOOR_MISSION);
                 game_set_next_objective(game);
-                game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
                 
                 game_set_next_dialogue(game, BOB);
                 game_set_message(game, game_get_message(game, BOB), ALICE);
@@ -640,7 +644,16 @@ void game_rules_boss_mission(Game *game, Mission *mission)
         case(3):
             /*ahora se pide coger la foto familiar*/
             if(player_backpack_contains(BOB_PLAYER, FAMILY_PIC_ID) || player_backpack_contains(ALICE, FAMILY_PIC_ID)){
-                game_set_current_cinematic(game, TREASURE);
+                if(player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) > 0){
+                    game_set_current_cinematic(game, TREASURE);
+                }
+                else if(player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) <= 0){
+                    game_set_current_cinematic(game, TREASURE_NO_BOB);
+                }
+                else if(player_get_health(ALICE_PLAYER) <= 0 && player_get_health(BOB_PLAYER) > 0){
+                    game_set_current_cinematic(game, TREASURE_NO_ALICE);
+                }
+                
                 return;
             }
             break;
@@ -699,13 +712,7 @@ void game_rules_mission_step(Game *game, Mission *mission, int step)
     game_set_show_message(game, TRUE, game_get_turn(game));
 
     /*nos aseguramos de que el mensaje objetivo que hemos puesto le salga a ambos jugadores */
-    if(game_get_turn(game) == BOB_TURN){
-        game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
-        game_set_show_message(game , TRUE, ALICE_TURN);
-    }else{
-        game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
-        game_set_show_message(game , TRUE, BOB_TURN);
-    }
+    game_set_objective(game, game_get_objective(game));
 
 
     return;

@@ -49,10 +49,30 @@
 #define MAX_STR 255                             /*!<The maximum characters of a line*/
 
 /**
+ * @brief Describes the positions of the array that contains each of the rows in the compass area
+ * 
+ */
+typedef enum {
+  COMPASS_TOP_BORDER = 0,   /*!< Top border of the compass */
+  NORTH_POSITION,           /*!< Row for the north space name */
+  NORTH_ARROW,              /*!< Row for the upward arrow */
+  MIDDLE_ROW,               /*!< Row for the middle (west, center, east) */
+  SOUTH_ARROW,              /*!< Row for the downward arrow */
+  SOUTH_POSITION,           /*!< Row for the south space name */
+  UP_DOWN_ROW               /*!< Row for the up and down space names */
+} CompassRow;
+
+/**
  * @brief from a given space_id, since all id's of the spaces start with the floor the space is in, this macro function returns said floor value
  * 
  */
 #define space_get_floor(space_id) ((space_id) / 10)
+
+/**
+ * @brief macro function that halves a given length
+ * 
+ */
+#define halve_length(len) ((len)/2)
 
 /**
  * @brief structure where the pointers to all the areas of the textual graphic interface are stored
@@ -127,7 +147,7 @@ void graphic_interface_paint_feedback_for_pos(Game *game, Graphic_engine*ge, Com
  */
 char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id east, Id up, Id down) 
 {
-  char **compas_info=NULL, *space_name=NULL, *space_name2=NULL, middle_str[]="< + >", blank_word[] = " ", unknown_str[] = "???", *up_name=NULL, *down_name=NULL;
+  char **compas_info = NULL, *space_name = NULL, *space_name2 = NULL, middle_str[] = "< + >", blank_word[] = " ", unknown_str[] = "???", *up_name = NULL, *down_name = NULL;
   int i, left_padding, total_width, middle_str_pos;
   long link_id;
   if (!game)
@@ -150,126 +170,144 @@ char **graphic_engine_paint_compass(Game *game, Id north, Id south, Id west, Id 
     compas_info[i] = compas_info[0] + (WIDTH_COMPASS * i);
   }
 
-
-
-  memset((void *)compas_info[0], (int)' ', WIDTH_COMPASS);
-  compas_info[0][WIDTH_COMPASS - 1] = '\0';
+  memset((void *)compas_info[COMPASS_TOP_BORDER], (int)' ', WIDTH_COMPASS);
+  compas_info[COMPASS_TOP_BORDER][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
 
 
   /*We paint the name of the north space in the upper part*/
   space_name = (char *)space_get_name(game_get_space(game, north));
-  if(!space_name){
+  if (!space_name)
+  {
     space_name = blank_word;
   }
-  /*Calculate left padding*/
-  left_padding = (WIDTH_COMPASS - strlen(space_name)) / 2;
+  /* Calculate left padding */
+  left_padding = halve_length(WIDTH_COMPASS - strlen(space_name));
 
-  /*Fill the row with spaces and copy the string*/
-  for (i = 0; i < WIDTH_COMPASS - 1; i++) {
-      if (i < left_padding) {
-          compas_info[1][i] = ' '; /*Left padding*/
-      } else if (i < left_padding + strlen(space_name)) {
-          compas_info[1][i] = space_name[i - left_padding]; /*Copy string*/
-      } else {
-          compas_info[1][i] = ' '; /*Right padding*/
-      }
+  /* Fill the row with spaces and copy the string */
+  for (i = 0; i < WIDTH_COMPASS - FINAL_CHARACTER; i++)
+  {
+    if (i < left_padding)
+    {
+      compas_info[NORTH_POSITION][i] = ' '; /* Left padding */
+    }
+    else if (i < left_padding + strlen(space_name))
+    {
+      compas_info[NORTH_POSITION][i] = space_name[i - left_padding]; /* Copy string */
+    }
+    else
+    {
+      compas_info[NORTH_POSITION][i] = ' '; /* Right padding */
+    }
   }
 
-  /*Null-terminate the row*/
-  compas_info[1][WIDTH_COMPASS - 1] = '\0';
+  /* Null-terminate the row */
+  compas_info[NORTH_POSITION][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
-
-
-  /*We paint the vertical arrow facing upwards*/
-  memset(compas_info[2], ' ', WIDTH_COMPASS);
-  compas_info[2][WIDTH_COMPASS / 2 - 1] = '^';
-  compas_info[2][WIDTH_COMPASS - 1] = '\0';
-
+  /* We paint the vertical arrow facing upwards */
+  memset(compas_info[NORTH_ARROW], ' ', WIDTH_COMPASS);
+  compas_info[NORTH_ARROW][halve_length(WIDTH_COMPASS) - FINAL_CHARACTER] = '^';
+  compas_info[NORTH_ARROW][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
   /*We paint the area in the middle*/
   space_name = (char *)space_get_name(game_get_space(game, west));
   space_name2 = (char *)space_get_name(game_get_space(game, east));
-  if (!space_name) {
-      space_name = blank_word;
+  if (!space_name)
+  {
+    space_name = blank_word;
   }
-  if (!space_name2) {
-      space_name2 = blank_word;
+  if (!space_name2)
+  {
+    space_name2 = blank_word;
   }
 
   /* Calculate total width of the strings */
   total_width = strlen(space_name) + strlen(middle_str) + strlen(space_name2);
 
   /* Calculate left padding */
-  middle_str_pos = WIDTH_COMPASS / 2 - strlen(middle_str) / 2 - 1;
+  middle_str_pos = halve_length(WIDTH_COMPASS) - halve_length(strlen(middle_str)) - FINAL_CHARACTER;
   left_padding = middle_str_pos - strlen(space_name);
 
   /* Fill the row with spaces and copy the strings */
-  for (i = 0; i < WIDTH_COMPASS - 1; i++) {
-      if (i < left_padding) {
-          compas_info[3][i] = ' '; /* Left padding */
-      } else if (i < left_padding + strlen(space_name)) {
-          compas_info[3][i] = space_name[i - left_padding]; /* Copy first string */
-      } else if (i < left_padding + strlen(space_name) + strlen(middle_str)) {
-          compas_info[3][i] = middle_str[i - left_padding - strlen(space_name)]; /* Copy middle string */
-      } else if (i < left_padding + total_width) {
-          compas_info[3][i] = space_name2[i - left_padding - strlen(space_name) - strlen(middle_str)]; /* Copy second string */
-      } else {
-          compas_info[3][i] = ' '; /* Right padding */
-      }
+  for (i = 0; i < WIDTH_COMPASS - FINAL_CHARACTER; i++)
+  {
+    if (i < left_padding)
+    {
+      compas_info[MIDDLE_ROW][i] = ' '; /* Left padding */
+    }
+    else if (i < left_padding + strlen(space_name))
+    {
+      compas_info[MIDDLE_ROW][i] = space_name[i - left_padding]; /* Copy first string */
+    }
+    else if (i < left_padding + strlen(space_name) + strlen(middle_str))
+    {
+      compas_info[MIDDLE_ROW][i] = middle_str[i - left_padding - strlen(space_name)]; /* Copy middle string */
+    }
+    else if (i < left_padding + total_width)
+    {
+      compas_info[MIDDLE_ROW][i] = space_name2[i - left_padding - strlen(space_name) - strlen(middle_str)]; /* Copy second string */
+    }
+    else
+    {
+      compas_info[MIDDLE_ROW][i] = ' '; /* Right padding */
+    }
   }
 
   /* Null-terminate the row */
-  compas_info[3][WIDTH_COMPASS - 1] = '\0';
+  compas_info[MIDDLE_ROW][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
-
-
-
-  /*We paint the vertical arrow facing downwards*/
-  memset((void *)compas_info[4], (int)' ', WIDTH_COMPASS);
-  compas_info[4][WIDTH_COMPASS/2 - 1] = 'v';
-  compas_info[4][WIDTH_COMPASS - 1] = '\0';
-
-
+  /* We paint the vertical arrow facing downwards */
+  memset((void *)compas_info[SOUTH_ARROW], (int)' ', WIDTH_COMPASS);
+  compas_info[SOUTH_ARROW][halve_length(WIDTH_COMPASS) - FINAL_CHARACTER] = 'v';
+  compas_info[SOUTH_ARROW][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
   /*We paint the name of the south space in the lower part*/
   space_name = (char *)space_get_name(game_get_space(game, south));
-  if(!space_name){
+  if (!space_name)
+  {
     space_name = blank_word;
   }
-  /*Calculate left padding*/
-  left_padding = (WIDTH_COMPASS - strlen(space_name)) / 2;
+  /* Calculate left padding */
+  left_padding = halve_length(WIDTH_COMPASS - strlen(space_name));
 
-  /*Fill the row with spaces and copy the string*/
-  for (i = 0; i < WIDTH_COMPASS - 1; i++) {
-      if (i < left_padding) {
-          compas_info[5][i] = ' '; /*Left padding*/
-      } else if (i < left_padding + strlen(space_name)) {
-          compas_info[5][i] = space_name[i - left_padding]; /*Copy string*/
-      } else {
-          compas_info[5][i] = ' '; /*Right padding*/
-      }
+  /* Fill the row with spaces and copy the string */
+  for (i = 0; i < WIDTH_COMPASS - FINAL_CHARACTER; i++)
+  {
+    if (i < left_padding)
+    {
+      compas_info[SOUTH_POSITION][i] = ' '; /* Left padding */
+    }
+    else if (i < left_padding + strlen(space_name))
+    {
+      compas_info[SOUTH_POSITION][i] = space_name[i - left_padding]; /* Copy string */
+    }
+    else
+    {
+      compas_info[SOUTH_POSITION][i] = ' '; /* Right padding */
+    }
   }
 
-  /*Null-terminate the row*/
-  compas_info[5][WIDTH_COMPASS - 1] = '\0';
+  /* Null-terminate the row */
+  compas_info[SOUTH_POSITION][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
-
-
+  /* Paint up and down names */
   up_name = (char *)space_get_name(game_get_space(game, up));
-  link_id = game_get_current_player_location(game) * 100 + up;
-  if(!up_name) up_name = blank_word;
-  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE) up_name = unknown_str;
-  
-  down_name = (char *)space_get_name(game_get_space(game, down));
-  link_id = game_get_current_player_location(game) * 100 + down;
-  if(!down_name) down_name = blank_word;
-  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE) down_name = unknown_str;
-  
-  memset((void *)compas_info[6], (int)' ', WIDTH_COMPASS);
-  sprintf(compas_info[6], "Up: %s  Down: %s", up_name, down_name);
-  compas_info[6][WIDTH_COMPASS - 1] = '\0';
+  link_id = get_link_id(game_get_current_player_location(game), up);
+  if (!up_name)
+    up_name = blank_word;
+  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE)
+    up_name = unknown_str;
 
+  down_name = (char *)space_get_name(game_get_space(game, down));
+  link_id = get_link_id(game_get_current_player_location(game), down);
+  if (!down_name)
+    down_name = blank_word;
+  else if (link_get_is_open(game_get_link(game, link_id)) == FALSE)
+    down_name = unknown_str;
+
+  memset((void *)compas_info[UP_DOWN_ROW], (int)' ', WIDTH_COMPASS);
+  sprintf(compas_info[UP_DOWN_ROW], "Up: %s  Down: %s", up_name, down_name);
+  compas_info[UP_DOWN_ROW][WIDTH_COMPASS - FINAL_CHARACTER] = '\0';
 
   return compas_info;
 }

@@ -766,7 +766,7 @@ void game_actions_recruit(Game *game, char *arg)
 
   if (character_get_id(game_get_character_from_name(game, arg)) == REX_ID && player_backpack_contains(game_get_current_player(game), DINOSAURLEG_ID) == FALSE) 
   { 
-    sprintf(message, "You cannot recruit this character until you have found its leg.\n");
+    sprintf(message, "Cannot recruit character until you have found its leg.\n");
     game_set_message(game, message, game_get_turn(game));
     game_set_show_message(game, TRUE, game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -1032,8 +1032,7 @@ void game_actions_turn(Game *game)
     return;
   }
 
-  game_next_turn(game);
-  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), game_next_turn(game));
   return;
 }
 

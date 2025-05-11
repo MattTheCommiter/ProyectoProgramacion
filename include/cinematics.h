@@ -19,12 +19,14 @@
  * @author Matteo Artunedo
  */
 typedef enum {
-    INTRODUCTION,   /*!<Corresponds to the cinematic that will be played at the beggining of the game*/
-    FIRST_STAIRS,   /*!<Corresponds to the cinematic that will be played when the characters go up the stairs from the firsst to the second floor*/
-    BOBS_ROOM,      /*!<Corresponds to the cinematic that will be played when the Bob enters his room*/
-    FINAL_BOSS,     /*!<Corresponds to the cinematic that when Alice and Bob meet the Final Boss*/
-    TREASURE,       /*!<Corresponds to the cinematic that when Alice and Bob get the final treasure*/
-    NO_CINEMATIC    /*!<Value that describes that no cinematics have to be displayed in the current moment*/
+    INTRODUCTION,           /*!<Corresponds to the cinematic that will be played at the beggining of the game*/
+    FIRST_STAIRS,           /*!<Corresponds to the cinematic that will be played when the characters go up the stairs from the firsst to the second floor*/
+    BOBS_ROOM,              /*!<Corresponds to the cinematic that will be played when the Bob enters his room*/
+    FINAL_BOSS,             /*!<Corresponds to the cinematic that is played when Alice and Bob meet the Final Boss*/
+    TREASURE,               /*!<Corresponds to the cinematic that is played when Alice and Bob get the final treasure*/
+    TREASURE_NO_BOB,        /*!<Corresponds to the cinematic that is played when Alice gets the final treasure and Bob is dead*/
+    TREASURE_NO_ALICE,      /*!<Corresponds to the cinematic that is played when Bob gets the final treasure and Alice is dead*/
+    NO_CINEMATIC            /*!<Value that describes that no cinematics have to be displayed in the current moment*/
 } Cinematics;
 
 #define N_CINEMATICS NO_CINEMATIC   /*!<Value that describes the number of cinematics in the game*/
