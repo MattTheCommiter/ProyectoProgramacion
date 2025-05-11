@@ -1,4 +1,13 @@
-
+/**
+ * @file mission.c
+ * @author Alvaro Inigo
+ * @brief This file implements all the functions and data structures related to the module Mission
+ * @version 0.1
+ * @date 2025-05-06
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 #include "mission.h"
 
 /**
