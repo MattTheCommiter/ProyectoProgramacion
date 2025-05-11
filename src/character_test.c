@@ -470,7 +470,6 @@ void test01_character_chat()
     PRINT_TEST_RESULT(character_chat(character) == NULL);
 }
 
-
 void test02_character_chat()
 {
     Character *character = NULL;

@@ -13,35 +13,28 @@
 #include <time.h>
 #include <strings.h>
 
-
-#define BOB_PLAYER (game_get_player_in_pos(game, BOB_TURN)) /*!<Define function that gets the player BOB*/
+#define BOB_PLAYER (game_get_player_in_pos(game, BOB_TURN))     /*!<Define function that gets the player BOB*/
 #define ALICE_PLAYER (game_get_player_in_pos(game, ALICE_TURN)) /*!<Defined function that gets the player ALICE*/
 
-
 /**
- * @brief Define function that shows the next dialogue only to BOB. 
+ * @brief Define function that shows the next dialogue only to BOB.
  * This macro sets the message visibility for BOB's turn to TRUE and for ALICE's turn to FALSE.
  * @author Alvaro Inigo
  */
-#define show_next_dialogue_to_bob() ( \
+#define show_next_dialogue_to_bob() (            \
     game_set_show_message(game, TRUE, BOB_TURN), \
-    game_set_show_message(game, FALSE, ALICE_TURN) \
-)
-
+    game_set_show_message(game, FALSE, ALICE_TURN))
 
 /**
  * @brief Define function that shows the next dialogue only to ALICE.
  * This macro sets the message visibility for ALICE's turn to TRUE and for BOB's turn to FALSE.
  * @author Alvaro Inigo
  */
-#define show_next_dialogue_to_alice() ( \
+#define show_next_dialogue_to_alice() (            \
     game_set_show_message(game, TRUE, ALICE_TURN), \
-    game_set_show_message(game, FALSE, BOB_TURN) \
-)
-
+    game_set_show_message(game, FALSE, BOB_TURN))
 
 /*PRIVATE FUNCTIONS*/
-
 
 /**
  * @brief The sets the current mission to the first one on the game and steps into it.
@@ -139,7 +132,7 @@ void game_rules_alice_flashback_init(Game *game);
 
 /**
  * @brief steps forward in the current mission, sets the next dialogue, sets the next objetctive to both players
- * and modifies the show message boolean of game to TRUE 
+ * and modifies the show message boolean of game to TRUE
  * @author Alvaro Inigo
  * @param game a pointer to the game
  * @param mission a pointer to the current mission
@@ -169,8 +162,6 @@ void game_rules_spawn_dinosaur_leg(Game *game);
  * @param game a pointer to the game
  */
 void game_rules_spawn_final_boss(Game *game);
-
-
 
 void game_rules_mission_update(Game *game)
 {
@@ -285,7 +276,6 @@ void game_rules_lantern_mission(Game *game, Mission *mission)
             game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
             game_set_next_dialogue(game, ALICE);
             show_next_dialogue_to_alice();
-
         }
         break;
     default:
@@ -386,7 +376,7 @@ void game_rules_father_mission(Game *game, Mission *mission)
 void game_rules_second_floor_mission(Game *game, Mission *mission)
 {
     int step;
-    if (!game || !mission )
+    if (!game || !mission)
         return;
     step = mission_get_current_step(mission);
     switch (step)
@@ -458,39 +448,43 @@ void game_rules_medkit_mission(Game *game, Mission *mission)
     if (!game || !mission)
         return;
     step = mission_get_current_step(mission);
-    switch(step){
-        case(0):
+    switch (step)
+    {
+    case (0):
         /*en el primer paso se pide llegar al baño a buscar el medkit*/
-            if(player_get_location(ALICE_PLAYER) == BATHROOM_SPACE){
-                game_rules_mission_step(game, mission, step);
-                show_next_dialogue_to_alice();
-                return;
-            }
+        if (player_get_location(ALICE_PLAYER) == BATHROOM_SPACE)
+        {
+            game_rules_mission_step(game, mission, step);
+            show_next_dialogue_to_alice();
+            return;
+        }
         break;
-        case(1):
+    case (1):
         /*el segundo paso consiste en inspeccionar el medkit*/
-            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDKIT_NAME)){
-                /*metemos los objetos en el espacio(aparecen)*/
-                space_add_objectId(game_get_space(game, BATHROOM_SPACE), BANDAIDS_ID);
-                space_add_objectId(game_get_space(game, BATHROOM_SPACE), MEDICINE_ID);
-                game_rules_mission_step(game, mission, step);
-                show_next_dialogue_to_alice();
-                return;
-            }
+        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDKIT_NAME))
+        {
+            /*metemos los objetos en el espacio(aparecen)*/
+            space_add_objectId(game_get_space(game, BATHROOM_SPACE), BANDAIDS_ID);
+            space_add_objectId(game_get_space(game, BATHROOM_SPACE), MEDICINE_ID);
+            game_rules_mission_step(game, mission, step);
+            show_next_dialogue_to_alice();
+            return;
+        }
         break;
-        case(2):
-            /*en el tercer paso, se pide a alice curarse, despues se termina la mision*/
-            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == USE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && (!strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), BANDAIDS_NAME) || !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDICINE_NAME))){
-                game_set_current_mission(game, BEDROOM_MISSION);
-                /*Asignamos la misión a ambos personajes*/
-                game_set_next_objective(game);
-                game_set_next_dialogue(game, BOB);
-                show_next_dialogue_to_bob();
-                return;
-            }
-            break;
-        default:
-            break;
+    case (2):
+        /*en el tercer paso, se pide a alice curarse, despues se termina la mision*/
+        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == USE && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && (!strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), BANDAIDS_NAME) || !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), MEDICINE_NAME)))
+        {
+            game_set_current_mission(game, BEDROOM_MISSION);
+            /*Asignamos la misión a ambos personajes*/
+            game_set_next_objective(game);
+            game_set_next_dialogue(game, BOB);
+            show_next_dialogue_to_bob();
+            return;
+        }
+        break;
+    default:
+        break;
     }
     return;
 }
@@ -500,20 +494,22 @@ void game_rules_bedroom_mission(Game *game, Mission *mission)
     if (!game || !mission)
         return;
     step = mission_get_current_step(mission);
-    switch(step){
-        case(0):
+    switch (step)
+    {
+    case (0):
         /*cuando bob llega a su habitacion, llamamos a la cinematica del dinosaurio pidiendo ayuda*/
-        if(player_get_location(BOB_PLAYER) == BEDROOM){
+        if (player_get_location(BOB_PLAYER) == BEDROOM)
+        {
             game_set_current_mission(game, REX_MISSION);
             game_set_next_objective(game);
             space_add_objectId(game_get_space(game, HALL2), DINOSAURLEG_ID);
             show_next_dialogue_to_bob();
-            game_set_current_cinematic(game, BOBS_ROOM);    
+            game_set_current_cinematic(game, BOBS_ROOM);
             return;
         }
         break;
-        default:
-            break;
+    default:
+        break;
     }
     return;
 }
@@ -523,44 +519,46 @@ void game_rules_REX_mission(Game *game, Mission *mission)
     if (!game || !mission)
         return;
     step = mission_get_current_step(mission);
-    switch(step){
-        case(0):
-            /*Bob and the leg in HALL2*/
-            if(game_get_current_player_location(game) == game_get_object_location(game, DINOSAURLEG_ID)){
-                game_rules_mission_step(game, mission, step);
-                show_next_dialogue_to_bob();
-                return;
-            }
+    switch (step)
+    {
+    case (0):
+        /*Bob and the leg in HALL2*/
+        if (game_get_current_player_location(game) == game_get_object_location(game, DINOSAURLEG_ID))
+        {
+            game_rules_mission_step(game, mission, step);
+            show_next_dialogue_to_bob();
+            return;
+        }
         break;
-        case (1):
-            /*Bob busca la pata del dinosaurio y la coge (TAKE)*/
-            if (player_backpack_contains(BOB_PLAYER, DINOSAURLEG_ID))
-            {
-                game_rules_mission_step(game, mission, step);
-                show_next_dialogue_to_bob();
-                return;
-            }
-            break;
-        case (2):
-            /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
-            if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB_PLAYER))
-            {
-                link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);
+    case (1):
+        /*Bob busca la pata del dinosaurio y la coge (TAKE)*/
+        if (player_backpack_contains(BOB_PLAYER, DINOSAURLEG_ID))
+        {
+            game_rules_mission_step(game, mission, step);
+            show_next_dialogue_to_bob();
+            return;
+        }
+        break;
+    case (2):
+        /*Bob recluta al dinosaurio (RECRUIT) y acaba la misión; se llama a la siguiente misión: THIRD_FLOOR_MISSION, se abre el link al piso de arriba*/
+        if (character_get_following(game_get_character(game, REX_ID)) == player_get_id(BOB_PLAYER))
+        {
+            link_set_is_open(game_get_link(game, HALL2TOHIDDENROOM), TRUE);
 
-                player_remove_object_from_backpack(BOB_PLAYER, DINOSAURLEG_ID);
-                
-                game_set_current_mission(game, THIRD_FLOOR_MISSION);
-                game_set_next_objective(game);
-                
-                game_set_next_dialogue(game, BOB);
-                game_set_message(game, game_get_message(game, BOB), ALICE);
-                game_set_show_message(game , TRUE, BOB_TURN);
-                game_set_show_message(game , TRUE, ALICE_TURN);
-                return;
-            }
-            break;
-        default:
-            break;
+            player_remove_object_from_backpack(BOB_PLAYER, DINOSAURLEG_ID);
+
+            game_set_current_mission(game, THIRD_FLOOR_MISSION);
+            game_set_next_objective(game);
+
+            game_set_next_dialogue(game, BOB);
+            game_set_message(game, game_get_message(game, BOB), ALICE);
+            game_set_show_message(game, TRUE, BOB_TURN);
+            game_set_show_message(game, TRUE, ALICE_TURN);
+            return;
+        }
+        break;
+    default:
+        break;
     }
     return;
 }
@@ -595,7 +593,7 @@ void game_rules_third_floor_mission(Game *game, Mission *mission)
     default:
         break;
     }
-    
+
     return;
 }
 
@@ -605,61 +603,70 @@ void game_rules_boss_mission(Game *game, Mission *mission)
     if (!game || !mission)
         return;
     step = mission_get_current_step(mission);
-    switch(step){
-        case(0):
+    switch (step)
+    {
+    case (0):
         /*cuando se acaba con el boss final, se pasa y spawneamos la llave*/
-            if(character_get_health(game_get_character(game, BOSS_ID)) <= 0){
-                game_rules_mission_step(game, mission, step);
-                space_add_objectId(game_get_space(game,HIDDENROOM), KEY_ID);
-                if(game_get_turn(game) == ALICE_TURN){
-                    game_set_message(game, game_get_message(game, ALICE), BOB);
-                }else if(game_get_turn(game) == BOB_TURN){
-                    game_set_message(game, game_get_message(game, BOB), ALICE);
-                }
-                game_set_show_message(game, TRUE, ALICE);
-                game_set_show_message(game, TRUE, BOB);
-                return;
-            }
-        break;
-        case(1):
-        /*en el segundo paso se pide abrir el link con la llave*/
-            if(link_get_is_open(game_get_link(game, HIDDENROOMTOTREASURE)) == TRUE){
-                game_rules_mission_step(game, mission, step);
-                return;
-            }
-        break;
-        case(2):
-            /*al final se pide abrir el cofre del tesoro, gift, despues aparece la foto familiar.*/
-            if(command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GIFTBOX_NAME))
+        if (character_get_health(game_get_character(game, BOSS_ID)) <= 0)
+        {
+            game_rules_mission_step(game, mission, step);
+            space_add_objectId(game_get_space(game, HIDDENROOM), KEY_ID);
+            if (game_get_turn(game) == ALICE_TURN)
             {
-                space_add_objectId(game_get_space(game, TREASUREROOM), FAMILY_PIC_ID);
-                game_rules_mission_step(game, mission, step);
+                game_set_message(game, game_get_message(game, ALICE), BOB);
             }
+            else if (game_get_turn(game) == BOB_TURN)
+            {
+                game_set_message(game, game_get_message(game, BOB), ALICE);
+            }
+            game_set_show_message(game, TRUE, ALICE);
+            game_set_show_message(game, TRUE, BOB);
             return;
+        }
         break;
-        case(3):
+    case (1):
+        /*en el segundo paso se pide abrir el link con la llave*/
+        if (link_get_is_open(game_get_link(game, HIDDENROOMTOTREASURE)) == TRUE)
+        {
+            game_rules_mission_step(game, mission, step);
+            return;
+        }
+        break;
+    case (2):
+        /*al final se pide abrir el cofre del tesoro, gift, despues aparece la foto familiar.*/
+        if (command_get_code(game_interface_data_get_cmd_in_pos(game, LAST)) == INSPECT && command_get_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST)) == OK && !strcasecmp(command_get_argument(game_interface_data_get_cmd_in_pos(game, LAST)), GIFTBOX_NAME))
+        {
+            space_add_objectId(game_get_space(game, TREASUREROOM), FAMILY_PIC_ID);
+            game_rules_mission_step(game, mission, step);
+        }
+        return;
+        break;
+    case (3):
 
-            /*ahora se pide coger la foto familiar*/
-            if(player_backpack_contains(BOB_PLAYER, FAMILY_PIC_ID) || player_backpack_contains(ALICE_PLAYER, FAMILY_PIC_ID)){
-                if(player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) > 0){
-                    game_set_current_cinematic(game, TREASURE);
-                }
-                else if(player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) <= 0){
-                    game_set_current_cinematic(game, TREASURE_NO_BOB);
-                }
-                else if(player_get_health(ALICE_PLAYER) <= 0 && player_get_health(BOB_PLAYER) > 0){
-                    game_set_current_cinematic(game, TREASURE_NO_ALICE);
-                }
-                
-                return;
+        /*ahora se pide coger la foto familiar*/
+        if (player_backpack_contains(BOB_PLAYER, FAMILY_PIC_ID) || player_backpack_contains(ALICE_PLAYER, FAMILY_PIC_ID))
+        {
+            if (player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) > 0)
+            {
+                game_set_current_cinematic(game, TREASURE);
             }
-            break;
-        default:
-            break;
+            else if (player_get_health(ALICE_PLAYER) > 0 && player_get_health(BOB_PLAYER) <= 0)
+            {
+                game_set_current_cinematic(game, TREASURE_NO_BOB);
+            }
+            else if (player_get_health(ALICE_PLAYER) <= 0 && player_get_health(BOB_PLAYER) > 0)
+            {
+                game_set_current_cinematic(game, TREASURE_NO_ALICE);
+            }
+
+            return;
+        }
+        break;
+    default:
+        break;
     }
     return;
 }
-
 
 void game_rules_alice_flashback_init(Game *game)
 {
@@ -680,7 +687,6 @@ void game_rules_spawn_ghost(Game *game)
     return;
 }
 
-
 void game_rules_spawn_dinosaur_leg(Game *game)
 {
     if (!game)
@@ -698,7 +704,6 @@ void game_rules_spawn_final_boss(Game *game)
     return;
 }
 
-
 void game_rules_mission_step(Game *game, Mission *mission, int step)
 {
     if (!game || !mission || step < 0)
@@ -710,7 +715,6 @@ void game_rules_mission_step(Game *game, Mission *mission, int step)
 
     /*nos aseguramos de que el mensaje objetivo que hemos puesto le salga a ambos jugadores */
     game_set_objective(game, game_get_objective(game));
-
 
     return;
 }

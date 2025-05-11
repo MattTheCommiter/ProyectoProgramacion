@@ -154,8 +154,6 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
-
 /**Test whether the function returns a valid player for valid input */
 void test1_player_create()
 {
@@ -613,72 +611,77 @@ void test3_player_get_health()
 }
 
 /**This test checks if the player_get_inventory functions correctly when there is no player passed */
-void test1_player_get_inventory(){
+void test1_player_get_inventory()
+{
     Player *player = NULL;
     PRINT_TEST_RESULT(player_get_inventory(player) == NULL);
 }
 
 /**tests if player get inventory works fine when returning the inventory */
-void test2_player_get_inventory(){
+void test2_player_get_inventory()
+{
     Player *player = NULL;
-    player = player_create(1,1);
+    player = player_create(1, 1);
     player_add_object_to_backpack(player, 5);
     PRINT_TEST_RESULT(inventory_contains(player_get_inventory(player), 5) == TRUE);
     player_destroy(player);
 }
 
 /**this test checks if it works when NULL pointer is passed */
-void test1_player_set_max_objs(){
+void test1_player_set_max_objs()
+{
     Player *player = NULL;
     PRINT_TEST_RESULT(player_set_max_objs(player, 2) == ERROR);
 }
 
 /**this test checks if the function actually sets the max ammount of objects */
-void test2_player_set_max_objs(){
+void test2_player_set_max_objs()
+{
     Player *player = NULL;
-    player = player_create(1,1);
+    player = player_create(1, 1);
     player_set_max_objs(player, 3);
     PRINT_TEST_RESULT(inventory_get_max_objs(player_get_inventory(player)) == 3);
     player_destroy(player);
-
 }
 
 /**Test whether the function returns NO_ID for a NULL player */
-void test1_player_get_team() {
+void test1_player_get_team()
+{
     Player *player = NULL;
     PRINT_TEST_RESULT(player_get_team(player) == NO_ID);
 }
 
 /**Test whether the function returns the correct team ID for a valid player */
-void test2_player_get_team() {
+void test2_player_get_team()
+{
     Player *player = NULL;
     player = player_create(1, 3); /*Create a player with ID 1 and inventory size 3*/
     PRINT_TEST_RESULT(player != NULL);
-    if (player != NULL) {
-    player_set_team(player, 5); 
-    PRINT_TEST_RESULT(player_get_team(player) == 5);
-    player_destroy(player);
-    }
-}
-
-
-/**Test whether the function returns ERROR for a NULL player */
-void test1_player_set_team() {
-    Player *player = NULL;
-    PRINT_TEST_RESULT(player_set_team(player, 5) == ERROR); 
-}
-
-/**Test whether the function sets the team ID correctly for a valid player */
-void test2_player_set_team() {
-    Player *player = NULL;
-    player = player_create(1, 3); 
-    PRINT_TEST_RESULT(player != NULL);
-    if (player != NULL) {
-        PRINT_TEST_RESULT(player_set_team(player, 5) == OK);
+    if (player != NULL)
+    {
+        player_set_team(player, 5);
         PRINT_TEST_RESULT(player_get_team(player) == 5);
         player_destroy(player);
     }
 }
 
+/**Test whether the function returns ERROR for a NULL player */
+void test1_player_set_team()
+{
+    Player *player = NULL;
+    PRINT_TEST_RESULT(player_set_team(player, 5) == ERROR);
+}
 
-
+/**Test whether the function sets the team ID correctly for a valid player */
+void test2_player_set_team()
+{
+    Player *player = NULL;
+    player = player_create(1, 3);
+    PRINT_TEST_RESULT(player != NULL);
+    if (player != NULL)
+    {
+        PRINT_TEST_RESULT(player_set_team(player, 5) == OK);
+        PRINT_TEST_RESULT(player_get_team(player) == 5);
+        player_destroy(player);
+    }
+}

@@ -171,6 +171,9 @@ docs:
 run:
 	./juego house.dat
 
+runD:
+	./juego house.dat -d
+	
 runLog:
 	./juego house.dat -l Logfile
 

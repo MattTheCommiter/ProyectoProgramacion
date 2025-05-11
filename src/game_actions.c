@@ -26,7 +26,7 @@
  * @date 27-01-2025
  * @author Profesores
  *
- * @param game pointer to game containing all of its information 
+ * @param game pointer to game containing all of its information
  */
 void game_actions_unknown(Game *game);
 
@@ -36,7 +36,7 @@ void game_actions_unknown(Game *game);
  * @date 27-01-2025
  * @author Profesores
  *
- * @param game pointer to game containing all of its information 
+ * @param game pointer to game containing all of its information
  */
 void game_actions_exit(Game *game);
 
@@ -174,14 +174,14 @@ void game_actions_use(Game *game, char *object_name, char *character_name);
 void game_actions_turn(Game *game);
 
 /**
- * @brief Command that allows the player to give others obejcts in their inventory 
- * @author Guilherme Povedano 
+ * @brief Command that allows the player to give others obejcts in their inventory
+ * @author Guilherme Povedano
  * @date 02-05-25
- * @param game pointer to game struct containing the game's information 
- * @param object_name string containing the name of the object to be passed along 
+ * @param game pointer to game struct containing the game's information
+ * @param object_name string containing the name of the object to be passed along
  * @param player_name string containing the name of the recipient player of the object
  */
-void game_actions_give(Game * game, char *object_name, char *player_name);
+void game_actions_give(Game *game, char *object_name, char *player_name);
 
 /*Game actions implementation*/
 
@@ -247,7 +247,7 @@ Status game_actions_update(Game **game, Command *command, Graphic_engine *gengin
   case TURN:
     game_actions_turn(*game);
     break;
-  case GIVE: 
+  case GIVE:
     game_actions_give(*game, command_get_argument(command), command_get_argument2(command));
     break;
   default:
@@ -398,10 +398,10 @@ void game_actions_take(Game *game, char *arg)
       space_delete_object(game_get_space(game, game_get_current_player_location(game)), objectId);
 
       /*si el objeto recogido es la mochila, aumentamos el tamaño del inventario*/
-      if(objectId == BACKPACK_ID){
+      if (objectId == BACKPACK_ID)
+      {
         inventory_set_max_objs(player_get_inventory(game_get_current_player(game)), inventory_get_max_objs(player_get_inventory(game_get_current_player(game))) + BACKPACK_SIZE);
       }
-
 
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
       return;
@@ -455,7 +455,8 @@ void game_actions_drop(Game *game, char *arg)
   }
 
   /*Check if the object being dropped is the backpack, if it is, then we wont be able to drop it if it has objects inside*/
-  if(objectId == BACKPACK_ID && (inventory_get_max_objs(player_get_inventory(game_get_current_player(game))) - BACKPACK_SIZE) < (player_get_num_objects_in_backpack(game_get_current_player(game)) - BACKPACK_OBJECT)){
+  if (objectId == BACKPACK_ID && (inventory_get_max_objs(player_get_inventory(game_get_current_player(game))) - BACKPACK_SIZE) < (player_get_num_objects_in_backpack(game_get_current_player(game)) - BACKPACK_OBJECT))
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -470,8 +471,8 @@ void game_actions_drop(Game *game, char *arg)
     if (object_get_dependency(dependentObject) == objectId)
     {
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      sprintf(message, "Cant drop %s, %s depends on it",object_get_name(game_get_object(game, objectId)) ,object_get_name(dependentObject));
-      game_set_message(game, message,(Protagonists) game_get_turn(game));
+      sprintf(message, "Cant drop %s, %s depends on it", object_get_name(game_get_object(game, objectId)), object_get_name(dependentObject));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       return;
     }
@@ -482,7 +483,8 @@ void game_actions_drop(Game *game, char *arg)
   {
     /* Remove the object from the player's backpack */
     player_remove_object_from_backpack(game_get_current_player(game), objectId);
-    if(objectId == BACKPACK_ID){
+    if (objectId == BACKPACK_ID)
+    {
       inventory_set_max_objs(player_get_inventory(game_get_current_player(game)), inventory_get_max_objs(player_get_inventory(game_get_current_player(game))) - BACKPACK_SIZE);
     }
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
@@ -550,20 +552,20 @@ void game_actions_attack(Game *game, char *arg)
   }
 
   /*define special behaviour for group attack in floor 3*/
-  if (character_get_id(enemy) == BOSS_ID) 
+  if (character_get_id(enemy) == BOSS_ID)
   {
-    if (player_get_team(current_player) == NO_ID) 
+    if (player_get_team(current_player) == NO_ID)
     {
       sprintf(message, "To attack them you must be teamed up with your sibling.");
-      game_set_message(game, message,(Protagonists)game_get_turn(game));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
-    if (player_backpack_contains(current_player, WATER_GUN_ID) == FALSE) 
+    if (player_backpack_contains(current_player, WATER_GUN_ID) == FALSE)
     {
       sprintf(message, "To attack them you must have the water gun.");
-      game_set_message(game, message,(Protagonists) game_get_turn(game));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
@@ -571,12 +573,12 @@ void game_actions_attack(Game *game, char *arg)
   }
 
   /* special behaviour for group attack in floor 1 */
-  if (character_get_id(enemy) == GHOST_ID) 
+  if (character_get_id(enemy) == GHOST_ID)
   {
-    if (player_get_team(current_player) == NO_ID) 
+    if (player_get_team(current_player) == NO_ID)
     {
       sprintf(message, "To attack them you must be teamed up with your sibling.");
-      game_set_message(game, message,(Protagonists) game_get_turn(game));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
@@ -584,23 +586,23 @@ void game_actions_attack(Game *game, char *arg)
     if (player_get_location(game_get_player_in_pos(game, ALICE_TURN)) != player_get_location(game_get_player_in_pos(game, BOB_TURN)) || player_get_location(game_get_player_in_pos(game, ALICE_TURN)) != character_get_location(game_get_character(game, GHOST_ID)))
     {
       sprintf(message, "To attack the ghost both players must be with the him.");
-      game_set_message(game, message,(Protagonists) game_get_turn(game));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
-    if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, BOB_ID), KNIFE_ID) == FALSE))
+    if (strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, BOB_ID), KNIFE_ID) == FALSE))
     {
       sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
-      game_set_message(game, message,(Protagonists) game_get_turn(game));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return; 
+      return;
     }
     if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, ALICE_ID), LANTERN_ID) == FALSE))
     {
       sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
-      game_set_message(game, message,(Protagonists) game_get_turn(game));
+      game_set_message(game, message, (Protagonists)game_get_turn(game));
       game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
@@ -635,7 +637,7 @@ void game_actions_attack(Game *game, char *arg)
   }
 
   /* determinist mode behaviour */
-  if (DETERMINIST_MODE == 1) 
+  if (DETERMINIST_MODE == 1)
   {
     team = player_get_team(game_get_current_player(game));
     /* We look for teammates at the same space and alive, this number will multiply the damage done to the character*/
@@ -765,10 +767,10 @@ void game_actions_recruit(Game *game, char *arg)
   /*reset if we want the game to show the message*/
   game_set_show_message(game, FALSE, (Protagonists)game_get_turn(game));
   /*If the recruited character is the dinosaur, place a special condition*/
-  if (character_get_id(game_get_character_from_name(game, arg)) == REX_ID && player_backpack_contains(game_get_current_player(game), DINOSAURLEG_ID) == FALSE) 
-  { 
+  if (character_get_id(game_get_character_from_name(game, arg)) == REX_ID && player_backpack_contains(game_get_current_player(game), DINOSAURLEG_ID) == FALSE)
+  {
     sprintf(message, "Cannot recruit character until you have found its leg.");
-    game_set_message(game, message,(Protagonists) game_get_turn(game));
+    game_set_message(game, message, (Protagonists)game_get_turn(game));
     game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -787,7 +789,7 @@ void game_actions_recruit(Game *game, char *arg)
     return;
   }
   sprintf(message, "%s recruited", arg);
-  game_set_message(game, message,(Protagonists) game_get_turn(game));
+  game_set_message(game, message, (Protagonists)game_get_turn(game));
   game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
   command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
   return;
@@ -844,7 +846,8 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
     l = game_get_link(game, game_get_link_id_at(game, i));
     printf("%s\n", link_get_name(l));
     /*check if link name matches first argument in the command*/
-    if (strcasecmp(link_get_name(l), arg1) == 0){
+    if (strcasecmp(link_get_name(l), arg1) == 0)
+    {
       break;
     }
   }
@@ -871,7 +874,6 @@ void game_actions_open(Game *game, char *arg1, char *arg2)
         command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
         return;
       }
-
 
       /* open link and remove object from backpack */
       link_set_is_open(l, TRUE);
@@ -963,7 +965,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   if (player_get_team(teammate) == player_get_team(game_get_current_player(game)))
   {
     sprintf(message, "The player %s is already on your team!", arg);
-    game_set_message(game, message,(Protagonists) game_get_turn(game));
+    game_set_message(game, message, (Protagonists)game_get_turn(game));
     game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
@@ -989,7 +991,7 @@ void game_actions_team(Game *game, char *arg, Graphic_engine *gengine)
   /*print the message for the other player to accept or decline*/
   sprintf(message, "Player %d wants to team, accept or decline?(Y/N)", current_turn + 1);
 
-  game_set_message(game, message,(Protagonists) game_get_turn(game));
+  game_set_message(game, message, (Protagonists)game_get_turn(game));
   game_set_show_message(game, TRUE, (Protagonists)game_get_turn(game));
   /*paint the game in order to see the new message*/
   graphic_engine_paint_game(gengine, game);
@@ -1023,7 +1025,8 @@ void game_actions_turn(Game *game)
   game_set_show_message(game, FALSE, (Protagonists)game_get_turn(game));
 
   /*la mision del flashback no permite cambios de turno*/
-  if(game_get_current_mission_code(game) == FATHER_MISSION){
+  if (game_get_current_mission_code(game) == FATHER_MISSION)
+  {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
@@ -1086,7 +1089,7 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
 
   /*Remove the object from the game after use*/
   player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object));
-    
+
   if (!game_remove_object(game, object))
   {
     command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
@@ -1098,75 +1101,75 @@ void game_actions_use(Game *game, char *object_name, char *character_name)
   return;
 }
 
-void game_actions_give(Game * game, char *object_name, char *player_name)
+void game_actions_give(Game *game, char *object_name, char *player_name)
+{
+  Player *recipient = NULL;
+  Object *object = NULL, *dependant = NULL;
+
+  if (!game || !object_name || !player_name)
   {
-    Player *recipient = NULL;
-    Object *object = NULL, *dependant = NULL;
-
-    if (!game || !object_name || !player_name)
-    {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
-    }
-    /*reset if we want the game to show the message*/
-    game_set_show_message(game, FALSE, (Protagonists)game_get_turn(game));
-
-    /* find recipient player */
-    if ((recipient = game_get_player_from_name(game, player_name)) == NULL)
-    {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
-    }
-
-    /* find object to be passed */
-    if ((object = game_get_object_from_name(game, object_name)) == NULL)
-    {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
-    }
-
-    /* find that object in the backpack of currrent_player */
-    if (player_backpack_contains(game_get_current_player(game), object_get_id(object)) == FALSE)
-    {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
-    }
-
-    /* check both players in the same space */
-    if (game_get_current_player_location(game) != player_get_location(recipient))
-    {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
-    }
-
-    /*Check if the object passed has dependencies*/
-    if (object_get_dependency(object) != NO_ID)
-    {
-      if (!(dependant = game_get_object(game, object_get_dependency(object))))
-      {
-        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-        return;
-      }
-      if (player_backpack_contains(recipient, object_get_dependency(object)) == FALSE)
-      {
-        /*The recipient cant take the object*/
-        command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-        return;
-      }
-    }
-
-    /* check if recipient player has sufficient room */
-    if (player_backpack_is_full(recipient) == TRUE)
-    {
-      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
-      return;
-    }
-
-    /* exchange the object */
-    player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object));
-    player_add_object_to_backpack(recipient, object_get_id(object));
-
-    /* correct exit */
-    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
     return;
   }
+  /*reset if we want the game to show the message*/
+  game_set_show_message(game, FALSE, (Protagonists)game_get_turn(game));
+
+  /* find recipient player */
+  if ((recipient = game_get_player_from_name(game, player_name)) == NULL)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* find object to be passed */
+  if ((object = game_get_object_from_name(game, object_name)) == NULL)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* find that object in the backpack of currrent_player */
+  if (player_backpack_contains(game_get_current_player(game), object_get_id(object)) == FALSE)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* check both players in the same space */
+  if (game_get_current_player_location(game) != player_get_location(recipient))
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /*Check if the object passed has dependencies*/
+  if (object_get_dependency(object) != NO_ID)
+  {
+    if (!(dependant = game_get_object(game, object_get_dependency(object))))
+    {
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if (player_backpack_contains(recipient, object_get_dependency(object)) == FALSE)
+    {
+      /*The recipient cant take the object*/
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+  }
+
+  /* check if recipient player has sufficient room */
+  if (player_backpack_is_full(recipient) == TRUE)
+  {
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+    return;
+  }
+
+  /* exchange the object */
+  player_remove_object_from_backpack(game_get_current_player(game), object_get_id(object));
+  player_add_object_to_backpack(recipient, object_get_id(object));
+
+  /* correct exit */
+  command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+  return;
+}

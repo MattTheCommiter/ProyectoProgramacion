@@ -13,14 +13,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 51 /*!<Total number of test functions*/
+#define MAX_TESTS 51         /*!<Total number of test functions*/
 #define SPACE_NAME "espacio" /*!<Name that will be given to the spaces created for the tests*/
-#define SPACE_ID 5 /*!<Id that will be given to the spaces created for the tests*/
-#define OBJECT_ID 3 /*!<Id that will be given to the objects created for the tests*/
-#define CHARACTER_ID 4 /*!<Id that will be given to the objects created for the tests*/
-#define NO_ELEMENTS 0 /*!<Number of elements of an empty set/array*/
-#define ONE_ELEMENT 1 /*!<Size of a one-element set or array*/
-#define INVALID_VALUE -1 /*!<Value used to test correct handling of incorrect arguments for certain functions*/
+#define SPACE_ID 5           /*!<Id that will be given to the spaces created for the tests*/
+#define OBJECT_ID 3          /*!<Id that will be given to the objects created for the tests*/
+#define CHARACTER_ID 4       /*!<Id that will be given to the objects created for the tests*/
+#define NO_ELEMENTS 0        /*!<Number of elements of an empty set/array*/
+#define ONE_ELEMENT 1        /*!<Size of a one-element set or array*/
+#define INVALID_VALUE -1     /*!<Value used to test correct handling of incorrect arguments for certain functions*/
 
 /**
  * @brief Main function for SPACE unit tests.
@@ -227,7 +227,7 @@ void test3_space_add_objectId()
 
 void test1_space_get_name()
 {
-  Space *s=NULL;
+  Space *s = NULL;
   s = space_create(SPACE_ID);
   space_set_name(s, SPACE_NAME);
   PRINT_TEST_RESULT(strcmp(space_get_name(s), SPACE_NAME) == 0);
@@ -406,7 +406,6 @@ void test4_space_add_character()
   PRINT_TEST_RESULT(space_add_character(s, NO_ID) == ERROR);
   space_destroy(s);
 }
-
 
 void test1_space_delete_character()
 {

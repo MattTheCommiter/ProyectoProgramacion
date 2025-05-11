@@ -21,17 +21,16 @@
  *
  */
 
-typedef struct _InterfaceData{
-  Command *lastCmd;               /*!<Pointer to the last command that have been saved*/
-  Command *second_to_lastCmd;     /*!<Pointer to the second-to-last command that have been saved*/
-  Command *third_to_lastCmd;      /*!<Pointer to the third-to-last command that have been saved*/
-  char message[DIALOGUE_LINE_LENGTH];/*!<String that has the message of the character the player last talked to*/
-  char description[MAX_MESSAGE];  /*!<String that has the description of the object the player last inspected in the game*/
-  char objective[MAX_MISSION_MESSAGE];  /*!<String that has the text for the next objective of the game, acording to each mission*/
-  Bool show_message;              /*!<Stablishes if the message of the game must be shown*/
+typedef struct _InterfaceData
+{
+  Command *lastCmd;                    /*!<Pointer to the last command that have been saved*/
+  Command *second_to_lastCmd;          /*!<Pointer to the second-to-last command that have been saved*/
+  Command *third_to_lastCmd;           /*!<Pointer to the third-to-last command that have been saved*/
+  char message[DIALOGUE_LINE_LENGTH];  /*!<String that has the message of the character the player last talked to*/
+  char description[MAX_MESSAGE];       /*!<String that has the description of the object the player last inspected in the game*/
+  char objective[MAX_MISSION_MESSAGE]; /*!<String that has the text for the next objective of the game, acording to each mission*/
+  Bool show_message;                   /*!<Stablishes if the message of the game must be shown*/
 } InterfaceData;
-
-
 
 /**
  * @brief Structure where all the game's main information is stored (players, objects, links, spaces...)
@@ -103,7 +102,8 @@ Status game_create(Game **game)
   (*game)->finished = FALSE;
   (*game)->lights_on = FALSE;
   (*game)->current_cinematic = INTRODUCTION;
-  for(i=0;i<N_CINEMATICS;i++){
+  for (i = 0; i < N_CINEMATICS; i++)
+  {
     (*game)->cinematics_text[i] = cinematics_text_create();
   }
   (*game)->current_mission = NO_MISSION;
@@ -143,12 +143,12 @@ Status game_create_from_file(Game **game, char *filename)
     fprintf(stdout, "Could not load links");
     return ERROR;
   }
-  if(gameManagement_load_cinematics((*game), filename) == ERROR)
+  if (gameManagement_load_cinematics((*game), filename) == ERROR)
   {
     fprintf(stdout, "Could not load cinematics");
     return ERROR;
   }
-  if(gameManagement_load_missions((*game), filename) == ERROR)
+  if (gameManagement_load_missions((*game), filename) == ERROR)
   {
     fprintf(stdout, "Could not load misions");
     return ERROR;
@@ -194,11 +194,13 @@ Status game_destroy(Game *game)
     command_destroy(game->playerGraphicInformation[i]->third_to_lastCmd);
     free(game->playerGraphicInformation[i]);
   }
-  for(i=0;i<N_CINEMATICS;i++){
+  for (i = 0; i < N_CINEMATICS; i++)
+  {
     cinematics_text_destroy(game->cinematics_text[i]);
   }
 
-  for(i = 0; i < game->n_missions ; i++){
+  for (i = 0; i < game->n_missions; i++)
+  {
     mission_destroy(game->missions[i]);
   }
   free(game);
@@ -257,17 +259,19 @@ Status game_set_current_player_location(Game *game, Id id)
   return OK;
 }
 
-Player *game_get_player(Game *game, Id player_id) 
-{  
+Player *game_get_player(Game *game, Id player_id)
+{
   int i;
-  
-  if (!game || player_id == NO_ID) return NULL;
 
-  for (i = 0 ; i < game->n_players ; i++) 
+  if (!game || player_id == NO_ID)
+    return NULL;
+
+  for (i = 0; i < game->n_players; i++)
   {
-    if (player_get_id(game->players[i]) == player_id) return game->players[i];
+    if (player_get_id(game->players[i]) == player_id)
+      return game->players[i];
   }
-  
+
   return NULL;
 }
 
@@ -367,7 +371,7 @@ void game_print(Game *game)
     player_print(game_get_current_player(game));
     game->turn = (game->turn + 1) % (game->n_players);
   }
-  fprintf(stdout, "=> Light state: %s\n", game_get_lights_on(game) == TRUE? "TRUE":"FALSE");
+  fprintf(stdout, "=> Light state: %s\n", game_get_lights_on(game) == TRUE ? "TRUE" : "FALSE");
   fprintf(stdout, "=> Current Cinematic code: %d\n", game_get_current_cinematic(game));
   fprintf(stdout, "=> Current mission: %s\n", mission_get_name(game_get_current_mission_code(game)));
 }
@@ -523,7 +527,8 @@ Status game_set_message(Game *game, char *msg, Protagonists player)
 {
   if (!game || player < ALICE || player > BOB)
     return ERROR;
-  if(!msg){
+  if (!msg)
+  {
     game->playerGraphicInformation[game->turn]->message[0] = ' ';
     game->playerGraphicInformation[game->turn]->message[1] = '\0';
     return OK;
@@ -714,21 +719,26 @@ Status game_add_link(Game *game, Link *link)
   return OK;
 }
 
-Id game_get_link_id_at(Game *game, long position) {
+Id game_get_link_id_at(Game *game, long position)
+{
 
-  if (!game || position < 0) return NO_ID;
+  if (!game || position < 0)
+    return NO_ID;
 
   return link_get_id(game->links[position]);
 }
 
-
-Link *game_get_link(Game *game, Id id) {
+Link *game_get_link(Game *game, Id id)
+{
   int i = 0;
-  
-  if (!game || id == NO_ID) return NULL;
 
-  for (i = 0 ; i < game->n_links ; i++) {
-    if (link_get_id(game->links[i]) == id) return game->links[i];
+  if (!game || id == NO_ID)
+    return NULL;
+
+  for (i = 0; i < game->n_links; i++)
+  {
+    if (link_get_id(game->links[i]) == id)
+      return game->links[i];
   }
 
   return NULL;
@@ -856,7 +866,8 @@ Status game_add_player(Game *game, Player *player)
 
 Status game_next_turn(Game *game)
 {
-  if(player_get_health(game->players[(game->turn + 1)%game->n_players]) > 0){
+  if (player_get_health(game->players[(game->turn + 1) % game->n_players]) > 0)
+  {
     game->turn = (game->turn + 1) % (game->n_players);
     return OK;
   }
@@ -887,8 +898,8 @@ int game_get_n_players(Game *game)
 
 Status game_kill_current_player(Game *game)
 {
-  int i, total_objects=0;
-  Id player_death_location=NO_ID;
+  int i, total_objects = 0;
+  Id player_death_location = NO_ID;
 
   if (!game)
     return ERROR;
@@ -896,11 +907,14 @@ Status game_kill_current_player(Game *game)
   total_objects = player_get_num_objects_in_backpack(game->players[game->turn]);
   player_death_location = player_get_location(game->players[game->turn]);
   /*we place each object the player had in his backack in the space*/
-  for(i=0;i<total_objects;i++){
+  for (i = 0; i < total_objects; i++)
+  {
     space_add_objectId(game_get_space(game, player_death_location), player_get_backpack_object_id_at(game->players[game->turn], i));
   }
-  for(i=0;i<space_get_n_characters(game_get_space(game, player_death_location));i++){
-    if(character_get_following(game_get_character_in_pos(game, i)) == player_get_id(game_get_current_player(game))){
+  for (i = 0; i < space_get_n_characters(game_get_space(game, player_death_location)); i++)
+  {
+    if (character_get_following(game_get_character_in_pos(game, i)) == player_get_id(game_get_current_player(game)))
+    {
       character_set_following(game_get_character_in_pos(game, i), NO_ID);
     }
   }
@@ -1057,86 +1071,116 @@ Bool game_get_show_message(Game *game, Protagonists player)
 
 Status game_set_show_message(Game *game, Bool boolean, Protagonists player)
 {
-  if (!game){
+  if (!game)
+  {
     return ERROR;
-    }
+  }
 
   game->playerGraphicInformation[player]->show_message = boolean;
   return OK;
 }
 
-Status game_set_lights_on(Game *game, Bool lights_on){
-  if(!game) return ERROR;
+Status game_set_lights_on(Game *game, Bool lights_on)
+{
+  if (!game)
+    return ERROR;
   game->lights_on = lights_on;
   return OK;
 }
 
-Bool game_get_lights_on(Game *game){
-  if(!game) return FALSE;
+Bool game_get_lights_on(Game *game)
+{
+  if (!game)
+    return FALSE;
   return game->lights_on;
 }
 
-Status game_set_current_cinematic(Game *game, Cinematics current_cinematic){
-  if(!game) return ERROR;
+Status game_set_current_cinematic(Game *game, Cinematics current_cinematic)
+{
+  if (!game)
+    return ERROR;
   game->current_cinematic = current_cinematic;
   return OK;
 }
 
-Cinematics game_get_current_cinematic(Game *game){
-  if(!game) return FALSE;
+Cinematics game_get_current_cinematic(Game *game)
+{
+  if (!game)
+    return FALSE;
   return game->current_cinematic;
 }
 
-Cinematics_text *game_get_current_cinematic_text(Game *game){
-  if(!game) return NULL;
+Cinematics_text *game_get_current_cinematic_text(Game *game)
+{
+  if (!game)
+    return NULL;
   return game->cinematics_text[game->current_cinematic];
 }
 
-Cinematics_text *game_get_cinematic_text_in_pos(Game *game, int pos){
-  if(!game || pos < 0 || pos >= N_CINEMATICS) return NULL;
+Cinematics_text *game_get_cinematic_text_in_pos(Game *game, int pos)
+{
+  if (!game || pos < 0 || pos >= N_CINEMATICS)
+    return NULL;
   return game->cinematics_text[pos];
 }
 
-int game_get_n_missions(Game *game){
-  if(!game) return ERROR;
+int game_get_n_missions(Game *game)
+{
+  if (!game)
+    return ERROR;
   return game->n_missions;
 }
 
-Mission *game_get_mission_in_pos(Game *game, int pos){
-  if(!game || pos < 0 || pos >= game->n_missions) return NULL;
+Mission *game_get_mission_in_pos(Game *game, int pos)
+{
+  if (!game || pos < 0 || pos >= game->n_missions)
+    return NULL;
   return game->missions[pos];
 }
 
-Mission_Code game_get_current_mission_code(Game *game){
-  if(!game) return NO_MISSION;
+Mission_Code game_get_current_mission_code(Game *game)
+{
+  if (!game)
+    return NO_MISSION;
   return game->current_mission;
 }
 
-Mission *game_get_current_mission(Game *game){
-  if(!game) return ERROR;
-  if(game->current_mission == NO_MISSION) return NULL;
+Mission *game_get_current_mission(Game *game)
+{
+  if (!game)
+    return ERROR;
+  if (game->current_mission == NO_MISSION)
+    return NULL;
   return game->missions[game->current_mission];
 }
 
-Status game_set_current_mission(Game *game, Mission_Code mission){
-  if(!game || mission >= game->n_missions) return ERROR;
+Status game_set_current_mission(Game *game, Mission_Code mission)
+{
+  if (!game || mission >= game->n_missions)
+    return ERROR;
   game->current_mission = mission;
   return OK;
 }
 
-Status game_add_mission(Game *game, Mission *mission){
-  if(!game || !mission || game->n_missions >= MAX_MISSIONS) return ERROR;
+Status game_add_mission(Game *game, Mission *mission)
+{
+  if (!game || !mission || game->n_missions >= MAX_MISSIONS)
+    return ERROR;
   game->missions[game->n_missions] = mission;
   game->n_missions++;
   return OK;
 }
 
-Status game_set_next_objective(Game *game){
-  if(!game) return ERROR;
+Status game_set_next_objective(Game *game)
+{
+  if (!game)
+    return ERROR;
   return game_set_objective(game, mission_get_next_objective(game_get_current_mission(game)));
 }
 
-Status game_set_next_dialogue(Game *game, Protagonists player){
-  if(!game) return ERROR;
+Status game_set_next_dialogue(Game *game, Protagonists player)
+{
+  if (!game)
+    return ERROR;
   return game_set_message(game, mission_get_next_dialogue(game_get_current_mission(game)), player);
 }
