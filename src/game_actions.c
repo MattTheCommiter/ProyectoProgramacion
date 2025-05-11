@@ -539,6 +539,8 @@ void game_actions_attack(Game *game, char *arg)
   {
     return;
   }
+
+  current_player = game_get_current_player(game);
   enemy = game_get_character_from_name(game, arg);
   if (enemy == NULL || character_get_location(enemy) != player_get_location(current_player) || character_get_friendly(enemy) == TRUE || character_get_health(enemy) <= 0)
   {
@@ -578,14 +580,23 @@ void game_actions_attack(Game *game, char *arg)
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return;
     }
-    if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), KNIFE_ID) == FALSE))
+    if (player_get_location(game_get_player_in_pos(game, ALICE_TURN)) != player_get_location(game_get_player_in_pos(game, BOB_TURN)) || player_get_location(game_get_player_in_pos(game, ALICE_TURN)) != character_get_location(game_get_character(game, GHOST_ID)))
+    {
+      sprintf(message, "To attack the ghost both players must be with the him.");
+      game_set_message(game, message,game_get_turn(game));
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
+      return;
+    }
+    if(strcasecmp(player_get_name(current_player), ALICE_NAME) == 0 && (player_backpack_contains(current_player, LANTERN_ID) == FALSE || player_backpack_contains(game_get_player(game, BOB_ID), KNIFE_ID) == FALSE))
     {
       sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
       game_set_message(game, message,game_get_turn(game));
       game_set_show_message(game, TRUE, game_get_turn(game));
       command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), ERROR);
       return; 
-    } else if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, player_get_team(current_player)), LANTERN_ID) == FALSE))
+    }
+    if (strcasecmp(player_get_name(current_player), BOB_NAME) == 0 && (player_backpack_contains(current_player, KNIFE_ID) == FALSE || player_backpack_contains(game_get_player(game, ALICE_ID), LANTERN_ID) == FALSE))
     {
       sprintf(message, "Alice must have Lantern and Bob must have Kitchen Knife.");
       game_set_message(game, message,game_get_turn(game));
@@ -620,6 +631,30 @@ void game_actions_attack(Game *game, char *arg)
     {
       set_add(followers, characterId);
     }
+  }
+
+  /* determinist mode behaviour */
+  if (DETERMINIST_MODE == 1) 
+  {
+    team = player_get_team(game_get_current_player(game));
+    /* We look for teammates at the same space, this number will multiply the damage done to the character*/
+    for (i = 0; i < game_get_n_players(game); i++)
+    {
+      if (player_get_team(game_get_player_in_pos(game, i)) == team && player_get_location(game_get_player_in_pos(game, i)) == space_get_id(player_space))
+      {
+        teammates++;
+      }
+    }
+    /*if there are teammates attacking with the player, we show that there was a team attack*/
+    if (teammates > 1)
+    {
+      game_set_show_message(game, TRUE, game_get_turn(game));
+      game_set_message(game, "TEAM ATTACK!", game_get_turn(game));
+    }
+    character_set_health(enemy, character_get_health(enemy) - (PLAYER_DAMAGE * set_get_num_elements(followers)) - (PLAYER_DAMAGE * (teammates - 1)));
+    command_set_lastcmd_success(game_interface_data_get_cmd_in_pos(game, LAST), OK);
+    set_destroy(followers);
+    return;
   }
 
   /*Depending on the number genered, either the enemy loses health or the player's team is damaged*/

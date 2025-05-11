@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <strings.h>
 
 #include <unistd.h>
 #include <time.h>
@@ -62,6 +63,7 @@ void game_loop_cleanup(Game *game, Graphic_engine *gengine);
 
 /*****************************************************************************/
 
+int DETERMINIST_MODE = 0;
 /**
  * @brief initializes the game loop (calling the game_loop_init function) and runs the game loop
  *
@@ -71,14 +73,14 @@ void game_loop_cleanup(Game *game, Graphic_engine *gengine);
  * @param argc number of arguments in char *argv[]
  * @param argv array where the name of the text file is stored
  * @return int: 1 if an error occurs and 0 if no errors occur
- */
+ */ 
 int main(int argc, char *argv[])
 {
   Game *game = NULL;
   Graphic_engine *gengine;
   FILE *log_file = NULL;
   char filename[MAX_MESSAGE];
-
+  int i;
 
   /*If game data file is missing, the program exits with an error.
   If the game data file is provided but the log file is not, the code will still proceed with the game
@@ -88,9 +90,24 @@ int main(int argc, char *argv[])
     return 1;
   }
 
+  for (i = 2 ; i < argc ; i++) 
+  {
+    if (strcasecmp(argv[i], "-d") == 0) DETERMINIST_MODE = 1;
+    if (strcasecmp(argv[i], "-l") == 0)
+    {
+      sprintf(filename, "%s.log", argv[i+1]);
+      log_file = fopen(filename, "w");
+      if (!log_file) 
+      {
+        fprintf(stderr, "Error opening the log file: |%s|", argv[i+1]);
+        return 1;
+      }
+      i += 2;
+    }
+  }
   /*at least four arguments provided (the program name, game data file, -l flag, and log file name*/
+  /*
   if (argc >= 4 && strcmp(argv[2], "-l") == 0){
-    /*  open the log file for writing*/
     sprintf(filename, "%s.log", argv[3]);
     log_file = fopen(filename, "w");
     if (!log_file)  {
@@ -98,6 +115,7 @@ int main(int argc, char *argv[])
       return 1;
     }
   }
+  */
 
   /*Command to support UNICODE characters*/
   setlocale(LC_ALL, "");

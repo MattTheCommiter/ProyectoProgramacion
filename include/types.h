@@ -15,6 +15,8 @@
 #define NO_ID -1       /*!<Identification code used for when no id is given*/
 #define NO_HP 0       /*!<Identification for the hp when it is not given*/
 
+extern int DETERMINIST_MODE;
+
 /**
  * @brief Specification of Id type that will be used to define and identify players, objects, links, etc.
  */

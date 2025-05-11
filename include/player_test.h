@@ -343,6 +343,40 @@ void test1_player_set_max_objs();
 void test2_player_set_max_objs();
 
 
+/**
+ * @brief Test whether the function returns NO_ID for a NULL player.
+ * @pre A NULL player.
+ * @post The function returns NO_ID.
+ */
+void test1_player_get_team();
+
+
+/**
+ * @brief Test whether the function returns the correct team ID for a valid player.
+ * @pre A valid player created with ID 1 and inventory size 10.
+ * @post The function returns the correct team ID.
+ */
+void test2_player_get_team();
+
+
+/**
+ * @brief Test whether the function returns ERROR for a NULL player.
+ * @pre A NULL player.
+ * @post The function returns ERROR.
+ */
+void test1_player_set_team();
+
+
+/**
+ * @brief Test whether the function sets the team ID correctly for a valid player.
+ * @pre A valid player created with ID 1 and inventory size 3.
+ * @post The function sets the team ID correctly and returns OK.
+ */
+void test2_player_set_team();
+
+
+
+
 
 
  
