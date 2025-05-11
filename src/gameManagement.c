@@ -180,7 +180,7 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   char name[WORD_SIZE] = "";
   char **read_gdesc;
   char *toks = NULL;
-  int i;
+  int i, length;
   Id id;
   Space *space = NULL;
   Status status = OK;
@@ -214,12 +214,14 @@ Status gameManagement_load_spaces(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#s:");
 
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#s:", line, 3) == 0)
+
+    if (strncmp("#s:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|");
+      toks = strtok(line + length, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
@@ -290,7 +292,7 @@ Status gameManagement_load_objects(Game *game, char *filename)
   Id id = NO_ID, spaceId = NO_ID, dependency = NO_ID, open = NO_ID;
   Object *object = NULL;
   Status status = OK;
-  int movable = 1, health = 0;
+  int movable = 1, health = 0, length;
 
   if (!filename || !game)
   {
@@ -305,12 +307,14 @@ Status gameManagement_load_objects(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+
+  length = strlen("#o:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#o:", line, 3) == 0)
+    if (strncmp("#o:", line, length) == 0)
     {
       /*#o:1|Seed|11|Well, just a seed|1|-1|-1|-1|*/
-      toks = strtok(line + 3, "|");
+      toks = strtok(line + length, "|");
       id = atol(toks);
       toks = strtok(NULL, "|");
       strcpy(name, toks);
@@ -373,7 +377,7 @@ Status gameManagement_load_players(Game *game, char *filename)
   Id id = NO_ID, spaceId = NO_ID, objectId = NO_ID, teamId = NO_ID;
   Player *player = NULL;
   Status status = OK;
-  int hp = 0;
+  int hp = 0, length;
   int inventory_size = 0;
 
   if (!filename || !game)
@@ -389,11 +393,12 @@ Status gameManagement_load_players(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#p:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#p:", line, 3) == 0)
+    if (strncmp("#p:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|\r\n");
+      toks = strtok(line + length, "|\r\n");
       id = atol(toks);
       toks = strtok(NULL, "|\r\n");
       strcpy(name, toks);
@@ -462,7 +467,7 @@ Status gameManagement_load_characters(Game *game, char *filename)
   Id id = NO_ID, spaceId = NO_ID, following = NO_ID;
   Character *character = NULL;
   Status status = OK;
-  int hp = 0;
+  int hp = 0, length;
   Bool friendliness = FALSE;
 
   if (!filename || !game)
@@ -478,11 +483,13 @@ Status gameManagement_load_characters(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#c:");
+
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
-    if (strncmp("#c:", line, 3) == 0)
+    if (strncmp("#c:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|\r\n");
+      toks = strtok(line + length, "|\r\n");
       id = atol(toks);
       toks = strtok(NULL, "|\r\n");
       strcpy(name, toks);
@@ -549,6 +556,7 @@ Status gameManagement_load_links(Game *game, char *filename)
   Id idOrigin = NO_ID, idDest = NO_ID;
   Direction direccion = UNKNOWN_DIR;
   Bool open = FALSE;
+  int length;
 
   if (!filename || !game)
   {
@@ -563,12 +571,13 @@ Status gameManagement_load_links(Game *game, char *filename)
   /**
    * reads the file and loads each data individually.
    */
+  length = strlen("#l:");
   while (fgets(line, WORD_SIZE, file)) /*Reads all the lines in the text file and saves the provided information*/
   {
     /*#l:31|Entry|11|121|1|1| Id,Nombre,Idsalida,Iddest,direccion,open*/
-    if (strncmp("#l:", line, 3) == 0)
+    if (strncmp("#l:", line, length) == 0)
     {
-      toks = strtok(line + 3, "|\r\n");
+      toks = strtok(line + length, "|\r\n");
       id = atol(toks);
       toks = strtok(NULL, "|\r\n");
       strcpy(name, toks);
