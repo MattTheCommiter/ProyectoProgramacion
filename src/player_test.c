@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_TESTS 46 /*!<Defines the total ammount of test functions*/
+#define MAX_TESTS 50 /*!<Defines the total ammount of test functions*/
 
 /**
  * @brief Main function for PLAYER unit tests.
@@ -140,11 +140,21 @@ int main(int argc, char **argv)
         test1_player_set_max_objs();
     if (all || test == 46)
         test2_player_set_max_objs();
+    if (all || test == 47)
+        test1_player_get_team();
+    if (all || test == 48)
+        test2_player_get_team();
+    if (all || test == 49)
+        test1_player_set_team();
+    if (all || test == 50)
+        test2_player_set_team();
 
     PRINT_PASSED_PERCENTAGE;
 
     return 0;
 }
+
+
 
 /**Test whether the function returns a valid player for valid input */
 void test1_player_create()
@@ -623,8 +633,7 @@ void test1_player_set_max_objs(){
     PRINT_TEST_RESULT(player_set_max_objs(player, 2) == ERROR);
 }
 
-/**this test checks if the functions actually sets the max ammount of objects */
-
+/**this test checks if the function actually sets the max ammount of objects */
 void test2_player_set_max_objs(){
     Player *player = NULL;
     player = player_create(1,1);
@@ -633,3 +642,42 @@ void test2_player_set_max_objs(){
     player_destroy(player);
 
 }
+
+/**Test whether the function returns NO_ID for a NULL player */
+void test1_player_get_team() {
+    Player *player = NULL;
+    PRINT_TEST_RESULT(player_get_team(player) == NO_ID);
+}
+
+/**Test whether the function returns the correct team ID for a valid player */
+void test2_player_get_team() {
+    Player *player = NULL;
+    player = player_create(1, 3); /*Create a player with ID 1 and inventory size 3*/
+    PRINT_TEST_RESULT(player != NULL);
+    if (player != NULL) {
+    player_set_team(player, 5); 
+    PRINT_TEST_RESULT(player_get_team(player) == 5);
+    player_destroy(player);
+    }
+}
+
+
+/**Test whether the function returns ERROR for a NULL player */
+void test1_player_set_team() {
+    Player *player = NULL;
+    PRINT_TEST_RESULT(player_set_team(player, 5) == ERROR); 
+}
+
+/**Test whether the function sets the team ID correctly for a valid player */
+void test2_player_set_team() {
+    Player *player = player_create(1, 3); /* Create a player with ID 1 and inventory size 3 */
+    PRINT_TEST_RESULT(player != NULL);
+    if (player != NULL) {
+        PRINT_TEST_RESULT(player_set_team(player, 5) == OK);
+        PRINT_TEST_RESULT(player_get_team(player) == 5);
+        player_destroy(player);
+    }
+}
+
+
+
