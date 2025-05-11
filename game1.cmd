@@ -49,6 +49,10 @@ move south
 move east
 recruit dinosaur
 move west
+move south
+take band-aids
+use band-aids over dinosaur
+move north
 move north
 move up
 turn
@@ -61,7 +65,7 @@ attack Robocop
 attack Robocop
 attack Robocop
 attack Robocop
-drop DinosaurLeg
+attack Robocop
 take key
 open HiddenRoomToTreasureRoom with key
 move north
