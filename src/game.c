@@ -836,8 +836,12 @@ Status game_set_objective(Game *game, char *desc)
   {
     return ERROR;
   }
-  strcpy(game->playerGraphicInformation[ALICE_TURN]->objective, desc);
-  strcpy(game->playerGraphicInformation[BOB_TURN]->objective, desc);
+  if(game->playerGraphicInformation[ALICE_TURN]->objective != desc){
+    strcpy(game->playerGraphicInformation[ALICE_TURN]->objective, desc);
+  }
+  if(game->playerGraphicInformation[BOB_TURN]->objective != desc){
+    strcpy(game->playerGraphicInformation[BOB_TURN]->objective, desc);
+  }
   return OK;
 }
 

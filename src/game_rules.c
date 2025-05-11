@@ -272,8 +272,6 @@ void game_rules_lantern_mission(Game *game, Mission *mission)
             game_next_turn(game);
             game_set_current_mission(game, GENERATOR_MISSION);
             game_set_next_objective(game);
-            /*tambien ponemos los mensajes nuevos en el turno de alice*/
-            game_interface_in_pos_set_objective(game, ALICE_TURN, game_get_objective(game));
             game_set_next_dialogue(game, ALICE);
             show_next_dialogue_to_alice();
         }
@@ -359,9 +357,6 @@ void game_rules_father_mission(Game *game, Mission *mission)
             game_set_next_objective(game);
             game_set_next_dialogue(game, ALICE);
             show_next_dialogue_to_alice();
-
-            /*imprimimos el siguiente mensaje tambien en el turno de BOB*/
-            game_interface_in_pos_set_objective(game, BOB_TURN, game_get_objective(game));
 
             game_set_lights_on(game, TRUE);
             return;
